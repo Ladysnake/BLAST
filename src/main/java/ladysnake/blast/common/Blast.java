@@ -14,8 +14,6 @@ public class Blast implements ModInitializer {
     public void onInitialize() {
         BlastEntities.init();
         BlastItems.init();
-
-        ClientSidePacketRegistry.INSTANCE.register(Packets.SPAWN, EntityDispatcher::spawnFrom);
     }
 }
 
