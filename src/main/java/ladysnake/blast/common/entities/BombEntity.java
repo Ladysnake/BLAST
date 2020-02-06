@@ -67,7 +67,7 @@ public class BombEntity extends ThrownItemEntity {
         super.tick();
 
         // drop item if in water
-        if (this.isInWater() && this.disableInLiquid()) {
+        if (this.isSubmergedInWater() && this.disableInLiquid()) {
             this.world.spawnEntity(new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), new ItemStack(this.getDefaultItem())));
             this.remove();
         }

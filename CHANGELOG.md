@@ -1,5 +1,9 @@
 # BLAST - Changelog
 
+### BLAST 1.2 - 20w06a
+
+- Updated to Minecraft snapshot 20w06a
+
 ### BLAST 1.1.1 - 1.15.1
 
 - Fixed a bug that made the server crash on startup

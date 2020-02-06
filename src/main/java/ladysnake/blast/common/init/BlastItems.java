@@ -50,7 +50,7 @@ public class BlastItems {
                 @Override
                 protected Projectile createProjectile(World world, Position position, ItemStack itemStack) {
                     BombEntity bombEntity = ((BombItem) itemStack.getItem()).getType().create(world);
-                    bombEntity.setPosition(position.getX(), position.getY(), position.getZ());
+                    bombEntity.setPos(position.getX(), position.getY(), position.getZ());
                     itemStack.decrement(1);
                     return bombEntity;
                 }
