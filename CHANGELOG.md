@@ -1,5 +1,9 @@
 # BLAST - Changelog
 
+### BLAST 1.2.1 - 20w13b
+
+- Updated to Minecraft snapshot 20w13b
+
 ### BLAST 1.2 - 20w06a
 
 - Updated to Minecraft snapshot 20w06a

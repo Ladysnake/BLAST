@@ -4,8 +4,8 @@ import ladysnake.blast.common.network.Packets;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.util.PacketByteBuf;
 
 import java.util.Optional;
 

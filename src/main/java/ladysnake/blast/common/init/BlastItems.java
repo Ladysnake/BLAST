@@ -7,7 +7,7 @@ import ladysnake.blast.common.items.MineItem;
 import ladysnake.blast.common.items.PulverisItem;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
-import net.minecraft.entity.projectile.Projectile;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -48,7 +48,7 @@ public class BlastItems {
         if (registerDispenserBehavior) {
             DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
                 @Override
-                protected Projectile createProjectile(World world, Position position, ItemStack itemStack) {
+                protected ProjectileEntity createProjectile(World world, Position position, ItemStack itemStack) {
                     BombEntity bombEntity = ((BombItem) itemStack.getItem()).getType().create(world);
                     bombEntity.setPos(position.getX(), position.getY(), position.getZ());
                     itemStack.decrement(1);

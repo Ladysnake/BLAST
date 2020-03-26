@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -251,8 +250,8 @@ public class CustomExplosion extends Explosion {
         for(int j = 0; j < i; ++j) {
             Pair<ItemStack, BlockPos> pair = (Pair)objectArrayList.get(j);
             ItemStack itemStack2 = (ItemStack)pair.getFirst();
-            if (ItemEntity.method_24017(itemStack2, itemStack)) {
-                ItemStack itemStack3 = ItemEntity.method_24018(itemStack2, itemStack, 16);
+            if (ItemEntity.canMerge(itemStack2, itemStack)) {
+                    ItemStack itemStack3 = ItemEntity.merge(itemStack2, itemStack, 16);
                 objectArrayList.set(j, Pair.of(itemStack3, pair.getSecond()));
                 if (itemStack.isEmpty()) {
                     return;
