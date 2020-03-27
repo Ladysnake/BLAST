@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "blast:boompowder"
+      "item": "minecraft:gunpowder"
     },
     {
       "item": "minecraft:prismarine_shard"

@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 
 public class BlastItems {
 
-    public static Item BOOMPOWDER;
     public static Item BOMB;
     public static Item GOLDEN_BOMB;
     public static Item DIAMOND_BOMB;
@@ -25,7 +24,6 @@ public class BlastItems {
     public static Item NAVAL_MINE;
 
     public static void init() {
-        BOOMPOWDER = registerItem(new Item(new Item.Settings().group(ItemGroup.MISC)), "boompowder");
         BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.BOMB), "bomb");
         GOLDEN_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.GOLDEN_BOMB), "golden_bomb");
         DIAMOND_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.DIAMOND_BOMB), "diamond_bomb");
@@ -44,7 +42,7 @@ public class BlastItems {
     }
 
     public static Item registerItem(Item item, String name, boolean registerDispenserBehavior) {
-        Registry.register(Registry.ITEM, Blast.MOD_ID + ":" + name, item);
+        Registry.register(Registry.ITEM, Blast.MODID + ":" + name, item);
         if (registerDispenserBehavior) {
             DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
                 @Override
