@@ -2,6 +2,7 @@ package ladysnake.blast.common.init;
 
 import ladysnake.blast.common.block.GunpowderBlock;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tools.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
@@ -17,11 +18,10 @@ import static ladysnake.blast.common.Blast.MODID;
 
 public class BlastBlocks {
 
-    public static Block MEMBRANE;
+    public static Block GUNPOWDER_BLOCK;
 
     public static void init() {
-        MEMBRANE = registerBlock(new GunpowderBlock(FabricBlockSettings.of(Material.SAND, MaterialColor.BLACK).strength(0.5F, 0.5f).sounds(BlockSoundGroup.SAND).build()), "gunpowder_block", ItemGroup.BUILDING_BLOCKS);
-
+        GUNPOWDER_BLOCK = registerBlock(new GunpowderBlock(FabricBlockSettings.of(Material.SAND, MaterialColor.BLACK).strength(0.5F, 0.5f).sounds(BlockSoundGroup.SAND).breakByTool(FabricToolTags.SHOVELS).build()), "gunpowder_block", ItemGroup.BUILDING_BLOCKS);
     }
 
     private static Block registerBlock(Block    block, String name, @Nullable ItemGroup itemGroup) {
