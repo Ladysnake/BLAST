@@ -2,7 +2,6 @@ package ladysnake.blast.common.block;
 
 import ladysnake.blast.common.init.BlastBlocks;
 import net.minecraft.block.*;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
@@ -67,7 +66,6 @@ public class GunpowderBlock extends FallingBlock {
 
     public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
         if (!world.isClient) {
-            Entity entity = projectile.getOwner();
             if (projectile.isOnFire()) {
                 BlockPos blockPos = hit.getBlockPos();
                 explode(world, blockPos);
