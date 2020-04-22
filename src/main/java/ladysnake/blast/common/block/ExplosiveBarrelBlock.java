@@ -67,7 +67,6 @@ public class ExplosiveBarrelBlock extends Block {
         }
     }
 
-    @Nullable
     public BlockEntity createBlockEntity(BlockView world) {
         return new ExplosiveBarrelBlockEntity();
     }
@@ -76,7 +75,7 @@ public class ExplosiveBarrelBlock extends Block {
         return BlockRenderType.MODEL;
     }
 
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+    public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
         if (itemStack.hasCustomName()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof BarrelBlockEntity) {

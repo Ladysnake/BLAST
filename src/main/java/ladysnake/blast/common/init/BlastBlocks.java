@@ -27,7 +27,7 @@ public class BlastBlocks {
         EXPLOSIVE_BARREL = registerBlock(new ExplosiveBarrelBlock(FabricBlockSettings.of(Material.WOOD).strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).breakByTool(FabricToolTags.AXES).nonOpaque().build()), "explosive_barrel", ItemGroup.DECORATIONS);
     }
 
-    private static Block registerBlock(Block    block, String name, @Nullable ItemGroup itemGroup) {
+    private static Block registerBlock(Block    block, String name, ItemGroup itemGroup) {
         Registry.register(Registry.BLOCK, MODID + ":" + name, block);
 
         if (itemGroup != null) {
