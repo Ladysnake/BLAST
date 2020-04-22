@@ -12,7 +12,7 @@ public class Blast implements ModInitializer {
     public void onInitialize() {
         BlastEntities.init();
         BlastItems.init();
-        BlastBlocks.init();
+//        BlastBlocks.init();
     }
 }
 

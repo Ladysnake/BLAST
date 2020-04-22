@@ -34,7 +34,7 @@ public class BlastEntities {
         PULVERIS = Registry.register(Registry.ENTITY_TYPE, MODID + ":pulveris", FabricEntityTypeBuilder.<BombEntity>create(EntityCategory.MISC, PulverisEntity::new).size(EntityDimensions.changing(0.25f, 0.25f)).trackable(64, 1, true).build());
         NAVAL_MINE = Registry.register(Registry.ENTITY_TYPE, MODID + ":naval_mine", FabricEntityTypeBuilder.<BombEntity>create(EntityCategory.MISC, NavalMineEntity::new).size(EntityDimensions.changing(0.25f, 0.25f)).trackable(64, 1, true).build());
 
-        EXPLOSIVE_BARREL = Registry.register(Registry.BLOCK_ENTITY_TYPE, MODID + ":explosive_barrel", BlockEntityType.Builder.create(ExplosiveBarrelBlockEntity::new, BlastBlocks.EXPLOSIVE_BARREL));
+//        EXPLOSIVE_BARREL = Registry.register(Registry.BLOCK_ENTITY_TYPE, MODID + ":explosive_barrel", BlockEntityType.Builder.create(ExplosiveBarrelBlockEntity::new, BlastBlocks.EXPLOSIVE_BARREL));
     }
 
 }
