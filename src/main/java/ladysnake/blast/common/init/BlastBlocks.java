@@ -13,8 +13,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.registry.Registry;
 
-import javax.annotation.Nullable;
-
 import static ladysnake.blast.common.Blast.MODID;
 
 public class BlastBlocks {
