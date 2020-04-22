@@ -23,7 +23,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class ExplosiveBarrelBlock extends Block {
