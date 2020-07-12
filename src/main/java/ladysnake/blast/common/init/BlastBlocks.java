@@ -21,7 +21,7 @@ public class BlastBlocks {
     public static Block EXPLOSIVE_BARREL;
 
     public static void init() {
-        GUNPOWDER_BLOCK = registerBlock(new GunpowderBlock(FabricBlockSettings.of(Material.SAND, MaterialColor.BLACK).strength(0.5F, 0.5f).sounds(BlockSoundGroup.SAND).breakByTool(FabricToolTags.SHOVELS).build()), "gunpowder_block", ItemGroup.BUILDING_BLOCKS);
+        GUNPOWDER_BLOCK = registerBlock(new GunpowderBlock(FabricBlockSettings.of(Material.AGGREGATE, MaterialColor.BLACK).strength(0.5F, 0.5f).sounds(BlockSoundGroup.SAND).breakByTool(FabricToolTags.SHOVELS).build()), "gunpowder_block", ItemGroup.BUILDING_BLOCKS);
         EXPLOSIVE_BARREL = registerBlock(new ExplosiveBarrelBlock(FabricBlockSettings.of(Material.WOOD).strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).breakByTool(FabricToolTags.AXES).nonOpaque().build()), "explosive_barrel", ItemGroup.DECORATIONS);
     }
 

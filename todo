@@ -1,4 +1,4 @@
-- Added gunpowder block: submitted to gravity and instantly explodes when catching or near fire
+- [TODO] Add gunpowder block: submitted to gravity and instantly explodes when catching or near fire
 - [TODO] Added explosive barrel: instantly explodes when catching or near fire and can contain a variable amount of gunpowder for a variable explosion strength
 - [TODO] Oriented barrels with an obsidian block directly placed on the opposite direction they're facing will have an oriented explosion, handy for strip mining!
 - [TODO] Added coal dust: instantly catches on fire when near one

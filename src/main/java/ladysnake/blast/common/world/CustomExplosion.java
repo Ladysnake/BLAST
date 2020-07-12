@@ -219,13 +219,13 @@ public class CustomExplosion extends Explosion {
                             itemStack.addEnchantment(Enchantments.FORTUNE, 3);
                         }
 
-                        LootContext.Builder lootContextBuilder = (new LootContext.Builder((ServerWorld)this.world)).setRandom(this.world.random).put(LootContextParameters.POSITION, blockPos).put(LootContextParameters.TOOL, itemStack).putNullable(LootContextParameters.BLOCK_ENTITY, blockEntity);
+                        LootContext.Builder builder = (new LootContext.Builder((ServerWorld)this.world)).random(this.world.random).parameter(LootContextParameters.POSITION, blockPos).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
                         if (this.blockDestructionType == Explosion.DestructionType.DESTROY) {
-                            lootContextBuilder.put(LootContextParameters.EXPLOSION_RADIUS, this.power);
+                            builder.parameter(LootContextParameters.EXPLOSION_RADIUS, this.power);
                         }
 
                         BlockPos finalBlockPos = blockPos;
-                        blockState.getDroppedStacks(lootContextBuilder).forEach(itemStack1 -> method_24023(objectArrayList, itemStack1, finalBlockPos.toImmutable()));
+                        blockState.getDroppedStacks(builder).forEach(itemStack1 -> method_24023(objectArrayList, itemStack1, finalBlockPos.toImmutable()));
                     }
 
                     if (!this.world.isClient) {

@@ -21,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.explosion.Explosion;
 
 import java.util.Random;
@@ -51,18 +52,6 @@ public class ExplosiveBarrelBlock extends Block {
                 world.getBlockState(pos.add(0, 0, -1)).getMaterial() == Material.FIRE ||
                 world.getBlockState(pos.add(0, 0, 1)).getMaterial() == Material.FIRE) {
             explode(world, pos);
-        }
-    }
-
-    public void onBlockRemoved(BlockState state, World world, BlockPos pos, BlockState newState, boolean notify) {
-        if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof Inventory) {
-                ItemScatterer.spawn(world, pos, (Inventory)blockEntity);
-                world.updateComparators(pos, this);
-            }
-
-            super.onBlockRemoved(state, world, pos, newState, notify);
         }
     }
 

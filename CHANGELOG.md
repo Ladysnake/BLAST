@@ -1,5 +1,8 @@
 # BLAST - Changelog
 
+### BLAST 1.3.1 - 1.16.1
+- Updated to Minecraft 1.16.1
+
 ### BLAST 1.3 - 20w17a
 - Removed boompowder
 - Changed crafting recipes to only require iron / diamond / gold / prismarine for the naval mine, gunpowder and string / redstone for the naval mine

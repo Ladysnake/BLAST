@@ -19,7 +19,7 @@ public final class EntityDispatcher {
                     final ClientWorld world = MinecraftClient.getInstance().world;
                     Optional.ofNullable(packet.getEntityTypeId().create(world)).ifPresent(entity -> {
                         entity.updateTrackedPosition(packet.getX(), packet.getY(), packet.getZ());
-                        entity.setVelocity(packet.getVelocityX(), packet.getVelocityY(), packet.getVelocityz());
+                        entity.setVelocity(packet.getVelocityX(), packet.getVelocityY(), packet.getVelocityZ());
                         entity.pitch = (float) (packet.getPitch() * 360) / 256.0F;
                         entity.yaw = (float) (packet.getYaw() * 360) / 256.0F;
                         entity.setEntityId(packet.getId());

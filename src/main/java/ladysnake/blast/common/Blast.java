@@ -1,6 +1,5 @@
 package ladysnake.blast.common;
 
-import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.init.BlastItems;
 import net.fabricmc.api.ModInitializer;
