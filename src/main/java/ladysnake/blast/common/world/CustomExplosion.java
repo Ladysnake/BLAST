@@ -33,6 +33,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
+import net.minecraft.world.explosion.ExplosionBehavior;
 
 import java.util.*;
 
@@ -51,7 +52,7 @@ public class CustomExplosion extends Explosion {
     private final Map<PlayerEntity, Vec3d> affectedPlayers;
 
     public CustomExplosion(World world, Entity entity, double x, double y, double z, float power, BlockBreakEffect effect, Explosion.DestructionType destructionType) {
-        super(world, entity, x, y, z, power, false, destructionType);
+        super(world, entity, null, null, x, y, z, power, false, destructionType);
         this.random = new Random();
         this.affectedBlocks = Lists.newArrayList();
         this.affectedPlayers = Maps.newHashMap();
