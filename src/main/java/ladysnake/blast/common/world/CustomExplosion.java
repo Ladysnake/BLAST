@@ -33,7 +33,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
-import net.minecraft.world.explosion.ExplosionBehavior;
 
 import java.util.*;
 
@@ -129,7 +128,7 @@ public class CustomExplosion extends Explosion {
         int int_8 = MathHelper.floor(this.y + (double)float_4 + 1.0D);
         int int_9 = MathHelper.floor(this.z - (double)float_4 - 1.0D);
         int int_10 = MathHelper.floor(this.z + (double)float_4 + 1.0D);
-        List<Entity> list_1 = this.world.getEntities(this.entity, new Box((double)int_3, (double)int_7, (double)int_9, (double)int_4, (double)int_8, (double)int_10));
+        List<Entity> list_1 = this.world.getOtherEntities(this.entity, new Box((double)int_3, (double)int_7, (double)int_9, (double)int_4, (double)int_8, (double)int_10));
         Vec3d vec3d_1 = new Vec3d(this.x, this.y, this.z);
 
         for(int int_11 = 0; int_11 < list_1.size(); ++int_11) {
@@ -220,7 +219,7 @@ public class CustomExplosion extends Explosion {
                             itemStack.addEnchantment(Enchantments.FORTUNE, 3);
                         }
 
-                        LootContext.Builder builder = (new LootContext.Builder((ServerWorld)this.world)).random(this.world.random).parameter(LootContextParameters.POSITION, blockPos).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
+                        LootContext.Builder builder = (new LootContext.Builder((ServerWorld)this.world)).random(this.world.random).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
                         if (this.blockDestructionType == Explosion.DestructionType.DESTROY) {
                             builder.parameter(LootContextParameters.EXPLOSION_RADIUS, this.power);
                         }

@@ -18,6 +18,7 @@ public class BlastEntities {
     public static EntityType<BombEntity> PULVERIS;
     public static EntityType<BombEntity> NAVAL_MINE;
 
+    public static EntityType<GunpowderBlockEntity> GUNPOWDER_BLOCK;
     public static BlockEntityType<ExplosiveBarrelBlockEntity> EXPLOSIVE_BARREL;
 
     public static void init() {
@@ -27,6 +28,7 @@ public class BlastEntities {
         PULVERIS = Registry.register(Registry.ENTITY_TYPE, MODID + ":pulveris", FabricEntityTypeBuilder.<BombEntity>create(SpawnGroup.MISC, PulverisEntity::new).size(EntityDimensions.changing(0.25f, 0.25f)).trackable(64, 1, true).build());
         NAVAL_MINE = Registry.register(Registry.ENTITY_TYPE, MODID + ":naval_mine", FabricEntityTypeBuilder.<BombEntity>create(SpawnGroup.MISC, NavalMineEntity::new).size(EntityDimensions.changing(0.25f, 0.25f)).trackable(64, 1, true).build());
 
+        GUNPOWDER_BLOCK = Registry.register(Registry.ENTITY_TYPE, MODID + ":gunpowder_block", FabricEntityTypeBuilder.<GunpowderBlockEntity>create(SpawnGroup.MISC, GunpowderBlockEntity::new).trackable(64, 1, true).build());
 //        EXPLOSIVE_BARREL = Registry.register(Registry.BLOCK_ENTITY_TYPE, MODID + ":explosive_barrel", BlockEntityType.Builder.create(ExplosiveBarrelBlockEntity::new, BlastBlocks.EXPLOSIVE_BARREL));
     }
 

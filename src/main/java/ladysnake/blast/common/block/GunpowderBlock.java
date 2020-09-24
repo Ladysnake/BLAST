@@ -1,12 +1,19 @@
 package ladysnake.blast.common.block;
 
-import ladysnake.blast.common.init.BlastBlocks;
+import ladysnake.blast.common.entities.GunpowderBlockEntity;
 import net.minecraft.block.*;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -43,12 +50,8 @@ public class GunpowderBlock extends FallingBlock {
         }
     }
 
-    @Override
     public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
-        if (!world.isClient()) {
-            world.setBlockState(pos, BlastBlocks.GUNPOWDER_BLOCK.getDefaultState().with(LIT, true));
-            world.getBlockTickScheduler().schedule(pos, this, 1);
-        }
+        explode(world, pos, explosion.getCausingEntity());
     }
 
     @Override
@@ -64,6 +67,28 @@ public class GunpowderBlock extends FallingBlock {
         return false;
     }
 
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        ItemStack itemStack = player.getStackInHand(hand);
+        Item item = itemStack.getItem();
+        if (item != Items.FLINT_AND_STEEL && item != Items.FIRE_CHARGE) {
+            return super.onUse(state, world, pos, player, hand, hit);
+        } else {
+            explode(world, pos, player);
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+            if (!player.isCreative()) {
+                if (item == Items.FLINT_AND_STEEL) {
+                    itemStack.damage(1, player, (playerEntity) -> {
+                        playerEntity.sendToolBreakStatus(hand);
+                    });
+                } else {
+                    itemStack.decrement(1);
+                }
+            }
+
+            return ActionResult.success(world.isClient);
+        }
+    }
+
     public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
         if (!world.isClient) {
             if (projectile.isOnFire()) {
@@ -73,15 +98,21 @@ public class GunpowderBlock extends FallingBlock {
         }
     }
 
-    public void explode(World world, BlockPos pos) {
-        if (!world.isClient) {
-            world.removeBlock(pos, false);
-            world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 3f, true, Explosion.DestructionType.BREAK);
-        }
-    }
-
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(LIT);
+    }
+
+    public static void explode(World world, BlockPos pos) {
+        explode(world, pos, (LivingEntity)null);
+    }
+
+    private static void explode(World world, BlockPos pos, LivingEntity igniter) {
+        world.removeBlock(pos, false);
+
+        if (!world.isClient) {
+            GunpowderBlockEntity gunpowderBlockEntity = new GunpowderBlockEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter);
+            world.spawnEntity(gunpowderBlockEntity);
+        }
     }
 
 }
