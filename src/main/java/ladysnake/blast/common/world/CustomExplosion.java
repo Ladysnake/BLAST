@@ -12,10 +12,7 @@ import net.minecraft.block.FluidFillable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.ProtectionEnchantment;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ExperienceOrbEntity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -71,93 +68,94 @@ public class CustomExplosion extends Explosion {
     }
 
     public void collectBlocksAndDamageEntities() {
-        Set<BlockPos> set_1 = Sets.newHashSet();
+        Set<BlockPos> set = Sets.newHashSet();
 
-        int int_3;
-        int int_4;
-        for(int int_2 = 0; int_2 < 16; ++int_2) {
-            for(int_3 = 0; int_3 < 16; ++int_3) {
-                for(int_4 = 0; int_4 < 16; ++int_4) {
-                    if (int_2 == 0 || int_2 == 15 || int_3 == 0 || int_3 == 15 || int_4 == 0 || int_4 == 15) {
-                        double double_1 = (double)((float)int_2 / 15.0F * 2.0F - 1.0F);
-                        double double_2 = (double)((float)int_3 / 15.0F * 2.0F - 1.0F);
-                        double double_3 = (double)((float)int_4 / 15.0F * 2.0F - 1.0F);
-                        double double_4 = Math.sqrt(double_1 * double_1 + double_2 * double_2 + double_3 * double_3);
-                        double_1 /= double_4;
-                        double_2 /= double_4;
-                        double_3 /= double_4;
-                        float float_1 = this.power * (0.7F + this.world.random.nextFloat() * 0.6F);
-                        double double_5 = this.x;
-                        double double_6 = this.y;
-                        double double_7 = this.z;
+        int k;
+        int l;
+        for(int j = 0; j < 16; ++j) {
+            for(k = 0; k < 16; ++k) {
+                for(l = 0; l < 16; ++l) {
+                    if (j == 0 || j == 15 || k == 0 || k == 15 || l == 0 || l == 15) {
+                        double d = (double)((float)j / 15.0F * 2.0F - 1.0F);
+                        double e = (double)((float)k / 15.0F * 2.0F - 1.0F);
+                        double f = (double)((float)l / 15.0F * 2.0F - 1.0F);
+                        double g = Math.sqrt(d * d + e * e + f * f);
+                        d /= g;
+                        e /= g;
+                        f /= g;
+                        float h = this.power * (0.7F + this.world.random.nextFloat() * 0.6F);
+                        double m = this.x;
+                        double n = this.y;
+                        double o = this.z;
 
-                        for(float var21 = 0.3F; float_1 > 0.0F; float_1 -= 0.22500001F) {
-                            BlockPos blockPos_1 = new BlockPos(double_5, double_6, double_7);
-                            BlockState blockState_1 = this.world.getBlockState(blockPos_1);
-                            FluidState fluidState_1 = this.world.getFluidState(blockPos_1);
-                            if (!blockState_1.isAir() || !fluidState_1.isEmpty()) {
-                                float float_3 = Math.max(blockState_1.getBlock().getBlastResistance(), fluidState_1.getBlastResistance());
-                                if ((this.effect == BlockBreakEffect.AQUATIC && !fluidState_1.isEmpty()) || (this.effect == BlockBreakEffect.UNSTOPPABLE && fluidState_1.isEmpty())) {
-                                    float_3 = 0;
+                        for(float var21 = 0.3F; h > 0.0F; h -= 0.22500001F) {
+                            BlockPos blockPos = new BlockPos(m, n, o);
+                            BlockState blockState = this.world.getBlockState(blockPos);
+                            FluidState fluidState = this.world.getFluidState(blockPos);
+                            if (!blockState.isAir() || !fluidState.isEmpty()) {
+                                float br = Math.max(blockState.getBlock().getBlastResistance(), fluidState.getBlastResistance());
+                                if ((this.effect == BlockBreakEffect.AQUATIC && !fluidState.isEmpty()) || (this.effect == BlockBreakEffect.UNSTOPPABLE && fluidState.isEmpty())) {
+                                    br = 0;
                                 }
                                 if (this.entity != null) {
-                                    float_3 = this.entity.getEffectiveExplosionResistance(this, this.world, blockPos_1, blockState_1, fluidState_1, float_3);
+                                    br = this.entity.getEffectiveExplosionResistance(this, this.world, blockPos, blockState, fluidState, br);
                                 }
 
-                                float_1 -= (float_3 + 0.3F) * 0.3F;
+                                h -= (br + 0.3F) * 0.3F;
                             }
 
-                            if (float_1 > 0.0F && (this.entity == null || this.entity.canExplosionDestroyBlock(this, this.world, blockPos_1, blockState_1, float_1)) && blockState_1.getBlock() != Blocks.BEDROCK) {
-                                set_1.add(blockPos_1);
+
+                            if (h > 0.0F && (this.entity == null || this.entity.canExplosionDestroyBlock(this, this.world, blockPos, blockState, h)) && blockState.getBlock() != Blocks.BEDROCK) {
+                                set.add(blockPos);
                             }
 
-                            double_5 += double_1 * 0.30000001192092896D;
-                            double_6 += double_2 * 0.30000001192092896D;
-                            double_7 += double_3 * 0.30000001192092896D;
+                            m += d * 0.30000001192092896D;
+                            n += e * 0.30000001192092896D;
+                            o += f * 0.30000001192092896D;
                         }
                     }
                 }
             }
         }
 
-        this.affectedBlocks.addAll(set_1);
-        float float_4 = this.power * 2.0F;
-        int_3 = MathHelper.floor(this.x - (double)float_4 - 1.0D);
-        int_4 = MathHelper.floor(this.x + (double)float_4 + 1.0D);
-        int int_7 = MathHelper.floor(this.y - (double)float_4 - 1.0D);
-        int int_8 = MathHelper.floor(this.y + (double)float_4 + 1.0D);
-        int int_9 = MathHelper.floor(this.z - (double)float_4 - 1.0D);
-        int int_10 = MathHelper.floor(this.z + (double)float_4 + 1.0D);
-        List<Entity> list_1 = this.world.getOtherEntities(this.entity, new Box((double)int_3, (double)int_7, (double)int_9, (double)int_4, (double)int_8, (double)int_10));
-        Vec3d vec3d_1 = new Vec3d(this.x, this.y, this.z);
+        this.affectedBlocks.addAll(set);
+        float q = this.power * 2.0F;
+        k = MathHelper.floor(this.x - (double)q - 1.0D);
+        l = MathHelper.floor(this.x + (double)q + 1.0D);
+        int t = MathHelper.floor(this.y - (double)q - 1.0D);
+        int u = MathHelper.floor(this.y + (double)q + 1.0D);
+        int v = MathHelper.floor(this.z - (double)q - 1.0D);
+        int w = MathHelper.floor(this.z + (double)q + 1.0D);
+        List<Entity> list = this.world.getOtherEntities(this.entity, new Box((double)k, (double)t, (double)v, (double)l, (double)u, (double)w));
+        Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
-        for(int int_11 = 0; int_11 < list_1.size(); ++int_11) {
-            Entity entity_1 = (Entity)list_1.get(int_11);
-            double double_8 = (double)(MathHelper.sqrt(entity_1.squaredDistanceTo(new Vec3d(this.x, this.y, this.z))) / float_4);
-            if (double_8 <= 1.0D) {
-                double double_9 = entity_1.getX() - this.x;
-                double double_10 = entity_1.getY() + (double)entity_1.getStandingEyeHeight() - this.y;
-                double double_11 = entity_1.getZ() - this.z;
-                double double_12 = (double)MathHelper.sqrt(double_9 * double_9 + double_10 * double_10 + double_11 * double_11);
-                if (double_12 != 0.0D) {
-                    double_9 /= double_12;
-                    double_10 /= double_12;
-                    double_11 /= double_12;
-                    double double_13 = (double)getExposure(vec3d_1, entity_1);
-                    double double_14 = (1.0D - double_8) * double_13;
-                    if (!(entity_1 instanceof ExperienceOrbEntity || entity_1 instanceof ItemEntity)) {
-                        entity_1.damage(this.getDamageSource(), (float) ((int) ((double_14 * double_14 + double_14) / 2.0D * 7.0D * (double) float_4 + 1.0D)));
-                    }
-                    double double_15 = double_14;
-                    if (entity_1 instanceof LivingEntity) {
-                        double_15 = ProtectionEnchantment.transformExplosionKnockback((LivingEntity)entity_1, double_14);
-                    }
+        for(int x = 0; x < list.size(); ++x) {
+            Entity entity = (Entity)list.get(x);
+            if (!entity.isImmuneToExplosion()) {
+                double y = (double)(MathHelper.sqrt(entity.squaredDistanceTo(vec3d)) / q);
+                if (y <= 1.0D) {
+                    double z = entity.getX() - this.x;
+                    double aa = (entity instanceof TntEntity ? entity.getY() : entity.getEyeY()) - this.y;
+                    double ab = entity.getZ() - this.z;
+                    double ac = (double)MathHelper.sqrt(z * z + aa * aa + ab * ab);
+                    if (ac != 0.0D) {
+                        z /= ac;
+                        aa /= ac;
+                        ab /= ac;
+                        double ad = (double)getExposure(vec3d, entity);
+                        double ae = (1.0D - y) * ad;
+                        entity.damage(this.getDamageSource(), (float)((int)((ae * ae + ae) / 2.0D * 7.0D * (double)q + 1.0D)));
+                        double af = ae;
+                        if (entity instanceof LivingEntity) {
+                            af = ProtectionEnchantment.transformExplosionKnockback((LivingEntity)entity, ae);
+                        }
 
-                    entity_1.setVelocity(entity_1.getVelocity().add(double_9 * double_15, double_10 * double_15, double_11 * double_15));
-                    if (entity_1 instanceof PlayerEntity) {
-                        PlayerEntity playerEntity_1 = (PlayerEntity)entity_1;
-                        if (!playerEntity_1.isSpectator() && (!playerEntity_1.isCreative() || !playerEntity_1.abilities.flying)) {
-                            this.affectedPlayers.put(playerEntity_1, new Vec3d(double_9 * double_14, double_10 * double_14, double_11 * double_14));
+                        entity.setVelocity(entity.getVelocity().add(z * af, aa * af, ab * af));
+                        if (entity instanceof PlayerEntity) {
+                            PlayerEntity playerEntity = (PlayerEntity)entity;
+                            if (!playerEntity.isSpectator() && (!playerEntity.isCreative() || !playerEntity.abilities.flying)) {
+                                this.affectedPlayers.put(playerEntity, new Vec3d(z * ae, aa * ae, ab * ae));
+                            }
                         }
                     }
                 }
@@ -168,7 +166,7 @@ public class CustomExplosion extends Explosion {
 
     public void affectWorld(boolean boolean_1) {
         this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2F) * 0.7F);
-        boolean boolean_2 = this.blockDestructionType != Explosion.DestructionType.NONE;
+        boolean boolean_2 = this.blockDestructionType != DestructionType.NONE;
         if (this.power >= 2.0F && boolean_2) {
             this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
         } else {
@@ -220,7 +218,7 @@ public class CustomExplosion extends Explosion {
                         }
 
                         LootContext.Builder builder = (new LootContext.Builder((ServerWorld)this.world)).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.of(blockPos)).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
-                        if (this.blockDestructionType == Explosion.DestructionType.DESTROY) {
+                        if (this.blockDestructionType == DestructionType.DESTROY) {
                             builder.parameter(LootContextParameters.EXPLOSION_RADIUS, this.power);
                         }
 
