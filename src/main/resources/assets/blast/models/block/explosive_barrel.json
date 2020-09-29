@@ -1,13 +1,12 @@
 {
 	"credit": "Made with Blockbench",
+	"parent": "block/block",
 	"textures": {
 		"0": "blast:block/explosive_barrel",
-		"1": "blast:block/gunpowder_block",
-		"particle": "blast:block/explosive_barrel"
+		"saw": "block/stonecutter_saw"
 	},
 	"elements": [
 		{
-			"name": "outer",
 			"from": [0, 0, 0],
 			"to": [16, 16, 16],
 			"faces": {
@@ -20,29 +19,12 @@
 			}
 		},
 		{
-			"name": "inner",
-			"from": [16, 16, 16],
-			"to": [0, 0, 0],
+			"from": [1, 16, 8],
+			"to": [15, 23, 8],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 15, 8]},
 			"faces": {
-				"north": {"uv": [8, 8, 16, 16], "texture": "#0"},
-				"east": {"uv": [8, 8, 16, 16], "texture": "#0"},
-				"south": {"uv": [8, 8, 16, 16], "texture": "#0"},
-				"west": {"uv": [8, 8, 16, 16], "texture": "#0"},
-				"up": {"uv": [0, 8, 8, 16], "texture": "#0"},
-				"down": {"uv": [8, 0, 16, 8], "texture": "#0"}
-			}
-		},
-		{
-			"name": "powder",
-			"from": [0, 9.998, 0],
-			"to": [16, 9.998, 16],
-			"faces": {
-				"north": {"uv": [0, 0, 16, 0], "texture": "#missing"},
-				"east": {"uv": [0, 0, 16, 0], "texture": "#missing"},
-				"south": {"uv": [0, 0, 16, 0], "texture": "#missing"},
-				"west": {"uv": [0, 0, 16, 0], "texture": "#missing"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#1"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#missing"}
+				"north": {"uv": [1, 9, 15, 16], "texture": "#saw", "tintindex": 0},
+				"south": {"uv": [1, 9, 15, 16], "texture": "#saw", "tintindex": 0}
 			}
 		}
 	],
