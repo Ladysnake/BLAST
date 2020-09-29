@@ -128,11 +128,11 @@ public class ExplosiveBarrelBlock extends Block {
             if (world.getBlockState(pos.add(x, y, z)).getBlock().getBlastResistance() >= 1200) {
                 for (int i = 1; i <= 8; i++) {
                     world.removeBlock(new BlockPos(pos.getX()+(-x)*(i*3), pos.getY()+(-y)*(i*3), pos.getZ()+(-z)*(i*3)), true);
-                    world.createExplosion(null, pos.getX()+(-x)*(i*3), pos.getY()+(-y)*(i*3), pos.getZ()+(-z)*(i*3), 5f, false, Explosion.DestructionType.BREAK);
-                    world.createExplosion(null, pos.getX()+(-x)*(i*3), pos.getY()+(-y)*(i*3), pos.getZ()+(-z)*(i*3), 5f, false, Explosion.DestructionType.BREAK);
+                    world.createExplosion(null, pos.getX()+(-x)*(i*3), pos.getY()+(-y)*(i*3), pos.getZ()+(-z)*(i*3), 3f, false, Explosion.DestructionType.BREAK);
+//                    world.createExplosion(null, pos.getX()+(-x)*(i*3), pos.getY()+(-y)*(i*3), pos.getZ()+(-z)*(i*3), 3f, false, Explosion.DestructionType.BREAK);
                 }
             } else {
-                world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 16f, false, Explosion.DestructionType.BREAK);
+                world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 3f*8f, false, Explosion.DestructionType.BREAK);
             }
         }
     }

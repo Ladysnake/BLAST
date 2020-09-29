@@ -1,6 +1,6 @@
 # BLAST - Changelog
 
-### BLAST 1.4 - 1.16.1
+### BLAST 1.4 - 1.16.3
 - Updated to Minecraft 1.16.3
 
 ### BLAST 1.3.2 - 1.16.1
