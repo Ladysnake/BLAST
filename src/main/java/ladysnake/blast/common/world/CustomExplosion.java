@@ -144,7 +144,9 @@ public class CustomExplosion extends Explosion {
                         ab /= ac;
                         double ad = (double)getExposure(vec3d, entity);
                         double ae = (1.0D - y) * ad;
-                        entity.damage(this.getDamageSource(), (float)((int)((ae * ae + ae) / 2.0D * 7.0D * (double)q + 1.0D)));
+                        if (!(entity instanceof ExperienceOrbEntity || entity instanceof ItemEntity)) {
+                            entity.damage(this.getDamageSource(), (float) ((int) ((ae * ae + ae) / 2.0D * 7.0D * (double) q + 1.0D)));
+                        }
                         double af = ae;
                         if (entity instanceof LivingEntity) {
                             af = ProtectionEnchantment.transformExplosionKnockback((LivingEntity)entity, ae);

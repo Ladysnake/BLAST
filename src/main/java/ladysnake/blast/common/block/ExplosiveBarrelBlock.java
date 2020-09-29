@@ -1,6 +1,7 @@
 package ladysnake.blast.common.block;
 
 import ladysnake.blast.common.entities.ExplosiveBarrelBlockEntity;
+import ladysnake.blast.common.world.CustomExplosion;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BarrelBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -128,8 +129,10 @@ public class ExplosiveBarrelBlock extends Block {
                 BlockPos bp = new BlockPos(pos.getX() + (-x) * (i * 3), pos.getY() + (-y) * (i * 3), pos.getZ() + (-z) * (i * 3));
                 if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
                     world.breakBlock(bp, true);
+                    CustomExplosion explosion = new CustomExplosion(world, null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.BREAK);
                     for (int j = 0; j < 2; j++) {
-                        world.createExplosion(null, bp.getX()+.5, bp.getY()+.5, bp.getZ()+.5, 2.5f, false, Explosion.DestructionType.BREAK);
+                        explosion.collectBlocksAndDamageEntities();
+                        explosion.affectWorld(true);
                     }
                 } else {
                     break;
