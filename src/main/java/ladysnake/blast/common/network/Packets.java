@@ -18,7 +18,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class Packets {
-    public static final Identifier SPAWN = new Identifier(Blast.MODID + ":spawn");
+    public static final Identifier SPAWN = new Identifier(Blast.MODID, "spawn");
 
     private Packets() {
     }

@@ -62,9 +62,6 @@ public class StripminerEntity extends TntEntity {
 
         this.move(MovementType.SELF, this.getVelocity());
         this.setVelocity(this.getVelocity().multiply(0.98D));
-        if (this.onGround) {
-            this.setVelocity(this.getVelocity().multiply(0.7D, -0.5D, 0.7D));
-        }
 
         --this.fuseTimer;
         if (this.fuseTimer <= 0) {
@@ -82,35 +79,10 @@ public class StripminerEntity extends TntEntity {
     }
 
     private void explode() {
-        // test for a blast resistant block behind the barrel
-        int x = 0;
-        int y = 0;
-        int z = 0;
-        switch (this.getFacing()) {
-            case DOWN:
-                y = 1;
-                break;
-            case UP:
-                y = -1;
-                break;
-            case NORTH:
-                z = 1;
-                break;
-            case SOUTH:
-                z = -1;
-                break;
-            case WEST:
-                x = 1;
-                break;
-            case EAST:
-                x = -1;
-                break;
-        }
-
         for (int i = 0; i <= 24; i++) {
-            BlockPos bp = new BlockPos(this.getPos().getX() + (-x) * (i), this.getPos().getY() + (-y) * (i), this.getPos().getZ() + (-z) * (i));
+            BlockPos bp = this.getBlockPos().offset(this.getFacing(), i);
             if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(world, null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.BREAK);
+                CustomExplosion explosion = new CustomExplosion(world, this, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.BREAK);
                 explosion.collectBlocksAndDamageEntities();
                 explosion.affectWorld(true);
             } else {

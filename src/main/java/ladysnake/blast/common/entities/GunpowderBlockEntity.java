@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 public class GunpowderBlockEntity extends TntEntity {
-    public static final int INITIAL_FUSE = 1;
+    public static final int INITIAL_FUSE = 80;
     private static final TrackedData<Integer> FUSE;
     private LivingEntity causingEntity;
     private int fuseTimer;
@@ -69,7 +69,6 @@ public class GunpowderBlockEntity extends TntEntity {
                 this.world.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.5D, this.getZ(), 0.0D, 0.0D, 0.0D);
             }
         }
-
     }
 
     private void explode() {
