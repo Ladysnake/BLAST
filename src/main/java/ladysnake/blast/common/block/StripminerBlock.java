@@ -1,7 +1,6 @@
 package ladysnake.blast.common.block;
 
-import ladysnake.blast.common.entities.ExplosiveBarrelBlockEntity;
-import ladysnake.blast.common.world.CustomExplosion;
+import ladysnake.blast.common.entities.StripminerEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BarrelBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -9,7 +8,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -56,10 +54,6 @@ public class StripminerBlock extends Block {
         }
     }
 
-    public BlockEntity createBlockEntity(BlockView world) {
-        return new ExplosiveBarrelBlockEntity();
-    }
-
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
         if (itemStack.hasCustomName()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -96,43 +90,50 @@ public class StripminerBlock extends Block {
     }
 
     public void explode(World world, BlockPos pos) {
-        // test for a blast resistant block behind the barrel
-        int x = 0;
-        int y = 0;
-        int z = 0;
-        switch (world.getBlockState(pos).get(FACING)) {
-            case DOWN:
-                y = 1;
-                break;
-            case UP:
-                y = -1;
-                break;
-            case NORTH:
-                z = 1;
-                break;
-            case SOUTH:
-                z = -1;
-                break;
-            case WEST:
-                x = 1;
-                break;
-            case EAST:
-                x = -1;
-                break;
-        }
-
-        for (int i = -1; i <= 24; i++) {
-            BlockPos bp = new BlockPos(pos.getX() + (-x) * (i), pos.getY() + (-y) * (i), pos.getZ() + (-z) * (i));
-            if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(world, null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.BREAK);
-                explosion.collectBlocksAndDamageEntities();
-                explosion.affectWorld(true);
-            } else {
-                break;
-            }
-        }
-
         world.removeBlock(pos, false);
+
+        if (!world.isClient) {
+            StripminerEntity stripminerEntity = new StripminerEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, null);
+            world.spawnEntity(stripminerEntity);
+        }
+//        // test for a blast resistant block behind the barrel
+//        int x = 0;
+//        int y = 0;
+//        int z = 0;
+//        switch (world.getBlockState(pos).get(FACING)) {
+//            case DOWN:
+//                y = 1;
+//                break;
+//            case UP:
+//                y = -1;
+//                break;
+//            case NORTH:
+//                z = 1;
+//                break;
+//            case SOUTH:
+//                z = -1;
+//                break;
+//            case WEST:
+//                x = 1;
+//                break;
+//            case EAST:
+//                x = -1;
+//                break;
+//        }
+//
+//        world.removeBlock(pos, false);
+//
+//        for (int i = 0; i <= 24; i++) {
+//            BlockPos bp = new BlockPos(pos.getX() + (-x) * (i), pos.getY() + (-y) * (i), pos.getZ() + (-z) * (i));
+//            if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
+//                CustomExplosion explosion = new CustomExplosion(world, null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.BREAK);
+//                explosion.collectBlocksAndDamageEntities();
+//                explosion.affectWorld(true);
+//            } else {
+//                break;
+//            }
+//        }
+
     }
 
     public BlockState rotate(BlockState state, BlockRotation rotation) {

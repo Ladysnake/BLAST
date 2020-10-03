@@ -19,7 +19,7 @@ public class BlastEntities {
     public static EntityType<BombEntity> NAVAL_MINE;
 
     public static EntityType<GunpowderBlockEntity> GUNPOWDER_BLOCK;
-    public static BlockEntityType<ExplosiveBarrelBlockEntity> EXPLOSIVE_BARREL;
+    public static EntityType<StripminerEntity> STRIPMINER;
 
     public static void init() {
         BOMB = Registry.register(Registry.ENTITY_TYPE, MODID + ":bomb", FabricEntityTypeBuilder.<BombEntity>create(SpawnGroup.MISC, BombEntity::new).size(EntityDimensions.changing(0.25f, 0.25f)).trackable(64, 1, true).build());
@@ -29,7 +29,7 @@ public class BlastEntities {
         NAVAL_MINE = Registry.register(Registry.ENTITY_TYPE, MODID + ":naval_mine", FabricEntityTypeBuilder.<BombEntity>create(SpawnGroup.MISC, NavalMineEntity::new).size(EntityDimensions.changing(0.25f, 0.25f)).trackable(64, 1, true).build());
 
         GUNPOWDER_BLOCK = Registry.register(Registry.ENTITY_TYPE, MODID + ":gunpowder_block", FabricEntityTypeBuilder.<GunpowderBlockEntity>create(SpawnGroup.MISC, GunpowderBlockEntity::new).trackable(64, 1, true).build());
-//        EXPLOSIVE_BARREL = Registry.register(Registry.BLOCK_ENTITY_TYPE, MODID + ":explosive_barrel", BlockEntityType.Builder.create(ExplosiveBarrelBlockEntity::new, BlastBlocks.EXPLOSIVE_BARREL));
+        STRIPMINER = Registry.register(Registry.ENTITY_TYPE, MODID + ":stripminer", FabricEntityTypeBuilder.<StripminerEntity>create(SpawnGroup.MISC, StripminerEntity::new).trackable(64, 1, true).build());
     }
 
 }

@@ -2,6 +2,7 @@ package ladysnake.blast.client;
 
 import ladysnake.blast.client.network.EntityDispatcher;
 import ladysnake.blast.client.renderers.GunpowderBlockEntityRenderer;
+import ladysnake.blast.client.renderers.StripminerEntityRenderer;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.network.Packets;
@@ -29,6 +30,7 @@ public class BlastClient implements ClientModInitializer {
         EntityRendererRegistry.INSTANCE.register(BlastEntities.NAVAL_MINE, (manager, context) -> new FlyingItemEntityRenderer(manager, context.getItemRenderer()));
         EntityRendererRegistry.INSTANCE.register(BlastEntities.PULVERIS, (manager, context) -> new FlyingItemEntityRenderer(manager, context.getItemRenderer()));
         EntityRendererRegistry.INSTANCE.register(BlastEntities.GUNPOWDER_BLOCK, (manager, context) -> new GunpowderBlockEntityRenderer(manager));
+        EntityRendererRegistry.INSTANCE.register(BlastEntities.STRIPMINER, (manager, context) -> new StripminerEntityRenderer(manager));
 
         ClientSidePacketRegistry.INSTANCE.register(Packets.SPAWN, EntityDispatcher::spawnFrom);
 

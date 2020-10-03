@@ -9,23 +9,26 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Packet;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-public class GunpowderBlockEntity extends TntEntity {
-    public static final int INITIAL_FUSE = 1;
+public class StripminerEntity extends TntEntity {
+    public static final int INITIAL_FUSE = 80;
     private static final TrackedData<Integer> FUSE;
+    private static final TrackedData<Direction> FACING;
     private LivingEntity causingEntity;
     private int fuseTimer;
 
-    public GunpowderBlockEntity(EntityType<? extends TntEntity> entityType, World world) {
+    public StripminerEntity(EntityType<? extends TntEntity> entityType, World world) {
         super(entityType, world);
         this.fuseTimer = INITIAL_FUSE;
         this.inanimate = true;
     }
 
-    public GunpowderBlockEntity(World world, double x, double y, double z, LivingEntity igniter) {
-        this(BlastEntities.GUNPOWDER_BLOCK, world);
+    public StripminerEntity(World world, double x, double y, double z, LivingEntity igniter) {
+        this(BlastEntities.STRIPMINER, world);
         this.updatePosition(x, y, z);
         this.setFuse(INITIAL_FUSE);
         this.prevX = x;
@@ -118,6 +121,7 @@ public class GunpowderBlockEntity extends TntEntity {
     }
 
     static {
-        FUSE = DataTracker.registerData(GunpowderBlockEntity.class, TrackedDataHandlerRegistry.INTEGER);
+        FUSE = DataTracker.registerData(StripminerEntity.class, TrackedDataHandlerRegistry.INTEGER);
+        FACING = DataTracker.registerData(StripminerEntity.class, TrackedDataHandlerRegistry.FACING);
     }
 }
