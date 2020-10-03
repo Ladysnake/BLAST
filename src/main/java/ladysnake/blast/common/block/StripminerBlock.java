@@ -148,7 +148,11 @@ public class StripminerBlock extends Block {
     }
 
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return (BlockState)this.getDefaultState().with(FACING, ctx.getPlayerLookDirection());
+        if (ctx.getPlayer() != null && ctx.getPlayer().isSneaking()) {
+            return (BlockState) this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
+        } else {
+            return (BlockState) this.getDefaultState().with(FACING, ctx.getPlayerLookDirection());
+        }
     }
 
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
