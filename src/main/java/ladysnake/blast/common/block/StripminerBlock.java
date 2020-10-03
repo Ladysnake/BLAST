@@ -9,6 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -18,16 +19,18 @@ import net.minecraft.util.BlockRotation;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 import java.util.Random;
 
-public class ExplosiveBarrelBlock extends Block {
+public class StripminerBlock extends Block {
     public static final DirectionProperty FACING = Properties.FACING;
+    protected static final VoxelShape SHAPE;
 
-    public ExplosiveBarrelBlock(AbstractBlock.Settings settings) {
+    public StripminerBlock(AbstractBlock.Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
@@ -55,10 +58,6 @@ public class ExplosiveBarrelBlock extends Block {
 
     public BlockEntity createBlockEntity(BlockView world) {
         return new ExplosiveBarrelBlockEntity();
-    }
-
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
     }
 
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
@@ -97,48 +96,43 @@ public class ExplosiveBarrelBlock extends Block {
     }
 
     public void explode(World world, BlockPos pos) {
-        if (!world.isClient) {
-            // test for a blast resistant block behind the barrel
-            int x = 0;
-            int y = 0;
-            int z = 0;
-            switch (world.getBlockState(pos).get(FACING)) {
-                case DOWN:
-                    y = 1;
-                    break;
-                case UP:
-                    y = -1;
-                    break;
-                case NORTH:
-                    z = 1;
-                    break;
-                case SOUTH:
-                    z = -1;
-                    break;
-                case WEST:
-                    x = 1;
-                    break;
-                case EAST:
-                    x = -1;
-                    break;
-            }
+        // test for a blast resistant block behind the barrel
+        int x = 0;
+        int y = 0;
+        int z = 0;
+        switch (world.getBlockState(pos).get(FACING)) {
+            case DOWN:
+                y = 1;
+                break;
+            case UP:
+                y = -1;
+                break;
+            case NORTH:
+                z = 1;
+                break;
+            case SOUTH:
+                z = -1;
+                break;
+            case WEST:
+                x = 1;
+                break;
+            case EAST:
+                x = -1;
+                break;
+        }
 
-            world.removeBlock(pos, false);
-
-            for (int i = 1; i <= 8; i++) {
-                BlockPos bp = new BlockPos(pos.getX() + (-x) * (i * 3), pos.getY() + (-y) * (i * 3), pos.getZ() + (-z) * (i * 3));
-                if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                    world.breakBlock(bp, true);
-                    CustomExplosion explosion = new CustomExplosion(world, null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.BREAK);
-                    for (int j = 0; j < 2; j++) {
-                        explosion.collectBlocksAndDamageEntities();
-                        explosion.affectWorld(true);
-                    }
-                } else {
-                    break;
-                }
+        for (int i = -1; i <= 24; i++) {
+            BlockPos bp = new BlockPos(pos.getX() + (-x) * (i), pos.getY() + (-y) * (i), pos.getZ() + (-z) * (i));
+            if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
+                CustomExplosion explosion = new CustomExplosion(world, null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.BREAK);
+                explosion.collectBlocksAndDamageEntities();
+                explosion.affectWorld(true);
+            } else {
+                break;
             }
         }
+
+        world.removeBlock(pos, false);
     }
 
     public BlockState rotate(BlockState state, BlockRotation rotation) {
@@ -154,7 +148,22 @@ public class ExplosiveBarrelBlock extends Block {
     }
 
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return (BlockState)this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
+        return (BlockState)this.getDefaultState().with(FACING, ctx.getPlayerLookDirection());
     }
 
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return SHAPE;
+    }
+
+    public boolean hasSidedTransparency(BlockState state) {
+        return true;
+    }
+
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
+    static {
+        SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
+    }
 }

@@ -1,30 +1,31 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
+	"particle": "blast:block/stripminer",
 	"textures": {
-		"0": "blast:block/explosive_barrel",
-		"saw": "block/stonecutter_saw"
+		"0": "blast:block/stripminer",
+		"1_saw": "minecraft:block/stonecutter_saw"
 	},
 	"elements": [
 		{
 			"from": [0, 0, 0],
-			"to": [16, 16, 16],
+			"to": [16, 12, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4, 8]},
 			"faces": {
-				"north": {"uv": [0, 0, 8, 8], "texture": "#0"},
-				"east": {"uv": [0, 0, 8, 8], "texture": "#0"},
-				"south": {"uv": [0, 0, 8, 8], "texture": "#0"},
-				"west": {"uv": [0, 0, 8, 8], "texture": "#0"},
+				"north": {"uv": [0, 0, 8, 6], "texture": "#0"},
+				"east": {"uv": [0, 0, 8, 6], "texture": "#0"},
+				"south": {"uv": [0, 0, 8, 6], "texture": "#0"},
+				"west": {"uv": [0, 0, 8, 6], "texture": "#0"},
 				"up": {"uv": [8, 0, 16, 8], "texture": "#0"},
 				"down": {"uv": [0, 8, 8, 16], "texture": "#0"}
 			}
 		},
 		{
-			"from": [1, 16, 8],
-			"to": [15, 23, 8],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 15, 8]},
+			"from": [1, 9, 8],
+			"to": [15, 16, 8],
 			"faces": {
-				"north": {"uv": [1, 9, 15, 16], "texture": "#saw", "tintindex": 0},
-				"south": {"uv": [1, 9, 15, 16], "texture": "#saw", "tintindex": 0}
+				"north": {"uv": [1, 9, 15, 16], "texture": "#1_saw", "tintindex": 0},
+				"south": {"uv": [1, 9, 15, 16], "texture": "#1_saw", "tintindex": 0}
 			}
 		}
 	],

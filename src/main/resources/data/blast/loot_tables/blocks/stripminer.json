@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "blast:explosive_barrel"
+          "name": "blast:stripminer"
         }
       ],
       "conditions": [

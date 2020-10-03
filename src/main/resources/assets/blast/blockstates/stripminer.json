@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=down": { "model": "blast:block/stripminer", "x": 180 },
+        "facing=up": { "model": "blast:block/stripminer" },
+        "facing=north": { "model": "blast:block/stripminer", "x": 90 },
+        "facing=south": { "model": "blast:block/stripminer", "x": 90, "y": 180 },
+        "facing=west": { "model": "blast:block/stripminer", "x": 90, "y": 270 },
+        "facing=east": { "model": "blast:block/stripminer", "x": 90, "y": 90 }
+    }
+}
