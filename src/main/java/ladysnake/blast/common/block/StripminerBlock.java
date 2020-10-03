@@ -2,27 +2,31 @@ package ladysnake.blast.common.block;
 
 import ladysnake.blast.common.entities.StripminerEntity;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BarrelBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.TntEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.item.Items;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-import java.util.Random;
+import java.util.function.Consumer;
 
 public class StripminerBlock extends Block {
     public static final DirectionProperty FACING = Properties.FACING;
@@ -32,69 +36,83 @@ public class StripminerBlock extends Block {
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
 
-    @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-        super.neighborUpdate(state, world, pos, block, fromPos, notify);
-        if (world.getBlockState(fromPos).getBlock() == Blocks.FIRE) {
-            explode(world, pos);
-        }
-    }
-
-    @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        super.onBlockAdded(state, world, pos, oldState, notify);
-        if (world.getBlockState(pos.add(-1, 0, 0)).getMaterial() == Material.FIRE ||
-                world.getBlockState(pos.add(1, 0, 0)).getMaterial() == Material.FIRE ||
-                world.getBlockState(pos.add(0, -1, 0)).getMaterial() == Material.FIRE ||
-                world.getBlockState(pos.add(0, 1, 0)).getMaterial() == Material.FIRE ||
-                world.getBlockState(pos.add(0, 0, -1)).getMaterial() == Material.FIRE ||
-                world.getBlockState(pos.add(0, 0, 1)).getMaterial() == Material.FIRE) {
-            explode(world, pos);
+        if (!oldState.isOf(state.getBlock())) {
+            if (world.isReceivingRedstonePower(pos)) {
+                primeStripminer(world, pos);
+                world.removeBlock(pos, false);
+            }
+
         }
     }
 
-    public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
-        if (itemStack.hasCustomName()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof BarrelBlockEntity) {
-                ((BarrelBlockEntity)blockEntity).setCustomName(itemStack.getName());
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+        if (world.isReceivingRedstonePower(pos)) {
+            primeStripminer(world, pos);
+            world.removeBlock(pos, false);
+        }
+
+    }
+
+    public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
+        if (!world.isClient) {
+            StripminerEntity stripminerEntity = new StripminerEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, explosion.getCausingEntity(), world.getBlockState(pos).get(FACING));
+            stripminerEntity.setFuse((short)(world.random.nextInt(stripminerEntity.getFuseTimer() / 4) + stripminerEntity.getFuseTimer() / 8));
+            world.spawnEntity(stripminerEntity);
+        }
+    }
+
+    public static void primeStripminer(World world, BlockPos pos) {
+        primeStripminer(world, pos, (LivingEntity)null);
+    }
+
+    private static void primeStripminer(World world, BlockPos pos, LivingEntity igniter) {
+        if (!world.isClient) {
+            StripminerEntity stripminerEntity = new StripminerEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter, world.getBlockState(pos).get(FACING));
+            world.spawnEntity(stripminerEntity);
+            world.playSound((PlayerEntity)null, stripminerEntity.getX(), stripminerEntity.getY(), stripminerEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        }
+    }
+
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        ItemStack itemStack = player.getStackInHand(hand);
+        Item item = itemStack.getItem();
+        if (item != Items.FLINT_AND_STEEL && item != Items.FIRE_CHARGE) {
+            return super.onUse(state, world, pos, player, hand, hit);
+        } else {
+            primeStripminer(world, pos, player);
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+            if (!player.isCreative()) {
+                if (item == Items.FLINT_AND_STEEL) {
+                    itemStack.damage(1, (LivingEntity)player, (Consumer)((playerEntity) -> {
+                        ((PlayerEntity) playerEntity).sendToolBreakStatus(hand);
+                    }));
+                } else {
+                    itemStack.decrement(1);
+                }
+            }
+
+            return ActionResult.success(world.isClient);
+        }
+    }
+
+    public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
+        if (!world.isClient) {
+            Entity entity = projectile.getOwner();
+            if (projectile.isOnFire()) {
+                BlockPos blockPos = hit.getBlockPos();
+                primeStripminer(world, blockPos, entity instanceof LivingEntity ? (LivingEntity)entity : null);
+                world.removeBlock(blockPos, false);
             }
         }
 
-    }
-
-    @Override
-    public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
-        if (!world.isClient()) {
-            world.getBlockTickScheduler().schedule(pos, this, 1);
-        }
-    }
-
-    @Override
-    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        explode(world, pos);
     }
 
     public boolean shouldDropItemsOnExplosion(Explosion explosion) {
         return false;
     }
 
-    public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
-        if (!world.isClient) {
-            if (projectile.isOnFire()) {
-                BlockPos blockPos = hit.getBlockPos();
-                explode(world, blockPos);
-            }
-        }
-    }
-
-    public void explode(World world, BlockPos pos) {
-        if (!world.isClient) {
-            StripminerEntity stripminerEntity = new StripminerEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, null, world.getBlockState(pos).get(FACING));
-            world.spawnEntity(stripminerEntity);
-        }
-
-        world.removeBlock(pos, false);
+    public void explode(World world, BlockPos pos, LivingEntity igniter) {
 //        // test for a blast resistant block behind the barrel
 //        int x = 0;
 //        int y = 0;

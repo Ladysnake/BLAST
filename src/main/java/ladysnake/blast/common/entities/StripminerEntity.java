@@ -22,7 +22,7 @@ public class StripminerEntity extends TntEntity {
     private int fuseTimer;
     private Direction facing;
 
-    public StripminerEntity(EntityType<? extends TntEntity> entityType, World world) {
+    public StripminerEntity(EntityType<? extends StripminerEntity> entityType, World world) {
         super(entityType, world);
         this.fuseTimer = INITIAL_FUSE;
         this.inanimate = true;
