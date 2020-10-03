@@ -26,7 +26,6 @@ import java.util.Random;
 
 public class StripminerBlock extends Block {
     public static final DirectionProperty FACING = Properties.FACING;
-    protected static final VoxelShape SHAPE;
 
     public StripminerBlock(AbstractBlock.Settings settings) {
         super(settings);
@@ -90,7 +89,6 @@ public class StripminerBlock extends Block {
     }
 
     public void explode(World world, BlockPos pos) {
-
         if (!world.isClient) {
             StripminerEntity stripminerEntity = new StripminerEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, null, world.getBlockState(pos).get(FACING));
             world.spawnEntity(stripminerEntity);
@@ -157,19 +155,11 @@ public class StripminerBlock extends Block {
         }
     }
 
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return SHAPE;
-    }
-
     public boolean hasSidedTransparency(BlockState state) {
         return true;
     }
 
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
-    }
-
-    static {
-        SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
     }
 }
