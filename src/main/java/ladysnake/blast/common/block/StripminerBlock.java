@@ -26,6 +26,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
 public class StripminerBlock extends Block {
@@ -56,7 +57,29 @@ public class StripminerBlock extends Block {
 
     public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
         if (!world.isClient) {
-            StripminerEntity stripminerEntity = new StripminerEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, explosion.getCausingEntity(), world.getBlockState(pos).get(FACING));
+            Direction randomDirection = Direction.NORTH;
+            switch (ThreadLocalRandom.current().nextInt(0, 6)) {
+                case 0:
+                    randomDirection = Direction.UP;
+                    break;
+                case 1:
+                    randomDirection = Direction.DOWN;
+                    break;
+                case 2:
+                    randomDirection = Direction.NORTH;
+                    break;
+                case 3:
+                    randomDirection = Direction.SOUTH;
+                    break;
+                case 4:
+                    randomDirection = Direction.EAST;
+                    break;
+                case 5:
+                    randomDirection = Direction.WEST;
+                    break;
+            }
+
+            StripminerEntity stripminerEntity = new StripminerEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, explosion.getCausingEntity(), randomDirection);
             stripminerEntity.setFuse((short)(world.random.nextInt(stripminerEntity.getFuseTimer() / 4) + stripminerEntity.getFuseTimer() / 8));
             world.spawnEntity(stripminerEntity);
         }
