@@ -101,7 +101,6 @@ public class BombEntity extends ThrownItemEntity {
         IMPACT
     }
 
-
     public void setFuse(int int_1) {
         this.dataTracker.set(FUSE, int_1);
         this.fuseTimer = int_1;

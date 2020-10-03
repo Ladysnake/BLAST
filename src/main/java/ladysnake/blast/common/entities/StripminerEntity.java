@@ -2,6 +2,7 @@ package ladysnake.blast.common.entities;
 
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.network.Packets;
+import ladysnake.blast.common.world.CustomExplosion;
 import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -10,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Packet;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
@@ -80,8 +82,41 @@ public class StripminerEntity extends TntEntity {
     }
 
     private void explode() {
-        float f = 4.0F;
-        this.world.createExplosion(this, this.getX(), this.getBodyY(0.0625D), this.getZ(), 4.0F, true, Explosion.DestructionType.BREAK);
+        // test for a blast resistant block behind the barrel
+        int x = 0;
+        int y = 0;
+        int z = 0;
+        switch (this.getFacing()) {
+            case DOWN:
+                y = 1;
+                break;
+            case UP:
+                y = -1;
+                break;
+            case NORTH:
+                z = 1;
+                break;
+            case SOUTH:
+                z = -1;
+                break;
+            case WEST:
+                x = 1;
+                break;
+            case EAST:
+                x = -1;
+                break;
+        }
+
+        for (int i = 0; i <= 24; i++) {
+            BlockPos bp = new BlockPos(this.getPos().getX() + (-x) * (i), this.getPos().getY() + (-y) * (i), this.getPos().getZ() + (-z) * (i));
+            if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
+                CustomExplosion explosion = new CustomExplosion(world, null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.BREAK);
+                explosion.collectBlocksAndDamageEntities();
+                explosion.affectWorld(true);
+            } else {
+                break;
+            }
+        }
     }
 
     protected void writeCustomDataToTag(CompoundTag tag) {

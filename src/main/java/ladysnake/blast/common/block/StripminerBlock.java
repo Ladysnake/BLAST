@@ -135,47 +135,6 @@ public class StripminerBlock extends Block {
         return false;
     }
 
-    public void explode(World world, BlockPos pos, LivingEntity igniter) {
-//        // test for a blast resistant block behind the barrel
-//        int x = 0;
-//        int y = 0;
-//        int z = 0;
-//        switch (world.getBlockState(pos).get(FACING)) {
-//            case DOWN:
-//                y = 1;
-//                break;
-//            case UP:
-//                y = -1;
-//                break;
-//            case NORTH:
-//                z = 1;
-//                break;
-//            case SOUTH:
-//                z = -1;
-//                break;
-//            case WEST:
-//                x = 1;
-//                break;
-//            case EAST:
-//                x = -1;
-//                break;
-//        }
-//
-//        world.removeBlock(pos, false);
-//
-//        for (int i = 0; i <= 24; i++) {
-//            BlockPos bp = new BlockPos(pos.getX() + (-x) * (i), pos.getY() + (-y) * (i), pos.getZ() + (-z) * (i));
-//            if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-//                CustomExplosion explosion = new CustomExplosion(world, null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.BREAK);
-//                explosion.collectBlocksAndDamageEntities();
-//                explosion.affectWorld(true);
-//            } else {
-//                break;
-//            }
-//        }
-
-    }
-
     public BlockState rotate(BlockState state, BlockRotation rotation) {
         return (BlockState)state.with(FACING, rotation.rotate((Direction)state.get(FACING)));
     }
