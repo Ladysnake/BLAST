@@ -5,10 +5,12 @@
 
 package ladysnake.blast.client.renderers;
 
+import ladysnake.blast.common.block.StripminerBlock;
 import ladysnake.blast.common.entities.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -17,6 +19,7 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 
 @Environment(EnvType.CLIENT)
@@ -41,7 +44,9 @@ public class StripminerEntityRenderer extends EntityRenderer<StripminerEntity> {
         matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-90.0F));
         matrixStack.translate(-0.5D, -0.5D, 0.5D);
         matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
-        TntMinecartEntityRenderer.renderFlashingBlock(BlastBlocks.STRIPMINER.getDefaultState(), matrixStack, vertexConsumerProvider, i, stripminerEntity.getFuseTimer() / 5 % 2 == 0);
+
+        BlockState stripminerState = BlastBlocks.STRIPMINER.getDefaultState().with(StripminerBlock.FACING, stripminerEntity.getFacing());
+        TntMinecartEntityRenderer.renderFlashingBlock(stripminerState, matrixStack, vertexConsumerProvider, i, stripminerEntity.getFuseTimer() / 5 % 2 == 0);
         matrixStack.pop();
         super.render(stripminerEntity, f, g, matrixStack, vertexConsumerProvider, i);
     }

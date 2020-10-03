@@ -20,17 +20,20 @@ public class StripminerEntity extends TntEntity {
     private static final TrackedData<Direction> FACING;
     private LivingEntity causingEntity;
     private int fuseTimer;
+    private Direction facing;
 
     public StripminerEntity(EntityType<? extends TntEntity> entityType, World world) {
         super(entityType, world);
         this.fuseTimer = INITIAL_FUSE;
         this.inanimate = true;
+        this.setFacing(Direction.NORTH);
     }
 
-    public StripminerEntity(World world, double x, double y, double z, LivingEntity igniter) {
+    public StripminerEntity(World world, double x, double y, double z, LivingEntity igniter, Direction facing) {
         this(BlastEntities.STRIPMINER, world);
         this.updatePosition(x, y, z);
         this.setFuse(INITIAL_FUSE);
+        this.setFacing(facing);
         this.prevX = x;
         this.prevY = y;
         this.prevZ = z;
@@ -39,6 +42,7 @@ public class StripminerEntity extends TntEntity {
 
     protected void initDataTracker() {
         this.dataTracker.startTracking(FUSE, INITIAL_FUSE);
+        this.dataTracker.startTracking(FACING, this.facing);
     }
 
     protected boolean canClimb() {
@@ -101,14 +105,26 @@ public class StripminerEntity extends TntEntity {
         this.fuseTimer = fuse;
     }
 
+    public int getFuse() {
+        return this.dataTracker.get(FUSE);
+    }
+
+    public Direction getFacing() {
+        return this.dataTracker.get(FACING);
+    }
+
+    public void setFacing(Direction facing) {
+        this.dataTracker.set(FACING, facing);
+        this.facing = facing;
+    }
+
     public void onTrackedDataSet(TrackedData<?> data) {
         if (FUSE.equals(data)) {
             this.fuseTimer = this.getFuse();
         }
-    }
-
-    public int getFuse() {
-        return (Integer)this.dataTracker.get(FUSE);
+        if (FACING.equals(data)) {
+            this.facing = this.getFacing();
+        }
     }
 
     public int getFuseTimer() {

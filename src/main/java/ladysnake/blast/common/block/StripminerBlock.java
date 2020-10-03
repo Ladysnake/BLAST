@@ -90,12 +90,13 @@ public class StripminerBlock extends Block {
     }
 
     public void explode(World world, BlockPos pos) {
-        world.removeBlock(pos, false);
 
         if (!world.isClient) {
-            StripminerEntity stripminerEntity = new StripminerEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, null);
+            StripminerEntity stripminerEntity = new StripminerEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, null, world.getBlockState(pos).get(FACING));
             world.spawnEntity(stripminerEntity);
         }
+
+        world.removeBlock(pos, false);
 //        // test for a blast resistant block behind the barrel
 //        int x = 0;
 //        int y = 0;
