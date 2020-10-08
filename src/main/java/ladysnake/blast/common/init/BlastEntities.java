@@ -18,8 +18,8 @@ public class BlastEntities {
     public static EntityType<BombEntity> PULVERIS;
     public static EntityType<BombEntity> NAVAL_MINE;
 
-    public static EntityType<GunpowderBlockEntity> GUNPOWDER_BLOCK;
-    public static EntityType<StripminerEntity> STRIPMINER;
+    public static EntityType<BombEntity> GUNPOWDER_BLOCK;
+    public static EntityType<BombEntity> STRIPMINER;
 
     public static void init() {
         BOMB = Registry.register(Registry.ENTITY_TYPE, MODID + ":bomb", FabricEntityTypeBuilder.<BombEntity>create(SpawnGroup.MISC, BombEntity::new).size(EntityDimensions.changing(0.25f, 0.25f)).trackable(64, 1, true).build());
@@ -28,8 +28,8 @@ public class BlastEntities {
         PULVERIS = Registry.register(Registry.ENTITY_TYPE, MODID + ":pulveris", FabricEntityTypeBuilder.<BombEntity>create(SpawnGroup.MISC, PulverisEntity::new).size(EntityDimensions.changing(0.25f, 0.25f)).trackable(64, 1, true).build());
         NAVAL_MINE = Registry.register(Registry.ENTITY_TYPE, MODID + ":naval_mine", FabricEntityTypeBuilder.<BombEntity>create(SpawnGroup.MISC, NavalMineEntity::new).size(EntityDimensions.changing(0.25f, 0.25f)).trackable(64, 1, true).build());
 
-        GUNPOWDER_BLOCK = Registry.register(Registry.ENTITY_TYPE, MODID + ":gunpowder_block", FabricEntityTypeBuilder.<GunpowderBlockEntity>create(SpawnGroup.MISC, GunpowderBlockEntity::new).trackable(64, 1, true).build());
-        STRIPMINER = Registry.register(Registry.ENTITY_TYPE, MODID + ":stripminer", FabricEntityTypeBuilder.<StripminerEntity>create(SpawnGroup.MISC, StripminerEntity::new).trackable(64, 1, true).build());
+        GUNPOWDER_BLOCK = Registry.register(Registry.ENTITY_TYPE, MODID + ":gunpowder_block", FabricEntityTypeBuilder.<BombEntity>create(SpawnGroup.MISC, GunpowderBlockEntity::new).size(EntityDimensions.changing(1f, 1f)).trackable(64, 1, true).build());
+        STRIPMINER = Registry.register(Registry.ENTITY_TYPE, MODID + ":stripminer", FabricEntityTypeBuilder.<BombEntity>create(SpawnGroup.MISC, StripminerEntity::new).size(EntityDimensions.changing(1f, 1f)).trackable(64, 1, true).build());
     }
 
 }

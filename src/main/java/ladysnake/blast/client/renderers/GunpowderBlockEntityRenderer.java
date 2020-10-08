@@ -5,6 +5,7 @@
 
 package ladysnake.blast.client.renderers;
 
+import ladysnake.blast.common.entities.BombEntity;
 import ladysnake.blast.common.entities.GunpowderBlockEntity;
 import ladysnake.blast.common.init.BlastBlocks;
 import net.fabricmc.api.EnvType;
@@ -21,13 +22,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 @Environment(EnvType.CLIENT)
-public class GunpowderBlockEntityRenderer extends EntityRenderer<GunpowderBlockEntity> {
+public class GunpowderBlockEntityRenderer extends EntityRenderer<BombEntity> {
     public GunpowderBlockEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
         super(entityRenderDispatcher);
         this.shadowRadius = 0.5F;
     }
 
-    public void render(GunpowderBlockEntity gunpowderBlockEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+    public void render(BombEntity gunpowderBlockEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         matrixStack.push();
         matrixStack.translate(0.0D, 0.5D, 0.0D);
         if ((float)gunpowderBlockEntity.getFuseTimer() - g + 1.0F < 10.0F) {
@@ -47,7 +48,7 @@ public class GunpowderBlockEntityRenderer extends EntityRenderer<GunpowderBlockE
         super.render(gunpowderBlockEntity, f, g, matrixStack, vertexConsumerProvider, i);
     }
 
-    public Identifier getTexture(GunpowderBlockEntity gunpowderBlockEntity) {
+    public Identifier getTexture(BombEntity gunpowderBlockEntity) {
         return SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE;
     }
 }

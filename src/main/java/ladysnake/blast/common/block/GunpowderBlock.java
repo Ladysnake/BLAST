@@ -1,6 +1,9 @@
 package ladysnake.blast.common.block;
 
+import ladysnake.blast.common.entities.BombEntity;
 import ladysnake.blast.common.entities.GunpowderBlockEntity;
+import ladysnake.blast.common.init.BlastEntities;
+import ladysnake.blast.common.init.BlastItems;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -110,8 +113,9 @@ public class GunpowderBlock extends FallingBlock {
         world.removeBlock(pos, false);
 
         if (!world.isClient) {
-            GunpowderBlockEntity gunpowderBlockEntity = new GunpowderBlockEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter);
-            world.spawnEntity(gunpowderBlockEntity);
+            BombEntity entity = BlastEntities.GUNPOWDER_BLOCK.create(world);
+            entity.setPos(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
+            world.spawnEntity(entity);
         }
     }
 

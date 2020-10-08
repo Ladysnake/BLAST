@@ -23,7 +23,7 @@ public class DiamondBombEntity extends BombEntity {
     }
 
     @Override
-    public CustomExplosion getExplosion() {
+    public Explosion getExplosion() {
         return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 3f, CustomExplosion.BlockBreakEffect.UNSTOPPABLE, Explosion.DestructionType.BREAK);
     }
 }

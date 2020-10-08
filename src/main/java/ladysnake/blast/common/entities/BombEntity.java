@@ -40,7 +40,7 @@ public class BombEntity extends ThrownItemEntity {
         return 4f;
     }
 
-    protected CustomExplosion getExplosion() {
+    protected Explosion getExplosion() {
         return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.BREAK);
     }
 
@@ -83,7 +83,7 @@ public class BombEntity extends ThrownItemEntity {
 
     public void explode() {
         this.remove();
-        CustomExplosion explosion = this.getExplosion();
+        Explosion explosion = this.getExplosion();
         explosion.collectBlocksAndDamageEntities();
         explosion.affectWorld(true);
     }

@@ -1,6 +1,9 @@
 package ladysnake.blast.common.block;
 
+import ladysnake.blast.common.entities.BombEntity;
 import ladysnake.blast.common.entities.StripminerEntity;
+import ladysnake.blast.common.init.BlastEntities;
+import ladysnake.blast.common.init.BlastItems;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -79,9 +82,10 @@ public class StripminerBlock extends Block {
                     break;
             }
 
-            StripminerEntity stripminerEntity = new StripminerEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, explosion.getCausingEntity(), randomDirection);
-            stripminerEntity.setFuse((short)(world.random.nextInt(stripminerEntity.getFuseTimer() / 4) + stripminerEntity.getFuseTimer() / 8));
-            world.spawnEntity(stripminerEntity);
+            StripminerEntity entity = (StripminerEntity) BlastEntities.STRIPMINER.create(world);
+            entity.setFacing(randomDirection);
+            entity.setPos(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
+            world.spawnEntity(entity);
         }
     }
 
@@ -91,9 +95,10 @@ public class StripminerBlock extends Block {
 
     private static void primeStripminer(World world, BlockPos pos, LivingEntity igniter) {
         if (!world.isClient) {
-            StripminerEntity stripminerEntity = new StripminerEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter, world.getBlockState(pos).get(FACING));
-            world.spawnEntity(stripminerEntity);
-            world.playSound((PlayerEntity)null, stripminerEntity.getX(), stripminerEntity.getY(), stripminerEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            StripminerEntity entity = (StripminerEntity) BlastEntities.STRIPMINER.create(world);
+            entity.setFacing(world.getBlockState(pos).get(FACING));
+            entity.setPos(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
+            world.spawnEntity(entity);
         }
     }
 
@@ -107,9 +112,9 @@ public class StripminerBlock extends Block {
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
             if (!player.isCreative()) {
                 if (item == Items.FLINT_AND_STEEL) {
-                    itemStack.damage(1, (LivingEntity)player, (Consumer)((playerEntity) -> {
+                    itemStack.damage(1, (LivingEntity)player, (playerEntity) -> {
                         ((PlayerEntity) playerEntity).sendToolBreakStatus(hand);
-                    }));
+                    });
                 } else {
                     itemStack.decrement(1);
                 }
