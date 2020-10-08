@@ -16,3 +16,8 @@ public class Blast implements ModInitializer {
     }
 }
 
+// TODO
+// 1. Lang entries
+// 2. Stripminer model Z fighting
+// 3. Stripminer craft
+

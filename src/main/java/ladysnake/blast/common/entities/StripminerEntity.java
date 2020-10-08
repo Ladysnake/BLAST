@@ -8,6 +8,8 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.item.Item;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -40,6 +42,7 @@ public class StripminerEntity extends BombEntity {
             } else {
                 break;
             }
+            world.playSound(null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 5.0F, 2F+this.random.nextFloat()/2f);
         }
         this.remove();
     }
