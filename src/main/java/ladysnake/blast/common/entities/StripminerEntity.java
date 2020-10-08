@@ -59,11 +59,6 @@ public class StripminerEntity extends BombEntity {
     }
 
     @Override
-    public boolean hasNoGravity() {
-        return false;
-    }
-
-    @Override
     public void tick() {
         super.tick();
         this.onGround = true;

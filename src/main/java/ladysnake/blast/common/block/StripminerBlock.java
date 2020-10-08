@@ -86,6 +86,7 @@ public class StripminerBlock extends Block {
             entity.setFacing(randomDirection);
             entity.setPos(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
             world.spawnEntity(entity);
+            world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }
 
@@ -99,6 +100,7 @@ public class StripminerBlock extends Block {
             entity.setFacing(world.getBlockState(pos).get(FACING));
             entity.setPos(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
             world.spawnEntity(entity);
+            world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }
 

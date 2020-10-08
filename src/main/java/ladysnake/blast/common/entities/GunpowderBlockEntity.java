@@ -11,7 +11,7 @@ import net.minecraft.world.explosion.Explosion;
 public class GunpowderBlockEntity extends BombEntity {
     public GunpowderBlockEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        this.setFuse(160);
+        this.setFuse(1);
     }
 
     public GunpowderBlockEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
