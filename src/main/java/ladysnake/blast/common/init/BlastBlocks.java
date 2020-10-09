@@ -22,7 +22,7 @@ public class BlastBlocks {
 
     public static void init() {
         GUNPOWDER_BLOCK = registerBlock(new GunpowderBlock(FabricBlockSettings.of(Material.AGGREGATE, MaterialColor.BLACK).strength(0.5F, 0.5f).sounds(BlockSoundGroup.SAND).breakByTool(FabricToolTags.SHOVELS).build()), "gunpowder_block", ItemGroup.BUILDING_BLOCKS);
-        STRIPMINER = registerBlock(new StripminerBlock(FabricBlockSettings.of(Material.WOOD).strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).breakByTool(FabricToolTags.AXES).nonOpaque().build()), "stripminer", ItemGroup.DECORATIONS);
+        STRIPMINER = registerBlock(new StripminerBlock(FabricBlockSettings.of(Material.WOOD).strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).breakByTool(FabricToolTags.AXES).nonOpaque().build()), "stripminer", ItemGroup.REDSTONE);
     }
 
     private static Block registerBlock(Block    block, String name, ItemGroup itemGroup) {
