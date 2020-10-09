@@ -3,8 +3,8 @@
 	"parent": "block/block",
 	"textures": {
 		"0": "blast:block/stripminer",
-		"1_saw": "block/stonecutter_saw",
-		"particle": "blast:block/stripminer"
+		"particle": "blast:block/stripminer",
+		"1_saw": "minecraft:block/stonecutter_saw"
 	},
 	"elements": [
 		{
@@ -32,9 +32,9 @@
 			}
 		},
 		{
-			"from": [16, 16, 16],
-			"to": [0, 12, 0],
-			"rotation": {"angle": 0, "axis": "y", "origin": [24, 12, 24]},
+			"from": [16.01, 16.01, 16.01],
+			"to": [0.03, 12.02, 0.03],
+			"rotation": {"angle": 0, "axis": "y", "origin": [54, 12, 24]},
 			"faces": {
 				"north": {"uv": [0, 0, 8, 2], "texture": "#0"},
 				"east": {"uv": [0, 0, 8, 2], "texture": "#0"},
