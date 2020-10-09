@@ -13,6 +13,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+import java.util.Objects;
+
 public class BombItem extends Item {
     EntityType<BombEntity> type;
 
@@ -27,7 +29,7 @@ public class BombItem extends Item {
         this.playSoundEffects(world, playerEntity);
 
         if (!world.isClient) {
-            BombEntity entity = this.type.create(world);
+            BombEntity entity = Objects.requireNonNull(this.type.create(world));
             entity.setItem(stackInHand);
             entity.setProperties(playerEntity, playerEntity.pitch, playerEntity.yaw, 0.0F, 1.5F, 1.0F);
             entity.setPos(playerEntity.getX(), playerEntity.getY() + (double)playerEntity.getStandingEyeHeight() - 0.10000000149011612D, playerEntity.getZ());
@@ -38,7 +40,7 @@ public class BombItem extends Item {
             stackInHand.decrement(1);
         }
         playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
-        return new TypedActionResult(ActionResult.SUCCESS, stackInHand);
+        return new TypedActionResult<>(ActionResult.SUCCESS, stackInHand);
     }
 
     public EntityType<BombEntity> getType() {
