@@ -1,6 +1,6 @@
 # Blast
 
-**Blast** is a Minecraft Fabric mod that allows you to scratch that itch to blow everything up. It adds multiple throwable bombs for different situations. Blast bombs will drop all lootable blocks and do not destroy dropped items; these items however are submitted to the bomb shockwaves (meaning items can go flying if you throw too many bombs into a single spot).
+**Blast** is a Minecraft Fabric mod that allows you to scratch that itch to blow everything up. It adds multiple throwable bombs and explosive blocks for different situations. Blast bombs will drop all lootable blocks and do not destroy dropped items; these items however are submitted to the bomb shockwaves (meaning items can go flying if you throw multiple bombs into a single spot).
 
 # Items
 
@@ -56,6 +56,8 @@ A heap of gunpowder that can be used as a storage block to your own risks!
 ## Stripminer
 
 A directional explosive that simplifies... well, strip-mining.
+
+- Crafting recipe: ![image-20201009132226445](README.assets/image-20201009132226445.png)
 
 - Can be triggered like a normal TNT.
 - Directional explosions!
