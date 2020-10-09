@@ -42,7 +42,7 @@ public class StripminerEntity extends BombEntity {
             } else {
                 break;
             }
-            world.playSound(null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 5.0F, 2F+this.random.nextFloat()/2f);
+            world.playSound(null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 0.025f);
         }
         this.remove();
     }
