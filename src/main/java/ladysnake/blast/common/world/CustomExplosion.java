@@ -43,7 +43,7 @@ public class CustomExplosion extends Explosion {
     private final Entity entity;
     private final float power;
     private final BlockBreakEffect effect;
-    private DamageSource damageSource;
+    private final DamageSource damageSource;
     private final List<BlockPos> affectedBlocks;
     private final Map<PlayerEntity, Vec3d> affectedPlayers;
 
@@ -76,9 +76,9 @@ public class CustomExplosion extends Explosion {
             for(k = 0; k < 16; ++k) {
                 for(l = 0; l < 16; ++l) {
                     if (j == 0 || j == 15 || k == 0 || k == 15 || l == 0 || l == 15) {
-                        double d = (double)((float)j / 15.0F * 2.0F - 1.0F);
-                        double e = (double)((float)k / 15.0F * 2.0F - 1.0F);
-                        double f = (double)((float)l / 15.0F * 2.0F - 1.0F);
+                        double d = (float)j / 15.0F * 2.0F - 1.0F;
+                        double e = (float)k / 15.0F * 2.0F - 1.0F;
+                        double f = (float)l / 15.0F * 2.0F - 1.0F;
                         double g = Math.sqrt(d * d + e * e + f * f);
                         d /= g;
                         e /= g;
@@ -126,23 +126,23 @@ public class CustomExplosion extends Explosion {
         int u = MathHelper.floor(this.y + (double)q + 1.0D);
         int v = MathHelper.floor(this.z - (double)q - 1.0D);
         int w = MathHelper.floor(this.z + (double)q + 1.0D);
-        List<Entity> list = this.world.getOtherEntities(this.entity, new Box((double)k, (double)t, (double)v, (double)l, (double)u, (double)w));
+        List<Entity> list = this.world.getOtherEntities(this.entity, new Box(k, t, v, l, u, w));
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
         for(int x = 0; x < list.size(); ++x) {
-            Entity entity = (Entity)list.get(x);
+            Entity entity = list.get(x);
             if (!entity.isImmuneToExplosion()) {
-                double y = (double)(MathHelper.sqrt(entity.squaredDistanceTo(vec3d)) / q);
+                double y = MathHelper.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;
                     double aa = (entity instanceof TntEntity ? entity.getY() : entity.getEyeY()) - this.y;
                     double ab = entity.getZ() - this.z;
-                    double ac = (double)MathHelper.sqrt(z * z + aa * aa + ab * ab);
+                    double ac = MathHelper.sqrt(z * z + aa * aa + ab * ab);
                     if (ac != 0.0D) {
                         z /= ac;
                         aa /= ac;
                         ab /= ac;
-                        double ad = (double)getExposure(vec3d, entity);
+                        double ad = getExposure(vec3d, entity);
                         double ae = (1.0D - y) * ad;
                         if (!(entity instanceof ExperienceOrbEntity || entity instanceof ItemEntity)) {
                             entity.damage(this.getDamageSource(), (float) ((int) ((ae * ae + ae) / 2.0D * 7.0D * (double) q + 1.0D)));
@@ -186,18 +186,18 @@ public class CustomExplosion extends Explosion {
                 BlockState blockState = this.world.getBlockState(blockPos);
                 Block block_1 = blockState.getBlock();
                 if (boolean_1) {
-                    double double_1 = (double)((float)blockPos.getX() + this.world.random.nextFloat());
-                    double double_2 = (double)((float)blockPos.getY() + this.world.random.nextFloat());
-                    double double_3 = (double)((float)blockPos.getZ() + this.world.random.nextFloat());
+                    double double_1 = (float)blockPos.getX() + this.world.random.nextFloat();
+                    double double_2 = (float)blockPos.getY() + this.world.random.nextFloat();
+                    double double_3 = (float)blockPos.getZ() + this.world.random.nextFloat();
                     double double_4 = double_1 - this.x;
                     double double_5 = double_2 - this.y;
                     double double_6 = double_3 - this.z;
-                    double double_7 = (double)MathHelper.sqrt(double_4 * double_4 + double_5 * double_5 + double_6 * double_6);
+                    double double_7 = MathHelper.sqrt(double_4 * double_4 + double_5 * double_5 + double_6 * double_6);
                     double_4 /= double_7;
                     double_5 /= double_7;
                     double_6 /= double_7;
                     double double_8 = 0.5D / (double_7 / (double)this.power + 0.1D);
-                    double_8 *= (double)(this.world.random.nextFloat() * this.world.random.nextFloat() + 0.3F);
+                    double_8 *= this.world.random.nextFloat() * this.world.random.nextFloat() + 0.3F;
                     double_4 *= double_8;
                     double_5 *= double_8;
                     double_6 *= double_8;
@@ -237,7 +237,7 @@ public class CustomExplosion extends Explosion {
             }
 
             for (Pair<ItemStack, BlockPos> itemStackBlockPosPair : objectArrayList) {
-                Pair<ItemStack, BlockPos> pair = (Pair) itemStackBlockPosPair;
+                Pair<ItemStack, BlockPos> pair = itemStackBlockPosPair;
                 Block.dropStack(this.world, pair.getSecond(), pair.getFirst());
             }
         }
@@ -248,8 +248,8 @@ public class CustomExplosion extends Explosion {
         int i = objectArrayList.size();
 
         for(int j = 0; j < i; ++j) {
-            Pair<ItemStack, BlockPos> pair = (Pair)objectArrayList.get(j);
-            ItemStack itemStack2 = (ItemStack)pair.getFirst();
+            Pair<ItemStack, BlockPos> pair = objectArrayList.get(j);
+            ItemStack itemStack2 = pair.getFirst();
             if (ItemEntity.canMerge(itemStack2, itemStack)) {
                     ItemStack itemStack3 = ItemEntity.merge(itemStack2, itemStack, 16);
                 objectArrayList.set(j, Pair.of(itemStack3, pair.getSecond()));

@@ -1,9 +1,11 @@
 package ladysnake.blast.common.entities;
 
+import ladysnake.blast.common.block.StripminerBlock;
+import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -16,19 +18,18 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 public class StripminerEntity extends BombEntity {
-    private static final TrackedData<Direction> FACING;
-    private LivingEntity causingEntity;
-    private Direction facing;
+    private static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, TrackedDataHandlerRegistry.FACING);
+
+    private BlockState cachedState;
 
     public StripminerEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        this.setFacing(Direction.UP);
         this.setFuse(80);
     }
 
     protected void initDataTracker() {
         super.initDataTracker();
-        this.dataTracker.startTracking(FACING, this.facing);
+        this.dataTracker.startTracking(FACING, Direction.UP);
     }
 
     @Override
@@ -51,9 +52,21 @@ public class StripminerEntity extends BombEntity {
         return this.dataTracker.get(FACING);
     }
 
+    @Override
+    public void onTrackedDataSet(TrackedData<?> trackedData) {
+        super.onTrackedDataSet(trackedData);
+
+        if (FACING.equals(trackedData)) {
+            this.cachedState = BlastBlocks.STRIPMINER.getDefaultState().with(StripminerBlock.FACING, this.getFacing());
+        }
+    }
+
+    public BlockState getState() {
+        return this.cachedState;
+    }
+
     public void setFacing(Direction facing) {
         this.dataTracker.set(FACING, facing);
-        this.facing = facing;
     }
 
     @Override
@@ -65,9 +78,5 @@ public class StripminerEntity extends BombEntity {
     public void tick() {
         super.tick();
         this.onGround = true;
-    }
-
-    static {
-        FACING = DataTracker.registerData(StripminerEntity.class, TrackedDataHandlerRegistry.FACING);
     }
 }
