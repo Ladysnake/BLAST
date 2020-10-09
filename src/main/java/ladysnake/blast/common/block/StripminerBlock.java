@@ -40,6 +40,7 @@ public class StripminerBlock extends Block {
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
 
+    @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         if (!oldState.isOf(state.getBlock())) {
             if (world.isReceivingRedstonePower(pos)) {
@@ -50,6 +51,7 @@ public class StripminerBlock extends Block {
         }
     }
 
+    @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
         if (world.isReceivingRedstonePower(pos)) {
             primeStripminer(world, pos);
@@ -58,6 +60,7 @@ public class StripminerBlock extends Block {
 
     }
 
+    @Override
     public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
         if (!world.isClient) {
             Direction randomDirection = Direction.NORTH;
@@ -91,7 +94,7 @@ public class StripminerBlock extends Block {
     }
 
     public static void primeStripminer(World world, BlockPos pos) {
-        primeStripminer(world, pos, (LivingEntity)null);
+        primeStripminer(world, pos, null);
     }
 
     private static void primeStripminer(World world, BlockPos pos, LivingEntity igniter) {
@@ -104,6 +107,7 @@ public class StripminerBlock extends Block {
         }
     }
 
+    @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack itemStack = player.getStackInHand(hand);
         Item item = itemStack.getItem();
@@ -114,8 +118,8 @@ public class StripminerBlock extends Block {
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
             if (!player.isCreative()) {
                 if (item == Items.FLINT_AND_STEEL) {
-                    itemStack.damage(1, (LivingEntity)player, (playerEntity) -> {
-                        ((PlayerEntity) playerEntity).sendToolBreakStatus(hand);
+                    itemStack.damage(1, player, (playerEntity) -> {
+                        playerEntity.sendToolBreakStatus(hand);
                     });
                 } else {
                     itemStack.decrement(1);
@@ -126,6 +130,7 @@ public class StripminerBlock extends Block {
         }
     }
 
+    @Override
     public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
         if (!world.isClient) {
             Entity entity = projectile.getOwner();
@@ -138,34 +143,41 @@ public class StripminerBlock extends Block {
 
     }
 
+    @Override
     public boolean shouldDropItemsOnExplosion(Explosion explosion) {
         return false;
     }
 
+    @Override
     public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return (BlockState)state.with(FACING, rotation.rotate((Direction)state.get(FACING)));
+        return state.with(FACING, rotation.rotate(state.get(FACING)));
     }
 
+    @Override
     public BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation((Direction)state.get(FACING)));
+        return state.rotate(mirror.getRotation(state.get(FACING)));
     }
 
+    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }
 
+    @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         if (ctx.getPlayer() != null && ctx.getPlayer().isSneaking()) {
-            return (BlockState) this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
+            return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
         } else {
-            return (BlockState) this.getDefaultState().with(FACING, ctx.getPlayerLookDirection());
+            return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection());
         }
     }
 
+    @Override
     public boolean hasSidedTransparency(BlockState state) {
         return true;
     }
 
+    @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }

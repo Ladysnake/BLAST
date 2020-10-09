@@ -1,8 +1,9 @@
 package ladysnake.blast.client;
 
 import ladysnake.blast.client.network.EntityDispatcher;
-import ladysnake.blast.client.renderers.GunpowderBlockEntityRenderer;
-import ladysnake.blast.client.renderers.StripminerEntityRenderer;
+import ladysnake.blast.client.renderers.BlastBlockEntityRenderer;
+import ladysnake.blast.common.entities.BombEntity;
+import ladysnake.blast.common.entities.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.network.Packets;
@@ -12,8 +13,13 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+
+import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
 public class BlastClient implements ClientModInitializer {
@@ -24,13 +30,15 @@ public class BlastClient implements ClientModInitializer {
     }
 
     public static void registerRenders() {
-        EntityRendererRegistry.INSTANCE.register(BlastEntities.BOMB, (manager, context) -> new FlyingItemEntityRenderer(manager, context.getItemRenderer()));
-        EntityRendererRegistry.INSTANCE.register(BlastEntities.DIAMOND_BOMB, (manager, context) -> new FlyingItemEntityRenderer(manager, context.getItemRenderer()));
-        EntityRendererRegistry.INSTANCE.register(BlastEntities.GOLDEN_BOMB, (manager, context) -> new FlyingItemEntityRenderer(manager, context.getItemRenderer()));
-        EntityRendererRegistry.INSTANCE.register(BlastEntities.NAVAL_MINE, (manager, context) -> new FlyingItemEntityRenderer(manager, context.getItemRenderer()));
-        EntityRendererRegistry.INSTANCE.register(BlastEntities.PULVERIS, (manager, context) -> new FlyingItemEntityRenderer(manager, context.getItemRenderer()));
-        EntityRendererRegistry.INSTANCE.register(BlastEntities.GUNPOWDER_BLOCK, (manager, context) -> new GunpowderBlockEntityRenderer(manager));
-        EntityRendererRegistry.INSTANCE.register(BlastEntities.STRIPMINER, (manager, context) -> new StripminerEntityRenderer(manager));
+        registerItemEntityRenders(
+                BlastEntities.BOMB,
+                BlastEntities.DIAMOND_BOMB,
+                BlastEntities.GOLDEN_BOMB,
+                BlastEntities.NAVAL_MINE,
+                BlastEntities.PULVERIS
+        );
+        registerBlockEntityRender(BlastEntities.GUNPOWDER_BLOCK, e -> BlastBlocks.GUNPOWDER_BLOCK.getDefaultState());
+        registerBlockEntityRender(BlastEntities.STRIPMINER, StripminerEntity::getState);
 
         ClientSidePacketRegistry.INSTANCE.register(Packets.SPAWN, EntityDispatcher::spawnFrom);
 
@@ -38,4 +46,17 @@ public class BlastClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.STRIPMINER, RenderLayer.getCutout());
     }
 
+    private static void registerItemEntityRenders(EntityType<?>... entityTypes) {
+        for (EntityType<?> entityType : entityTypes) {
+            registerItemEntityRender(entityType);
+        }
+    }
+
+    private static <T extends Entity> void registerItemEntityRender(EntityType<T> entityType) {
+        EntityRendererRegistry.INSTANCE.register(entityType, (manager, context) -> new FlyingItemEntityRenderer<>(manager, context.getItemRenderer()));
+    }
+
+    private static <T extends BombEntity> void registerBlockEntityRender(EntityType<T> block, Function<T, BlockState> stateGetter) {
+        EntityRendererRegistry.INSTANCE.register(block, (manager, context) -> new BlastBlockEntityRenderer<>(manager, stateGetter));
+    }
 }

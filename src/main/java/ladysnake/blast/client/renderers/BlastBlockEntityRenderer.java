@@ -5,9 +5,7 @@
 
 package ladysnake.blast.client.renderers;
 
-import ladysnake.blast.common.block.StripminerBlock;
-import ladysnake.blast.common.entities.StripminerEntity;
-import ladysnake.blast.common.init.BlastBlocks;
+import ladysnake.blast.common.entities.BombEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -19,17 +17,22 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.function.Function;
+
 @Environment(EnvType.CLIENT)
-public class StripminerEntityRenderer extends EntityRenderer<StripminerEntity> {
-    public StripminerEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
+public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRenderer<T> {
+    private final Function<T, BlockState> stateGetter;
+
+    public BlastBlockEntityRenderer(EntityRenderDispatcher entityRenderDispatcher, Function<T, BlockState> stateGetter) {
         super(entityRenderDispatcher);
+        this.stateGetter = stateGetter;
         this.shadowRadius = 0.5F;
     }
 
-    public void render(StripminerEntity stripminerEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+    @Override
+    public void render(T stripminerEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         matrixStack.push();
         matrixStack.translate(0.0D, 0.5D, 0.0D);
         if ((float)stripminerEntity.getFuseTimer() - g + 1.0F < 10.0F) {
@@ -45,13 +48,13 @@ public class StripminerEntityRenderer extends EntityRenderer<StripminerEntity> {
         matrixStack.translate(-0.5D, -0.5D, 0.5D);
         matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
 
-        BlockState stripminerState = BlastBlocks.STRIPMINER.getDefaultState().with(StripminerBlock.FACING, stripminerEntity.getFacing());
-        TntMinecartEntityRenderer.renderFlashingBlock(stripminerState, matrixStack, vertexConsumerProvider, i, stripminerEntity.getFuseTimer() / 5 % 2 == 0);
+        TntMinecartEntityRenderer.renderFlashingBlock(this.stateGetter.apply(stripminerEntity), matrixStack, vertexConsumerProvider, i, stripminerEntity.getFuseTimer() / 5 % 2 == 0);
         matrixStack.pop();
         super.render(stripminerEntity, f, g, matrixStack, vertexConsumerProvider, i);
     }
 
-    public Identifier getTexture(StripminerEntity stripminerEntity) {
+    @Override
+    public Identifier getTexture(T stripminerEntity) {
         return SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE;
     }
 }
