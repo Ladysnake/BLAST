@@ -7,8 +7,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 
-public class MineItem extends BombItem {
-    public MineItem(Settings settings, EntityType<BombEntity> entityType) {
+public class TriggerBombItem extends BombItem {
+    public TriggerBombItem(Settings settings, EntityType<BombEntity> entityType) {
         super(settings, entityType);
     }
 

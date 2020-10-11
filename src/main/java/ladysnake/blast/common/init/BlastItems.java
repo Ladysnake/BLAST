@@ -3,7 +3,7 @@ package ladysnake.blast.common.init;
 import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.entities.BombEntity;
 import ladysnake.blast.common.items.BombItem;
-import ladysnake.blast.common.items.MineItem;
+import ladysnake.blast.common.items.TriggerBombItem;
 import ladysnake.blast.common.items.PulverisItem;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
@@ -22,13 +22,19 @@ public class BlastItems {
     public static Item DIAMOND_BOMB;
     public static Item PULVERIS;
     public static Item NAVAL_MINE;
+    public static Item TRIGGER_BOMB;
+    public static Item GOLDEN_TRIGGER_BOMB;
+    public static Item DIAMOND_TRIGGER_BOMB;
 
     public static void init() {
         BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.BOMB), "bomb");
         GOLDEN_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.GOLDEN_BOMB), "golden_bomb");
         DIAMOND_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.DIAMOND_BOMB), "diamond_bomb");
         PULVERIS = registerItem(new PulverisItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.PULVERIS), "pulveris");
-        NAVAL_MINE = registerItem(new MineItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.NAVAL_MINE), "naval_mine");
+        NAVAL_MINE = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.NAVAL_MINE), "naval_mine");
+        TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.TRIGGER_BOMB), "trigger_bomb");
+        GOLDEN_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.GOLDEN_TRIGGER_BOMB), "golden_trigger_bomb");
+        DIAMOND_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.DIAMOND_TRIGGER_BOMB), "diamond_trigger_bomb");
     }
 
     public static Item registerItem(Item item, String name) {

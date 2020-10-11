@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "blast:item/boompowder"
+        "layer0": "blast:item/golden_trigger_bomb"
     }
 }
