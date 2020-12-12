@@ -35,7 +35,6 @@ public class BlastClient implements ClientModInitializer {
                 BlastEntities.GOLDEN_BOMB,
                 BlastEntities.DIAMOND_BOMB,
                 BlastEntities.NAVAL_MINE,
-                BlastEntities.PULVERIS,
                 BlastEntities.TRIGGER_BOMB,
                 BlastEntities.GOLDEN_TRIGGER_BOMB,
                 BlastEntities.DIAMOND_TRIGGER_BOMB
