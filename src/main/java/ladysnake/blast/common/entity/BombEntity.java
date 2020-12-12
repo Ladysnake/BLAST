@@ -1,4 +1,4 @@
-package ladysnake.blast.common.entities;
+package ladysnake.blast.common.entity;
 
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.network.Packets;

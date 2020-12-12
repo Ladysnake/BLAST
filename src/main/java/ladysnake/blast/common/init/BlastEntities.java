@@ -1,6 +1,6 @@
 package ladysnake.blast.common.init;
 
-import ladysnake.blast.common.entities.*;
+import ladysnake.blast.common.entity.*;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;

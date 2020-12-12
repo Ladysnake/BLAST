@@ -1,5 +1,6 @@
-package ladysnake.blast.common.entities;
+package ladysnake.blast.common.entity;
 
+import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.block.StripminerBlock;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastItems;
@@ -18,7 +19,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 public class StripminerEntity extends BombEntity {
-    private static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, TrackedDataHandlerRegistry.FACING);
+    static {
+        DataTracker.registerData(StripminerEntity.class, Blast.FACING);
+    }
+
+    private static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, Blast.FACING);
 
     private BlockState cachedState;
 

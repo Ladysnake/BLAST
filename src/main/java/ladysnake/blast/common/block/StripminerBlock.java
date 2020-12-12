@@ -1,13 +1,10 @@
 package ladysnake.blast.common.block;
 
-import ladysnake.blast.common.entities.BombEntity;
-import ladysnake.blast.common.entities.StripminerEntity;
+import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastEntities;
-import ladysnake.blast.common.init.BlastItems;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
@@ -30,10 +27,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Consumer;
 
 public class StripminerBlock extends Block {
-    public static final DirectionProperty FACING = Properties.FACING;
+    public static final DirectionProperty FACING = DirectionProperty.of("facing", Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP, Direction.DOWN);
 
     public StripminerBlock(AbstractBlock.Settings settings) {
         super(settings);

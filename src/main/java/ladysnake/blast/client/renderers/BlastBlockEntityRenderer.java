@@ -5,7 +5,7 @@
 
 package ladysnake.blast.client.renderers;
 
-import ladysnake.blast.common.entities.BombEntity;
+import ladysnake.blast.common.entity.BombEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;

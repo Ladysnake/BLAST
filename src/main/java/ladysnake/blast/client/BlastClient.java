@@ -2,8 +2,8 @@ package ladysnake.blast.client;
 
 import ladysnake.blast.client.network.EntityDispatcher;
 import ladysnake.blast.client.renderers.BlastBlockEntityRenderer;
-import ladysnake.blast.common.entities.BombEntity;
-import ladysnake.blast.common.entities.StripminerEntity;
+import ladysnake.blast.common.entity.BombEntity;
+import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.network.Packets;
