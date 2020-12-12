@@ -2,7 +2,11 @@
 
 ### BLAST 1.5 - 1.16.4
 - Added trigger bombs: bombs that explode on impact, available in iron, gold and diamond variants
-
+- Added French translation (courtesy of Lykrast)
+- Stripminers now have a random decreased fuse timer when triggered by an explosion
+- Fixed an incompatibility with Applied Energistics 2 that caused the stripminer to disappear when ignited
+- Fixed an issue that would cause a dedicated server crash upon igniting a gunpowder block
+- Removed Pulveris
 
 ### BLAST 1.4 - 1.16.3
 - Added the gunpowder block, instantly explodes when catching fire
