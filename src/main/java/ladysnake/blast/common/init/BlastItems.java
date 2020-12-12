@@ -20,7 +20,6 @@ public class BlastItems {
     public static Item BOMB;
     public static Item GOLDEN_BOMB;
     public static Item DIAMOND_BOMB;
-    public static Item PULVERIS;
     public static Item NAVAL_MINE;
     public static Item TRIGGER_BOMB;
     public static Item GOLDEN_TRIGGER_BOMB;

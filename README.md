@@ -42,6 +42,35 @@ A contact trigger explosive that can lay waste on the ocean floors.
 - Explosion power of 4.
 - Will break blocks even underwater.
 
+## Trigger Bomb
+
+A variant of the normal bomb that explodes on impact.
+
+- Combining (shapelessly) gunpowder, an iron ingot and a stone button will grant 4 of them.
+- No fuse timer, explodes on impact.
+- Explosion power of 3.
+- Will explode underwater and damage entities, but not terrain.
+
+## Golden Trigger Bomb
+
+A variant of the golden bomb that explodes on impact.
+
+- Combining (shapelessly) gunpowder, a gold ingot and a stone button will grant 4 of them.
+- No fuse timer, explodes on impact.
+- Explosion power of 3.
+- Will explode underwater and damage entities, but not terrain.
+- All destroyed blocks are dropped affected by Fortune 3.
+
+## Diamond Trigger Bomb
+
+A variant of the diamond bomb that explodes on impact.
+
+- Combining (shapelessly) gunpowder, a diamond and a stone button will grant 4 of them.
+- No fuse timer, explodes on impact.
+- Explosion power of 3.
+- Will explode underwater and damage entities, but not terrain.
+- Ignores all block explosion resistances, creating wider holes and breaking explosion-proof blocks (except bedrock).
+
 # Blocks
 
 ## Gunpowder block
