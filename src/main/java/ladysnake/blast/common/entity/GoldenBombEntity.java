@@ -23,7 +23,7 @@ public class GoldenBombEntity extends BombEntity {
     }
 
     @Override
-    protected Explosion getExplosion() {
+    protected CustomExplosion getExplosion() {
         return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 3f, CustomExplosion.BlockBreakEffect.FORTUNE, Explosion.DestructionType.BREAK);
     }
 }

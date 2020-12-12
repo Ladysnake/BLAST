@@ -1,5 +1,9 @@
 # BLAST - Changelog
 
+### BLAST 1.5 - 1.16.4
+- Added trigger bombs: bombs that explode on impact, available in iron, gold and diamond variants
+
+
 ### BLAST 1.4 - 1.16.3
 - Added the gunpowder block, instantly explodes when catching fire
 - Added the Stripminer, a directional explosive that can be triggered like a normal TNT

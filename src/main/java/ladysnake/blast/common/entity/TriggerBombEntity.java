@@ -26,7 +26,7 @@ public class TriggerBombEntity extends BombEntity {
     }
 
     @Override
-    protected Explosion getExplosion() {
+    protected CustomExplosion getExplosion() {
         return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.BREAK);
     }
 

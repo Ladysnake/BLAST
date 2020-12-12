@@ -5,10 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FluidFillable;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.ProtectionEnchantment;
@@ -242,6 +239,13 @@ public class CustomExplosion extends Explosion {
             }
         }
 
+        if (effect == BlockBreakEffect.FIERY) {
+            for (BlockPos blockPos3 : this.affectedBlocks) {
+                if (this.random.nextInt(3) == 0 && this.world.getBlockState(blockPos3).isAir() && this.world.getBlockState(blockPos3.down()).isOpaqueFullCube(this.world, blockPos3.down())) {
+                    this.world.setBlockState(blockPos3, AbstractFireBlock.getState(this.world, blockPos3));
+                }
+            }
+        }
     }
 
     private static void method_24023(ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList, ItemStack itemStack, BlockPos blockPos) {
@@ -262,11 +266,11 @@ public class CustomExplosion extends Explosion {
         objectArrayList.add(Pair.of(itemStack, blockPos));
     }
 
-
     public enum BlockBreakEffect {
         FORTUNE,
         UNSTOPPABLE,
-        AQUATIC
+        AQUATIC,
+        FIERY
     }
 
 }

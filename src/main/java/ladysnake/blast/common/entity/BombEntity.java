@@ -13,10 +13,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Packet;
+import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
+
+import java.util.Iterator;
 
 public class BombEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(TntEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -40,7 +45,7 @@ public class BombEntity extends ThrownItemEntity {
         return 4f;
     }
 
-    protected Explosion getExplosion() {
+    protected CustomExplosion getExplosion() {
         return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.BREAK);
     }
 
@@ -83,9 +88,18 @@ public class BombEntity extends ThrownItemEntity {
 
     public void explode() {
         this.remove();
-        Explosion explosion = this.getExplosion();
+        CustomExplosion explosion = this.getExplosion();
         explosion.collectBlocksAndDamageEntities();
         explosion.affectWorld(true);
+
+        if (!this.world.isClient()) {
+            for (net.minecraft.entity.player.PlayerEntity playerEntity : this.world.getPlayers()) {
+                ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
+                if (serverPlayerEntity.squaredDistanceTo(this.getX(), this.getY(), this.getZ()) < 4096.0D) {
+                    serverPlayerEntity.networkHandler.sendPacket(new ExplosionS2CPacket(this.getX(), this.getY(), this.getZ(), explosion.getPower(), explosion.getAffectedBlocks(), (Vec3d) explosion.getAffectedPlayers().get(serverPlayerEntity)));
+                }
+            }
+        }
     }
 
     public boolean disableInLiquid() {
