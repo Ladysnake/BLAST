@@ -2,8 +2,10 @@
   "item.blast.bomb": "Bombe",
   "item.blast.golden_bomb": "Bombe en or",
   "item.blast.diamond_bomb": "Bombe en diamant",
-  "item.blast.pulveris": "Pulveris",
   "item.blast.naval_mine": "Mine navale",
+  "item.blast.trigger_bomb": "Bombe à détente",
+  "item.blast.golden_trigger_bomb": "Bombe à détente en or",
+  "item.blast.diamond_trigger_bomb": "Bombe à détente en diamant",
   "block.blast.gunpowder_block": "Bloc de poudre à canon",
   "block.blast.stripminer": "Lamineur"
 }

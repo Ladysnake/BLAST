@@ -14,7 +14,6 @@ public class BlastEntities {
     public static EntityType<BombEntity> BOMB;
     public static EntityType<BombEntity> GOLDEN_BOMB;
     public static EntityType<BombEntity> DIAMOND_BOMB;
-    public static EntityType<BombEntity> PULVERIS;
     public static EntityType<BombEntity> NAVAL_MINE;
     public static EntityType<BombEntity> TRIGGER_BOMB;
     public static EntityType<BombEntity> GOLDEN_TRIGGER_BOMB;
@@ -28,7 +27,6 @@ public class BlastEntities {
         BOMB = register("bomb", createBombEntityType(BombEntity::new));
         GOLDEN_BOMB = register("golden_bomb", createBombEntityType(GoldenBombEntity::new));
         DIAMOND_BOMB = register("diamond_bomb", createBombEntityType(DiamondBombEntity::new));
-        PULVERIS = register("pulveris", createBombEntityType(PulverisEntity::new));
         NAVAL_MINE = register("naval_mine", createBombEntityType(NavalMineEntity::new));
         TRIGGER_BOMB = register("trigger_bomb", createBombEntityType(TriggerBombEntity::new));
         GOLDEN_TRIGGER_BOMB = register("golden_trigger_bomb", createBombEntityType(GoldenTriggerBombEntity::new));
