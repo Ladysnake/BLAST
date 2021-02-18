@@ -9,7 +9,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -67,6 +66,9 @@ public class StripminerEntity extends BombEntity {
     }
 
     public BlockState getState() {
+        if(this.cachedState == null) {
+            this.cachedState = BlastBlocks.STRIPMINER.getDefaultState().with(StripminerBlock.FACING, this.getFacing());
+        }
         return this.cachedState;
     }
 
