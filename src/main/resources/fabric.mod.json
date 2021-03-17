@@ -12,7 +12,7 @@
     "sources": "https://github.com/Ladysnake/Blast"
   },
 
-  "license": "ARR",
+  "license": "Code: GNU GPLv3; Art: ARR",
   "icon": "assets/blast/icon.png",
 
   "environment": "*",

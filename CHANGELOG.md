@@ -1,5 +1,9 @@
 # BLAST - Changelog
 
+### BLAST 1.5.1 - 1.16.4
+- Diamond bombs no longer destroy undestroyable blocks like command blocks, barriers or end portal frames
+- Fixed an issue that caused stripminers to disappear and drop a bomb when submerged in water
+
 ### BLAST 1.5 - 1.16.4
 - Added trigger bombs: bombs that explode on impact, available in iron, gold and diamond variants
 - Added French translation (courtesy of Lykrast)
