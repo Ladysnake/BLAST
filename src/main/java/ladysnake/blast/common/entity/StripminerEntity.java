@@ -86,4 +86,9 @@ public class StripminerEntity extends BombEntity {
         super.tick();
         this.onGround = true;
     }
+
+    @Override
+    public boolean disableInLiquid() {
+        return false;
+    }
 }
