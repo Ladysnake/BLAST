@@ -91,7 +91,7 @@ public class CustomExplosion extends Explosion {
                             FluidState fluidState = this.world.getFluidState(blockPos);
                             if (!blockState.isAir() || !fluidState.isEmpty()) {
                                 float br = Math.max(blockState.getBlock().getBlastResistance(), fluidState.getBlastResistance());
-                                if ((this.effect == BlockBreakEffect.AQUATIC && !fluidState.isEmpty()) || (this.effect == BlockBreakEffect.UNSTOPPABLE && fluidState.isEmpty())) {
+                                if ((this.effect == BlockBreakEffect.AQUATIC && !fluidState.isEmpty()) || (this.effect == BlockBreakEffect.UNSTOPPABLE && fluidState.isEmpty() && blockState.getHardness(this.world, blockPos) >= 0)) {
                                     br = 0;
                                 }
                                 if (this.entity != null) {
