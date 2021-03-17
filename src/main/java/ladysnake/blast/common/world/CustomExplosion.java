@@ -102,7 +102,7 @@ public class CustomExplosion extends Explosion {
                             }
 
 
-                            if (h > 0.0F && (this.entity == null || this.entity.canExplosionDestroyBlock(this, this.world, blockPos, blockState, h)) && blockState.getBlock() != Blocks.BEDROCK) {
+                            if (h > 0.0F && (this.entity == null || this.entity.canExplosionDestroyBlock(this, this.world, blockPos, blockState, h))) {
                                 set.add(blockPos);
                             }
 
