@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "PCP",
-    "IGI",
+    "PGP",
     "PSP"
   ],
   "key": {
@@ -11,9 +11,6 @@
     },
     "S": {
       "tag": "minecraft:wooden_slabs"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
     },
     "G": {
       "item": "blast:gunpowder_block"

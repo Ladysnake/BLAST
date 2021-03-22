@@ -1,6 +1,9 @@
 # BLAST - Changelog
 
-### BLAST 1.5.1 - 1.16.4
+### BLAST 1.5.2 - 1.16.5
+- Tweaked the Stripminer recipe to be more in line with the other recipes of the mod
+
+### BLAST 1.5.1 - 1.16.5
 - Diamond bombs no longer destroy undestroyable blocks like command blocks, barriers or end portal frames
 - Fixed an issue that caused stripminers to disappear and drop a bomb when submerged in water
 
