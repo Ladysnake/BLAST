@@ -7,5 +7,7 @@
   "item.blast.golden_trigger_bomb": "Golden Trigger Bomb",
   "item.blast.diamond_trigger_bomb": "Diamond Trigger Bomb",
   "block.blast.gunpowder_block": "Gunpowder Block",
-  "block.blast.stripminer": "Stripminer"
+  "block.blast.stripminer": "Stripminer",
+  "block.blast.cold_digger": "Cold Digger",
+  "block.blast.dry_ice": "Dry Ice"
 }

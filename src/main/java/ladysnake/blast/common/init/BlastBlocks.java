@@ -30,7 +30,7 @@ public class BlastBlocks {
         GUNPOWDER_BLOCK = registerBlock(new GunpowderBlock(FabricBlockSettings.of(Material.AGGREGATE, MaterialColor.BLACK).strength(0.5F, 0.5f).sounds(BlockSoundGroup.SAND).breakByTool(FabricToolTags.SHOVELS)), "gunpowder_block", ItemGroup.BUILDING_BLOCKS);
         STRIPMINER = registerBlock(new StripminerBlock(FabricBlockSettings.of(Material.WOOD).strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).breakByTool(FabricToolTags.AXES).nonOpaque(), BlastEntities.STRIPMINER), "stripminer", ItemGroup.REDSTONE);
         COLD_DIGGER = registerBlock(new StripminerBlock(FabricBlockSettings.of(Material.WOOD).strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).breakByTool(FabricToolTags.AXES).nonOpaque(), BlastEntities.COLD_DIGGER), "cold_digger", ItemGroup.REDSTONE);
-        DRY_ICE = registerBlock(new DryIceBlock(FabricBlockSettings.of(Material.ICE).slipperiness(0.98F).strength(0.5F).sounds(BlockSoundGroup.GLASS).breakByTool(FabricToolTags.PICKAXES).nonOpaque()), "dry_ice", null);
+        DRY_ICE = registerBlock(new DryIceBlock(FabricBlockSettings.of(Material.ICE).slipperiness(0.98F).strength(0.5F).sounds(BlockSoundGroup.GLASS).breakByTool(FabricToolTags.PICKAXES).nonOpaque()), "dry_ice", ItemGroup.BUILDING_BLOCKS);
     }
 
     private static Block registerBlock(Block block, String name, ItemGroup itemGroup) {
