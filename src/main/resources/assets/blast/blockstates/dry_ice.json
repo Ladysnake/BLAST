@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "axis=x": {
+            "model": "blast:block/dry_ice",
+            "x": 90,
+            "y": 90
+        },
+        "axis=y": {
+            "model": "blast:block/dry_ice"
+        },
+        "axis=z": {
+            "model": "blast:block/dry_ice",
+            "x": 90
+        }
+    }
+}

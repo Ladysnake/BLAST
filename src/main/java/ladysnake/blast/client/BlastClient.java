@@ -3,6 +3,7 @@ package ladysnake.blast.client;
 import ladysnake.blast.client.network.EntityDispatcher;
 import ladysnake.blast.client.renderers.BlastBlockEntityRenderer;
 import ladysnake.blast.common.entity.BombEntity;
+import ladysnake.blast.common.entity.ColdDiggerEntity;
 import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntities;
@@ -41,11 +42,14 @@ public class BlastClient implements ClientModInitializer {
         );
         registerBlockEntityRender(BlastEntities.GUNPOWDER_BLOCK, e -> BlastBlocks.GUNPOWDER_BLOCK.getDefaultState());
         registerBlockEntityRender(BlastEntities.STRIPMINER, StripminerEntity::getState);
+        registerBlockEntityRender(BlastEntities.COLD_DIGGER, ColdDiggerEntity::getState);
 
         ClientSidePacketRegistry.INSTANCE.register(Packets.SPAWN, EntityDispatcher::spawnFrom);
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.GUNPOWDER_BLOCK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.STRIPMINER, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.COLD_DIGGER, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.DRY_ICE, RenderLayer.getTranslucent());
     }
 
     private static void registerItemEntityRenders(EntityType<?>... entityTypes) {

@@ -5,6 +5,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import ladysnake.blast.common.entity.StripminerEntity;
+import ladysnake.blast.common.init.BlastBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantments;
@@ -13,6 +15,8 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.WaterFluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
@@ -91,7 +95,7 @@ public class CustomExplosion extends Explosion {
                             FluidState fluidState = this.world.getFluidState(blockPos);
                             if (!blockState.isAir() || !fluidState.isEmpty()) {
                                 float br = Math.max(blockState.getBlock().getBlastResistance(), fluidState.getBlastResistance());
-                                if ((this.effect == BlockBreakEffect.AQUATIC && !fluidState.isEmpty()) || (this.effect == BlockBreakEffect.UNSTOPPABLE && fluidState.isEmpty() && blockState.getHardness(this.world, blockPos) >= 0)) {
+                                if (((this.effect == BlockBreakEffect.AQUATIC || this.effect == BlockBreakEffect.FROSTY)  && !fluidState.isEmpty()) || (this.effect == BlockBreakEffect.UNSTOPPABLE && fluidState.isEmpty() && blockState.getHardness(this.world, blockPos) >= 0)) {
                                     br = 0;
                                 }
                                 if (this.entity != null) {
@@ -226,10 +230,33 @@ public class CustomExplosion extends Explosion {
                     }
 
                     if (!this.world.isClient) {
-                        this.world.setBlockState(blockPos, Blocks.AIR.getDefaultState(), 3);
+                        BlockState blockToPlace = Blocks.AIR.getDefaultState();
+                        if (this.effect == BlockBreakEffect.FROSTY) {
+                            blockToPlace = BlastBlocks.DRY_ICE.getDefaultState();
+                            if (this.entity instanceof StripminerEntity) {
+                                blockToPlace = blockToPlace.with(PillarBlock.AXIS, ((StripminerEntity) this.entity).getFacing().getAxis());
+                            }
+                        }
+
+                        this.world.setBlockState(blockPos, blockToPlace, 3);
                     }
                     block_1.onDestroyedByExplosion(this.world, blockPos, this);
                     this.world.getProfiler().pop();
+                } else if (!blockState.getFluidState().isEmpty()) {
+                    BlockState blockToPlace = Blocks.AIR.getDefaultState();
+                    if (blockState.getFluidState().isStill()) {
+                        if (blockState.getFluidState().getFluid() == Fluids.WATER) {
+                            blockToPlace = Blocks.ICE.getDefaultState();
+                        } else if (blockState.getFluidState().getFluid() == Fluids.LAVA) {
+                            blockToPlace = Blocks.BASALT.getDefaultState();
+                            if (this.entity instanceof StripminerEntity) {
+                                blockToPlace = blockToPlace.with(PillarBlock.AXIS, ((StripminerEntity) this.entity).getFacing().getAxis());
+                            }
+                        }
+                    } else {
+                        blockToPlace = Blocks.AIR.getDefaultState();
+                    }
+                    this.world.setBlockState(blockPos, blockToPlace, 3);
                 }
             }
 
@@ -270,7 +297,8 @@ public class CustomExplosion extends Explosion {
         FORTUNE,
         UNSTOPPABLE,
         AQUATIC,
-        FIERY
+        FIERY,
+        FROSTY
     }
 
 }

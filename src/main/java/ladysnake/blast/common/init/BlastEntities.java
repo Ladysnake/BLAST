@@ -21,6 +21,7 @@ public class BlastEntities {
 
     public static EntityType<GunpowderBlockEntity> GUNPOWDER_BLOCK;
     public static EntityType<StripminerEntity> STRIPMINER;
+    public static EntityType<ColdDiggerEntity> COLD_DIGGER;
 
     public static void init() {
         // throwable explosives
@@ -35,6 +36,7 @@ public class BlastEntities {
         // explosive blocks
         GUNPOWDER_BLOCK = register("gunpowder_block", FabricEntityTypeBuilder.<GunpowderBlockEntity>create(SpawnGroup.MISC, GunpowderBlockEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build());
         STRIPMINER = register("stripminer", FabricEntityTypeBuilder.create(SpawnGroup.MISC, StripminerEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build());
+        COLD_DIGGER = register("cold_digger", FabricEntityTypeBuilder.create(SpawnGroup.MISC, ColdDiggerEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build());
     }
 
     private static <T extends BombEntity> EntityType<T> register(String s, EntityType<T> bombEntityType) {

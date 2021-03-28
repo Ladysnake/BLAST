@@ -22,9 +22,9 @@ public class StripminerEntity extends BombEntity {
         DataTracker.registerData(StripminerEntity.class, Blast.FACING);
     }
 
-    private static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, Blast.FACING);
+    protected static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, Blast.FACING);
 
-    private BlockState cachedState;
+    protected BlockState cachedState;
 
     public StripminerEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);

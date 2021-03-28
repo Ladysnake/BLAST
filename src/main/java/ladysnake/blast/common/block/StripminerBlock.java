@@ -1,9 +1,13 @@
 package ladysnake.blast.common.block;
 
 import ladysnake.blast.common.entity.StripminerEntity;
-import ladysnake.blast.common.init.BlastEntities;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -15,7 +19,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -30,10 +33,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class StripminerBlock extends Block {
     public static final DirectionProperty FACING = DirectionProperty.of("facing", Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP, Direction.DOWN);
+    public final EntityType<? extends StripminerEntity> type;
 
-    public StripminerBlock(AbstractBlock.Settings settings) {
+    public StripminerBlock(AbstractBlock.Settings settings, EntityType<? extends StripminerEntity> type) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
+        this.type = type;
     }
 
     @Override
@@ -81,7 +86,7 @@ public class StripminerBlock extends Block {
                     break;
             }
 
-            StripminerEntity entity = (StripminerEntity) BlastEntities.STRIPMINER.create(world);
+            StripminerEntity entity = this.type.create(world);
             entity.setFacing(randomDirection);
             entity.setFuse((short)(world.random.nextInt(entity.getFuseTimer() / 4) + entity.getFuseTimer() / 8));
             entity.setPos(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
@@ -95,8 +100,8 @@ public class StripminerBlock extends Block {
     }
 
     private static void primeStripminer(World world, BlockPos pos, LivingEntity igniter) {
-        if (!world.isClient) {
-            StripminerEntity entity = (StripminerEntity) BlastEntities.STRIPMINER.create(world);
+        if (!world.isClient && world.getBlockState(pos).getBlock() instanceof StripminerBlock) {
+            StripminerEntity entity = ((StripminerBlock) world.getBlockState(pos).getBlock()).type.create(world);
             entity.setFacing(world.getBlockState(pos).get(FACING));
             entity.setPos(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
             world.spawnEntity(entity);
