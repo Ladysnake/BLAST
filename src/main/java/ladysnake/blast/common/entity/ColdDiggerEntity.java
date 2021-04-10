@@ -41,7 +41,7 @@ public class ColdDiggerEntity extends StripminerEntity {
                 break;
             }
         }
-        this.remove();
+        this.remove(RemovalReason.DISCARDED);
     }
 
     @Override

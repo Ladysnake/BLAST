@@ -12,12 +12,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.TntMinecartEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3f;
 
 import java.util.function.Function;
 
@@ -25,8 +26,9 @@ import java.util.function.Function;
 public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRenderer<T> {
     private final Function<T, BlockState> stateGetter;
 
-    public BlastBlockEntityRenderer(EntityRenderDispatcher entityRenderDispatcher, Function<T, BlockState> stateGetter) {
-        super(entityRenderDispatcher);
+    public BlastBlockEntityRenderer(EntityRendererFactory.Context ctx, Function<T, BlockState> stateGetter) {
+        super(ctx);
+
         this.stateGetter = stateGetter;
         this.shadowRadius = 0.5F;
     }
@@ -44,9 +46,9 @@ public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRender
             matrixStack.scale(j, j, j);
         }
 
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-90.0F));
+        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-90.0F));
         matrixStack.translate(-0.5D, -0.5D, 0.5D);
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
+        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
 
         TntMinecartEntityRenderer.renderFlashingBlock(this.stateGetter.apply(stripminerEntity), matrixStack, vertexConsumerProvider, i, stripminerEntity.getFuseTimer() / 5 % 2 == 0);
         matrixStack.pop();

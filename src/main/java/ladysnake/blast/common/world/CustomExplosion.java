@@ -7,16 +7,24 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractFireBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidFillable;
+import net.minecraft.block.PillarBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.ProtectionEnchantment;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ExperienceOrbEntity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.WaterFluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
@@ -32,7 +40,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 public class CustomExplosion extends Explosion {
     private final Explosion.DestructionType blockDestructionType;
@@ -156,7 +168,7 @@ public class CustomExplosion extends Explosion {
                         entity.setVelocity(entity.getVelocity().add(z * af, aa * af, ab * af));
                         if (entity instanceof PlayerEntity) {
                             PlayerEntity playerEntity = (PlayerEntity)entity;
-                            if (!playerEntity.isSpectator() && (!playerEntity.isCreative() || !playerEntity.abilities.flying)) {
+                            if (!playerEntity.isSpectator() && (!playerEntity.isCreative() || !playerEntity.getAbilities().flying)) {
                                 this.affectedPlayers.put(playerEntity, new Vec3d(z * ae, aa * ae, ab * ae));
                             }
                         }
@@ -213,7 +225,7 @@ public class CustomExplosion extends Explosion {
 
                 if (!blockState.isAir() && blockState.getFluidState().isEmpty() || blockState.getBlock() instanceof FluidFillable) {
                     if (block_1.shouldDropItemsOnExplosion(this) && this.world instanceof ServerWorld) {
-                        BlockEntity blockEntity = block_1.hasBlockEntity() ? this.world.getBlockEntity(blockPos) : null;
+                        BlockEntity blockEntity = this.world.getBlockEntity(blockPos) != null ? this.world.getBlockEntity(blockPos) : null;
 
                         ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
                         if (this.effect == BlockBreakEffect.FORTUNE) {

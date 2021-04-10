@@ -1,9 +1,12 @@
 package ladysnake.blast.common.entity;
 
 import ladysnake.blast.common.init.BlastItems;
-import ladysnake.blast.common.network.Packets;
 import ladysnake.blast.common.world.CustomExplosion;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -11,7 +14,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,8 +23,6 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
-
-import java.util.Iterator;
 
 public class BombEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(TntEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -63,18 +64,13 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     @Override
-    public Packet<?> createSpawnPacket() {
-        return Packets.newSpawnPacket(this);
-    }
-
-    @Override
     public void tick() {
         super.tick();
 
         // drop item if in water
         if (this.isSubmergedInWater() && this.disableInLiquid()) {
             this.world.spawnEntity(new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), new ItemStack(this.getDefaultItem())));
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
 
         // tick down the fuse, then blow up
@@ -87,7 +83,7 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     public void explode() {
-        this.remove();
+        this.remove(RemovalReason.DISCARDED);
         CustomExplosion explosion = this.getExplosion();
         explosion.collectBlocksAndDamageEntities();
         explosion.affectWorld(true);
@@ -139,13 +135,13 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     @Override
-    public void writeCustomDataToTag(CompoundTag compoundTag_1) {
-        compoundTag_1.putShort("Fuse", (short)this.getFuseTimer());
+    public void writeCustomDataToNbt(NbtCompound NbtCompound_1) {
+        NbtCompound_1.putShort("Fuse", (short)this.getFuseTimer());
     }
 
     @Override
-    public void readCustomDataFromTag(CompoundTag compoundTag_1) {
-        this.setFuse(compoundTag_1.getShort("Fuse"));
+    public void readCustomDataFromNbt(NbtCompound NbtCompound_1) {
+        this.setFuse(NbtCompound_1.getShort("Fuse"));
     }
 
     @Override

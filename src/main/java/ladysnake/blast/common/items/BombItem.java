@@ -36,7 +36,7 @@ public class BombItem extends Item {
             world.spawnEntity(entity);
         }
 
-        if (!playerEntity.abilities.creativeMode) {
+        if (!playerEntity.getAbilities().creativeMode) {
             stackInHand.decrement(1);
         }
         playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
@@ -48,7 +48,7 @@ public class BombItem extends Item {
     }
 
     public void playSoundEffects(World world, PlayerEntity playerEntity) {
-        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (RANDOM.nextFloat() * 0.4F + 0.8F));
-        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.NEUTRAL, 0.5F, 0.4F / (RANDOM.nextFloat() * 0.4F + 0.8F));
+        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (playerEntity.getRandom().nextFloat() * 0.4F + 0.8F));
+        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.NEUTRAL, 0.5F, 0.4F / (playerEntity.getRandom().nextFloat() * 0.4F + 0.8F));
     }
 }

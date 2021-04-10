@@ -4,7 +4,6 @@ import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.items.BombItem;
 import ladysnake.blast.common.items.TriggerBombItem;
-import ladysnake.blast.common.items.PulverisItem;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
 import net.minecraft.entity.projectile.ProjectileEntity;

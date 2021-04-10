@@ -49,7 +49,7 @@ public class StripminerEntity extends BombEntity {
             }
             world.playSound(null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 0.025f);
         }
-        this.remove();
+        this.remove(RemovalReason.DISCARDED);
     }
 
     public Direction getFacing() {

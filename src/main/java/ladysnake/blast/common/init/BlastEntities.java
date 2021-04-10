@@ -1,6 +1,15 @@
 package ladysnake.blast.common.init;
 
-import ladysnake.blast.common.entity.*;
+import ladysnake.blast.common.entity.BombEntity;
+import ladysnake.blast.common.entity.ColdDiggerEntity;
+import ladysnake.blast.common.entity.DiamondBombEntity;
+import ladysnake.blast.common.entity.DiamondTriggerBombEntity;
+import ladysnake.blast.common.entity.GoldenBombEntity;
+import ladysnake.blast.common.entity.GoldenTriggerBombEntity;
+import ladysnake.blast.common.entity.GunpowderBlockEntity;
+import ladysnake.blast.common.entity.NavalMineEntity;
+import ladysnake.blast.common.entity.StripminerEntity;
+import ladysnake.blast.common.entity.TriggerBombEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
