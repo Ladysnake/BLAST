@@ -1,5 +1,9 @@
 # BLAST - Changelog
 
+### BLAST 1.6 - 21w14a
+- Added the Cold Digger, a cool stripminer upgrade allowing to quickly create tunnels by freezing the water around into ice, turning the lava into basalt and chill the air into dry ice!
+- Added Dry Ice, identical to ice except it doesn't melt and doesn't create water. Can be obtained when using the Cold Digger and can be picked up with a Silk Touch pickaxe.
+
 ### BLAST 1.5.2 - 1.16.5
 - Tweaked the Stripminer recipe to be more in line with the other recipes of the mod
 
