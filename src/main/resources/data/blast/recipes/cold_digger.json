@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "III",
-    "ISI",
-    "III"
+    " P ",
+    "PSP",
+    " P "
   ],
   "key": {
-    "S": {
-      "tag": "blast:stripminer"
+    "P": {
+      "item": "minecraft:packed_ice"
     },
-    "I": {
-      "item": "minecraft:ice"
+    "S": {
+      "item": "blast:stripminer"
     }
   },
   "result": {
