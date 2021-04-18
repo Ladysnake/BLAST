@@ -47,4 +47,9 @@ public class NavalMineEntity extends BombEntity {
     public BombTriggerType getTriggerType() {
         return BombTriggerType.IMPACT;
     }
+
+    @Override
+    public boolean isTouchingWater() {
+        return false;
+    }
 }
