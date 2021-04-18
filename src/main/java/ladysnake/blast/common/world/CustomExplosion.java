@@ -258,11 +258,19 @@ public class CustomExplosion extends Explosion {
                     BlockState blockToPlace = Blocks.AIR.getDefaultState();
                     if (blockState.getFluidState().isStill()) {
                         if (blockState.getFluidState().getFluid() == Fluids.WATER) {
-                            blockToPlace = Blocks.ICE.getDefaultState();
+                            if (this.effect == BlockBreakEffect.FROSTY) {
+                                blockToPlace = Blocks.ICE.getDefaultState();
+                            } else {
+                                blockToPlace = blockState;
+                            }
                         } else if (blockState.getFluidState().getFluid() == Fluids.LAVA) {
-                            blockToPlace = Blocks.BASALT.getDefaultState();
-                            if (this.entity instanceof StripminerEntity) {
-                                blockToPlace = blockToPlace.with(PillarBlock.AXIS, ((StripminerEntity) this.entity).getFacing().getAxis());
+                            if (this.effect == BlockBreakEffect.FROSTY) {
+                                blockToPlace = Blocks.BASALT.getDefaultState();
+                                if (this.entity instanceof StripminerEntity) {
+                                    blockToPlace = blockToPlace.with(PillarBlock.AXIS, ((StripminerEntity) this.entity).getFacing().getAxis());
+                                }
+                            } else {
+                                blockToPlace = blockState;
                             }
                         }
                     } else {
