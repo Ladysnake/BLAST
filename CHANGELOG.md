@@ -1,5 +1,10 @@
 # BLAST - Changelog
 
+### BLAST 1.6.1 - 21w14a
+- Fixed an issue that caused naval mines to make freezing explosions
+- Naval mines no longer suffer negative drag underwater
+- Trigger bombs no longer require stone buttons in order to be crafted
+
 ### BLAST 1.6 - 21w14a
 - Added the Cold Digger, a cool stripminer upgrade allowing to quickly create tunnels by freezing the water around into ice, turning the lava into basalt and chill the air into dry ice!
 - Added Dry Ice, identical to ice except it doesn't melt and doesn't create water. Can be obtained when using the Cold Digger and can be picked up with a Silk Touch pickaxe.
