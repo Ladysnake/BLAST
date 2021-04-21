@@ -15,7 +15,6 @@ import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
@@ -53,7 +52,7 @@ public class BombEntity extends ThrownItemEntity {
     @Override
     protected void onCollision(HitResult hitResult) {
         if (hitResult.getType() == HitResult.Type.ENTITY) {
-            Entity entity = ((EntityHitResult)hitResult).getEntity();
+            Entity entity = ((EntityHitResult) hitResult).getEntity();
             entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), this.getDirectHitDamage());
         }
 
@@ -75,7 +74,7 @@ public class BombEntity extends ThrownItemEntity {
 
         // tick down the fuse, then blow up
         if (this.getTriggerType() == BombTriggerType.FUSE) {
-            this.setFuse(this.getFuse()-1);
+            this.setFuse(this.getFuse() - 1);
             if (this.getFuse() <= 0) {
                 this.explode();
             }
@@ -136,7 +135,7 @@ public class BombEntity extends ThrownItemEntity {
 
     @Override
     public void writeCustomDataToNbt(NbtCompound NbtCompound_1) {
-        NbtCompound_1.putShort("Fuse", (short)this.getFuseTimer());
+        NbtCompound_1.putShort("Fuse", (short) this.getFuseTimer());
     }
 
     @Override

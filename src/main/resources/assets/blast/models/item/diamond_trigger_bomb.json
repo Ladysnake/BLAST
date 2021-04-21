@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "blast:item/diamond_trigger_bomb"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "blast:item/diamond_trigger_bomb"
+  }
 }

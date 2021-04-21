@@ -46,11 +46,11 @@ public class GunpowderBlock extends FallingBlock {
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         super.onBlockAdded(state, world, pos, oldState, notify);
         if (world.getBlockState(pos.add(-1, 0, 0)).getMaterial() == Material.FIRE ||
-            world.getBlockState(pos.add(1, 0, 0)).getMaterial() == Material.FIRE ||
-            world.getBlockState(pos.add(0, -1, 0)).getMaterial() == Material.FIRE ||
-            world.getBlockState(pos.add(0, 1, 0)).getMaterial() == Material.FIRE ||
-            world.getBlockState(pos.add(0, 0, -1)).getMaterial() == Material.FIRE ||
-            world.getBlockState(pos.add(0, 0, 1)).getMaterial() == Material.FIRE) {
+                world.getBlockState(pos.add(1, 0, 0)).getMaterial() == Material.FIRE ||
+                world.getBlockState(pos.add(0, -1, 0)).getMaterial() == Material.FIRE ||
+                world.getBlockState(pos.add(0, 1, 0)).getMaterial() == Material.FIRE ||
+                world.getBlockState(pos.add(0, 0, -1)).getMaterial() == Material.FIRE ||
+                world.getBlockState(pos.add(0, 0, 1)).getMaterial() == Material.FIRE) {
             explode(world, pos);
         }
     }
@@ -108,7 +108,7 @@ public class GunpowderBlock extends FallingBlock {
     }
 
     public static void explode(World world, BlockPos pos) {
-        explode(world, pos, (LivingEntity)null);
+        explode(world, pos, (LivingEntity) null);
     }
 
     private static void explode(World world, BlockPos pos, LivingEntity igniter) {
@@ -116,7 +116,7 @@ public class GunpowderBlock extends FallingBlock {
 
         if (!world.isClient) {
             BombEntity entity = BlastEntities.GUNPOWDER_BLOCK.create(world);
-            entity.setPos(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
+            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
         }
     }

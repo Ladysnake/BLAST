@@ -1,7 +1,7 @@
 {
-    "parent": "minecraft:block/cube_column",
-    "textures": {
-        "end": "blast:block/dry_ice_top",
-        "side": "blast:block/dry_ice_side"
-    }
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "blast:block/dry_ice_top",
+    "side": "blast:block/dry_ice_side"
+  }
 }

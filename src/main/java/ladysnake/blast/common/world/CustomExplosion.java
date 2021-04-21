@@ -85,13 +85,13 @@ public class CustomExplosion extends Explosion {
 
         int k;
         int l;
-        for(int j = 0; j < 16; ++j) {
-            for(k = 0; k < 16; ++k) {
-                for(l = 0; l < 16; ++l) {
+        for (int j = 0; j < 16; ++j) {
+            for (k = 0; k < 16; ++k) {
+                for (l = 0; l < 16; ++l) {
                     if (j == 0 || j == 15 || k == 0 || k == 15 || l == 0 || l == 15) {
-                        double d = (float)j / 15.0F * 2.0F - 1.0F;
-                        double e = (float)k / 15.0F * 2.0F - 1.0F;
-                        double f = (float)l / 15.0F * 2.0F - 1.0F;
+                        double d = (float) j / 15.0F * 2.0F - 1.0F;
+                        double e = (float) k / 15.0F * 2.0F - 1.0F;
+                        double f = (float) l / 15.0F * 2.0F - 1.0F;
                         double g = Math.sqrt(d * d + e * e + f * f);
                         d /= g;
                         e /= g;
@@ -101,13 +101,13 @@ public class CustomExplosion extends Explosion {
                         double n = this.y;
                         double o = this.z;
 
-                        for(float var21 = 0.3F; h > 0.0F; h -= 0.22500001F) {
+                        for (float var21 = 0.3F; h > 0.0F; h -= 0.22500001F) {
                             BlockPos blockPos = new BlockPos(m, n, o);
                             BlockState blockState = this.world.getBlockState(blockPos);
                             FluidState fluidState = this.world.getFluidState(blockPos);
                             if (!blockState.isAir() || !fluidState.isEmpty()) {
                                 float br = Math.max(blockState.getBlock().getBlastResistance(), fluidState.getBlastResistance());
-                                if (((this.effect == BlockBreakEffect.AQUATIC || this.effect == BlockBreakEffect.FROSTY)  && !fluidState.isEmpty()) || (this.effect == BlockBreakEffect.UNSTOPPABLE && fluidState.isEmpty() && blockState.getHardness(this.world, blockPos) >= 0)) {
+                                if (((this.effect == BlockBreakEffect.AQUATIC || this.effect == BlockBreakEffect.FROSTY) && !fluidState.isEmpty()) || (this.effect == BlockBreakEffect.UNSTOPPABLE && fluidState.isEmpty() && blockState.getHardness(this.world, blockPos) >= 0)) {
                                     br = 0;
                                 }
                                 if (this.entity != null) {
@@ -133,16 +133,16 @@ public class CustomExplosion extends Explosion {
 
         this.affectedBlocks.addAll(set);
         float q = this.power * 2.0F;
-        k = MathHelper.floor(this.x - (double)q - 1.0D);
-        l = MathHelper.floor(this.x + (double)q + 1.0D);
-        int t = MathHelper.floor(this.y - (double)q - 1.0D);
-        int u = MathHelper.floor(this.y + (double)q + 1.0D);
-        int v = MathHelper.floor(this.z - (double)q - 1.0D);
-        int w = MathHelper.floor(this.z + (double)q + 1.0D);
+        k = MathHelper.floor(this.x - (double) q - 1.0D);
+        l = MathHelper.floor(this.x + (double) q + 1.0D);
+        int t = MathHelper.floor(this.y - (double) q - 1.0D);
+        int u = MathHelper.floor(this.y + (double) q + 1.0D);
+        int v = MathHelper.floor(this.z - (double) q - 1.0D);
+        int w = MathHelper.floor(this.z + (double) q + 1.0D);
         List<Entity> list = this.world.getOtherEntities(this.entity, new Box(k, t, v, l, u, w));
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
-        for(int x = 0; x < list.size(); ++x) {
+        for (int x = 0; x < list.size(); ++x) {
             Entity entity = list.get(x);
             if (!entity.isImmuneToExplosion()) {
                 double y = MathHelper.sqrt(entity.squaredDistanceTo(vec3d)) / q;
@@ -162,12 +162,12 @@ public class CustomExplosion extends Explosion {
                         }
                         double af = ae;
                         if (entity instanceof LivingEntity) {
-                            af = ProtectionEnchantment.transformExplosionKnockback((LivingEntity)entity, ae);
+                            af = ProtectionEnchantment.transformExplosionKnockback((LivingEntity) entity, ae);
                         }
 
                         entity.setVelocity(entity.getVelocity().add(z * af, aa * af, ab * af));
                         if (entity instanceof PlayerEntity) {
-                            PlayerEntity playerEntity = (PlayerEntity)entity;
+                            PlayerEntity playerEntity = (PlayerEntity) entity;
                             if (!playerEntity.isSpectator() && (!playerEntity.isCreative() || !playerEntity.getAbilities().flying)) {
                                 this.affectedPlayers.put(playerEntity, new Vec3d(z * ae, aa * ae, ab * ae));
                             }
@@ -194,14 +194,14 @@ public class CustomExplosion extends Explosion {
             var3 = this.affectedBlocks.iterator();
             ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList();
 
-            while(var3.hasNext()) {
-                blockPos = (BlockPos)var3.next();
+            while (var3.hasNext()) {
+                blockPos = (BlockPos) var3.next();
                 BlockState blockState = this.world.getBlockState(blockPos);
                 Block block_1 = blockState.getBlock();
                 if (boolean_1) {
-                    double double_1 = (float)blockPos.getX() + this.world.random.nextFloat();
-                    double double_2 = (float)blockPos.getY() + this.world.random.nextFloat();
-                    double double_3 = (float)blockPos.getZ() + this.world.random.nextFloat();
+                    double double_1 = (float) blockPos.getX() + this.world.random.nextFloat();
+                    double double_2 = (float) blockPos.getY() + this.world.random.nextFloat();
+                    double double_3 = (float) blockPos.getZ() + this.world.random.nextFloat();
                     double double_4 = double_1 - this.x;
                     double double_5 = double_2 - this.y;
                     double double_6 = double_3 - this.z;
@@ -209,7 +209,7 @@ public class CustomExplosion extends Explosion {
                     double_4 /= double_7;
                     double_5 /= double_7;
                     double_6 /= double_7;
-                    double double_8 = 0.5D / (double_7 / (double)this.power + 0.1D);
+                    double double_8 = 0.5D / (double_7 / (double) this.power + 0.1D);
                     double_8 *= this.world.random.nextFloat() * this.world.random.nextFloat() + 0.3F;
                     double_4 *= double_8;
                     double_5 *= double_8;
@@ -232,7 +232,7 @@ public class CustomExplosion extends Explosion {
                             itemStack.addEnchantment(Enchantments.FORTUNE, 3);
                         }
 
-                        LootContext.Builder builder = (new LootContext.Builder((ServerWorld)this.world)).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.of(blockPos)).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
+                        LootContext.Builder builder = (new LootContext.Builder((ServerWorld) this.world)).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.of(blockPos)).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
                         if (this.blockDestructionType == DestructionType.DESTROY) {
                             builder.parameter(LootContextParameters.EXPLOSION_RADIUS, this.power);
                         }
@@ -298,11 +298,11 @@ public class CustomExplosion extends Explosion {
     private static void method_24023(ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList, ItemStack itemStack, BlockPos blockPos) {
         int i = objectArrayList.size();
 
-        for(int j = 0; j < i; ++j) {
+        for (int j = 0; j < i; ++j) {
             Pair<ItemStack, BlockPos> pair = objectArrayList.get(j);
             ItemStack itemStack2 = pair.getFirst();
             if (ItemEntity.canMerge(itemStack2, itemStack)) {
-                    ItemStack itemStack3 = ItemEntity.merge(itemStack2, itemStack, 16);
+                ItemStack itemStack3 = ItemEntity.merge(itemStack2, itemStack, 16);
                 objectArrayList.set(j, Pair.of(itemStack3, pair.getSecond()));
                 if (itemStack.isEmpty()) {
                     return;

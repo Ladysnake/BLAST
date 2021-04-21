@@ -1,5 +1,7 @@
 {
-    "variants": {
-        "": { "model": "blast:block/superbomb" }
+  "variants": {
+    "": {
+      "model": "blast:block/superbomb"
     }
+  }
 }

@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "blast",
   "version": "${version}",
-
   "name": "BLAST",
   "description": "A mod about bombs.",
   "authors": [
@@ -11,10 +10,8 @@
   "contact": {
     "sources": "https://github.com/Ladysnake/Blast"
   },
-
   "license": "Code: GNU GPLv3; Art: ARR",
   "icon": "assets/blast/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -24,7 +21,6 @@
       "ladysnake.blast.client.BlastClient"
     ]
   },
-  
   "depends": {
     "fabricloader": ">=0.4.0",
     "fabric": "*"

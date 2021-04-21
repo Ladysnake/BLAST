@@ -31,8 +31,8 @@ public class DryIceParticle extends SpriteBillboardParticle {
         this.collidesWithWorld = true;
         this.setSpriteForAge(spriteProvider);
         this.colorAlpha = 0f;
-        this.maxAlpha = RANDOM.nextFloat()/25;
-        this.velocityY = RANDOM.nextFloat()/25;
+        this.maxAlpha = RANDOM.nextFloat() / 25f;
+        this.velocityY = RANDOM.nextFloat() / 25f;
         this.velocityX = 0;
         this.velocityZ = 0;
     }
@@ -75,7 +75,7 @@ public class DryIceParticle extends SpriteBillboardParticle {
             }
         } else {
             if (this.colorAlpha <= this.maxAlpha) {
-                this.colorAlpha = Math.min(this.maxAlpha, this.colorAlpha+0.01f);
+                this.colorAlpha = Math.min(this.maxAlpha, this.colorAlpha + 0.01f);
             }
         }
 

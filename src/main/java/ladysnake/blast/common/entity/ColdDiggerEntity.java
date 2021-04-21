@@ -19,22 +19,22 @@ public class ColdDiggerEntity extends StripminerEntity {
 
     @Override
     public void explode() {
-        for (int i = 0; i <= 24 ; i++) {
+        for (int i = 0; i <= 24; i++) {
             BlockPos bp = this.getBlockPos().offset(this.getFacing(), i);
             if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(world, this, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, 3.5f, CustomExplosion.BlockBreakEffect.FROSTY, Explosion.DestructionType.BREAK);
+                CustomExplosion explosion = new CustomExplosion(world, this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, 3.5f, CustomExplosion.BlockBreakEffect.FROSTY, Explosion.DestructionType.BREAK);
                 explosion.collectBlocksAndDamageEntities();
                 explosion.affectWorld(true);
             } else {
                 break;
             }
-            world.playSound(null, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 1.5f);
+            world.playSound(null, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 1.5f);
         }
 
         for (int i = 0; i <= 24; i++) {
             BlockPos bp = this.getBlockPos().offset(this.getFacing(), i);
             if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(world, this, bp.getX()+0.5, bp.getY() +0.5, bp.getZ() + 0.5, 1f, null, Explosion.DestructionType.BREAK);
+                CustomExplosion explosion = new CustomExplosion(world, this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, 1f, null, Explosion.DestructionType.BREAK);
                 explosion.collectBlocksAndDamageEntities();
                 explosion.affectWorld(true);
             } else {
@@ -54,7 +54,7 @@ public class ColdDiggerEntity extends StripminerEntity {
     }
 
     public BlockState getState() {
-        if(this.cachedState == null) {
+        if (this.cachedState == null) {
             this.cachedState = BlastBlocks.COLD_DIGGER.getDefaultState().with(StripminerBlock.FACING, this.getFacing());
         }
         return this.cachedState;

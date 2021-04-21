@@ -10,7 +10,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.TntMinecartEntityRenderer;
@@ -37,8 +36,8 @@ public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRender
     public void render(T stripminerEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         matrixStack.push();
         matrixStack.translate(0.0D, 0.5D, 0.0D);
-        if ((float)stripminerEntity.getFuseTimer() - g + 1.0F < 10.0F) {
-            float h = 1.0F - ((float)stripminerEntity.getFuseTimer() - g + 1.0F) / 10.0F;
+        if ((float) stripminerEntity.getFuseTimer() - g + 1.0F < 10.0F) {
+            float h = 1.0F - ((float) stripminerEntity.getFuseTimer() - g + 1.0F) / 10.0F;
             h = MathHelper.clamp(h, 0.0F, 1.0F);
             h *= h;
             h *= h;

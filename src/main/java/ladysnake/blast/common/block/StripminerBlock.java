@@ -88,8 +88,8 @@ public class StripminerBlock extends Block {
 
             StripminerEntity entity = this.type.create(world);
             entity.setFacing(randomDirection);
-            entity.setFuse((short)(world.random.nextInt(entity.getFuseTimer() / 4) + entity.getFuseTimer() / 8));
-            entity.setPos(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
+            entity.setFuse((short) (world.random.nextInt(entity.getFuseTimer() / 4) + entity.getFuseTimer() / 8));
+            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
             world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
@@ -103,7 +103,7 @@ public class StripminerBlock extends Block {
         if (!world.isClient && world.getBlockState(pos).getBlock() instanceof StripminerBlock) {
             StripminerEntity entity = ((StripminerBlock) world.getBlockState(pos).getBlock()).type.create(world);
             entity.setFacing(world.getBlockState(pos).get(FACING));
-            entity.setPos(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
+            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
             world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
@@ -138,7 +138,7 @@ public class StripminerBlock extends Block {
             Entity entity = projectile.getOwner();
             if (projectile.isOnFire()) {
                 BlockPos blockPos = hit.getBlockPos();
-                primeStripminer(world, blockPos, entity instanceof LivingEntity ? (LivingEntity)entity : null);
+                primeStripminer(world, blockPos, entity instanceof LivingEntity ? (LivingEntity) entity : null);
                 world.removeBlock(blockPos, false);
             }
         }

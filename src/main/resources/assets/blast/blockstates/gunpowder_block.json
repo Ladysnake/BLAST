@@ -1,5 +1,7 @@
 {
-    "variants": {
-        "": { "model": "blast:block/gunpowder_block" }
+  "variants": {
+    "": {
+      "model": "blast:block/gunpowder_block"
     }
+  }
 }

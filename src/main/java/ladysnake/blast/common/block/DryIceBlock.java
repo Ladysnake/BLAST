@@ -26,7 +26,7 @@ public class DryIceBlock extends IceBlock {
 
     public DryIceBlock(Settings settings) {
         super(settings);
-        this.setDefaultState((BlockState)this.getDefaultState().with(AXIS, Direction.Axis.Y));
+        this.setDefaultState((BlockState) this.getDefaultState().with(AXIS, Direction.Axis.Y));
     }
 
     @Override
@@ -45,18 +45,18 @@ public class DryIceBlock extends IceBlock {
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         super.randomDisplayTick(state, world, pos, random);
-        world.addParticle(BlastClient.DRY_ICE, pos.getX() + random.nextGaussian(), pos.getY() + random.nextGaussian(), pos.getZ() + random.nextGaussian(), 0, -Math.abs(random.nextGaussian())/100, 0);
+        world.addParticle(BlastClient.DRY_ICE, pos.getX() + random.nextGaussian(), pos.getY() + random.nextGaussian(), pos.getZ() + random.nextGaussian(), 0, -Math.abs(random.nextGaussian()) / 100, 0);
     }
 
     public BlockState rotate(BlockState state, BlockRotation rotation) {
-        switch(rotation) {
+        switch (rotation) {
             case COUNTERCLOCKWISE_90:
             case CLOCKWISE_90:
-                switch((Direction.Axis)state.get(AXIS)) {
+                switch ((Direction.Axis) state.get(AXIS)) {
                     case X:
-                        return (BlockState)state.with(AXIS, Direction.Axis.Z);
+                        return (BlockState) state.with(AXIS, Direction.Axis.Z);
                     case Z:
-                        return (BlockState)state.with(AXIS, Direction.Axis.X);
+                        return (BlockState) state.with(AXIS, Direction.Axis.X);
                     default:
                         return state;
                 }

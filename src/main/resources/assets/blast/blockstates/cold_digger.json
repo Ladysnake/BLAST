@@ -1,10 +1,30 @@
 {
-    "variants": {
-        "facing=down": { "model": "blast:block/cold_digger", "x": 180 },
-        "facing=up": { "model": "blast:block/cold_digger" },
-        "facing=north": { "model": "blast:block/cold_digger", "x": 90 },
-        "facing=south": { "model": "blast:block/cold_digger", "x": 90, "y": 180 },
-        "facing=west": { "model": "blast:block/cold_digger", "x": 90, "y": 270 },
-        "facing=east": { "model": "blast:block/cold_digger", "x": 90, "y": 90 }
+  "variants": {
+    "facing=down": {
+      "model": "blast:block/cold_digger",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "blast:block/cold_digger"
+    },
+    "facing=north": {
+      "model": "blast:block/cold_digger",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "blast:block/cold_digger",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "blast:block/cold_digger",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "blast:block/cold_digger",
+      "x": 90,
+      "y": 90
     }
+  }
 }

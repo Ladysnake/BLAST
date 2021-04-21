@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "blast:item/pulveris"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "blast:item/pulveris"
+  }
 }
