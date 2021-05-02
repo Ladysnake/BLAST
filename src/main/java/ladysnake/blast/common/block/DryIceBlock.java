@@ -46,7 +46,7 @@ public class DryIceBlock extends IceBlock {
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         super.randomDisplayTick(state, world, pos, random);
-        world.addParticle(BlastClient.DRY_ICE, pos.getX() + random.nextGaussian(), pos.getY() + random.nextGaussian(), pos.getZ() + random.nextGaussian(), 0, -Math.abs(random.nextGaussian())/100, 0);
+//        world.addParticle(BlastClient.DRY_ICE, pos.getX() + random.nextGaussian(), pos.getY() + random.nextGaussian(), pos.getZ() + random.nextGaussian(), 0, -Math.abs(random.nextGaussian())/100, 0);
     }
 
     public BlockState rotate(BlockState state, BlockRotation rotation) {
