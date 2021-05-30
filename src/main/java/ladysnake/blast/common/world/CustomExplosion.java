@@ -145,12 +145,12 @@ public class CustomExplosion extends Explosion {
         for (int x = 0; x < list.size(); ++x) {
             Entity entity = list.get(x);
             if (!entity.isImmuneToExplosion()) {
-                double y = MathHelper.sqrt(entity.squaredDistanceTo(vec3d)) / q;
+                double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;
                     double aa = (entity instanceof TntEntity ? entity.getY() : entity.getEyeY()) - this.y;
                     double ab = entity.getZ() - this.z;
-                    double ac = MathHelper.sqrt(z * z + aa * aa + ab * ab);
+                    double ac = Math.sqrt(z * z + aa * aa + ab * ab);
                     if (ac != 0.0D) {
                         z /= ac;
                         aa /= ac;
@@ -205,7 +205,7 @@ public class CustomExplosion extends Explosion {
                     double double_4 = double_1 - this.x;
                     double double_5 = double_2 - this.y;
                     double double_6 = double_3 - this.z;
-                    double double_7 = MathHelper.sqrt(double_4 * double_4 + double_5 * double_5 + double_6 * double_6);
+                    double double_7 = Math.sqrt(double_4 * double_4 + double_5 * double_5 + double_6 * double_6);
                     double_4 /= double_7;
                     double_5 /= double_7;
                     double_6 /= double_7;
