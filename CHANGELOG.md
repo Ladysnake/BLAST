@@ -1,5 +1,9 @@
 # BLAST - Changelog
 
+### BLAST 1.6.2 - 1.17
+- Fixed an issue that would cause the dry ice particles to not display properly
+- Updated to 1.17, thanks to Spiralhalo!
+
 ### BLAST 1.6.1 - 21w14a
 - Fixed an issue that caused naval mines to make freezing explosions
 - Naval mines no longer suffer negative drag underwater
