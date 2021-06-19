@@ -10,31 +10,31 @@ Blast bombs will drop all lootable blocks and do not destroy dropped items; thes
 
 ### Standard Bombs
 
-![Grid](https://user-images.githubusercontent.com/83953120/122655379-30babd00-d152-11eb-8103-9ede6c7264a5.png)
+![Grid](https://user-images.githubusercontent.com/83953120/122656197-a75ab900-d158-11eb-8851-7e113ba17153.png)
 
 #### Naval Mines
 
-Naval Mines are bombs that trigger on impact, can destroy blocks and will not sink when thrown underwater.
+Naval Mines are bombs that trigger on impact, can destroy blocks and will not sink when thrown underwater. Other than other bombs the naval mine has an explosion power of 4.
+
 ![NavalMineRecipe](https://user-images.githubusercontent.com/83953120/122655642-4335f600-d154-11eb-83d4-774c4ec91a17.png)
 
 
 ### Blocks
 
-## Gunpowder block
+#### Gunpowder Block
 
-A heap of gunpowder that can be used as a storage block to your own risks!
+The Gunpowder Block is a compact way of storing gunpowder. When placed it is highly sensitive to explosions and fire and will explode allmost instantly when in contact with them. The explosion it creates is fiery and a power of 4.
 
-- Crafted with 9 gunpowder (can be transformed back into gunpowder).
-- Explosion power of 4.
-- Fiery explosion.
-- Extremely susceptible to instant combustion.
+![GunpowderBlockRecipe](https://user-images.githubusercontent.com/83953120/122655907-88f3be00-d156-11eb-8c71-f8d503f23027.png)
 
-## Stripminer
+#### Stripminer
 
-A directional explosive that simplifies... well, strip-mining.
+The Stripminer is triggered like tnt and focuses the explosion in one direction. It creates a 3x3+ wide tunnel and usually points the way the player is looking upon placing it down, this, however, is inverted while sneaking. When the stripminer is set off by other explosives the direction can get misaligned and the fuse time varies slightly.
 
-- Crafting recipe: ![image-20201009132226445](README.assets/image-20201009132226445.png)
+![StripminerRecipe](https://user-images.githubusercontent.com/83953120/122656042-99f0ff00-d157-11eb-9e23-5592d8ff6901.png)
 
-- Can be triggered like a normal TNT.
-- Directional explosions!
-- Triggering it with an explosion may offset its direction, so be careful!
+#### Cold Digger
+
+The Cold Digger is an upgrade to the Stripminer that keeps the functionality of creating a 3x3 wide tunnel but replaces additional blocks around it with Dry Ice and, in the case of lava, Basalt.
+
+![ColdDiggerRecipe](https://user-images.githubusercontent.com/83953120/122656165-75e1ed80-d158-11eb-9f07-51dd7191732d.png)
