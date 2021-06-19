@@ -1,77 +1,24 @@
 # Blast
 
-**Blast** is a Minecraft Fabric mod that allows you to scratch that itch to blow everything up. It adds multiple throwable bombs and explosive blocks for different situations. Blast bombs will drop all lootable blocks and do not destroy dropped items; these items however are submitted to the bomb shockwaves (meaning items can go flying if you throw multiple bombs into a single spot).
+[![img](https://img.shields.io/discord/292744693803122688?color=informational&label=Ladysnake&logo=Discord)](https://ladysnake.glitch.me)[![img](http://cf.way2muchnoise.eu/full_blast_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/blast)[![img](http://cf.way2muchnoise.eu/versions/minecraft_blast_latest.svg)](https://www.curseforge.com/minecraft/mc-mods/blast)
 
-# Items
+**Blast** is a Minecraft Fabric mod that allows you to scratch that itch to blow everything up. It adds multiple throwable bombs and explosive blocks for different situations.
 
-## Bomb
+## Wiki
 
-The simplest and most classic of all bombs this mod has to offer, just to casually blow holes or expedite the mining process.
+Blast bombs will drop all lootable blocks and do not destroy dropped items; these items however are submitted to the bomb shockwaves (meaning items can go flying if you throw multiple bombs into a single spot).
 
-- Combining (shapelessly) gunpowder, an iron ingot and a piece of string will grant 4 of them.
-- Fuse time of 2 seconds.
-- Explosion power of 3.
-- Will be defused and drop as an item if inside water.
+### Standard Bombs
 
-## Golden Bomb
+![Grid](https://user-images.githubusercontent.com/83953120/122655379-30babd00-d152-11eb-8103-9ede6c7264a5.png)
 
-The bomb of those who wish to become rich as the dwarves of old.
+#### Naval Mines
 
-- Combining (shapelessly) gunpowder, a gold ingot and a piece of string will grant 4 of them.
-- Fuse time of 2 seconds.
-- Explosion power of 3.
-- Will be defused and drop as an item if inside water.
-- All destroyed blocks are dropped affected by Fortune 3.
+Naval Mines are bombs that trigger on impact, can destroy blocks and will not sink when thrown underwater.
+![NavalMineRecipe](https://user-images.githubusercontent.com/83953120/122655642-4335f600-d154-11eb-83d4-774c4ec91a17.png)
 
-## Diamond Bomb
 
-An unstoppable explosive with devastating shrapnel that pierce through most materials.
-
-- Combining (shapelessly) gunpowder, a diamond and a piece of string will grant 4 of them.
-- Fuse time of 2 seconds.
-- Explosion power of 3.
-- Will be defused and drop as an item if inside water.
-- Ignores all block explosion resistances, creating wider holes and breaking explosion-proof blocks (except bedrock).
-
-## Naval Mines
-
-A contact trigger explosive that can lay waste on the ocean floors.
-
-- Combining (shapelessly) gunpowder, a prismarine shard and redstone will grant 4 of them.
-- No fuse time, explodes on impact.
-- Explosion power of 4.
-- Will break blocks even underwater.
-
-## Trigger Bomb
-
-A variant of the normal bomb that explodes on impact.
-
-- Combining (shapelessly) gunpowder, an iron ingot and a stone button will grant 4 of them.
-- No fuse timer, explodes on impact.
-- Explosion power of 3.
-- Will explode underwater and damage entities, but not terrain.
-
-## Golden Trigger Bomb
-
-A variant of the golden bomb that explodes on impact.
-
-- Combining (shapelessly) gunpowder, a gold ingot and a stone button will grant 4 of them.
-- No fuse timer, explodes on impact.
-- Explosion power of 3.
-- Will explode underwater and damage entities, but not terrain.
-- All destroyed blocks are dropped affected by Fortune 3.
-
-## Diamond Trigger Bomb
-
-A variant of the diamond bomb that explodes on impact.
-
-- Combining (shapelessly) gunpowder, a diamond and a stone button will grant 4 of them.
-- No fuse timer, explodes on impact.
-- Explosion power of 3.
-- Will explode underwater and damage entities, but not terrain.
-- Ignores all block explosion resistances, creating wider holes and breaking explosion-proof blocks (except bedrock).
-
-# Blocks
+### Blocks
 
 ## Gunpowder block
 
