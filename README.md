@@ -39,6 +39,6 @@ The Cold Digger is an upgrade to the Stripminer that keeps the functionality of 
 
 ![ColdDiggerRecipe](https://user-images.githubusercontent.com/83953120/122656165-75e1ed80-d158-11eb-9f07-51dd7191732d.png)
 
-##### Dry Ice
+##### Dry Ice 
 
 Dry Ice is a kind of ice that does not melt or create water upon breaking. It emits particles and can be mined using silk touch.
