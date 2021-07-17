@@ -1,93 +1,44 @@
 # Blast
 
-**Blast** is a Minecraft Fabric mod that allows you to scratch that itch to blow everything up. It adds multiple throwable bombs and explosive blocks for different situations. Blast bombs will drop all lootable blocks and do not destroy dropped items; these items however are submitted to the bomb shockwaves (meaning items can go flying if you throw multiple bombs into a single spot).
+[![img](https://img.shields.io/discord/292744693803122688?color=informational&label=Ladysnake&logo=Discord)](https://ladysnake.glitch.me)[![img](http://cf.way2muchnoise.eu/full_blast_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/blast)[![img](http://cf.way2muchnoise.eu/versions/minecraft_blast_latest.svg)](https://www.curseforge.com/minecraft/mc-mods/blast)
 
-# Items
+**Blast** is a Minecraft Fabric mod that allows you to scratch that itch to blow everything up. It adds multiple throwable bombs and explosive blocks for different situations.
 
-## Bomb
+## Wiki
 
-The simplest and most classic of all bombs this mod has to offer, just to casually blow holes or expedite the mining process.
+Blast bombs will drop all lootable blocks and do not destroy dropped items; these items however are submitted to the bomb shockwaves (meaning items can go flying if you throw multiple bombs into a single spot).
 
-- Combining (shapelessly) gunpowder, an iron ingot and a piece of string will grant 4 of them.
-- Fuse time of 2 seconds.
-- Explosion power of 3.
-- Will be defused and drop as an item if inside water.
+### Standard Bombs
 
-## Golden Bomb
+![Grid](https://user-images.githubusercontent.com/83953120/122656197-a75ab900-d158-11eb-8851-7e113ba17153.png)
 
-The bomb of those who wish to become rich as the dwarves of old.
+#### Naval Mines
 
-- Combining (shapelessly) gunpowder, a gold ingot and a piece of string will grant 4 of them.
-- Fuse time of 2 seconds.
-- Explosion power of 3.
-- Will be defused and drop as an item if inside water.
-- All destroyed blocks are dropped affected by Fortune 3.
+Naval Mines are bombs that trigger on impact, can destroy blocks and will not sink when thrown underwater. Other than standard bombs the naval mine has an explosion power of 4.
 
-## Diamond Bomb
+![NavalMineRecipe](https://user-images.githubusercontent.com/83953120/122655642-4335f600-d154-11eb-83d4-774c4ec91a17.png)
 
-An unstoppable explosive with devastating shrapnel that pierce through most materials.
 
-- Combining (shapelessly) gunpowder, a diamond and a piece of string will grant 4 of them.
-- Fuse time of 2 seconds.
-- Explosion power of 3.
-- Will be defused and drop as an item if inside water.
-- Ignores all block explosion resistances, creating wider holes and breaking explosion-proof blocks (except bedrock).
+### Blocks
 
-## Naval Mines
+#### Gunpowder Block
 
-A contact trigger explosive that can lay waste on the ocean floors.
+The Gunpowder Block is a compact way of storing gunpowder. When placed it is highly sensitive to explosions and fire and will explode allmost instantly when in contact with them. The explosion it creates is fiery and has a power of 4.
 
-- Combining (shapelessly) gunpowder, a prismarine shard and redstone will grant 4 of them.
-- No fuse time, explodes on impact.
-- Explosion power of 4.
-- Will break blocks even underwater.
+![GunpowderBlockRecipe](https://user-images.githubusercontent.com/83953120/122655907-88f3be00-d156-11eb-8c71-f8d503f23027.png)
 
-## Trigger Bomb
+#### Stripminer
 
-A variant of the normal bomb that explodes on impact.
+The Stripminer is triggered like TNT and focuses the explosion in one direction. It creates a 3x3+ wide tunnel and usually points the way the player is looking upon placing it down, this, however, is inverted while sneaking. When the stripminer is set off by other explosives the direction can get misaligned and the fuse time varies slightly.
 
-- Combining (shapelessly) gunpowder, an iron ingot and a stone button will grant 4 of them.
-- No fuse timer, explodes on impact.
-- Explosion power of 3.
-- Will explode underwater and damage entities, but not terrain.
+![StripminerRecipe](https://user-images.githubusercontent.com/83953120/122656042-99f0ff00-d157-11eb-9e23-5592d8ff6901.png)
 
-## Golden Trigger Bomb
+#### Cold Digger
 
-A variant of the golden bomb that explodes on impact.
+The Cold Digger is an upgrade to the Stripminer that keeps the functionality of creating a 3x3 wide tunnel but replaces additional blocks around it with Dry Ice and, in the case of lava, Basalt.
 
-- Combining (shapelessly) gunpowder, a gold ingot and a stone button will grant 4 of them.
-- No fuse timer, explodes on impact.
-- Explosion power of 3.
-- Will explode underwater and damage entities, but not terrain.
-- All destroyed blocks are dropped affected by Fortune 3.
+![ColdDiggerRecipe](https://user-images.githubusercontent.com/83953120/122656165-75e1ed80-d158-11eb-9f07-51dd7191732d.png)
 
-## Diamond Trigger Bomb
+##### Dry Ice 
 
-A variant of the diamond bomb that explodes on impact.
-
-- Combining (shapelessly) gunpowder, a diamond and a stone button will grant 4 of them.
-- No fuse timer, explodes on impact.
-- Explosion power of 3.
-- Will explode underwater and damage entities, but not terrain.
-- Ignores all block explosion resistances, creating wider holes and breaking explosion-proof blocks (except bedrock).
-
-# Blocks
-
-## Gunpowder block
-
-A heap of gunpowder that can be used as a storage block to your own risks!
-
-- Crafted with 9 gunpowder (can be transformed back into gunpowder).
-- Explosion power of 4.
-- Fiery explosion.
-- Extremely susceptible to instant combustion.
-
-## Stripminer
-
-A directional explosive that simplifies... well, strip-mining.
-
-- Crafting recipe: ![image-20201009132226445](README.assets/image-20201009132226445.png)
-
-- Can be triggered like a normal TNT.
-- Directional explosions!
-- Triggering it with an explosion may offset its direction, so be careful!
+Dry Ice is a kind of ice that does not melt or create water upon breaking. It emits particles and can be mined using silk touch.
