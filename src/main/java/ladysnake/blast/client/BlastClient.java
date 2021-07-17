@@ -1,5 +1,6 @@
 package ladysnake.blast.client;
 
+import ladysnake.blast.client.particle.ConfettiParticle;
 import ladysnake.blast.client.particle.DryIceParticle;
 import ladysnake.blast.client.renderers.BlastBlockEntityRenderer;
 import ladysnake.blast.common.entity.BombEntity;
@@ -30,6 +31,7 @@ public class BlastClient implements ClientModInitializer {
 
     // particle types
     public static DefaultParticleType DRY_ICE;
+    public static DefaultParticleType CONFETTI;
 
     @Override
     public void onInitializeClient() {
@@ -38,17 +40,21 @@ public class BlastClient implements ClientModInitializer {
         // particles
         DRY_ICE = Registry.register(Registry.PARTICLE_TYPE, "blast:dry_ice", FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(DRY_ICE, DryIceParticle.DefaultFactory::new);
+        CONFETTI = Registry.register(Registry.PARTICLE_TYPE, "blast:confetti", FabricParticleTypes.simple(true));
+        ParticleFactoryRegistry.getInstance().register(CONFETTI, ConfettiParticle.DefaultFactory::new);
     }
 
     public static void registerRenders() {
         registerItemEntityRenders(
                 BlastEntities.BOMB,
-                BlastEntities.GOLDEN_BOMB,
-                BlastEntities.DIAMOND_BOMB,
-                BlastEntities.NAVAL_MINE,
                 BlastEntities.TRIGGER_BOMB,
+                BlastEntities.GOLDEN_BOMB,
                 BlastEntities.GOLDEN_TRIGGER_BOMB,
-                BlastEntities.DIAMOND_TRIGGER_BOMB
+                BlastEntities.DIAMOND_BOMB,
+                BlastEntities.DIAMOND_TRIGGER_BOMB,
+                BlastEntities.NAVAL_MINE,
+                BlastEntities.CONFETTI_BOMB,
+                BlastEntities.CONFETTI_TRIGGER_BOMB
         );
         registerBlockEntityRender(BlastEntities.GUNPOWDER_BLOCK, e -> BlastBlocks.GUNPOWDER_BLOCK.getDefaultState());
         registerBlockEntityRender(BlastEntities.STRIPMINER, StripminerEntity::getState);

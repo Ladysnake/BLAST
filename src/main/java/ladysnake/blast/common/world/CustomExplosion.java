@@ -47,18 +47,18 @@ import java.util.Random;
 import java.util.Set;
 
 public class CustomExplosion extends Explosion {
-    private final Explosion.DestructionType blockDestructionType;
-    private final Random random;
-    private final World world;
-    private final double x;
-    private final double y;
-    private final double z;
-    private final Entity entity;
-    private final float power;
-    private final BlockBreakEffect effect;
-    private final DamageSource damageSource;
-    private final List<BlockPos> affectedBlocks;
-    private final Map<PlayerEntity, Vec3d> affectedPlayers;
+    public final Explosion.DestructionType blockDestructionType;
+    public final Random random;
+    public final World world;
+    public final double x;
+    public final double y;
+    public final double z;
+    public final Entity entity;
+    public final float power;
+    public final BlockBreakEffect effect;
+    public final DamageSource damageSource;
+    public final List<BlockPos> affectedBlocks;
+    public final Map<PlayerEntity, Vec3d> affectedPlayers;
 
     public CustomExplosion(World world, Entity entity, double x, double y, double z, float power, BlockBreakEffect effect, Explosion.DestructionType destructionType) {
         super(world, entity, null, null, x, y, z, power, false, destructionType);

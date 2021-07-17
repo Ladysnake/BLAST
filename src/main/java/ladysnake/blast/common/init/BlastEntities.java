@@ -1,15 +1,6 @@
 package ladysnake.blast.common.init;
 
-import ladysnake.blast.common.entity.BombEntity;
-import ladysnake.blast.common.entity.ColdDiggerEntity;
-import ladysnake.blast.common.entity.DiamondBombEntity;
-import ladysnake.blast.common.entity.DiamondTriggerBombEntity;
-import ladysnake.blast.common.entity.GoldenBombEntity;
-import ladysnake.blast.common.entity.GoldenTriggerBombEntity;
-import ladysnake.blast.common.entity.GunpowderBlockEntity;
-import ladysnake.blast.common.entity.NavalMineEntity;
-import ladysnake.blast.common.entity.StripminerEntity;
-import ladysnake.blast.common.entity.TriggerBombEntity;
+import ladysnake.blast.common.entity.*;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -21,12 +12,14 @@ import static ladysnake.blast.common.Blast.MODID;
 public class BlastEntities {
 
     public static EntityType<BombEntity> BOMB;
-    public static EntityType<BombEntity> GOLDEN_BOMB;
-    public static EntityType<BombEntity> DIAMOND_BOMB;
-    public static EntityType<BombEntity> NAVAL_MINE;
     public static EntityType<BombEntity> TRIGGER_BOMB;
+    public static EntityType<BombEntity> GOLDEN_BOMB;
     public static EntityType<BombEntity> GOLDEN_TRIGGER_BOMB;
+    public static EntityType<BombEntity> DIAMOND_BOMB;
     public static EntityType<BombEntity> DIAMOND_TRIGGER_BOMB;
+    public static EntityType<BombEntity> NAVAL_MINE;
+    public static EntityType<BombEntity> CONFETTI_BOMB;
+    public static EntityType<BombEntity> CONFETTI_TRIGGER_BOMB;
 
     public static EntityType<GunpowderBlockEntity> GUNPOWDER_BLOCK;
     public static EntityType<StripminerEntity> STRIPMINER;
@@ -35,12 +28,14 @@ public class BlastEntities {
     public static void init() {
         // throwable explosives
         BOMB = register("bomb", createBombEntityType(BombEntity::new));
-        GOLDEN_BOMB = register("golden_bomb", createBombEntityType(GoldenBombEntity::new));
-        DIAMOND_BOMB = register("diamond_bomb", createBombEntityType(DiamondBombEntity::new));
-        NAVAL_MINE = register("naval_mine", createBombEntityType(NavalMineEntity::new));
         TRIGGER_BOMB = register("trigger_bomb", createBombEntityType(TriggerBombEntity::new));
+        GOLDEN_BOMB = register("golden_bomb", createBombEntityType(GoldenBombEntity::new));
         GOLDEN_TRIGGER_BOMB = register("golden_trigger_bomb", createBombEntityType(GoldenTriggerBombEntity::new));
+        DIAMOND_BOMB = register("diamond_bomb", createBombEntityType(DiamondBombEntity::new));
         DIAMOND_TRIGGER_BOMB = register("diamond_trigger_bomb", createBombEntityType(DiamondTriggerBombEntity::new));
+        NAVAL_MINE = register("naval_mine", createBombEntityType(NavalMineEntity::new));
+        CONFETTI_BOMB = register("confetti_bomb", createBombEntityType(ConfettiBombEntity::new));
+        CONFETTI_TRIGGER_BOMB = register("confetti_trigger_bomb", createBombEntityType(ConfettiTriggerBombEntity::new));
 
         // explosive blocks
         GUNPOWDER_BLOCK = register("gunpowder_block", FabricEntityTypeBuilder.<GunpowderBlockEntity>create(SpawnGroup.MISC, GunpowderBlockEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build());
