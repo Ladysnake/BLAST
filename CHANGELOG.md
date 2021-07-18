@@ -1,5 +1,11 @@
 # BLAST - Changelog
 
+### BLAST 1.7 - 1.17.1
+- Added confetti bombs, exists in fuse and trigger variants
+    - Explodes into a burst of confetti! Perfect for all your festive needs!
+    - Crafted shapelessly from 7 paper, 1 gunpowder and 1 string / dust (fuse / trigger)
+- Updated to 1.17.1
+
 ### BLAST 1.6.2 - 1.17
 - Fixed an issue that would cause the dry ice particles to not display properly
 - Updated to 1.17, thanks to Spiralhalo!

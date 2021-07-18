@@ -131,27 +131,31 @@ public class ConfettiParticle extends SpriteBillboardParticle {
         if (this.age++ >= this.maxAge) {
             this.markDead();
         } else {
-            if (this.world.getFluidState(new BlockPos(this.x, this.y - 0.01, this.z)).isIn(FluidTags.WATER)) {
-                this.onGround = true;
-                this.velocityY = 0;
+            if (this.world.getFluidState(new BlockPos(this.x, this.y + 0.2, this.z)).isEmpty()) {
+                if (this.world.getFluidState(new BlockPos(this.x, this.y - 0.01, this.z)).isIn(FluidTags.WATER)) {
+                    this.onGround = true;
+                    this.velocityY = 0;
+                } else {
+                    this.velocityY -= 0.04D * (double) this.gravityStrength;
+                    this.move(this.velocityX, this.velocityY, this.velocityZ);
+                    if (this.field_28787 && this.y == this.prevPosY) {
+                        this.velocityX *= 1.1D;
+                        this.velocityZ *= 1.1D;
+                    }
+
+                    this.velocityX *= this.field_28786;
+                    this.velocityY *= this.field_28786;
+                    this.velocityZ *= this.field_28786;
+
+                    this.field_28786 = Math.min(0.98f, this.field_28786 * 1.15f);
+
+                    if (this.onGround) {
+                        this.velocityX *= 0.699999988079071D;
+                        this.velocityZ *= 0.699999988079071D;
+                    }
+                }
             } else {
-                this.velocityY -= 0.04D * (double) this.gravityStrength;
-                this.move(this.velocityX, this.velocityY, this.velocityZ);
-                if (this.field_28787 && this.y == this.prevPosY) {
-                    this.velocityX *= 1.1D;
-                    this.velocityZ *= 1.1D;
-                }
-
-                this.velocityX *= this.field_28786;
-                this.velocityY *= this.field_28786;
-                this.velocityZ *= this.field_28786;
-
-                this.field_28786 = Math.min(0.98f, this.field_28786 * 1.15f);
-
-                if (this.onGround) {
-                    this.velocityX *= 0.699999988079071D;
-                    this.velocityZ *= 0.699999988079071D;
-                }
+                this.markDead();
             }
         }
     }
