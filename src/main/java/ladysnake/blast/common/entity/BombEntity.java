@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -74,6 +75,12 @@ public class BombEntity extends ThrownItemEntity {
 
         // tick down the fuse, then blow up
         if (this.getTriggerType() == BombTriggerType.FUSE) {
+            // smoke particle for lit fuse
+            if (this.world.isClient) {
+                this.world.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY()+0.3, this.getZ(), 0, 0, 0);
+            }
+
+            // shorten the fuse
             this.setFuse(this.getFuse() - 1);
             if (this.getFuse() <= 0) {
                 this.explode();
