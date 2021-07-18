@@ -39,6 +39,10 @@ public class ConfettiBombEntity extends BombEntity {
         if (this.world.isClient) {
             world.playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1.0f, 1.5f, false);
 
+            for (int i = 0; i < 15; i++) {
+                world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), random.nextGaussian()/10f, Math.abs(random.nextGaussian()/10f), random.nextGaussian()/10f);
+            }
+
             for (int i = 0; i < 500; i++) {
                 world.addParticle(BlastClient.CONFETTI, this.getX(), this.getY(), this.getZ(), random.nextGaussian()/8f, Math.abs(random.nextGaussian()/8f), random.nextGaussian()/8f);
             }
