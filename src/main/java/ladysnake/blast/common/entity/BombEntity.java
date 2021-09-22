@@ -2,11 +2,7 @@ package ladysnake.blast.common.entity;
 
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.TntEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -27,15 +23,18 @@ import net.minecraft.world.explosion.Explosion;
 public class BombEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(TntEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private int fuseTimer;
+    private int ticksUntilRemoval;
 
     public BombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
         this.setFuse(40);
+        this.ticksUntilRemoval = -1;
     }
 
     public BombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, livingEntity, world);
         this.setFuse(40);
+        this.ticksUntilRemoval = -1;
     }
 
     protected Item getDefaultItem() {
@@ -52,20 +51,30 @@ public class BombEntity extends ThrownItemEntity {
 
     @Override
     protected void onCollision(HitResult hitResult) {
-        if (hitResult.getType() == HitResult.Type.ENTITY) {
-            Entity entity = ((EntityHitResult) hitResult).getEntity();
-            entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), this.getDirectHitDamage());
-        }
+        if (this.age >1) {
+            if (hitResult.getType() == HitResult.Type.ENTITY) {
+                Entity entity = ((EntityHitResult) hitResult).getEntity();
+                entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), this.getDirectHitDamage());
+            }
 
-        this.setVelocity(0, 0, 0);
-        if (this.getTriggerType() == BombTriggerType.IMPACT) {
-            this.explode();
+            this.setVelocity(0, 0, 0);
+            if (this.getTriggerType() == BombTriggerType.IMPACT) {
+                this.explode();
+            }
         }
     }
+
 
     @Override
     public void tick() {
         super.tick();
+
+        if (this.ticksUntilRemoval > 0) {
+            ticksUntilRemoval--;
+            if (ticksUntilRemoval <= 0) {
+                this.remove(RemovalReason.DISCARDED);
+            }
+        }
 
         // drop item if in water
         if (this.isSubmergedInWater() && this.disableInLiquid()) {
@@ -77,7 +86,7 @@ public class BombEntity extends ThrownItemEntity {
         if (this.getTriggerType() == BombTriggerType.FUSE) {
             // smoke particle for lit fuse
             if (this.world.isClient) {
-                this.world.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY()+0.3, this.getZ(), 0, 0, 0);
+                this.world.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.3, this.getZ(), 0, 0, 0);
             }
 
             // shorten the fuse
@@ -89,16 +98,19 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     public void explode() {
-        this.remove(RemovalReason.DISCARDED);
-        CustomExplosion explosion = this.getExplosion();
-        explosion.collectBlocksAndDamageEntities();
-        explosion.affectWorld(true);
+        if (this.ticksUntilRemoval == -1) {
+            this.ticksUntilRemoval = 2;
 
-        if (!this.world.isClient()) {
-            for (net.minecraft.entity.player.PlayerEntity playerEntity : this.world.getPlayers()) {
-                ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
-                if (serverPlayerEntity.squaredDistanceTo(this.getX(), this.getY(), this.getZ()) < 4096.0D) {
-                    serverPlayerEntity.networkHandler.sendPacket(new ExplosionS2CPacket(this.getX(), this.getY(), this.getZ(), explosion.getPower(), explosion.getAffectedBlocks(), (Vec3d) explosion.getAffectedPlayers().get(serverPlayerEntity)));
+            CustomExplosion explosion = this.getExplosion();
+            explosion.collectBlocksAndDamageEntities();
+            explosion.affectWorld(true);
+
+            if (!this.world.isClient()) {
+                for (net.minecraft.entity.player.PlayerEntity playerEntity : this.world.getPlayers()) {
+                    ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
+                    if (serverPlayerEntity.squaredDistanceTo(this.getX(), this.getY(), this.getZ()) < 4096.0D) {
+                        serverPlayerEntity.networkHandler.sendPacket(new ExplosionS2CPacket(this.getX(), this.getY(), this.getZ(), explosion.getPower(), explosion.getAffectedBlocks(), (Vec3d) explosion.getAffectedPlayers().get(serverPlayerEntity)));
+                    }
                 }
             }
         }
