@@ -7,7 +7,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
@@ -38,11 +37,11 @@ public class ConfettiBombEntity extends BombEntity {
     public void explode() {
         if (this.world.isClient) {
             for (int i = 0; i < 15; i++) {
-                world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), random.nextGaussian()/10f, Math.abs(random.nextGaussian()/10f), random.nextGaussian()/10f);
+                world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 10f, Math.abs(random.nextGaussian() / 10f), random.nextGaussian() / 10f);
             }
 
             for (int i = 0; i < 500; i++) {
-                world.addParticle(BlastClient.CONFETTI, this.getX(), this.getY(), this.getZ(), random.nextGaussian()/8f, Math.abs(random.nextGaussian()/8f), random.nextGaussian()/8f);
+                world.addParticle(BlastClient.CONFETTI, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
             }
 
             this.remove(RemovalReason.DISCARDED);

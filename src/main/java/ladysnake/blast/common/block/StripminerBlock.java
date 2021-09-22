@@ -1,11 +1,7 @@
 package ladysnake.blast.common.block;
 
 import ladysnake.blast.common.entity.StripminerEntity;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -39,6 +35,20 @@ public class StripminerBlock extends Block {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
         this.type = type;
+    }
+
+    public static void primeStripminer(World world, BlockPos pos) {
+        primeStripminer(world, pos, null);
+    }
+
+    private static void primeStripminer(World world, BlockPos pos, LivingEntity igniter) {
+        if (!world.isClient && world.getBlockState(pos).getBlock() instanceof StripminerBlock) {
+            StripminerEntity entity = ((StripminerBlock) world.getBlockState(pos).getBlock()).type.create(world);
+            entity.setFacing(world.getBlockState(pos).get(FACING));
+            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+            world.spawnEntity(entity);
+            world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        }
     }
 
     @Override
@@ -89,20 +99,6 @@ public class StripminerBlock extends Block {
             StripminerEntity entity = this.type.create(world);
             entity.setFacing(randomDirection);
             entity.setFuse((short) (world.random.nextInt(entity.getFuseTimer() / 4) + entity.getFuseTimer() / 8));
-            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-            world.spawnEntity(entity);
-            world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        }
-    }
-
-    public static void primeStripminer(World world, BlockPos pos) {
-        primeStripminer(world, pos, null);
-    }
-
-    private static void primeStripminer(World world, BlockPos pos, LivingEntity igniter) {
-        if (!world.isClient && world.getBlockState(pos).getBlock() instanceof StripminerBlock) {
-            StripminerEntity entity = ((StripminerBlock) world.getBlockState(pos).getBlock()).type.create(world);
-            entity.setFacing(world.getBlockState(pos).get(FACING));
             entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
             world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);

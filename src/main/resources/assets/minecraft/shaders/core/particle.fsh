@@ -17,7 +17,7 @@ out vec4 fragColor;
 
 void main() {
     vec4 color = texture(Sampler0, texCoord0) * vertexColor * ColorModulator;
-//    Mojang stole my fucking smooth fading. I opened my mod an no more fading. Can't have shit in Minecraft.
+    //    Mojang stole my fucking smooth fading. I opened my mod an no more fading. Can't have shit in Minecraft.
     if (color.a < 0.000001) {
         discard;
     }

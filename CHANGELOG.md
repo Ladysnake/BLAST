@@ -1,5 +1,10 @@
 # BLAST - Changelog
 
+### BLAST 1.8 - 1.17.1
+- Added pillow bombs, crafted from a feather, a wool block and euit
+- Fixed an issue that caused trigger bombs to explode with the player right after throwing them while running or flying
+- Fixed an issue that caused bomb explosions to not always affect entities with the knockback they should
+
 ### BLAST 1.7 - 1.17.1
 - Added confetti bombs, exists in fuse and trigger variants
     - Explodes into a burst of confetti! Perfect for all your festive needs!

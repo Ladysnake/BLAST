@@ -2,7 +2,6 @@ package ladysnake.blast.common.entity;
 
 import ladysnake.blast.client.BlastClient;
 import ladysnake.blast.common.init.BlastItems;
-import ladysnake.blast.common.world.CustomExplosion;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -11,7 +10,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 
 public class ConfettiTriggerBombEntity extends TriggerBombEntity {
     public ConfettiTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world) {
@@ -39,11 +37,11 @@ public class ConfettiTriggerBombEntity extends TriggerBombEntity {
     public void explode() {
         if (this.world.isClient) {
             for (int i = 0; i < 15; i++) {
-                world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), random.nextGaussian()/10f, Math.abs(random.nextGaussian()/10f), random.nextGaussian()/10f);
+                world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 10f, Math.abs(random.nextGaussian() / 10f), random.nextGaussian() / 10f);
             }
 
             for (int i = 0; i < 500; i++) {
-                world.addParticle(BlastClient.CONFETTI, this.getX(), this.getY(), this.getZ(), random.nextGaussian()/8f, Math.abs(random.nextGaussian()/8f), random.nextGaussian()/8f);
+                world.addParticle(BlastClient.CONFETTI, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
             }
 
             this.remove(RemovalReason.DISCARDED);

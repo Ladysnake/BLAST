@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "minecraft:wool"
+    }
+  ],
+  "result": {
+    "item": "blast:golden_bomb",
+    "count": 4
+  }
+}

@@ -7,20 +7,11 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
-import net.minecraft.block.AbstractFireBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FluidFillable;
-import net.minecraft.block.PillarBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.ProtectionEnchantment;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ExperienceOrbEntity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.TntEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -40,11 +31,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class CustomExplosion extends Explosion {
     public final Explosion.DestructionType blockDestructionType;
@@ -74,6 +61,24 @@ public class CustomExplosion extends Explosion {
         this.z = z;
         this.blockDestructionType = destructionType;
         this.damageSource = DamageSource.explosion(this);
+    }
+
+    private static void method_24023(ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList, ItemStack itemStack, BlockPos blockPos) {
+        int i = objectArrayList.size();
+
+        for (int j = 0; j < i; ++j) {
+            Pair<ItemStack, BlockPos> pair = objectArrayList.get(j);
+            ItemStack itemStack2 = pair.getFirst();
+            if (ItemEntity.canMerge(itemStack2, itemStack)) {
+                ItemStack itemStack3 = ItemEntity.merge(itemStack2, itemStack, 16);
+                objectArrayList.set(j, Pair.of(itemStack3, pair.getSecond()));
+                if (itemStack.isEmpty()) {
+                    return;
+                }
+            }
+        }
+
+        objectArrayList.add(Pair.of(itemStack, blockPos));
     }
 
     public float getPower() {
@@ -293,24 +298,6 @@ public class CustomExplosion extends Explosion {
                 }
             }
         }
-    }
-
-    private static void method_24023(ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList, ItemStack itemStack, BlockPos blockPos) {
-        int i = objectArrayList.size();
-
-        for (int j = 0; j < i; ++j) {
-            Pair<ItemStack, BlockPos> pair = objectArrayList.get(j);
-            ItemStack itemStack2 = pair.getFirst();
-            if (ItemEntity.canMerge(itemStack2, itemStack)) {
-                ItemStack itemStack3 = ItemEntity.merge(itemStack2, itemStack, 16);
-                objectArrayList.set(j, Pair.of(itemStack3, pair.getSecond()));
-                if (itemStack.isEmpty()) {
-                    return;
-                }
-            }
-        }
-
-        objectArrayList.add(Pair.of(itemStack, blockPos));
     }
 
     public enum BlockBreakEffect {

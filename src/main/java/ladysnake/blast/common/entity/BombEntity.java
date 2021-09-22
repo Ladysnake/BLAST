@@ -51,7 +51,7 @@ public class BombEntity extends ThrownItemEntity {
 
     @Override
     protected void onCollision(HitResult hitResult) {
-        if (this.age >1) {
+        if (this.age > 1) {
             if (hitResult.getType() == HitResult.Type.ENTITY) {
                 Entity entity = ((EntityHitResult) hitResult).getEntity();
                 entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), this.getDirectHitDamage());
@@ -124,16 +124,6 @@ public class BombEntity extends ThrownItemEntity {
         return BombTriggerType.FUSE;
     }
 
-    public enum BombTriggerType {
-        FUSE,
-        IMPACT
-    }
-
-    public void setFuse(int int_1) {
-        this.dataTracker.set(FUSE, int_1);
-        this.fuseTimer = int_1;
-    }
-
     public void onTrackedDataSet(TrackedData<?> trackedData_1) {
         if (FUSE.equals(trackedData_1)) {
             this.fuseTimer = this.getFuse();
@@ -142,6 +132,11 @@ public class BombEntity extends ThrownItemEntity {
 
     public int getFuse() {
         return this.dataTracker.get(FUSE);
+    }
+
+    public void setFuse(int int_1) {
+        this.dataTracker.set(FUSE, int_1);
+        this.fuseTimer = int_1;
     }
 
     public int getFuseTimer() {
@@ -165,5 +160,10 @@ public class BombEntity extends ThrownItemEntity {
     @Override
     protected ItemStack getItem() {
         return new ItemStack(this.getDefaultItem());
+    }
+
+    public enum BombTriggerType {
+        FUSE,
+        IMPACT
     }
 }

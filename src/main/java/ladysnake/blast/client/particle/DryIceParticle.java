@@ -2,11 +2,7 @@ package ladysnake.blast.client.particle;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.particle.SpriteBillboardParticle;
-import net.minecraft.client.particle.SpriteProvider;
+import net.minecraft.client.particle.*;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
@@ -39,19 +35,6 @@ public class DryIceParticle extends SpriteBillboardParticle {
 
     public ParticleTextureSheet getType() {
         return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static class DefaultFactory implements ParticleFactory<DefaultParticleType> {
-        private final SpriteProvider spriteProvider;
-
-        public DefaultFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
-        public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-            return new DryIceParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider);
-        }
     }
 
     @Override
@@ -88,5 +71,18 @@ public class DryIceParticle extends SpriteBillboardParticle {
         }
 
         this.move(velocityX, -velocityY, velocityZ);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static class DefaultFactory implements ParticleFactory<DefaultParticleType> {
+        private final SpriteProvider spriteProvider;
+
+        public DefaultFactory(SpriteProvider spriteProvider) {
+            this.spriteProvider = spriteProvider;
+        }
+
+        public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
+            return new DryIceParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider);
+        }
     }
 }

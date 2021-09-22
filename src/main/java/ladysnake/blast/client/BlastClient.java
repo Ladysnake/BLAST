@@ -33,17 +33,6 @@ public class BlastClient implements ClientModInitializer {
     public static DefaultParticleType DRY_ICE;
     public static DefaultParticleType CONFETTI;
 
-    @Override
-    public void onInitializeClient() {
-        registerRenders();
-
-        // particles
-        DRY_ICE = Registry.register(Registry.PARTICLE_TYPE, "blast:dry_ice", FabricParticleTypes.simple(true));
-        ParticleFactoryRegistry.getInstance().register(DRY_ICE, DryIceParticle.DefaultFactory::new);
-        CONFETTI = Registry.register(Registry.PARTICLE_TYPE, "blast:confetti", FabricParticleTypes.simple(true));
-        ParticleFactoryRegistry.getInstance().register(CONFETTI, ConfettiParticle.DefaultFactory::new);
-    }
-
     public static void registerRenders() {
         registerItemEntityRenders(
                 BlastEntities.BOMB,
@@ -54,7 +43,9 @@ public class BlastClient implements ClientModInitializer {
                 BlastEntities.DIAMOND_TRIGGER_BOMB,
                 BlastEntities.NAVAL_MINE,
                 BlastEntities.CONFETTI_BOMB,
-                BlastEntities.CONFETTI_TRIGGER_BOMB
+                BlastEntities.CONFETTI_TRIGGER_BOMB,
+                BlastEntities.PILLOW_BOMB,
+                BlastEntities.PILLOW_TRIGGER_BOMB
         );
         registerBlockEntityRender(BlastEntities.GUNPOWDER_BLOCK, e -> BlastBlocks.GUNPOWDER_BLOCK.getDefaultState());
         registerBlockEntityRender(BlastEntities.STRIPMINER, StripminerEntity::getState);
@@ -79,5 +70,16 @@ public class BlastClient implements ClientModInitializer {
 
     private static <T extends BombEntity> void registerBlockEntityRender(EntityType<T> block, Function<T, BlockState> stateGetter) {
         EntityRendererRegistry.INSTANCE.register(block, ctx -> new BlastBlockEntityRenderer<>(ctx, stateGetter));
+    }
+
+    @Override
+    public void onInitializeClient() {
+        registerRenders();
+
+        // particles
+        DRY_ICE = Registry.register(Registry.PARTICLE_TYPE, "blast:dry_ice", FabricParticleTypes.simple(true));
+        ParticleFactoryRegistry.getInstance().register(DRY_ICE, DryIceParticle.DefaultFactory::new);
+        CONFETTI = Registry.register(Registry.PARTICLE_TYPE, "blast:confetti", FabricParticleTypes.simple(true));
+        ParticleFactoryRegistry.getInstance().register(CONFETTI, ConfettiParticle.DefaultFactory::new);
     }
 }

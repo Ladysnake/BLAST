@@ -62,19 +62,6 @@ public class ConfettiParticle extends SpriteBillboardParticle {
         return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    @Environment(EnvType.CLIENT)
-    public static class DefaultFactory implements ParticleFactory<DefaultParticleType> {
-        private final SpriteProvider spriteProvider;
-
-        public DefaultFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
-        public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-            return new ConfettiParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider);
-        }
-    }
-
     @Override
     public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
         Vec3d vec3d = camera.getPos();
@@ -157,6 +144,19 @@ public class ConfettiParticle extends SpriteBillboardParticle {
             } else {
                 this.markDead();
             }
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static class DefaultFactory implements ParticleFactory<DefaultParticleType> {
+        private final SpriteProvider spriteProvider;
+
+        public DefaultFactory(SpriteProvider spriteProvider) {
+            this.spriteProvider = spriteProvider;
+        }
+
+        public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
+            return new ConfettiParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider);
         }
     }
 }

@@ -18,11 +18,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 public class StripminerEntity extends BombEntity {
+    protected static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, Blast.FACING);
+
     static {
         DataTracker.registerData(StripminerEntity.class, Blast.FACING);
     }
-
-    protected static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, Blast.FACING);
 
     protected BlockState cachedState;
 
@@ -56,6 +56,10 @@ public class StripminerEntity extends BombEntity {
         return this.dataTracker.get(FACING);
     }
 
+    public void setFacing(Direction facing) {
+        this.dataTracker.set(FACING, facing);
+    }
+
     @Override
     public void onTrackedDataSet(TrackedData<?> trackedData) {
         super.onTrackedDataSet(trackedData);
@@ -70,10 +74,6 @@ public class StripminerEntity extends BombEntity {
             this.cachedState = BlastBlocks.STRIPMINER.getDefaultState().with(StripminerBlock.FACING, this.getFacing());
         }
         return this.cachedState;
-    }
-
-    public void setFacing(Direction facing) {
-        this.dataTracker.set(FACING, facing);
     }
 
     @Override

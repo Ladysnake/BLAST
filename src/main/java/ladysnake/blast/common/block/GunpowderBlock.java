@@ -2,11 +2,7 @@ package ladysnake.blast.common.block;
 
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.init.BlastEntities;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -32,6 +28,20 @@ public class GunpowderBlock extends FallingBlock {
     public GunpowderBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(LIT, false));
+    }
+
+    public static void explode(World world, BlockPos pos) {
+        explode(world, pos, (LivingEntity) null);
+    }
+
+    private static void explode(World world, BlockPos pos, LivingEntity igniter) {
+        world.removeBlock(pos, false);
+
+        if (!world.isClient) {
+            BombEntity entity = BlastEntities.GUNPOWDER_BLOCK.create(world);
+            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+            world.spawnEntity(entity);
+        }
     }
 
     @Override
@@ -105,20 +115,6 @@ public class GunpowderBlock extends FallingBlock {
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(LIT);
-    }
-
-    public static void explode(World world, BlockPos pos) {
-        explode(world, pos, (LivingEntity) null);
-    }
-
-    private static void explode(World world, BlockPos pos, LivingEntity igniter) {
-        world.removeBlock(pos, false);
-
-        if (!world.isClient) {
-            BombEntity entity = BlastEntities.GUNPOWDER_BLOCK.create(world);
-            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-            world.spawnEntity(entity);
-        }
     }
 
 }
