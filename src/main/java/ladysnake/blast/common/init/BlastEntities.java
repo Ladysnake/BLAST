@@ -32,14 +32,14 @@ public class BlastEntities {
         BOMB = register("bomb", createBombEntityType(BombEntity::new));
         TRIGGER_BOMB = register("trigger_bomb", createBombEntityType(TriggerBombEntity::new));
         GOLDEN_BOMB = register("golden_bomb", createBombEntityType(GoldenBombEntity::new));
-        GOLDEN_TRIGGER_BOMB = register("golden_trigger_bomb", createBombEntityType(PillowTriggerBombEntity::new));
+        GOLDEN_TRIGGER_BOMB = register("golden_trigger_bomb", createBombEntityType(GoldenTriggerBombEntity::new));
         DIAMOND_BOMB = register("diamond_bomb", createBombEntityType(DiamondBombEntity::new));
         DIAMOND_TRIGGER_BOMB = register("diamond_trigger_bomb", createBombEntityType(DiamondTriggerBombEntity::new));
         NAVAL_MINE = register("naval_mine", createBombEntityType(NavalMineEntity::new));
         CONFETTI_BOMB = register("confetti_bomb", createBombEntityType(ConfettiBombEntity::new));
         CONFETTI_TRIGGER_BOMB = register("confetti_trigger_bomb", createBombEntityType(ConfettiTriggerBombEntity::new));
-        PILLOW_BOMB = register("pillow_bomb", createBombEntityType(PillowBombEntity::new));
-        PILLOW_TRIGGER_BOMB = register("pillow_trigger_bomb", createBombEntityType(PillowTriggerBombEntity::new));
+//        PILLOW_BOMB = register("pillow_bomb", createBombEntityType(PillowBombEntity::new));
+//        PILLOW_TRIGGER_BOMB = register("pillow_trigger_bomb", createBombEntityType(PillowTriggerBombEntity::new));
 
         // explosive blocks
         GUNPOWDER_BLOCK = register("gunpowder_block", FabricEntityTypeBuilder.<GunpowderBlockEntity>create(SpawnGroup.MISC, GunpowderBlockEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build());
