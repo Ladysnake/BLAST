@@ -48,7 +48,7 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     protected CustomExplosion getExplosion() {
-        if (this.getBombardModifier() != null) {
+        if (this.getBombardModifier() != BombardModifier.NONE) {
             if (this.getBombardModifier() == BombardModifier.NORMAL) {
                 return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.NONE);
             } else if (this.getBombardModifier() == BombardModifier.SLIME) {
@@ -84,7 +84,7 @@ public class BombEntity extends ThrownItemEntity {
             this.setPosition(this.prevX, this.prevY, this.prevZ);
         }
 
-        if (this.world.isClient() && getBombardModifier() != null && age < 10) {
+        if (this.world.isClient() && getBombardModifier() != BombardModifier.NONE && age < 10) {
             for (int i = 0; i < (50 - this.age*5); i++) {
                 this.world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian()/(age*5), this.random.nextGaussian()/(age*5), this.random.nextGaussian()/(age*5));
             }
@@ -177,7 +177,7 @@ public class BombEntity extends ThrownItemEntity {
 
     protected void initDataTracker() {
         this.dataTracker.startTracking(FUSE, 40);
-        this.dataTracker.startTracking(BOMBARD_MODIFIER, null);
+        this.dataTracker.startTracking(BOMBARD_MODIFIER, BombardModifier.NONE.toString());
     }
 
     @Override
@@ -201,6 +201,7 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     public enum BombardModifier {
+        NONE,
         NORMAL,
         SLIME
     }
