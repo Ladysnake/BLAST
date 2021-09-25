@@ -1,4 +1,4 @@
-package ladysnake.blast.common.items;
+package ladysnake.blast.common.item;
 
 import ladysnake.blast.common.entity.BombEntity;
 import net.minecraft.entity.EntityType;

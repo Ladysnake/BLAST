@@ -20,8 +20,6 @@ public class BlastEntities {
     public static EntityType<BombEntity> NAVAL_MINE;
     public static EntityType<BombEntity> CONFETTI_BOMB;
     public static EntityType<BombEntity> CONFETTI_TRIGGER_BOMB;
-    public static EntityType<BombEntity> PILLOW_BOMB;
-    public static EntityType<BombEntity> PILLOW_TRIGGER_BOMB;
 
     public static EntityType<GunpowderBlockEntity> GUNPOWDER_BLOCK;
     public static EntityType<StripminerEntity> STRIPMINER;

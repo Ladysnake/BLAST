@@ -2,6 +2,7 @@ package ladysnake.blast.common.entity;
 
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
+import ladysnake.blast.common.world.KnockbackExplosion;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
@@ -21,7 +22,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 public class BombEntity extends ThrownItemEntity {
-    private static final TrackedData<Integer> FUSE = DataTracker.registerData(TntEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Integer> FUSE = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<String> BOMBARD_MODIFIER = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.STRING);
     private int fuseTimer;
     private int ticksUntilRemoval;
 
@@ -46,18 +48,27 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     protected CustomExplosion getExplosion() {
+        if (this.getBombardModifier() != null) {
+            if (this.getBombardModifier() == BombardModifier.NORMAL) {
+                return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.NONE);
+            } else if (this.getBombardModifier() == BombardModifier.SLIME) {
+                return new KnockbackExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 3f);
+            }
+        }
+
         return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.BREAK);
     }
 
     @Override
     protected void onCollision(HitResult hitResult) {
         if (this.age > 1) {
-            if (hitResult.getType() == HitResult.Type.ENTITY) {
-                Entity entity = ((EntityHitResult) hitResult).getEntity();
-                entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), this.getDirectHitDamage());
-            }
+//            if (hitResult.getType() == HitResult.Type.ENTITY) {
+//                Entity entity = ((EntityHitResult) hitResult).getEntity();
+//                entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), this.getDirectHitDamage());
+//            }
 
             this.setVelocity(0, 0, 0);
+
             if (this.getTriggerType() == BombTriggerType.IMPACT) {
                 this.explode();
             }
@@ -68,6 +79,16 @@ public class BombEntity extends ThrownItemEntity {
     @Override
     public void tick() {
         super.tick();
+
+        if (this.world.getBlockState(this.getBlockPos()).isFullCube(this.world, this.getBlockPos())) {
+            this.setPosition(this.prevX, this.prevY, this.prevZ);
+        }
+
+        if (this.world.isClient() && getBombardModifier() != null && age < 10) {
+            for (int i = 0; i < (50 - this.age*5); i++) {
+                this.world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian()/(age*5), this.random.nextGaussian()/(age*5), this.random.nextGaussian()/(age*5));
+            }
+        }
 
         if (this.ticksUntilRemoval > 0) {
             ticksUntilRemoval--;
@@ -99,7 +120,7 @@ public class BombEntity extends ThrownItemEntity {
 
     public void explode() {
         if (this.ticksUntilRemoval == -1) {
-            this.ticksUntilRemoval = 2;
+            this.ticksUntilRemoval = 5;
 
             CustomExplosion explosion = this.getExplosion();
             explosion.collectBlocksAndDamageEntities();
@@ -143,8 +164,20 @@ public class BombEntity extends ThrownItemEntity {
         return this.fuseTimer;
     }
 
+    public BombardModifier getBombardModifier() {
+        if (this.dataTracker.get(BOMBARD_MODIFIER) == null) {
+            return null;
+        }
+        return BombardModifier.valueOf(this.dataTracker.get(BOMBARD_MODIFIER));
+    }
+
+    public void setBombardModifier(BombardModifier bombardModifier) {
+        this.dataTracker.set(BOMBARD_MODIFIER, bombardModifier.toString());
+    }
+
     protected void initDataTracker() {
         this.dataTracker.startTracking(FUSE, 40);
+        this.dataTracker.startTracking(BOMBARD_MODIFIER, null);
     }
 
     @Override
@@ -165,5 +198,10 @@ public class BombEntity extends ThrownItemEntity {
     public enum BombTriggerType {
         FUSE,
         IMPACT
+    }
+
+    public enum BombardModifier {
+        NORMAL,
+        SLIME
     }
 }

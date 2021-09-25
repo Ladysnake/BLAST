@@ -1,4 +1,4 @@
-package ladysnake.blast.common.items;
+package ladysnake.blast.common.item;
 
 import ladysnake.blast.common.entity.BombEntity;
 import net.minecraft.entity.EntityType;
@@ -7,13 +7,13 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 
-public class PulverisItem extends BombItem {
-    public PulverisItem(Settings settings, EntityType<BombEntity> entityType) {
+public class TriggerBombItem extends BombItem {
+    public TriggerBombItem(Settings settings, EntityType<BombEntity> entityType) {
         super(settings, entityType);
     }
 
     @Override
     public void playSoundEffects(World world, PlayerEntity playerEntity) {
-        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (playerEntity.getRandom().nextFloat() * 0.4F + 0.8F));
+        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_OFF, SoundCategory.NEUTRAL, 0.8F, 0.5F);
     }
 }

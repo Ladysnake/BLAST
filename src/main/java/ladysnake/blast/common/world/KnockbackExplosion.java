@@ -87,8 +87,8 @@ public class KnockbackExplosion extends CustomExplosion {
         List<Entity> list = this.world.getOtherEntities(this.entity, new Box(k, t, v, l, u, w));
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
-        for (int i = 0; i < 300; i++) {
-            world.addParticle(ParticleTypes.POOF, this.x, this.y, this.z, this.random.nextGaussian()/3, this.random.nextGaussian()/3, this.random.nextGaussian()/3);
+        for (int i = 0; i < 500; i++) {
+            world.addParticle(ParticleTypes.SNEEZE, this.x, this.y, this.z, this.random.nextGaussian()/5, this.random.nextGaussian()/5, this.random.nextGaussian()/5);
         }
 
         for (int x = 0; x < list.size(); ++x) {
