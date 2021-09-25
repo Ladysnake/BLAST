@@ -165,9 +165,6 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     public BombardModifier getBombardModifier() {
-        if (this.dataTracker.get(BOMBARD_MODIFIER) == null) {
-            return null;
-        }
         return BombardModifier.valueOf(this.dataTracker.get(BOMBARD_MODIFIER));
     }
 
