@@ -1,5 +1,8 @@
 # BLAST - Changelog
 
+### BLAST 1.8.1-alpha - 1.17.1
+- Fixed servers crashing when throwing a bomb without a bombard
+
 ### BLAST 1.8-alpha - 1.17.1
 - Added the Bombard! While currently unobtainable in survival, this new weapon allows you to launch bombs and trigger bombs further, while also disabling the block damage they do, in order to use them as weapons and less of a destructive tool.
 - Added the Slime Bombard! Covers the launched bombs in slime that will result in no damage being dealt to the entities in the explosion radius of the bombs, but a stronger knockback. Great for elytra launching but beware of the landing!
