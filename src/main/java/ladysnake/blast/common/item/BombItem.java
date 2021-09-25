@@ -24,23 +24,27 @@ public class BombItem extends Item {
     }
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
-        ItemStack stackInHand = playerEntity.getStackInHand(hand);
+        if (hand == Hand.OFF_HAND && playerEntity.getStackInHand(Hand.MAIN_HAND).getItem() instanceof BombardItem) {
+            return new TypedActionResult<>(ActionResult.PASS, playerEntity.getStackInHand(hand));
+        } else {
+            ItemStack stackInHand = playerEntity.getStackInHand(hand);
 
-        this.playSoundEffects(world, playerEntity);
+            this.playSoundEffects(world, playerEntity);
 
-        if (!world.isClient) {
-            BombEntity entity = Objects.requireNonNull(this.type.create(world));
-            entity.setItem(stackInHand);
-            entity.setProperties(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
-            entity.setPos(playerEntity.getX(), playerEntity.getY() + (double) playerEntity.getStandingEyeHeight() - 0.10000000149011612D, playerEntity.getZ());
-            world.spawnEntity(entity);
+            if (!world.isClient) {
+                BombEntity entity = Objects.requireNonNull(this.type.create(world));
+                entity.setItem(stackInHand);
+                entity.setProperties(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
+                entity.setPos(playerEntity.getX(), playerEntity.getY() + (double) playerEntity.getStandingEyeHeight() - 0.10000000149011612D, playerEntity.getZ());
+                world.spawnEntity(entity);
+            }
+
+            if (!playerEntity.getAbilities().creativeMode) {
+                stackInHand.decrement(1);
+            }
+            playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
+            return new TypedActionResult<>(ActionResult.SUCCESS, stackInHand);
         }
-
-        if (!playerEntity.getAbilities().creativeMode) {
-            stackInHand.decrement(1);
-        }
-        playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
-        return new TypedActionResult<>(ActionResult.SUCCESS, stackInHand);
     }
 
     public EntityType<BombEntity> getType() {

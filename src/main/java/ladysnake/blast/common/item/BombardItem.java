@@ -4,6 +4,7 @@ import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.init.BlastItems;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.item.Vanishable;
@@ -38,8 +39,8 @@ public class BombardItem extends RangedWeaponItem implements Vanishable {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        for (int i = 0; i < user.getInventory().size(); ++i) {
-            ItemStack stackToConsume = user.getInventory().getStack(i);
+        if (hand == Hand.MAIN_HAND && user.getStackInHand(Hand.OFF_HAND).getItem() instanceof BombItem) {
+            ItemStack stackToConsume = user.getInventory().getStack(PlayerInventory.OFF_HAND_SLOT);
             if (getProjectiles().test(stackToConsume)) {
                 BombEntity bomb = BlastEntities.BOMB.create(world);
                 if (stackToConsume.getItem() == BlastItems.TRIGGER_BOMB) {
@@ -63,6 +64,34 @@ public class BombardItem extends RangedWeaponItem implements Vanishable {
                 }
 
                 return TypedActionResult.success(user.getStackInHand(hand), world.isClient());
+            }
+        } else {
+            for (int i = 0; i < user.getInventory().size(); ++i) {
+                ItemStack stackToConsume = user.getInventory().getStack(i);
+                if (getProjectiles().test(stackToConsume)) {
+                    BombEntity bomb = BlastEntities.BOMB.create(world);
+                    if (stackToConsume.getItem() == BlastItems.TRIGGER_BOMB) {
+                        bomb = BlastEntities.TRIGGER_BOMB.create(world);
+                    }
+
+                    bomb.setBombardModifier(this.getBombardModifier());
+                    bomb.setPosition(user.getX(), user.getEyeY() - 0.10000000149011612D, user.getZ());
+                    bomb.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 2F, 1.0F);
+                    user.getItemCooldownManager().set(this, 60);
+
+                    user.getStackInHand(hand).damage(1, user, playerEntity -> playerEntity.sendToolBreakStatus(hand));
+
+                    world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_DRAGON_FIREBALL_EXPLODE, SoundCategory.NEUTRAL, 0.5F, 1.2f / (world.getRandom().nextFloat() * 0.4F + 0.8F));
+                    world.spawnEntity(bomb);
+
+                    user.incrementStat(Stats.USED.getOrCreateStat(this));
+
+                    if (!user.getAbilities().creativeMode) {
+                        stackToConsume.decrement(1);
+                    }
+
+                    return TypedActionResult.success(user.getStackInHand(hand), world.isClient());
+                }
             }
         }
 
