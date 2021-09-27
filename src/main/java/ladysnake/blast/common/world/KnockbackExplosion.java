@@ -3,7 +3,9 @@ package ladysnake.blast.common.world;
 import com.google.common.collect.Sets;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.ProtectionEnchantment;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.particle.ParticleTypes;
@@ -88,7 +90,7 @@ public class KnockbackExplosion extends CustomExplosion {
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
         for (int i = 0; i < 500; i++) {
-            world.addParticle(ParticleTypes.SNEEZE, this.x, this.y, this.z, this.random.nextGaussian()/5, this.random.nextGaussian()/5, this.random.nextGaussian()/5);
+            world.addParticle(ParticleTypes.SNEEZE, this.x, this.y, this.z, this.random.nextGaussian() / 5, this.random.nextGaussian() / 5, this.random.nextGaussian() / 5);
         }
 
         for (int x = 0; x < list.size(); ++x) {

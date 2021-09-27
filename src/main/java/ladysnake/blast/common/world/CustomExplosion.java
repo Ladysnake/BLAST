@@ -63,7 +63,7 @@ public class CustomExplosion extends Explosion {
         this.damageSource = DamageSource.explosion(this);
     }
 
-    private static void method_24023(ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList, ItemStack itemStack, BlockPos blockPos) {
+    public static void method_24023(ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList, ItemStack itemStack, BlockPos blockPos) {
         int i = objectArrayList.size();
 
         for (int j = 0; j < i; ++j) {

@@ -3,8 +3,9 @@ package ladysnake.blast.common.entity;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
 import ladysnake.blast.common.world.KnockbackExplosion;
-import net.minecraft.entity.*;
-import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -15,7 +16,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -25,7 +25,7 @@ public class BombEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<String> BOMBARD_MODIFIER = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.STRING);
     private int fuseTimer;
-    private int ticksUntilRemoval;
+    public int ticksUntilRemoval;
 
     public BombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
@@ -85,8 +85,8 @@ public class BombEntity extends ThrownItemEntity {
         }
 
         if (this.world.isClient() && getBombardModifier() != BombardModifier.NONE && age < 10) {
-            for (int i = 0; i < (50 - this.age*5); i++) {
-                this.world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian()/(age*5), this.random.nextGaussian()/(age*5), this.random.nextGaussian()/(age*5));
+            for (int i = 0; i < (50 - this.age * 5); i++) {
+                this.world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() / (age * 5), this.random.nextGaussian() / (age * 5), this.random.nextGaussian() / (age * 5));
             }
         }
 

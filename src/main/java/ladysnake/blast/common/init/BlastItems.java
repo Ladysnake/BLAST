@@ -30,6 +30,8 @@ public class BlastItems {
     public static Item NAVAL_MINE;
     public static Item CONFETTI_BOMB;
     public static Item CONFETTI_TRIGGER_BOMB;
+    public static Item DIRT_BOMB;
+    public static Item DIRT_TRIGGER_BOMB;
 
     public static void init() {
         BOMBARD = registerItem(new BombardItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(250)), "bombard");
@@ -44,8 +46,8 @@ public class BlastItems {
         NAVAL_MINE = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.NAVAL_MINE), "naval_mine");
         CONFETTI_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.CONFETTI_BOMB), "confetti_bomb");
         CONFETTI_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.CONFETTI_TRIGGER_BOMB), "confetti_trigger_bomb");
-//        PILLOW_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.PILLOW_BOMB), "pillow_bomb");
-//        PILLOW_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.PILLOW_TRIGGER_BOMB), "pillow_trigger_bomb");
+        DIRT_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.DIRT_BOMB), "dirt_bomb");
+        DIRT_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.DIRT_TRIGGER_BOMB), "dirt_trigger_bomb");
     }
 
     public static Item registerItem(Item item, String name) {
