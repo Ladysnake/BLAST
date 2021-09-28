@@ -1,8 +1,12 @@
 # BLAST - Changelog
 
 ### BLAST 1.8-alpha - 1.17.1
-- Added the Bombard! While currently unobtainable in survival, this new weapon allows you to launch bombs and trigger bombs further, while also disabling the block damage they do, in order to use them as weapons and less of a destructive tool.
-- Added the Slime Bombard! Covers the launched bombs in slime that will result in no damage being dealt to the entities in the explosion radius of the bombs, but a stronger knockback. Great for elytra launching but beware of the landing!
+- Added a new item class, the bombards! These new weapons allow you to launch bombs and trigger bombs further, at the cost of disabling their destructive nature. Each bombard type is unique and will transform your bombs into something different!
+    - Bombard: The normal bombard, throws bombs and trigger bombs but disables their block destruction. Crafted from 6 iron blocks on the side, with a cauldron, a piston and a lever in the middle respectively from top to bottom.
+    - Slime Bombard: Obtained by smithing a Bombard with a slime block, this bombard covers the launched bombs in slime that will result in no damage being dealt to the entities in the explosion radius of the bombs, while giving the explosion a stronger knockback. Great for elytra and chicken launching!
+    - Amethyst Bombard: Obtained by smithing a Bombard with an amethyst shard, this bombard will not cause any explosion damage, but will spurt out amethyst shards with cumulative damage.
+    - Frost Bombard: Obtained by smithing an Amethyst Bombard
+- Explosions from Blast will now properly be attributed to the player or entity who threw the bomb
 
 ### BLAST 1.7.1 - 1.17.1
 - Fixed an issue that caused trigger bombs to explode with the player right after throwing them while running or flying

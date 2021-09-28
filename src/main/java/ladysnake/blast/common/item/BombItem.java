@@ -37,6 +37,7 @@ public class BombItem extends Item {
                 entity.setItem(stackInHand);
                 entity.setProperties(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
                 entity.setPos(playerEntity.getX(), playerEntity.getY() + (double) playerEntity.getStandingEyeHeight() - 0.10000000149011612D, playerEntity.getZ());
+                entity.setOwner(playerEntity);
                 world.spawnEntity(entity);
             }
 

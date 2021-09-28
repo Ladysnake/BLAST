@@ -27,7 +27,7 @@ public class NavalMineEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 4f, CustomExplosion.BlockBreakEffect.AQUATIC, Explosion.DestructionType.BREAK);
+        return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 4f, CustomExplosion.BlockBreakEffect.AQUATIC, Explosion.DestructionType.BREAK);
 
     }
 
