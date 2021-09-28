@@ -1,6 +1,7 @@
 package ladysnake.blast.common.item;
 
 import ladysnake.blast.common.entity.BombEntity;
+import ladysnake.blast.common.item.bombards.BombardItem;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

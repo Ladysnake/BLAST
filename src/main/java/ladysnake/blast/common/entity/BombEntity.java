@@ -1,7 +1,10 @@
 package ladysnake.blast.common.entity;
 
+import ladysnake.blast.common.Blast;
+import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
+import ladysnake.blast.common.world.EntityExplosion;
 import ladysnake.blast.common.world.KnockbackExplosion;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
@@ -24,8 +27,8 @@ import net.minecraft.world.explosion.Explosion;
 public class BombEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<String> BOMBARD_MODIFIER = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.STRING);
-    private int fuseTimer;
     public int ticksUntilRemoval;
+    private int fuseTimer;
 
     public BombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
@@ -50,9 +53,11 @@ public class BombEntity extends ThrownItemEntity {
     protected CustomExplosion getExplosion() {
         if (this.getBombardModifier() != BombardModifier.NONE) {
             if (this.getBombardModifier() == BombardModifier.NORMAL) {
-                return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.NONE);
+                return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.NONE);
             } else if (this.getBombardModifier() == BombardModifier.SLIME) {
-                return new KnockbackExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 3f);
+                return new KnockbackExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f);
+            } else if (this.getBombardModifier() == BombardModifier.AMETHYST) {
+                return new EntityExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.AMETHYST_SHARD, 250, 0.6f);
             }
         }
 
@@ -192,6 +197,8 @@ public class BombEntity extends ThrownItemEntity {
         return new ItemStack(this.getDefaultItem());
     }
 
+
+
     public enum BombTriggerType {
         FUSE,
         IMPACT
@@ -200,6 +207,7 @@ public class BombEntity extends ThrownItemEntity {
     public enum BombardModifier {
         NONE,
         NORMAL,
-        SLIME
+        SLIME,
+        AMETHYST
     }
 }

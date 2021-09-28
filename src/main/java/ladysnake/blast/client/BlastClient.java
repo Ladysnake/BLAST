@@ -2,6 +2,7 @@ package ladysnake.blast.client;
 
 import ladysnake.blast.client.particle.ConfettiParticle;
 import ladysnake.blast.client.particle.DryIceParticle;
+import ladysnake.blast.client.renderers.AmethystShardEntityRenderer;
 import ladysnake.blast.client.renderers.BlastBlockEntityRenderer;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.entity.ColdDiggerEntity;
@@ -55,6 +56,9 @@ public class BlastClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.STRIPMINER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.COLD_DIGGER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.DRY_ICE, RenderLayer.getTranslucent());
+
+        EntityRendererRegistry.INSTANCE.register(BlastEntities.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
+
     }
 
     @SafeVarargs

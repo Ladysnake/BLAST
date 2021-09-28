@@ -7,7 +7,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidFillable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;

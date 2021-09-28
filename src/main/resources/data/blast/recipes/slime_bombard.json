@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "blast:bombard"
+  },
+  "addition": {
+    "item": "minecraft:slime_block"
+  },
+  "result": {
+    "item": "blast:slime_bombard"
+  }
+}

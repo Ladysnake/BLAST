@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ICI",
+    "IPI",
+    "ILI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_block"
+    },
+    "C": {
+      "item": "minecraft:cauldron"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "L": {
+      "item": "minecraft:lever"
+    }
+  },
+  "result": {
+    "item": "blast:bombard"
+  }
+}

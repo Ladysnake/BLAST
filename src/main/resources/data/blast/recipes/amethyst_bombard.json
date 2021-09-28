@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "blast:bombard"
+  },
+  "addition": {
+    "item": "minecraft:amethyst_shard"
+  },
+  "result": {
+    "item": "blast:amethyst_bombard"
+  }
+}

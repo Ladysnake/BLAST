@@ -1,6 +1,7 @@
 {
   "item.blast.bombard": "Bombard",
   "item.blast.slime_bombard": "Slime Bombard",
+  "item.blast.amethyst_bombard": "Amethyst Bombard",
   "item.blast.bomb": "Dirt Bomb",
   "item.blast.trigger_bomb": "Dirt Trigger Bomb",
   "item.blast.golden_bomb": "Golden Bomb",
@@ -12,8 +13,13 @@
   "item.blast.confetti_trigger_bomb": "Confetti Trigger Bomb",
   "item.blast.dirt_bomb": "Bomb",
   "item.blast.dirt_trigger_bomb": "Trigger Bomb",
+
   "block.blast.gunpowder_block": "Gunpowder Block",
   "block.blast.stripminer": "Stripminer",
   "block.blast.cold_digger": "Cold Digger",
-  "block.blast.dry_ice": "Dry Ice"
+  "block.blast.dry_ice": "Dry Ice",
+
+  "entity.blast.amethyst_shard": "Amethyst Shard",
+
+  "death.attack.amethyst_shard": "%1$s was shanked by an amethyst shard from %2$s's amethyst bomb"
 }

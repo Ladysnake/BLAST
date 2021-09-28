@@ -1,7 +1,9 @@
 package ladysnake.blast.common.init;
 
 import ladysnake.blast.common.entity.*;
+import ladysnake.blast.common.entity.projectiles.AmethystShardEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -27,6 +29,8 @@ public class BlastEntities {
     public static EntityType<StripminerEntity> STRIPMINER;
     public static EntityType<ColdDiggerEntity> COLD_DIGGER;
 
+    public static EntityType<AmethystShardEntity> AMETHYST_SHARD;
+
     public static void init() {
         // throwable explosives
         BOMB = register("bomb", createBombEntityType(BombEntity::new));
@@ -45,13 +49,16 @@ public class BlastEntities {
         GUNPOWDER_BLOCK = register("gunpowder_block", FabricEntityTypeBuilder.<GunpowderBlockEntity>create(SpawnGroup.MISC, GunpowderBlockEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build());
         STRIPMINER = register("stripminer", FabricEntityTypeBuilder.create(SpawnGroup.MISC, StripminerEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build());
         COLD_DIGGER = register("cold_digger", FabricEntityTypeBuilder.create(SpawnGroup.MISC, ColdDiggerEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build());
+
+        // projectiles
+        AMETHYST_SHARD = register("amethyst_shard", FabricEntityTypeBuilder.<AmethystShardEntity>create(SpawnGroup.MISC, AmethystShardEntity::new).dimensions(EntityDimensions.changing(0.5f, 0.5f)).trackRangeBlocks(4).trackedUpdateRate(20).build());
     }
 
-    private static <T extends BombEntity> EntityType<T> register(String s, EntityType<T> bombEntityType) {
-        return Registry.register(Registry.ENTITY_TYPE, MODID + ":" + s, bombEntityType);
+    private static <T extends Entity> EntityType<T> register(String s, EntityType<T> entityType) {
+        return Registry.register(Registry.ENTITY_TYPE, MODID + ":" + s, entityType);
     }
 
-    private static <T extends BombEntity> EntityType<T> createBombEntityType(EntityType.EntityFactory<T> factory) {
+    private static <T extends Entity> EntityType<T> createBombEntityType(EntityType.EntityFactory<T> factory) {
         return FabricEntityTypeBuilder.create(SpawnGroup.MISC, factory).dimensions(EntityDimensions.changing(0.25f, 0.25f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build();
     }
 }

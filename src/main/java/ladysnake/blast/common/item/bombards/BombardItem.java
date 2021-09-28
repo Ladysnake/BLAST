@@ -1,8 +1,9 @@
-package ladysnake.blast.common.item;
+package ladysnake.blast.common.item.bombards;
 
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.init.BlastItems;
+import ladysnake.blast.common.item.BombItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -50,6 +51,7 @@ public class BombardItem extends RangedWeaponItem implements Vanishable {
                 bomb.setBombardModifier(this.getBombardModifier());
                 bomb.setPosition(user.getX(), user.getEyeY() - 0.10000000149011612D, user.getZ());
                 bomb.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 2F, 1.0F);
+                bomb.setOwner(user);
                 user.getItemCooldownManager().set(this, 60);
 
                 user.getStackInHand(hand).damage(1, user, playerEntity -> playerEntity.sendToolBreakStatus(hand));
@@ -77,11 +79,13 @@ public class BombardItem extends RangedWeaponItem implements Vanishable {
                     bomb.setBombardModifier(this.getBombardModifier());
                     bomb.setPosition(user.getX(), user.getEyeY() - 0.10000000149011612D, user.getZ());
                     bomb.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 2F, 1.0F);
+                    bomb.setOwner(user);
                     user.getItemCooldownManager().set(this, 60);
 
                     user.getStackInHand(hand).damage(1, user, playerEntity -> playerEntity.sendToolBreakStatus(hand));
 
-                    world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_DRAGON_FIREBALL_EXPLODE, SoundCategory.NEUTRAL, 0.5F, 1.2f / (world.getRandom().nextFloat() * 0.4F + 0.8F));
+                    this.playFireSound(world, user);
+
                     world.spawnEntity(bomb);
 
                     user.incrementStat(Stats.USED.getOrCreateStat(this));
@@ -96,6 +100,10 @@ public class BombardItem extends RangedWeaponItem implements Vanishable {
         }
 
         return TypedActionResult.pass(user.getStackInHand(hand));
+    }
+
+    public void playFireSound(World world, PlayerEntity user) {
+        world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_DRAGON_FIREBALL_EXPLODE, SoundCategory.NEUTRAL, 0.5F, 1.2f / (world.getRandom().nextFloat() * 0.4F + 0.8F));
     }
 
     @Override
