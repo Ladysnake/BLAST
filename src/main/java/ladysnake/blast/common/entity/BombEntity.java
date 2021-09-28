@@ -1,6 +1,5 @@
 package ladysnake.blast.common.entity;
 
-import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
@@ -83,49 +82,50 @@ public class BombEntity extends ThrownItemEntity {
 
     @Override
     public void tick() {
-        super.tick();
-
-        if (this.world.getBlockState(this.getBlockPos()).isFullCube(this.world, this.getBlockPos())) {
-            this.setPosition(this.prevX, this.prevY, this.prevZ);
-        }
-
-        if (this.world.isClient() && getBombardModifier() != BombardModifier.NONE && age < 10) {
-            for (int i = 0; i < (50 - this.age * 5); i++) {
-                this.world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() / (age * 5), this.random.nextGaussian() / (age * 5), this.random.nextGaussian() / (age * 5));
-            }
-        }
-
         if (this.ticksUntilRemoval > 0) {
             ticksUntilRemoval--;
             if (ticksUntilRemoval <= 0) {
                 this.remove(RemovalReason.DISCARDED);
             }
-        }
+        } else {
+            super.tick();
 
-        // drop item if in water
-        if (this.isSubmergedInWater() && this.disableInLiquid()) {
-            this.world.spawnEntity(new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), new ItemStack(this.getDefaultItem())));
-            this.remove(RemovalReason.DISCARDED);
-        }
-
-        // tick down the fuse, then blow up
-        if (this.getTriggerType() == BombTriggerType.FUSE) {
-            // smoke particle for lit fuse
-            if (this.world.isClient) {
-                this.world.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.3, this.getZ(), 0, 0, 0);
+            if (this.world.getBlockState(this.getBlockPos()).isFullCube(this.world, this.getBlockPos())) {
+                this.setPosition(this.prevX, this.prevY, this.prevZ);
             }
 
-            // shorten the fuse
-            this.setFuse(this.getFuse() - 1);
-            if (this.getFuse() <= 0) {
-                this.explode();
+            if (this.world.isClient() && getBombardModifier() != BombardModifier.NONE && age < 10) {
+                for (int i = 0; i < (50 - this.age * 5); i++) {
+                    this.world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() / (age * 5), this.random.nextGaussian() / (age * 5), this.random.nextGaussian() / (age * 5));
+                }
+            }
+
+
+            // drop item if in water
+            if (this.isSubmergedInWater() && this.disableInLiquid()) {
+                this.world.spawnEntity(new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), new ItemStack(this.getDefaultItem())));
+                this.remove(RemovalReason.DISCARDED);
+            }
+
+            // tick down the fuse, then blow up
+            if (this.getTriggerType() == BombTriggerType.FUSE) {
+                // smoke particle for lit fuse
+                if (this.world.isClient) {
+                    this.world.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.3, this.getZ(), 0, 0, 0);
+                }
+
+                // shorten the fuse
+                this.setFuse(this.getFuse() - 1);
+                if (this.getFuse() <= 0) {
+                    this.explode();
+                }
             }
         }
     }
 
     public void explode() {
         if (this.ticksUntilRemoval == -1) {
-            this.ticksUntilRemoval = 5;
+            this.ticksUntilRemoval = 1;
 
             CustomExplosion explosion = this.getExplosion();
             explosion.collectBlocksAndDamageEntities();
@@ -196,7 +196,6 @@ public class BombEntity extends ThrownItemEntity {
     protected ItemStack getItem() {
         return new ItemStack(this.getDefaultItem());
     }
-
 
 
     public enum BombTriggerType {

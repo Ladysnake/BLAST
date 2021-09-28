@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
@@ -22,17 +23,18 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
 public class AmethystShardEntity extends PersistentProjectileEntity {
-    public int removalTimer = -1;
+    public int ticksUntilRemoval = -1;
 
     public AmethystShardEntity(EntityType<? extends AmethystShardEntity> entityType, World world) {
         super(entityType, world);
         this.setSound(SoundEvents.BLOCK_AMETHYST_CLUSTER_BREAK);
         this.setDamage(2);
+        this.pickupType = PickupPermission.DISALLOWED;
     }
 
     @Override
     protected ItemStack asItemStack() {
-        return null;
+        return new ItemStack(Items.AIR);
     }
 
     @Override
@@ -45,21 +47,25 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
         return SoundEvents.BLOCK_AMETHYST_CLUSTER_BREAK;
     }
 
+    public Item getBreakItemParticle() {
+        return Items.AMETHYST_BLOCK;
+    }
+
     @Override
     public void tick() {
         super.tick();
 
         if (this.inGround) {
-            if (this.removalTimer == -1) {
+            if (this.ticksUntilRemoval == -1) {
                 for (int i = 0; i < 8; ++i) {
-                    this.world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(Items.AMETHYST_BLOCK, 1)), this.getX() + random.nextGaussian() / 20f, this.getY() + random.nextGaussian() / 20f, this.getZ() + random.nextGaussian() / 20f, random.nextGaussian() / 20f, 0.2D + random.nextGaussian() / 20f, random.nextGaussian() / 20f);
+                    this.world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(getBreakItemParticle(), 1)), this.getX() + random.nextGaussian() / 20f, this.getY() + random.nextGaussian() / 20f, this.getZ() + random.nextGaussian() / 20f, random.nextGaussian() / 20f, 0.2D + random.nextGaussian() / 20f, random.nextGaussian() / 20f);
                 }
-                this.removalTimer = 2;
+                this.ticksUntilRemoval = 1;
             }
 
-            if (this.removalTimer > 0) {
-                this.removalTimer--;
-                if (this.removalTimer <= 0) {
+            if (this.ticksUntilRemoval > 0) {
+                this.ticksUntilRemoval--;
+                if (this.ticksUntilRemoval <= 0) {
                     this.remove(RemovalReason.DISCARDED);
                 }
             }

@@ -26,6 +26,7 @@ public class EntityExplosion extends CustomExplosion {
             Entity entity = entityToSpawn.create(world);
             if (entity instanceof ProjectileEntity) {
                 ((ProjectileEntity) entity).setOwner(this.entity);
+
             }
             entity.setPos(this.x, this.y, this.z);
             entity.updateTrackedPosition(this.x, this.y + .5, this.z);

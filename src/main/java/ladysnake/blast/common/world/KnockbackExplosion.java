@@ -86,7 +86,7 @@ public class KnockbackExplosion extends CustomExplosion {
         int u = MathHelper.floor(this.y + (double) q + 1.0D);
         int v = MathHelper.floor(this.z - (double) q - 1.0D);
         int w = MathHelper.floor(this.z + (double) q + 1.0D);
-        List<Entity> list = this.world.getOtherEntities(this.entity, new Box(k, t, v, l, u, w));
+        List<Entity> list = this.world.getOtherEntities(null, new Box(k, t, v, l, u, w));
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
         for (int i = 0; i < 500; i++) {
