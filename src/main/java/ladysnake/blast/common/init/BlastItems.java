@@ -5,6 +5,7 @@ import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.item.BombItem;
 import ladysnake.blast.common.item.bombards.AmethystBombardItem;
 import ladysnake.blast.common.item.bombards.BombardItem;
+import ladysnake.blast.common.item.bombards.FrostBombardItem;
 import ladysnake.blast.common.item.bombards.SlimeBombardItem;
 import ladysnake.blast.common.item.TriggerBombItem;
 import net.minecraft.block.DispenserBlock;
@@ -22,6 +23,7 @@ public class BlastItems {
     public static Item BOMBARD;
     public static Item SLIME_BOMBARD;
     public static Item AMETHYST_BOMBARD;
+    public static Item FROST_BOMBARD;
 
     public static Item BOMB;
     public static Item TRIGGER_BOMB;
@@ -39,6 +41,7 @@ public class BlastItems {
         BOMBARD = registerItem(new BombardItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(250)), "bombard");
         SLIME_BOMBARD = registerItem(new SlimeBombardItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(250)), "slime_bombard");
         AMETHYST_BOMBARD = registerItem(new AmethystBombardItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(250)), "amethyst_bombard");
+        FROST_BOMBARD = registerItem(new FrostBombardItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(250)), "frost_bombard");
 
         BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.BOMB), "bomb");
         TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.TRIGGER_BOMB), "trigger_bomb");

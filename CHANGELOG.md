@@ -6,7 +6,7 @@
     - Slime Bombard: Obtained by smithing a Bombard with a slime block, this bombard covers the launched bombs in slime that will result in no damage being dealt to the entities in the explosion radius of the bombs, while giving the explosion a stronger knockback. Great for elytra and chicken launching!
     - Amethyst Bombard: Obtained by smithing a Bombard with an amethyst shard, this bombard will not cause any explosion damage, but will spurt out amethyst shards with cumulative damage.
     - Frost Bombard: Obtained by smithing an Amethyst Bombard
-- Explosions from Blast will now properly be attributed to the player or entity who threw the bomb
+- Explosions from Blast will now properly be attributed to the player or entity who threw the bomb, meaning entities affected by the explosion will retaliate, and death messages will no longer hide your true intentions, like that one time when you threw a trigger bomb at your friend voluntarily and justified it as a misclick.
 
 ### BLAST 1.7.1 - 1.17.1
 - Fixed an issue that caused trigger bombs to explode with the player right after throwing them while running or flying

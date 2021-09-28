@@ -27,7 +27,7 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
 
     public AmethystShardEntity(EntityType<? extends AmethystShardEntity> entityType, World world) {
         super(entityType, world);
-        this.setSound(SoundEvents.BLOCK_AMETHYST_CLUSTER_BREAK);
+        this.setSound(this.getHitSound());
         this.setDamage(2);
         this.pickupType = PickupPermission.DISALLOWED;
     }
@@ -60,7 +60,7 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
                 for (int i = 0; i < 8; ++i) {
                     this.world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(getBreakItemParticle(), 1)), this.getX() + random.nextGaussian() / 20f, this.getY() + random.nextGaussian() / 20f, this.getZ() + random.nextGaussian() / 20f, random.nextGaussian() / 20f, 0.2D + random.nextGaussian() / 20f, random.nextGaussian() / 20f);
                 }
-                this.ticksUntilRemoval = 1;
+                this.ticksUntilRemoval = 2;
             }
 
             if (this.ticksUntilRemoval > 0) {

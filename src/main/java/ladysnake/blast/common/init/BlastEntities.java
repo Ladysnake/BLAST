@@ -2,6 +2,7 @@ package ladysnake.blast.common.init;
 
 import ladysnake.blast.common.entity.*;
 import ladysnake.blast.common.entity.projectiles.AmethystShardEntity;
+import ladysnake.blast.common.entity.projectiles.IcicleEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
@@ -30,6 +31,7 @@ public class BlastEntities {
     public static EntityType<ColdDiggerEntity> COLD_DIGGER;
 
     public static EntityType<AmethystShardEntity> AMETHYST_SHARD;
+    public static EntityType<IcicleEntity> ICICLE;
 
     public static void init() {
         // throwable explosives
@@ -52,6 +54,7 @@ public class BlastEntities {
 
         // projectiles
         AMETHYST_SHARD = register("amethyst_shard", FabricEntityTypeBuilder.<AmethystShardEntity>create(SpawnGroup.MISC, AmethystShardEntity::new).dimensions(EntityDimensions.changing(0.5f, 0.5f)).trackRangeBlocks(4).trackedUpdateRate(20).build());
+        ICICLE = register("icicle", FabricEntityTypeBuilder.<IcicleEntity>create(SpawnGroup.MISC, IcicleEntity::new).dimensions(EntityDimensions.changing(0.5f, 0.5f)).trackRangeBlocks(4).trackedUpdateRate(20).build());
     }
 
     private static <T extends Entity> EntityType<T> register(String s, EntityType<T> entityType) {

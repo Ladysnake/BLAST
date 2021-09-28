@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "blast:amethyst_bombard"
+  },
+  "addition": {
+    "item": "minecraft:blue_ice"
+  },
+  "result": {
+    "item": "blast:frost_bombard"
+  }
+}

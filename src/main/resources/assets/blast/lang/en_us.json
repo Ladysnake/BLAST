@@ -2,6 +2,7 @@
   "item.blast.bombard": "Bombard",
   "item.blast.slime_bombard": "Slime Bombard",
   "item.blast.amethyst_bombard": "Amethyst Bombard",
+  "item.blast.frost_bombard": "Frost Bombard",
   "item.blast.bomb": "Dirt Bomb",
   "item.blast.trigger_bomb": "Dirt Trigger Bomb",
   "item.blast.golden_bomb": "Golden Bomb",
@@ -21,5 +22,6 @@
 
   "entity.blast.amethyst_shard": "Amethyst Shard",
 
-  "death.attack.amethyst_shard": "%1$s was shanked by an amethyst shard from %2$s's amethyst bomb"
+  "death.attack.amethyst_shard": "%1$s was shanked by an amethyst shard from %2$s's amethyst bomb",
+  "death.attack.icicle": "%1$s was iced by %2$s"
 }

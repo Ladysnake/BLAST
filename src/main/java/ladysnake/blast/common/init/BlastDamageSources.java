@@ -11,4 +11,8 @@ public class BlastDamageSources {
         return (new ProjectileDamageSource("amethyst_shard", projectile, attacker)).setProjectile();
     }
 
+    public static DamageSource icicle(PersistentProjectileEntity projectile, @Nullable Entity attacker) {
+        return (new ProjectileDamageSource("icicle", projectile, attacker)).setProjectile();
+    }
+
 }

@@ -4,9 +4,11 @@ import ladysnake.blast.client.particle.ConfettiParticle;
 import ladysnake.blast.client.particle.DryIceParticle;
 import ladysnake.blast.client.renderers.AmethystShardEntityRenderer;
 import ladysnake.blast.client.renderers.BlastBlockEntityRenderer;
+import ladysnake.blast.client.renderers.IcicleEntityRenderer;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.entity.ColdDiggerEntity;
 import ladysnake.blast.common.entity.StripminerEntity;
+import ladysnake.blast.common.entity.projectiles.IcicleEntity;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntities;
 import net.fabricmc.api.ClientModInitializer;
@@ -58,6 +60,7 @@ public class BlastClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.DRY_ICE, RenderLayer.getTranslucent());
 
         EntityRendererRegistry.INSTANCE.register(BlastEntities.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(BlastEntities.ICICLE, IcicleEntityRenderer::new);
 
     }
 

@@ -57,6 +57,8 @@ public class BombEntity extends ThrownItemEntity {
                 return new KnockbackExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f);
             } else if (this.getBombardModifier() == BombardModifier.AMETHYST) {
                 return new EntityExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.AMETHYST_SHARD, 250, 0.6f);
+            } else if (this.getBombardModifier() == BombardModifier.FROST) {
+                return new EntityExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.ICICLE, 250, 0.6f);
             }
         }
 
@@ -207,6 +209,7 @@ public class BombEntity extends ThrownItemEntity {
         NONE,
         NORMAL,
         SLIME,
-        AMETHYST
+        AMETHYST,
+        FROST
     }
 }
