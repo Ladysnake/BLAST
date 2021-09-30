@@ -25,6 +25,8 @@ public class BlastEntities {
     public static EntityType<BombEntity> CONFETTI_TRIGGER_BOMB;
     public static EntityType<BombEntity> DIRT_BOMB;
     public static EntityType<BombEntity> DIRT_TRIGGER_BOMB;
+    public static EntityType<BombEntity> PEARL_BOMB;
+    public static EntityType<BombEntity> PEARL_TRIGGER_BOMB;
 
     public static EntityType<GunpowderBlockEntity> GUNPOWDER_BLOCK;
     public static EntityType<StripminerEntity> STRIPMINER;
@@ -46,6 +48,8 @@ public class BlastEntities {
         CONFETTI_TRIGGER_BOMB = register("confetti_trigger_bomb", createBombEntityType(ConfettiTriggerBombEntity::new));
         DIRT_BOMB = register("dirt_bomb", createBombEntityType(DirtBombEntity::new));
         DIRT_TRIGGER_BOMB = register("dirt_trigger_bomb", createBombEntityType(DirtTriggerBombEntity::new));
+        PEARL_BOMB = register("pearl_bomb", createBombEntityType(PearlBombEntity::new));
+        PEARL_TRIGGER_BOMB = register("pearl_trigger_bomb", createBombEntityType(PearlTriggerBombEntity::new));
 
         // explosive blocks
         GUNPOWDER_BLOCK = register("gunpowder_block", FabricEntityTypeBuilder.<GunpowderBlockEntity>create(SpawnGroup.MISC, GunpowderBlockEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build());

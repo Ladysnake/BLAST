@@ -12,8 +12,10 @@
   "item.blast.naval_mine": "Naval Mine",
   "item.blast.confetti_bomb": "Confetti Bomb",
   "item.blast.confetti_trigger_bomb": "Confetti Trigger Bomb",
-  "item.blast.dirt_bomb": "Bomb",
-  "item.blast.dirt_trigger_bomb": "Trigger Bomb",
+  "item.blast.dirt_bomb": "Dirt Bomb",
+  "item.blast.dirt_trigger_bomb": "Dirt Trigger Bomb",
+  "item.blast.pearl_bomb": "Pearl Bomb",
+  "item.blast.pearl_trigger_bomb": "Pearl Trigger Bomb",
 
   "block.blast.gunpowder_block": "Gunpowder Block",
   "block.blast.stripminer": "Stripminer",

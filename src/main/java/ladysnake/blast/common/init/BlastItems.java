@@ -3,11 +3,11 @@ package ladysnake.blast.common.init;
 import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.item.BombItem;
+import ladysnake.blast.common.item.TriggerBombItem;
 import ladysnake.blast.common.item.bombards.AmethystBombardItem;
 import ladysnake.blast.common.item.bombards.BombardItem;
 import ladysnake.blast.common.item.bombards.FrostBombardItem;
 import ladysnake.blast.common.item.bombards.SlimeBombardItem;
-import ladysnake.blast.common.item.TriggerBombItem;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -36,6 +36,8 @@ public class BlastItems {
     public static Item CONFETTI_TRIGGER_BOMB;
     public static Item DIRT_BOMB;
     public static Item DIRT_TRIGGER_BOMB;
+    public static Item PEARL_BOMB;
+    public static Item PEARL_TRIGGER_BOMB;
 
     public static void init() {
         BOMBARD = registerItem(new BombardItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(250)), "bombard");
@@ -54,6 +56,8 @@ public class BlastItems {
         CONFETTI_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.CONFETTI_TRIGGER_BOMB), "confetti_trigger_bomb");
         DIRT_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.DIRT_BOMB), "dirt_bomb");
         DIRT_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.DIRT_TRIGGER_BOMB), "dirt_trigger_bomb");
+        PEARL_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.PEARL_BOMB), "pearl_bomb");
+        PEARL_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.PEARL_TRIGGER_BOMB), "pearl_trigger_bomb");
     }
 
     public static Item registerItem(Item item, String name) {

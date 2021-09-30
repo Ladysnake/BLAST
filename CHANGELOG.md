@@ -6,7 +6,10 @@
     - Slime Bombard: Obtained by smithing a Bombard with a slime block, this bombard covers the launched bombs in slime that will result in no damage being dealt to the entities in the explosion radius of the bombs, while giving the explosion a stronger knockback. Great for elytra and chicken launching!
     - Amethyst Bombard: Obtained by smithing a Bombard with an amethyst shard, this bombard will not cause any explosion damage, but will spurt out amethyst shards with cumulative damage.
     - Frost Bombard: Obtained by smithing an Amethyst Bombard with blue ice, this bombard will act similar to the amethyst bombard but will instead shatter your bombs into icicles. These icicles deal significantly less damage than amethyst shards (a quarter of a heart compared to 2 for the amethyst shard) but will cumulatively apply freezing to the hit entities!
+- Added Dirt Bombs. Crafted by surrounding a bomb or trigger bomb in dirt blocks, this bomb will help you fill holes with dirt or terraform your land!
+- Added Pearl Bombs. Crafted like other bombs with an ender pearl as the material, this bomb will have a silk touch effects on blocks it destroys. It doesn't explode, but still respects the same logic. All living entities inside the bomb's radius will be randomly teleported.
 - Explosions from Blast will now properly be attributed to the player or entity who threw the bomb, meaning entities affected by the explosion will retaliate, and death messages will no longer hide your true intentions, like that one time when you threw a trigger bomb at your friend voluntarily and justified it as a misclick.
+- Fixed an issue that caused stripminers and colddiggers to crash game clients
 
 ### BLAST 1.7.1 - 1.17.1
 - Fixed an issue that caused trigger bombs to explode with the player right after throwing them while running or flying
