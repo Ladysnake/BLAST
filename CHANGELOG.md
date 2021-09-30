@@ -5,7 +5,7 @@
     - Bombard: The normal bombard, throws bombs and trigger bombs but disables their block destruction. Crafted from 6 iron blocks on the side, with a cauldron, a piston and a lever in the middle respectively from top to bottom.
     - Slime Bombard: Obtained by smithing a Bombard with a slime block, this bombard covers the launched bombs in slime that will result in no damage being dealt to the entities in the explosion radius of the bombs, while giving the explosion a stronger knockback. Great for elytra and chicken launching!
     - Amethyst Bombard: Obtained by smithing a Bombard with an amethyst shard, this bombard will not cause any explosion damage, but will spurt out amethyst shards with cumulative damage.
-    - Frost Bombard: Obtained by smithing an Amethyst Bombard
+    - Frost Bombard: Obtained by smithing an Amethyst Bombard with blue ice, this bombard will act similar to the amethyst bombard but will instead shatter your bombs into icicles. These icicles deal significantly less damage than amethyst shards (a quarter of a heart compared to 2 for the amethyst shard) but will cumulatively apply freezing to the hit entities!
 - Explosions from Blast will now properly be attributed to the player or entity who threw the bomb, meaning entities affected by the explosion will retaliate, and death messages will no longer hide your true intentions, like that one time when you threw a trigger bomb at your friend voluntarily and justified it as a misclick.
 
 ### BLAST 1.7.1 - 1.17.1

@@ -19,6 +19,6 @@ public class FrostBombardItem extends BombardItem {
     @Override
     public void playFireSound(World world, PlayerEntity user) {
         super.playFireSound(world, user);
-        world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_AMETHYST_BLOCK_PLACE, SoundCategory.NEUTRAL, 2f, 1f);
+        world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_PLAYER_HURT_FREEZE, SoundCategory.NEUTRAL, 2f, 1f);
     }
 }
