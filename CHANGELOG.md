@@ -1,5 +1,8 @@
 # BLAST - Changelog
 
+### BLAST 1.8.1 - 1.17.1
+- Made the bombard recipe cheaper, now requiring iron ingots instead of iron blocks
+- Made the bombard upgrade to amethyst bombard more expensive, now requiring an amethyst block instead of a single amethyst shard
 ### BLAST 1.8 - 1.17.1
 - Added a new item class, the bombards! These new weapons allow you to launch bombs and trigger bombs further, at the cost of disabling their destructive nature. Each bombard type is unique and will transform your bombs into something different!
     - Bombard: The normal bombard, throws bombs and trigger bombs but disables their block destruction. Crafted from 6 iron blocks on the side, with a cauldron, a piston and a lever in the middle respectively from top to bottom.

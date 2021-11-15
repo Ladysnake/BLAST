@@ -3,7 +3,6 @@ package ladysnake.blast.common.world;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.world.World;
 
 public class EntityExplosion extends CustomExplosion {

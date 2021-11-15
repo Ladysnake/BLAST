@@ -35,7 +35,7 @@ public class PearlBombEntity extends BombEntity {
             this.ticksUntilRemoval = 1;
 
             for (int i = 0; i < 100; i++) {
-                this.world.addParticle(ParticleTypes.REVERSE_PORTAL, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian()/8f, this.random.nextGaussian()/8f, this.random.nextGaussian()/8f);
+                this.world.addParticle(ParticleTypes.REVERSE_PORTAL, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() / 8f, this.random.nextGaussian() / 8f, this.random.nextGaussian() / 8f);
             }
 
             CustomExplosion explosion = this.getExplosion();

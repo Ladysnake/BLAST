@@ -4,7 +4,7 @@
     "item": "blast:bombard"
   },
   "addition": {
-    "item": "minecraft:amethyst_shard"
+    "item": "minecraft:amethyst_block"
   },
   "result": {
     "item": "blast:amethyst_bombard"

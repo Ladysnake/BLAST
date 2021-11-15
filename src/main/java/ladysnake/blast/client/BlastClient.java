@@ -8,7 +8,6 @@ import ladysnake.blast.client.renderers.IcicleEntityRenderer;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.entity.ColdDiggerEntity;
 import ladysnake.blast.common.entity.StripminerEntity;
-import ladysnake.blast.common.entity.projectiles.IcicleEntity;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntities;
 import net.fabricmc.api.ClientModInitializer;

@@ -74,7 +74,7 @@ public class IcicleEntity extends AmethystShardEntity {
                 }
 
                 livingEntity.timeUntilRegen = 0;
-                livingEntity.setFrozenTicks(livingEntity.getFrozenTicks()+100);
+                livingEntity.setFrozenTicks(livingEntity.getFrozenTicks() + 100);
             }
         } else {
             entity.setFireTicks(j);

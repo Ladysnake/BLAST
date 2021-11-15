@@ -13,7 +13,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -119,9 +118,9 @@ public class EnderExplosion extends CustomExplosion {
                             double e = livingEntity.getY();
                             double f = livingEntity.getZ();
 
-                            for(int i = 0; i < 16; ++i) {
+                            for (int i = 0; i < 16; ++i) {
                                 double g = livingEntity.getX() + (livingEntity.getRandom().nextDouble() - 0.5D) * 16.0D;
-                                double h = MathHelper.clamp(livingEntity.getY() + (double)(livingEntity.getRandom().nextInt(16) - 8), world.getBottomY(), (world.getBottomY() + (world).getLogicalHeight() - 1));
+                                double h = MathHelper.clamp(livingEntity.getY() + (double) (livingEntity.getRandom().nextInt(16) - 8), world.getBottomY(), (world.getBottomY() + (world).getLogicalHeight() - 1));
                                 double j = livingEntity.getZ() + (livingEntity.getRandom().nextDouble() - 0.5D) * 16.0D;
                                 if (livingEntity.hasVehicle()) {
                                     livingEntity.stopRiding();
