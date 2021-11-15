@@ -3,6 +3,7 @@
 ### BLAST 1.8.1 - 1.17.1
 - Made the bombard recipe cheaper, now requiring iron ingots instead of iron blocks
 - Made the bombard upgrade to amethyst bombard more expensive, now requiring an amethyst block instead of a single amethyst shard
+- Fixed normal bombs and dirt bombs having inverted names
 - Added a Romanian translation thanks to WindRat
 - Added a Russian translation thanks to V972
 
