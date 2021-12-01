@@ -52,7 +52,7 @@ public class BombardItem extends RangedWeaponItem implements Vanishable {
 
                 bomb.setBombardModifier(this.getBombardModifier());
                 bomb.setPosition(user.getX(), user.getEyeY() - 0.10000000149011612D, user.getZ());
-                bomb.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 2F, 1.0F);
+                bomb.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 2F, 1.0F);
                 bomb.setOwner(user);
                 user.getItemCooldownManager().set(this, 60 - (EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, user.getStackInHand(hand)) * 10));
 
@@ -80,7 +80,7 @@ public class BombardItem extends RangedWeaponItem implements Vanishable {
 
                     bomb.setBombardModifier(this.getBombardModifier());
                     bomb.setPosition(user.getX(), user.getEyeY() - 0.10000000149011612D, user.getZ());
-                    bomb.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 2F, 1.0F);
+                    bomb.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 2F, 1.0F);
                     bomb.setOwner(user);
                     user.getItemCooldownManager().set(this, 60 - (EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, user.getStackInHand(hand)) * 10));
 

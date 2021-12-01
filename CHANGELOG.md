@@ -1,5 +1,8 @@
 # BLAST - Changelog
 
+### BLAST 1.8.2 - 1.18
+- Updated to Minecraft 1.18
+
 ### BLAST 1.8.1 - 1.17.1
 - Made the bombard recipe cheaper, now requiring iron ingots instead of iron blocks
 - Made the bombard upgrade to amethyst bombard more expensive, now requiring an amethyst block instead of a single amethyst shard
