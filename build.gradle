@@ -22,9 +22,9 @@ minecraft {
 
 repositories {
 	maven {
-        name = "Flemmli97"
-        url "https://gitlab.com/api/v4/projects/21830712/packages/maven"
-    }
+		name = "Flemmli97"
+		url "https://gitlab.com/api/v4/projects/21830712/packages/maven"
+	}
 
 	maven {
 		url "https://www.cursemaven.com"
@@ -50,7 +50,7 @@ dependencies {
 		transitive = false
 	}
 
-    modRuntime("io.github.flemmli97:flan:${minecraft_version}-${flan_version}:fabric") {
+	modRuntime("io.github.flemmli97:flan:${minecraft_version}-${flan_version}:fabric") {
 		transitive = false
 	}
 }
