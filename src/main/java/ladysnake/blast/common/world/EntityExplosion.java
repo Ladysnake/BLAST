@@ -32,7 +32,6 @@ public class EntityExplosion extends CustomExplosion {
             entity.setVelocity(random.nextGaussian() * velocity, random.nextGaussian() * velocity, random.nextGaussian() * velocity);
 
             world.spawnEntity(entity);
-
         }
     }
 }

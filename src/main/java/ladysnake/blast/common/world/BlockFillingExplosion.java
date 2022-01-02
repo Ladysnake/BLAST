@@ -1,7 +1,9 @@
 package ladysnake.blast.common.world;
 
 import com.mojang.datafixers.util.Pair;
+import io.github.flemmli97.flan.api.permission.PermissionRegistry;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidFillable;
@@ -12,6 +14,7 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -27,6 +30,15 @@ public class BlockFillingExplosion extends CustomExplosion {
     public BlockFillingExplosion(World world, Entity entity, double x, double y, double z, float power, BlockState blockStateToPlace) {
         super(world, entity, x, y, z, power, null, DestructionType.BREAK);
         this.blockStateToPlace = blockStateToPlace;
+    }
+
+    @Override
+    public void collectBlocksAndDamageEntities() {
+        super.collectBlocksAndDamageEntities();
+
+        if (FabricLoader.getInstance().isModLoaded("flan") && this.world instanceof ServerWorld world && this.getCausingEntity() instanceof ServerPlayerEntity player) {
+            affectedBlocks.removeIf(pos -> canInteract(world, player, pos, PermissionRegistry.PLACE));
+        }
     }
 
     @Override

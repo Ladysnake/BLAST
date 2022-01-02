@@ -1,11 +1,18 @@
 package ladysnake.blast.common.item;
 
+import io.github.flemmli97.flan.api.ClaimHandler;
+import io.github.flemmli97.flan.api.data.IPermissionContainer;
+import io.github.flemmli97.flan.api.data.IPermissionStorage;
+import io.github.flemmli97.flan.api.permission.PermissionRegistry;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.item.bombards.BombardItem;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -25,6 +32,15 @@ public class BombItem extends Item {
     }
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
+        if (FabricLoader.getInstance().isModLoaded("flan") && world instanceof ServerWorld serverWorld && playerEntity instanceof ServerPlayerEntity serverPlayer) {
+            IPermissionStorage storage = ClaimHandler.getPermissionStorage(serverWorld);
+            IPermissionContainer container = storage.getForPermissionCheck(serverPlayer.getBlockPos());
+
+            if (!container.canInteract(serverPlayer, PermissionRegistry.INTERACTBLOCK, serverPlayer.getBlockPos())) {
+                return new TypedActionResult<>(ActionResult.PASS, playerEntity.getStackInHand(hand));
+            }
+        }
+
         if (hand == Hand.OFF_HAND && playerEntity.getStackInHand(Hand.MAIN_HAND).getItem() instanceof BombardItem) {
             return new TypedActionResult<>(ActionResult.PASS, playerEntity.getStackInHand(hand));
         } else {

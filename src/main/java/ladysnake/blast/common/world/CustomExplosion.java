@@ -4,9 +4,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
+import io.github.flemmli97.flan.api.ClaimHandler;
+import io.github.flemmli97.flan.api.data.IPermissionContainer;
+import io.github.flemmli97.flan.api.data.IPermissionStorage;
+import io.github.flemmli97.flan.api.permission.ClaimPermission;
+import io.github.flemmli97.flan.api.permission.PermissionRegistry;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantments;
@@ -21,6 +27,7 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -122,8 +129,12 @@ public class CustomExplosion extends Explosion {
                                 h -= (br + 0.3F) * 0.3F;
                             }
 
-
+                            claimCheck:
                             if (h > 0.0F && (this.entity == null || this.entity.canExplosionDestroyBlock(this, this.world, blockPos, blockState, h))) {
+                                if (FabricLoader.getInstance().isModLoaded("flan") && this.world instanceof ServerWorld world && this.getCausingEntity() instanceof ServerPlayerEntity player) {
+                                    if (!canInteract(world, player, blockPos, PermissionRegistry.BREAK)) break claimCheck;
+                                }
+
                                 set.add(blockPos);
                             }
 
@@ -181,7 +192,6 @@ public class CustomExplosion extends Explosion {
                 }
             }
         }
-
     }
 
     public void affectWorld(boolean boolean_1) {
@@ -300,6 +310,13 @@ public class CustomExplosion extends Explosion {
         }
     }
 
+    public boolean canInteract(ServerWorld world, ServerPlayerEntity player, BlockPos pos, ClaimPermission type) {
+        IPermissionStorage storage = ClaimHandler.getPermissionStorage(world);
+        IPermissionContainer container = storage.getForPermissionCheck(pos);
+
+        return container.canInteract(player, type, pos);
+    }
+
     public enum BlockBreakEffect {
         FORTUNE,
         UNSTOPPABLE,
@@ -307,5 +324,4 @@ public class CustomExplosion extends Explosion {
         FIERY,
         FROSTY
     }
-
 }

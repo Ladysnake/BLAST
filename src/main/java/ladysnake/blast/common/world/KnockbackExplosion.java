@@ -1,6 +1,11 @@
 package ladysnake.blast.common.world;
 
 import com.google.common.collect.Sets;
+import io.github.flemmli97.flan.api.ClaimHandler;
+import io.github.flemmli97.flan.api.data.IPermissionContainer;
+import io.github.flemmli97.flan.api.data.IPermissionStorage;
+import io.github.flemmli97.flan.api.permission.PermissionRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
@@ -9,6 +14,8 @@ import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -65,7 +72,12 @@ public class KnockbackExplosion extends CustomExplosion {
                             }
 
 
+                            claimCheck:
                             if (h > 0.0F && (this.entity == null || this.entity.canExplosionDestroyBlock(this, this.world, blockPos, blockState, h))) {
+                                if (FabricLoader.getInstance().isModLoaded("flan") && this.world instanceof ServerWorld world && this.getCausingEntity() instanceof ServerPlayerEntity player) {
+                                    if (!canInteract(world, player, blockPos, PermissionRegistry.BREAK)) break claimCheck;
+                                }
+
                                 set.add(blockPos);
                             }
 

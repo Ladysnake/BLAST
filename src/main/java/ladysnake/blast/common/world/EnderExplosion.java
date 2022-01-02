@@ -2,7 +2,12 @@ package ladysnake.blast.common.world;
 
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
+import io.github.flemmli97.flan.api.ClaimHandler;
+import io.github.flemmli97.flan.api.data.IPermissionContainer;
+import io.github.flemmli97.flan.api.data.IPermissionStorage;
+import io.github.flemmli97.flan.api.permission.PermissionRegistry;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -19,6 +24,7 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -79,7 +85,12 @@ public class EnderExplosion extends CustomExplosion {
                             }
 
 
+                            claimCheck:
                             if (h > 0.0F && (this.entity == null || this.entity.canExplosionDestroyBlock(this, this.world, blockPos, blockState, h))) {
+                                if (FabricLoader.getInstance().isModLoaded("flan") && this.world instanceof ServerWorld world && this.getCausingEntity() instanceof ServerPlayerEntity player) {
+                                    if (!canInteract(world, player, blockPos, PermissionRegistry.BREAK)) break claimCheck;
+                                }
+
                                 set.add(blockPos);
                             }
 
@@ -138,7 +149,6 @@ public class EnderExplosion extends CustomExplosion {
                 }
             }
         }
-
     }
 
     @Override

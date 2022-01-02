@@ -20,6 +20,20 @@ group = project.maven_group
 minecraft {
 }
 
+repositories {
+	maven {
+        name = "Flemmli97"
+        url "https://gitlab.com/api/v4/projects/21830712/packages/maven"
+    }
+
+	maven {
+		url "https://www.cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+}
+
 dependencies {
 	//to change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -31,6 +45,14 @@ dependencies {
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
+
+	modCompileOnly("io.github.flemmli97:flan:${minecraft_version}-${flan_version}:fabric-api") {
+		transitive = false
+	}
+
+    modRuntime("io.github.flemmli97:flan:${minecraft_version}-${flan_version}:fabric") {
+		transitive = false
+	}
 }
 
 processResources {
