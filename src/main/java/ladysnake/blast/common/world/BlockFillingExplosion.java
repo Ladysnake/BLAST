@@ -3,6 +3,7 @@ package ladysnake.blast.common.world;
 import com.mojang.datafixers.util.Pair;
 import io.github.flemmli97.flan.api.permission.PermissionRegistry;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import ladysnake.blast.common.compat.FlanCompat;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -37,7 +38,7 @@ public class BlockFillingExplosion extends CustomExplosion {
         super.collectBlocksAndDamageEntities();
 
         if (FabricLoader.getInstance().isModLoaded("flan") && this.world instanceof ServerWorld world && this.getCausingEntity() instanceof ServerPlayerEntity player) {
-            affectedBlocks.removeIf(pos -> canInteract(world, player, pos, PermissionRegistry.PLACE));
+            affectedBlocks.removeIf(pos -> FlanCompat.canInteract(world, player, pos, PermissionRegistry.PLACE));
         }
     }
 

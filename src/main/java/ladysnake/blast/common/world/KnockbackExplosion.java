@@ -5,6 +5,7 @@ import io.github.flemmli97.flan.api.ClaimHandler;
 import io.github.flemmli97.flan.api.data.IPermissionContainer;
 import io.github.flemmli97.flan.api.data.IPermissionStorage;
 import io.github.flemmli97.flan.api.permission.PermissionRegistry;
+import ladysnake.blast.common.compat.FlanCompat;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.ProtectionEnchantment;
@@ -74,8 +75,8 @@ public class KnockbackExplosion extends CustomExplosion {
 
                             claimCheck:
                             if (h > 0.0F && (this.entity == null || this.entity.canExplosionDestroyBlock(this, this.world, blockPos, blockState, h))) {
-                                if (FabricLoader.getInstance().isModLoaded("flan") && this.world instanceof ServerWorld world && this.getCausingEntity() instanceof ServerPlayerEntity player) {
-                                    if (!canInteract(world, player, blockPos, PermissionRegistry.BREAK)) break claimCheck;
+                                if (FabricLoader.getInstance().isModLoaded("flan") && this.world instanceof ServerWorld serverWorld && this.getCausingEntity() instanceof ServerPlayerEntity serverPlayer) {
+                                    if (!FlanCompat.canInteract(serverWorld, serverPlayer, blockPos, PermissionRegistry.BREAK)) break claimCheck;
                                 }
 
                                 set.add(blockPos);

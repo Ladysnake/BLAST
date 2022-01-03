@@ -1,9 +1,7 @@
 package ladysnake.blast.common.item;
 
-import io.github.flemmli97.flan.api.ClaimHandler;
-import io.github.flemmli97.flan.api.data.IPermissionContainer;
-import io.github.flemmli97.flan.api.data.IPermissionStorage;
 import io.github.flemmli97.flan.api.permission.PermissionRegistry;
+import ladysnake.blast.common.compat.FlanCompat;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.item.bombards.BombardItem;
 import net.fabricmc.loader.api.FabricLoader;
@@ -33,10 +31,7 @@ public class BombItem extends Item {
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
         if (FabricLoader.getInstance().isModLoaded("flan") && world instanceof ServerWorld serverWorld && playerEntity instanceof ServerPlayerEntity serverPlayer) {
-            IPermissionStorage storage = ClaimHandler.getPermissionStorage(serverWorld);
-            IPermissionContainer container = storage.getForPermissionCheck(serverPlayer.getBlockPos());
-
-            if (!container.canInteract(serverPlayer, PermissionRegistry.INTERACTBLOCK, serverPlayer.getBlockPos())) {
+            if (!FlanCompat.canInteract(serverWorld, serverPlayer, serverPlayer.getBlockPos(), PermissionRegistry.INTERACTBLOCK)) {
                 return new TypedActionResult<>(ActionResult.PASS, playerEntity.getStackInHand(hand));
             }
         }

@@ -10,6 +10,7 @@ import io.github.flemmli97.flan.api.data.IPermissionStorage;
 import io.github.flemmli97.flan.api.permission.ClaimPermission;
 import io.github.flemmli97.flan.api.permission.PermissionRegistry;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import ladysnake.blast.common.compat.FlanCompat;
 import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
 import net.fabricmc.loader.api.FabricLoader;
@@ -131,8 +132,8 @@ public class CustomExplosion extends Explosion {
 
                             claimCheck:
                             if (h > 0.0F && (this.entity == null || this.entity.canExplosionDestroyBlock(this, this.world, blockPos, blockState, h))) {
-                                if (FabricLoader.getInstance().isModLoaded("flan") && this.world instanceof ServerWorld world && this.getCausingEntity() instanceof ServerPlayerEntity player) {
-                                    if (!canInteract(world, player, blockPos, PermissionRegistry.BREAK)) break claimCheck;
+                                if (FabricLoader.getInstance().isModLoaded("flan") && this.world instanceof ServerWorld serverWorld && this.getCausingEntity() instanceof ServerPlayerEntity serverPlayer) {
+                                    if (!FlanCompat.canInteract(serverWorld, serverPlayer, blockPos, PermissionRegistry.BREAK)) break claimCheck;
                                 }
 
                                 set.add(blockPos);
@@ -308,13 +309,6 @@ public class CustomExplosion extends Explosion {
                 }
             }
         }
-    }
-
-    public boolean canInteract(ServerWorld world, ServerPlayerEntity player, BlockPos pos, ClaimPermission type) {
-        IPermissionStorage storage = ClaimHandler.getPermissionStorage(world);
-        IPermissionContainer container = storage.getForPermissionCheck(pos);
-
-        return container.canInteract(player, type, pos);
     }
 
     public enum BlockBreakEffect {
