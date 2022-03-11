@@ -26,7 +26,7 @@ public class DryIceParticle extends SpriteBillboardParticle {
         this.maxAge = ThreadLocalRandom.current().nextInt(20, 100);
         this.collidesWithWorld = true;
         this.setSpriteForAge(spriteProvider);
-        this.colorAlpha = 0f;
+        this.alpha = 0f;
         this.maxAlpha = RANDOM.nextFloat() / 25f;
         this.velocityY = RANDOM.nextFloat() / 25f;
         this.velocityX = 0;
@@ -52,13 +52,13 @@ public class DryIceParticle extends SpriteBillboardParticle {
 
         // fade and die if old enough
         if (this.age++ >= this.maxAge) {
-            this.colorAlpha -= 0.001f;
-            if (colorAlpha < 0f) {
+            this.alpha -= 0.001f;
+            if (alpha < 0f) {
                 this.markDead();
             }
         } else {
-            if (this.colorAlpha <= this.maxAlpha) {
-                this.colorAlpha = Math.min(this.maxAlpha, this.colorAlpha + 0.01f);
+            if (this.alpha <= this.maxAlpha) {
+                this.alpha = Math.min(this.maxAlpha, this.alpha + 0.01f);
             }
         }
 
