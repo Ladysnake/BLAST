@@ -1,5 +1,8 @@
 # BLAST - Changelog
 
+### BLAST 1.8.3 - 1.18.1
+- Added a recipe to allow crafting stripminers with TNT
+
 ### BLAST 1.8.2 - 1.18
 - Updated to Minecraft 1.18
 
