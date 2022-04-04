@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+	"blast:stripminer",
+	"blast:cold_digger"
+  ]
+}

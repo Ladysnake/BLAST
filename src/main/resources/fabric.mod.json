@@ -10,7 +10,7 @@
   "contact": {
     "sources": "https://github.com/Ladysnake/Blast"
   },
-  "license": "Code: GNU GPLv3; Art: ARR",
+  "license": "ARR",
   "icon": "assets/blast/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -22,8 +22,9 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=0.11.3",
-    "fabric": "*",
-    "java": ">=16"
+    "fabricloader": ">=0.13.3",
+    "minecraft": "1.18.x",
+    "java": ">=17",
+    "fabric": ">=0.48.0"
   }
 }
