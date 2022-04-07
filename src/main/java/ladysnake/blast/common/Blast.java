@@ -12,7 +12,7 @@ import net.minecraft.util.math.Direction;
 public class Blast implements ModInitializer {
     public static final String MODID = "blast";
 
-    public static final TrackedDataHandler<Direction> FACING = new TrackedDataHandler<Direction>() {
+    public static final TrackedDataHandler<Direction> FACING = new TrackedDataHandler<>() {
         public void write(PacketByteBuf packetByteBuf, Direction direction) {
             packetByteBuf.writeEnumConstant(direction);
         }
