@@ -1,5 +1,8 @@
 # BLAST - Changelog
 
+### BLAST 1.8.5 - 1.18.2
+- Added compatibility with Enchancement and other mods that may remove the Fortune enchantment from the registry
+
 ### BLAST 1.8.4 - 1.18.2
 - Updated to Minecraft 1.18.2
 

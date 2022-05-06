@@ -9,6 +9,7 @@ import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.*;
@@ -20,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -234,7 +236,9 @@ public class CustomExplosion extends Explosion {
 
                         ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
                         if (this.effect == BlockBreakEffect.FORTUNE) {
-                            itemStack.addEnchantment(Enchantments.FORTUNE, 3);
+                            NbtList nbtList = new NbtList();
+                            nbtList.add(EnchantmentHelper.createNbt(EnchantmentHelper.getEnchantmentId(Enchantments.FORTUNE), 3));
+                            itemStack.setSubNbt("Enchantments", nbtList);
                         }
 
                         LootContext.Builder builder = (new LootContext.Builder((ServerWorld) this.world)).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.of(blockPos)).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
