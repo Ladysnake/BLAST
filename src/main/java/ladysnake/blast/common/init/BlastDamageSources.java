@@ -12,7 +12,7 @@ public class BlastDamageSources {
     }
 
     public static DamageSource icicle(PersistentProjectileEntity projectile, @Nullable Entity attacker) {
-        return (new ProjectileDamageSource("icicle", projectile, attacker)).setProjectile();
+        return (new ProjectileDamageSource("icicle", projectile, attacker)).setProjectile().setBypassesArmor();
     }
 
 }

@@ -28,7 +28,7 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
     public AmethystShardEntity(EntityType<? extends AmethystShardEntity> entityType, World world) {
         super(entityType, world);
         this.setSound(this.getHitSound());
-        this.setDamage(2);
+        this.setDamage(8);
         this.pickupType = PickupPermission.DISALLOWED;
     }
 
@@ -68,6 +68,13 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
                 if (this.ticksUntilRemoval <= 0) {
                     this.remove(RemovalReason.DISCARDED);
                 }
+            }
+        }
+
+        if (this.age < 10) {
+            for (LivingEntity livingEntity : world.getEntitiesByClass(LivingEntity.class, this.getBoundingBox().expand(1f), LivingEntity::isAlive)) {
+                this.onEntityHit(new EntityHitResult(livingEntity));
+                this.kill();
             }
         }
     }
@@ -110,8 +117,6 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
                 if (entity2 != null && livingEntity != entity2 && livingEntity instanceof PlayerEntity && entity2 instanceof ServerPlayerEntity && !this.isSilent()) {
                     ((ServerPlayerEntity) entity2).networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.PROJECTILE_HIT_PLAYER, GameStateChangeS2CPacket.DEMO_OPEN_SCREEN));
                 }
-
-                livingEntity.timeUntilRegen = 0;
             }
         } else {
             entity.setFireTicks(j);

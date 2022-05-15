@@ -22,7 +22,7 @@ public class IcicleEntity extends AmethystShardEntity {
 
     public IcicleEntity(EntityType<? extends AmethystShardEntity> entityType, World world) {
         super(entityType, world);
-        this.setDamage(0.5f);
+        this.setDamage(0.01f);
     }
 
     @Override

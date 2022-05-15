@@ -165,7 +165,7 @@ public class CustomExplosion extends Explosion {
                         double ad = getExposure(vec3d, entity);
                         double ae = (1.0D - y) * ad;
                         if (!(entity instanceof ExperienceOrbEntity || entity instanceof ItemEntity)) {
-                            entity.damage(this.getDamageSource(), (float) ((int) ((ae * ae + ae) / 2.0D * 7.0D * (double) q + 1.0D)));
+                            entity.damage(this.getDamageSource(), (float) ((int) ((ae * ae + ae) / 2.0D * 7.0D * (double) q + 1.0D))/3f);
                         }
                         double af = ae;
                         if (entity instanceof LivingEntity) {

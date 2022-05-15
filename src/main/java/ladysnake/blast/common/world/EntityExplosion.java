@@ -2,7 +2,9 @@ package ladysnake.blast.common.world;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
 public class EntityExplosion extends CustomExplosion {
@@ -32,7 +34,6 @@ public class EntityExplosion extends CustomExplosion {
             entity.setVelocity(random.nextGaussian() * velocity, random.nextGaussian() * velocity, random.nextGaussian() * velocity);
 
             world.spawnEntity(entity);
-
         }
     }
 }

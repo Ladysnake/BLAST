@@ -21,6 +21,7 @@
       "ladysnake.blast.client.BlastClient"
     ]
   },
+  "accessWidener": "blast.accesswidener",
   "depends": {
     "fabricloader": ">=0.13.3",
     "minecraft": "~1.18.2",

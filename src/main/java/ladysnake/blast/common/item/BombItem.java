@@ -27,7 +27,7 @@ public class BombItem extends Item {
         if (!playerEntity.isCreative()) {
             for (int i = 0; i < playerEntity.getInventory().size(); i++) {
                 if (playerEntity.getInventory().getStack(i).getItem() instanceof BombItem || playerEntity.getInventory().getStack(i).getItem() instanceof TriggerBombItem) {
-                    playerEntity.getItemCooldownManager().set(playerEntity.getInventory().getStack(i).getItem(), 80);
+                    playerEntity.getItemCooldownManager().set(playerEntity.getInventory().getStack(i).getItem(), 20);
                 }
             }
         }

@@ -3,8 +3,15 @@
 ### BLAST 1.9 - 1.18.2
 - Removed bombards
 - Added amethyst, frost and slime bombs, replacing the uses of the removed bombards
-- Bombs now have a 4 second cooldown when used in gamemodes other than creative, the cooldown applies to all bomb items
+- Bombs now have a 1 second cooldown when used in gamemodes other than creative, the cooldown applies to all bomb items
 - Reduced bomb maximum stack size to 16
+- Reduced amethyst and frost bomb shrapnel count from 250 to 70
+- Increased amethyst and frost bomb shrapnel speed from 0.6 to 1.4
+- Removed amethyst shards bypassing invulnerability ticks
+- Increased amethyst shard damage from 2 to 8
+- Divided utility explosion damage (bombs, diamond bombs, golden bombs, etc...) by 3
+- Reduced damage of icicles from 0.5 to 0.01
+- Icicles bypass armor and no longer damage it
 
 ### BLAST 1.8.5 - 1.18.2
 - Added compatibility with Enchancement and other mods that may remove the Fortune enchantment from the registry
