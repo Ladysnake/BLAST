@@ -25,7 +25,6 @@ import net.minecraft.world.explosion.Explosion;
 
 public class BombEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<String> BOMBARD_MODIFIER = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.STRING);
     public int ticksUntilRemoval;
     private int fuseTimer;
 
@@ -50,18 +49,6 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     protected CustomExplosion getExplosion() {
-        if (this.getBombardModifier() != BombardModifier.NONE) {
-            if (this.getBombardModifier() == BombardModifier.NORMAL) {
-                return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.NONE);
-            } else if (this.getBombardModifier() == BombardModifier.SLIME) {
-                return new KnockbackExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f);
-            } else if (this.getBombardModifier() == BombardModifier.AMETHYST) {
-                return new EntityExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.AMETHYST_SHARD, 250, 0.6f);
-            } else if (this.getBombardModifier() == BombardModifier.FROST) {
-                return new EntityExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.ICICLE, 250, 0.6f);
-            }
-        }
-
         return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.BREAK);
     }
 
@@ -95,13 +82,6 @@ public class BombEntity extends ThrownItemEntity {
             if (this.world.getBlockState(this.getBlockPos()).isFullCube(this.world, this.getBlockPos())) {
                 this.setPosition(this.prevX, this.prevY, this.prevZ);
             }
-
-            if (this.world.isClient() && getBombardModifier() != BombardModifier.NONE && age < 10) {
-                for (int i = 0; i < (50 - this.age * 5); i++) {
-                    this.world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() / (age * 5), this.random.nextGaussian() / (age * 5), this.random.nextGaussian() / (age * 5));
-                }
-            }
-
 
             // drop item if in water
             if (this.isSubmergedInWater() && this.disableInLiquid()) {
@@ -171,17 +151,8 @@ public class BombEntity extends ThrownItemEntity {
         return this.fuseTimer;
     }
 
-    public BombardModifier getBombardModifier() {
-        return BombardModifier.valueOf(this.dataTracker.get(BOMBARD_MODIFIER));
-    }
-
-    public void setBombardModifier(BombardModifier bombardModifier) {
-        this.dataTracker.set(BOMBARD_MODIFIER, bombardModifier.toString());
-    }
-
     protected void initDataTracker() {
         this.dataTracker.startTracking(FUSE, 40);
-        this.dataTracker.startTracking(BOMBARD_MODIFIER, BombardModifier.NONE.toString());
     }
 
     @Override
@@ -203,13 +174,5 @@ public class BombEntity extends ThrownItemEntity {
     public enum BombTriggerType {
         FUSE,
         IMPACT
-    }
-
-    public enum BombardModifier {
-        NONE,
-        NORMAL,
-        SLIME,
-        AMETHYST,
-        FROST
     }
 }

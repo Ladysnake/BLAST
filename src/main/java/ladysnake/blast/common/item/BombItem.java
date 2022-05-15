@@ -1,7 +1,6 @@
 package ladysnake.blast.common.item;
 
 import ladysnake.blast.common.entity.BombEntity;
-import ladysnake.blast.common.item.bombards.BombardItem;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -25,28 +24,32 @@ public class BombItem extends Item {
     }
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
-        if (hand == Hand.OFF_HAND && playerEntity.getStackInHand(Hand.MAIN_HAND).getItem() instanceof BombardItem) {
-            return new TypedActionResult<>(ActionResult.PASS, playerEntity.getStackInHand(hand));
-        } else {
-            ItemStack stackInHand = playerEntity.getStackInHand(hand);
-
-            this.playSoundEffects(world, playerEntity);
-
-            if (!world.isClient) {
-                BombEntity entity = Objects.requireNonNull(this.type.create(world));
-                entity.setItem(stackInHand);
-                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
-                entity.setPos(playerEntity.getX(), playerEntity.getY() + (double) playerEntity.getStandingEyeHeight() - 0.10000000149011612D, playerEntity.getZ());
-                entity.setOwner(playerEntity);
-                world.spawnEntity(entity);
+        if (!playerEntity.isCreative()) {
+            for (int i = 0; i < playerEntity.getInventory().size(); i++) {
+                if (playerEntity.getInventory().getStack(i).getItem() instanceof BombItem || playerEntity.getInventory().getStack(i).getItem() instanceof TriggerBombItem) {
+                    playerEntity.getItemCooldownManager().set(playerEntity.getInventory().getStack(i).getItem(), 80);
+                }
             }
-
-            if (!playerEntity.getAbilities().creativeMode) {
-                stackInHand.decrement(1);
-            }
-            playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
-            return new TypedActionResult<>(ActionResult.SUCCESS, stackInHand);
         }
+
+        ItemStack stackInHand = playerEntity.getStackInHand(hand);
+
+        this.playSoundEffects(world, playerEntity);
+
+        if (!world.isClient) {
+            BombEntity entity = Objects.requireNonNull(this.type.create(world));
+            entity.setItem(stackInHand);
+            entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
+            entity.setPos(playerEntity.getX(), playerEntity.getY() + (double) playerEntity.getStandingEyeHeight() - 0.10000000149011612D, playerEntity.getZ());
+            entity.setOwner(playerEntity);
+            world.spawnEntity(entity);
+        }
+
+        if (!playerEntity.getAbilities().creativeMode) {
+            stackInHand.decrement(1);
+        }
+        playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
+        return new TypedActionResult<>(ActionResult.SUCCESS, stackInHand);
     }
 
     public EntityType<BombEntity> getType() {

@@ -1,5 +1,10 @@
 # BLAST - Changelog
 
+### BLAST 1.9 - 1.18.2
+- Removed bombards
+- Added amethyst, frost and slime bombs, replacing the uses of the removed bombards
+- Bombs now have a 4 second cooldown when used in gamemodes other than creative, the cooldown applies to all bomb items
+
 ### BLAST 1.8.5 - 1.18.2
 - Added compatibility with Enchancement and other mods that may remove the Fortune enchantment from the registry
 

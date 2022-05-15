@@ -4,10 +4,6 @@ import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.item.BombItem;
 import ladysnake.blast.common.item.TriggerBombItem;
-import ladysnake.blast.common.item.bombards.AmethystBombardItem;
-import ladysnake.blast.common.item.bombards.BombardItem;
-import ladysnake.blast.common.item.bombards.FrostBombardItem;
-import ladysnake.blast.common.item.bombards.SlimeBombardItem;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -19,12 +15,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class BlastItems {
-
-    public static Item BOMBARD;
-    public static Item SLIME_BOMBARD;
-    public static Item AMETHYST_BOMBARD;
-    public static Item FROST_BOMBARD;
-
     public static Item BOMB;
     public static Item TRIGGER_BOMB;
     public static Item GOLDEN_BOMB;
@@ -38,13 +28,14 @@ public class BlastItems {
     public static Item DIRT_TRIGGER_BOMB;
     public static Item PEARL_BOMB;
     public static Item PEARL_TRIGGER_BOMB;
+    public static Item SLIME_BOMB;
+    public static Item SLIME_TRIGGER_BOMB;
+    public static Item AMETHYST_BOMB;
+    public static Item AMETHYST_TRIGGER_BOMB;
+    public static Item FROST_BOMB;
+    public static Item FROST_TRIGGER_BOMB;
 
     public static void init() {
-        BOMBARD = registerItem(new BombardItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(250)), "bombard");
-        SLIME_BOMBARD = registerItem(new SlimeBombardItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(250)), "slime_bombard");
-        AMETHYST_BOMBARD = registerItem(new AmethystBombardItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(250)), "amethyst_bombard");
-        FROST_BOMBARD = registerItem(new FrostBombardItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(250)), "frost_bombard");
-
         BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.BOMB), "bomb");
         TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.TRIGGER_BOMB), "trigger_bomb");
         GOLDEN_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.GOLDEN_BOMB), "golden_bomb");
@@ -58,6 +49,12 @@ public class BlastItems {
         DIRT_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.DIRT_TRIGGER_BOMB), "dirt_trigger_bomb");
         PEARL_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.PEARL_BOMB), "pearl_bomb");
         PEARL_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.PEARL_TRIGGER_BOMB), "pearl_trigger_bomb");
+        SLIME_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.SLIME_BOMB), "slime_bomb");
+        SLIME_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.TOOLS), BlastEntities.SLIME_TRIGGER_BOMB), "slime_trigger_bomb");
+        AMETHYST_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.COMBAT), BlastEntities.AMETHYST_BOMB), "amethyst_bomb");
+        AMETHYST_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.COMBAT), BlastEntities.AMETHYST_TRIGGER_BOMB), "amethyst_trigger_bomb");
+        FROST_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.COMBAT), BlastEntities.FROST_BOMB), "frost_bomb");
+        FROST_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.COMBAT), BlastEntities.FROST_TRIGGER_BOMB), "frost_trigger_bomb");
     }
 
     public static Item registerItem(Item item, String name) {

@@ -27,6 +27,12 @@ public class BlastEntities {
     public static EntityType<BombEntity> DIRT_TRIGGER_BOMB;
     public static EntityType<BombEntity> PEARL_BOMB;
     public static EntityType<BombEntity> PEARL_TRIGGER_BOMB;
+    public static EntityType<BombEntity> SLIME_BOMB;
+    public static EntityType<BombEntity> SLIME_TRIGGER_BOMB;
+    public static EntityType<BombEntity> AMETHYST_BOMB;
+    public static EntityType<BombEntity> AMETHYST_TRIGGER_BOMB;
+    public static EntityType<BombEntity> FROST_BOMB;
+    public static EntityType<BombEntity> FROST_TRIGGER_BOMB;
 
     public static EntityType<GunpowderBlockEntity> GUNPOWDER_BLOCK;
     public static EntityType<StripminerEntity> STRIPMINER;
@@ -50,6 +56,12 @@ public class BlastEntities {
         DIRT_TRIGGER_BOMB = register("dirt_trigger_bomb", createBombEntityType(DirtTriggerBombEntity::new));
         PEARL_BOMB = register("pearl_bomb", createBombEntityType(PearlBombEntity::new));
         PEARL_TRIGGER_BOMB = register("pearl_trigger_bomb", createBombEntityType(PearlTriggerBombEntity::new));
+        SLIME_BOMB = register("slime_bomb", createBombEntityType(SlimeBombEntity::new));
+        SLIME_TRIGGER_BOMB = register("slime_trigger_bomb", createBombEntityType(SlimeTriggerBombEntity::new));
+        AMETHYST_BOMB = register("amethyst_bomb", createBombEntityType(AmethystBombEntity::new));
+        AMETHYST_TRIGGER_BOMB = register("amethyst_trigger_bomb", createBombEntityType(AmethystTriggerBombEntity::new));
+        FROST_BOMB = register("frost_bomb", createBombEntityType(FrostBombEntity::new));
+        FROST_TRIGGER_BOMB = register("frost_trigger_bomb", createBombEntityType(FrostTriggerBombEntity::new));
 
         // explosive blocks
         GUNPOWDER_BLOCK = register("gunpowder_block", FabricEntityTypeBuilder.<GunpowderBlockEntity>create(SpawnGroup.MISC, GunpowderBlockEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build());
