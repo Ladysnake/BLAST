@@ -1,5 +1,8 @@
 # BLAST - Changelog
 
+### BLAST 1.9.1 - 1.18.2
+- Fixed Blast projectiles and other entities not rendering from further than 8 blocks away
+
 ### BLAST 1.9 - 1.18.2
 - Removed bombards
 - Added amethyst, frost and slime bombs, replacing the uses of the removed bombards
