@@ -1,6 +1,5 @@
 package ladysnake.blast.common.block;
 
-import ladysnake.blast.common.init.BlastBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -44,9 +43,6 @@ public class RemoteDetonatorBlock extends Block {
                     }
 
                     if (block == Blocks.TNT) {
-                        if (world.isClient) {
-                            return;
-                        }
                         TntEntity tntEntity = new TntEntity(world, (double) blockPos.getX() + 0.5, blockPos.getY(), (double) blockPos.getZ() + 0.5, null);
                         tntEntity.setFuse(1);
                         world.spawnEntity(tntEntity);

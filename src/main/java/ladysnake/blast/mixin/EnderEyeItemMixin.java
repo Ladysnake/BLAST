@@ -32,7 +32,7 @@ public class EnderEyeItemMixin {
         for (BlockPos foundPos : BlockPos.iterate(hitPos.getX() - 10, hitPos.getY() - 10, hitPos.getZ() - 10, hitPos.getX() + 10, hitPos.getY() + 10, hitPos.getZ() + 10)) {
             if (closestDetonatorPos == null || foundPos.getSquaredDistance(hitPos) < closestDetonatorPos.getSquaredDistance(hitPos)) {
                 if (world.getBlockState(foundPos).isOf(BlastBlocks.REMOTE_DETONATOR) && !world.getBlockState(foundPos).get(RemoteDetonatorBlock.FILLED)) {
-                    closestDetonatorPos = foundPos;
+                    closestDetonatorPos = foundPos.toImmutable();
                 }
             }
         }
@@ -43,11 +43,11 @@ public class EnderEyeItemMixin {
                 itemStack.decrement(1);
             }
 
-            System.out.println(world.getBlockState(closestDetonatorPos));
-
             world.playSound(null, user.getBlockPos(), SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.PLAYERS, 1.0f, 1.0f);
 
-//            RemoteDetonatorBlock.trigger(world, closestDetonatorPos);
+            if (!world.isClient) {
+                RemoteDetonatorBlock.trigger(world, closestDetonatorPos);
+            }
 
             callbackInfoReturnable.setReturnValue(TypedActionResult.consume(itemStack));
         }
