@@ -27,7 +27,7 @@ import net.minecraft.world.explosion.Explosion;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class StripminerBlock extends Block {
+public class StripminerBlock extends Block implements DetonatableBlock {
     public static final DirectionProperty FACING = DirectionProperty.of("facing", Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP, Direction.DOWN);
     public final EntityType<? extends StripminerEntity> type;
 
@@ -48,6 +48,17 @@ public class StripminerBlock extends Block {
             entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
             world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        }
+    }
+
+    @Override
+    public void detonate(World world, BlockPos pos) {
+        if (!world.isClient && world.getBlockState(pos).getBlock() instanceof StripminerBlock) {
+            StripminerEntity entity = ((StripminerBlock) world.getBlockState(pos).getBlock()).type.create(world);
+            entity.setFacing(world.getBlockState(pos).get(FACING));
+            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+            entity.setFuse(1);
+            world.spawnEntity(entity);
         }
     }
 

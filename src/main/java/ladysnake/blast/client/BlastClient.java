@@ -64,6 +64,7 @@ public class BlastClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.GUNPOWDER_BLOCK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.STRIPMINER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.COLD_DIGGER, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.REMOTE_DETONATOR, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.DRY_ICE, RenderLayer.getTranslucent());
 
         EntityRendererRegistry.INSTANCE.register(BlastEntities.AMETHYST_SHARD, AmethystShardEntityRenderer::new);

@@ -2,6 +2,7 @@ package ladysnake.blast.common.init;
 
 import ladysnake.blast.common.block.DryIceBlock;
 import ladysnake.blast.common.block.GunpowderBlock;
+import ladysnake.blast.common.block.RemoteDetonatorBlock;
 import ladysnake.blast.common.block.StripminerBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
@@ -20,12 +21,14 @@ public class BlastBlocks {
     public static Block GUNPOWDER_BLOCK;
     public static Block STRIPMINER;
     public static Block COLD_DIGGER;
+    public static Block REMOTE_DETONATOR;
     public static Block DRY_ICE;
 
     public static void init() {
         GUNPOWDER_BLOCK = registerBlock(new GunpowderBlock(FabricBlockSettings.of(Material.AGGREGATE, MapColor.BLACK).strength(0.5F, 0.5f).sounds(BlockSoundGroup.SAND)), "gunpowder_block", ItemGroup.BUILDING_BLOCKS);
         STRIPMINER = registerBlock(new StripminerBlock(FabricBlockSettings.of(Material.WOOD).strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).nonOpaque(), BlastEntities.STRIPMINER), "stripminer", ItemGroup.REDSTONE);
         COLD_DIGGER = registerBlock(new StripminerBlock(FabricBlockSettings.of(Material.WOOD).strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).nonOpaque(), BlastEntities.COLD_DIGGER), "cold_digger", ItemGroup.REDSTONE);
+        REMOTE_DETONATOR = registerBlock(new RemoteDetonatorBlock(FabricBlockSettings.of(Material.METAL).strength(2.5f, 2.5f).sounds(BlockSoundGroup.LANTERN).nonOpaque()), "remote_detonator", ItemGroup.REDSTONE);
         DRY_ICE = registerBlock(new DryIceBlock(FabricBlockSettings.of(Material.ICE).slipperiness(0.98F).strength(0.5F).sounds(BlockSoundGroup.GLASS).nonOpaque()), "dry_ice", ItemGroup.BUILDING_BLOCKS);
     }
 

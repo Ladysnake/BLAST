@@ -21,6 +21,9 @@
       "ladysnake.blast.client.BlastClient"
     ]
   },
+  "mixins": [
+    "blast.mixins.json"
+  ],
   "accessWidener": "blast.accesswidener",
   "depends": {
     "fabricloader": ">=0.13.3",

@@ -55,6 +55,8 @@
   "block.blast.gunpowder_block": "Gunpowder Block",
   "block.blast.stripminer": "Stripminer",
   "block.blast.cold_digger": "Cold Digger",
+  "block.blast.remote_detonator": "Remote Detonator",
+  "block.blast.bonesburrier": "Bonesburrier",
   "block.blast.dry_ice": "Dry Ice",
 
   "death.attack.amethyst_shard": "%1$s was shanked by an amethyst shard from %2$s's amethyst bomb",

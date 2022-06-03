@@ -22,7 +22,7 @@ import net.minecraft.world.explosion.Explosion;
 
 import java.util.Random;
 
-public class GunpowderBlock extends FallingBlock {
+public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
     public static final BooleanProperty LIT = Properties.LIT;
 
     public GunpowderBlock(Settings settings) {
@@ -42,6 +42,11 @@ public class GunpowderBlock extends FallingBlock {
             entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
         }
+    }
+
+    @Override
+    public void detonate(World world, BlockPos pos) {
+        explode(world, pos);
     }
 
     @Override

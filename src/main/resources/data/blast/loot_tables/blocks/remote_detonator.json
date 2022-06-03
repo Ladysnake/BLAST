@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "blast:remote_detonator",
+                  "properties": {
+                    "filled": true
+                  }
+                }
+              ],
+              "name": "minecraft:ender_eye"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "blast:remote_detonator"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
