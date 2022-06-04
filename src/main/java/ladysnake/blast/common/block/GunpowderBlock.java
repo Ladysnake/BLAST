@@ -41,6 +41,7 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
             BombEntity entity = BlastEntities.GUNPOWDER_BLOCK.create(world);
             entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
+            world.setBlockState(pos, Blocks.AIR.getDefaultState());
         }
     }
 

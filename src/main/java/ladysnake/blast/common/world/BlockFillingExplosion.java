@@ -32,7 +32,7 @@ public class BlockFillingExplosion extends CustomExplosion {
     @Override
     public void affectWorld(boolean boolean_1) {
         this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2F) * 0.7F);
-        boolean boolean_2 = this.blockDestructionType != DestructionType.NONE;
+        boolean boolean_2 = this.destructionType != DestructionType.NONE;
         if (this.power >= 2.0F && boolean_2) {
             this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
         } else {
@@ -81,7 +81,7 @@ public class BlockFillingExplosion extends CustomExplosion {
                         ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
 
                         LootContext.Builder builder = (new LootContext.Builder((ServerWorld) this.world)).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.of(blockPos)).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
-                        if (this.blockDestructionType == DestructionType.DESTROY) {
+                        if (this.destructionType == DestructionType.DESTROY) {
                             builder.parameter(LootContextParameters.EXPLOSION_RADIUS, this.power);
                         }
 

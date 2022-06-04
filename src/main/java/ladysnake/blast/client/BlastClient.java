@@ -2,6 +2,7 @@ package ladysnake.blast.client;
 
 import ladysnake.blast.client.particle.ConfettiParticle;
 import ladysnake.blast.client.particle.DryIceParticle;
+import ladysnake.blast.client.particle.FollyRedPaintParticle;
 import ladysnake.blast.client.renderers.AmethystShardEntityRenderer;
 import ladysnake.blast.client.renderers.BlastBlockEntityRenderer;
 import ladysnake.blast.client.renderers.IcicleEntityRenderer;
@@ -18,12 +19,14 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.particle.BlockLeakParticle;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.registry.Registry;
 
 import java.util.function.Function;
@@ -34,6 +37,9 @@ public class BlastClient implements ClientModInitializer {
     // particle types
     public static DefaultParticleType DRY_ICE;
     public static DefaultParticleType CONFETTI;
+    public static DefaultParticleType DRIPPING_FOLLY_RED_PAINT_DROP;
+    public static DefaultParticleType FALLING_FOLLY_RED_PAINT_DROP;
+    public static DefaultParticleType LANDING_FOLLY_RED_PAINT_DROP;
 
     public static void registerRenders() {
         registerItemEntityRenders(
@@ -60,10 +66,12 @@ public class BlastClient implements ClientModInitializer {
         registerBlockEntityRender(BlastEntities.GUNPOWDER_BLOCK, e -> BlastBlocks.GUNPOWDER_BLOCK.getDefaultState());
         registerBlockEntityRender(BlastEntities.STRIPMINER, StripminerEntity::getState);
         registerBlockEntityRender(BlastEntities.COLD_DIGGER, ColdDiggerEntity::getState);
+        registerBlockEntityRender(BlastEntities.BONESBURRIER, e -> BlastBlocks.BONESBURRIER.getDefaultState());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.GUNPOWDER_BLOCK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.STRIPMINER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.COLD_DIGGER, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.BONESBURRIER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.REMOTE_DETONATOR, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.DRY_ICE, RenderLayer.getTranslucent());
 
@@ -96,5 +104,12 @@ public class BlastClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(DRY_ICE, DryIceParticle.DefaultFactory::new);
         CONFETTI = Registry.register(Registry.PARTICLE_TYPE, "blast:confetti", FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(CONFETTI, ConfettiParticle.DefaultFactory::new);
+
+        DRIPPING_FOLLY_RED_PAINT_DROP = Registry.register(Registry.PARTICLE_TYPE, "blast:dripping_folly_red_paint_drop", FabricParticleTypes.simple(true));
+        ParticleFactoryRegistry.getInstance().register(DRIPPING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.DrippingFollyRedPaintDropFactory::new);
+        FALLING_FOLLY_RED_PAINT_DROP = Registry.register(Registry.PARTICLE_TYPE, "blast:falling_folly_red_paint_drop", FabricParticleTypes.simple(true));
+        ParticleFactoryRegistry.getInstance().register(FALLING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.FallingFollyRedPaintDropFactory::new);
+        LANDING_FOLLY_RED_PAINT_DROP = Registry.register(Registry.PARTICLE_TYPE, "blast:landing_folly_red_paint_drop", FabricParticleTypes.simple(true));
+        ParticleFactoryRegistry.getInstance().register(LANDING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.LandingFollyRedPaintDropFactory::new);
     }
 }

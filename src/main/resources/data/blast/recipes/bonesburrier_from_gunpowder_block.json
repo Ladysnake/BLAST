@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BrB",
+    "hGh",
+    "BpB"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "h": {
+      "item": "minecraft:honey_bottle"
+    },
+    "G": {
+      "item": "blast:gunpowder_block"
+    },
+    "r": {
+      "item": "minecraft:red_dye"
+    },
+    "p": {
+      "item": "minecraft:pink_dye"
+    }
+  },
+  "result": {
+    "item": "blast:bonesburrier"
+  }
+}

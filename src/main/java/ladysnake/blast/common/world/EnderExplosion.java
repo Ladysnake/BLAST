@@ -144,7 +144,7 @@ public class EnderExplosion extends CustomExplosion {
     @Override
     public void affectWorld(boolean boolean_1) {
         this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2F) * 0.9F);
-        boolean boolean_2 = this.blockDestructionType != DestructionType.NONE;
+        boolean boolean_2 = this.destructionType != DestructionType.NONE;
         this.world.addParticle(ParticleTypes.REVERSE_PORTAL, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
 
         Iterator var3;
@@ -166,7 +166,7 @@ public class EnderExplosion extends CustomExplosion {
                         itemStack.addEnchantment(Enchantments.SILK_TOUCH, 1);
 
                         LootContext.Builder builder = (new LootContext.Builder((ServerWorld) this.world)).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.of(blockPos)).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
-                        if (this.blockDestructionType == DestructionType.DESTROY) {
+                        if (this.destructionType == DestructionType.DESTROY) {
                             builder.parameter(LootContextParameters.EXPLOSION_RADIUS, this.power);
                         }
 

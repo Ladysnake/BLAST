@@ -1,7 +1,12 @@
 package ladysnake.blast.common.block;
 
+import ladysnake.blast.common.entity.BonesburrierEntity;
 import ladysnake.blast.common.entity.StripminerEntity;
-import net.minecraft.block.*;
+import ladysnake.blast.common.init.BlastEntities;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -14,7 +19,6 @@ import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -27,24 +31,18 @@ import net.minecraft.world.explosion.Explosion;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class StripminerBlock extends Block implements DetonatableBlock {
-    public static final DirectionProperty FACING = DirectionProperty.of("facing", Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP, Direction.DOWN);
-    public final EntityType<? extends StripminerEntity> type;
-
-    public StripminerBlock(AbstractBlock.Settings settings, EntityType<? extends StripminerEntity> type) {
+public class BonesburrierBlock extends Block implements DetonatableBlock {
+    public BonesburrierBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
-        this.type = type;
     }
 
-    public static void primeStripminer(World world, BlockPos pos) {
-        primeStripminer(world, pos, null);
+    public static void prime(World world, BlockPos pos) {
+        prime(world, pos, null);
     }
 
-    private static void primeStripminer(World world, BlockPos pos, LivingEntity igniter) {
-        if (!world.isClient && world.getBlockState(pos).getBlock() instanceof StripminerBlock) {
-            StripminerEntity entity = ((StripminerBlock) world.getBlockState(pos).getBlock()).type.create(world);
-            entity.setFacing(world.getBlockState(pos).get(FACING));
+    private static void prime(World world, BlockPos pos, LivingEntity igniter) {
+        if (!world.isClient && world.getBlockState(pos).getBlock() instanceof BonesburrierBlock) {
+            BonesburrierEntity entity = BlastEntities.BONESBURRIER.create(world);
             entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
             world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -53,9 +51,8 @@ public class StripminerBlock extends Block implements DetonatableBlock {
 
     @Override
     public void detonate(World world, BlockPos pos) {
-        if (!world.isClient && world.getBlockState(pos).getBlock() instanceof StripminerBlock) {
-            StripminerEntity entity = ((StripminerBlock) world.getBlockState(pos).getBlock()).type.create(world);
-            entity.setFacing(world.getBlockState(pos).get(FACING));
+        if (!world.isClient && world.getBlockState(pos).getBlock() instanceof BonesburrierBlock) {
+            BonesburrierEntity entity = BlastEntities.BONESBURRIER.create(world);
             entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             entity.setFuse(0);
             world.spawnEntity(entity);
@@ -67,7 +64,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         if (!oldState.isOf(state.getBlock())) {
             if (world.isReceivingRedstonePower(pos)) {
-                primeStripminer(world, pos);
+                prime(world, pos);
                 world.removeBlock(pos, false);
             }
 
@@ -77,7 +74,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
         if (world.isReceivingRedstonePower(pos)) {
-            primeStripminer(world, pos);
+            prime(world, pos);
             world.removeBlock(pos, false);
         }
 
@@ -86,30 +83,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     @Override
     public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
         if (!world.isClient) {
-            Direction randomDirection = Direction.NORTH;
-            switch (ThreadLocalRandom.current().nextInt(0, 6)) {
-                case 0:
-                    randomDirection = Direction.UP;
-                    break;
-                case 1:
-                    randomDirection = Direction.DOWN;
-                    break;
-                case 2:
-                    randomDirection = Direction.NORTH;
-                    break;
-                case 3:
-                    randomDirection = Direction.SOUTH;
-                    break;
-                case 4:
-                    randomDirection = Direction.EAST;
-                    break;
-                case 5:
-                    randomDirection = Direction.WEST;
-                    break;
-            }
-
-            StripminerEntity entity = this.type.create(world);
-            entity.setFacing(randomDirection);
+            BonesburrierEntity entity = BlastEntities.BONESBURRIER.create(world);
             entity.setFuse((short) (world.random.nextInt(entity.getFuseTimer() / 4) + entity.getFuseTimer() / 8));
             entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
@@ -124,7 +98,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
         if (item != Items.FLINT_AND_STEEL && item != Items.FIRE_CHARGE) {
             return super.onUse(state, world, pos, player, hand, hit);
         } else {
-            primeStripminer(world, pos, player);
+            prime(world, pos, player);
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
             if (!player.isCreative()) {
                 if (item == Items.FLINT_AND_STEEL) {
@@ -146,7 +120,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
             Entity entity = projectile.getOwner();
             if (projectile.isOnFire()) {
                 BlockPos blockPos = hit.getBlockPos();
-                primeStripminer(world, blockPos, entity instanceof LivingEntity ? (LivingEntity) entity : null);
+                prime(world, blockPos, entity instanceof LivingEntity ? (LivingEntity) entity : null);
                 world.removeBlock(blockPos, false);
             }
         }
@@ -156,30 +130,6 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     @Override
     public boolean shouldDropItemsOnExplosion(Explosion explosion) {
         return false;
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
-    }
-
-    @Override
-    public BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation(state.get(FACING)));
-    }
-
-    @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-    }
-
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        if (ctx.getPlayer() != null && ctx.getPlayer().isSneaking()) {
-            return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
-        } else {
-            return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection());
-        }
     }
 
     @Override

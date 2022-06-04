@@ -1,5 +1,6 @@
 package ladysnake.blast.common.entity;
 
+import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
 import net.minecraft.entity.EntityType;
@@ -20,7 +21,7 @@ public class GunpowderBlockEntity extends BombEntity {
 
     @Override
     protected Item getDefaultItem() {
-        return BlastItems.BOMB;
+        return BlastBlocks.GUNPOWDER_BLOCK.asItem();
     }
 
     @Override

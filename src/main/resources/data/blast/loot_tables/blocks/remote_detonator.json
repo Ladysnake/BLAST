@@ -16,15 +16,29 @@
                   "properties": {
                     "filled": true
                   }
+                },
+                {
+                  "condition": "minecraft:survives_explosion"
                 }
               ],
               "name": "minecraft:ender_eye"
-            },
-            {
-              "type": "minecraft:item",
-              "name": "blast:remote_detonator"
             }
           ]
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "blast:remote_detonator"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }

@@ -10,6 +10,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
@@ -34,22 +35,20 @@ public class RemoteDetonatorBlock extends Block {
     public static void trigger(World world, BlockPos blockPos) {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
-        for (int x = -1; x < 1; x+=2) {
-            for (int y = -1; y < 1; y+=2) {
-                for (int z = -1; z < 1; z+=2) {
-                    Block block = world.getBlockState(mutable.set(blockPos, x, y, z)).getBlock();
-                    if (block instanceof DetonatableBlock detonatableBlock) {
-                        detonatableBlock.detonate(world, blockPos);
-                    }
+        for (Direction direction : Direction.values()) {
+            Block block = world.getBlockState(mutable.set(blockPos, direction)).getBlock();
 
-                    if (block == Blocks.TNT) {
-                        TntEntity tntEntity = new TntEntity(world, (double) blockPos.getX() + 0.5, blockPos.getY(), (double) blockPos.getZ() + 0.5, null);
-                        tntEntity.setFuse(1);
-                        world.spawnEntity(tntEntity);
-                        world.playSound(null, tntEntity.getX(), tntEntity.getY(), tntEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                        world.emitGameEvent(null, GameEvent.PRIME_FUSE, blockPos);
-                    }
-                }
+            if (block instanceof DetonatableBlock detonatableBlock) {
+                detonatableBlock.detonate(world, mutable);
+            }
+
+            if (block == Blocks.TNT) {
+                TntEntity tntEntity = new TntEntity(world, (double) mutable.getX() + 0.5, mutable.getY(), (double) mutable.getZ() + 0.5, null);
+                tntEntity.setFuse(1);
+                world.spawnEntity(tntEntity);
+                world.playSound(null, tntEntity.getX(), tntEntity.getY(), tntEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                world.emitGameEvent(null, GameEvent.PRIME_FUSE, mutable);
+                world.setBlockState(mutable, Blocks.AIR.getDefaultState());
             }
         }
 

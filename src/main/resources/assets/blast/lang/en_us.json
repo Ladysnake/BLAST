@@ -49,6 +49,7 @@
   "entity.blast.gunpowder_block": "Gunpowder Block",
   "entity.blast.stripminer": "Stripminer",
   "entity.blast.cold_digger": "Cold Digger",
+  "entity.blast.bonesburrier": "Bonesburrier",
   "entity.blast.amethyst_shard": "Amethyst Shard",
   "entity.blast.icicle": "Icicle",
 
@@ -58,6 +59,7 @@
   "block.blast.remote_detonator": "Remote Detonator",
   "block.blast.bonesburrier": "Bonesburrier",
   "block.blast.dry_ice": "Dry Ice",
+  "block.blast.folly_red_paint": "Folly Red Paint",
 
   "death.attack.amethyst_shard": "%1$s was shanked by an amethyst shard from %2$s's amethyst bomb",
   "death.attack.icicle": "%1$s was iced by %2$s"
