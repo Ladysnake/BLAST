@@ -30,8 +30,8 @@ public class BlastBlocks {
         COLD_DIGGER = registerBlock(new StripminerBlock(FabricBlockSettings.of(Material.WOOD).strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).nonOpaque(), BlastEntities.COLD_DIGGER), "cold_digger", ItemGroup.REDSTONE);
         BONESBURRIER = registerBlock(new BonesburrierBlock(FabricBlockSettings.copyOf(Blocks.BONE_BLOCK)), "bonesburrier", ItemGroup.REDSTONE);
         REMOTE_DETONATOR = registerBlock(new RemoteDetonatorBlock(FabricBlockSettings.of(Material.METAL).strength(2.5f, 2.5f).sounds(BlockSoundGroup.LANTERN).nonOpaque()), "remote_detonator", ItemGroup.REDSTONE);
-        DRY_ICE = registerBlock(new DryIceBlock(FabricBlockSettings.of(Material.ICE).slipperiness(0.98F).strength(0.5F).sounds(BlockSoundGroup.GLASS).nonOpaque()), "dry_ice", ItemGroup.BUILDING_BLOCKS);
-        FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(FabricBlockSettings.copyOf(Blocks.HONEY_BLOCK)), "folly_red_paint", ItemGroup.BUILDING_BLOCKS);
+        DRY_ICE = registerBlock(new DryIceBlock(FabricBlockSettings.of(Material.ICE).mapColor(MapColor.LIGHT_GRAY).slipperiness(0.98F).strength(0.5F).sounds(BlockSoundGroup.GLASS).nonOpaque()), "dry_ice", ItemGroup.BUILDING_BLOCKS);
+        FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(FabricBlockSettings.copyOf(Blocks.HONEY_BLOCK).mapColor(MapColor.BRIGHT_RED)), "folly_red_paint", ItemGroup.BUILDING_BLOCKS);
     }
 
     private static Block registerBlock(Block block, String name, ItemGroup itemGroup) {
