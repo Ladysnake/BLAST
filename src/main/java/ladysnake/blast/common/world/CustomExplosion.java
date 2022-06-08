@@ -1,6 +1,5 @@
 package ladysnake.blast.common.world;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
@@ -46,13 +45,13 @@ public class CustomExplosion extends Explosion {
     public final float power;
     public final BlockBreakEffect effect;
     public final DamageSource damageSource;
-    public final List<BlockPos> affectedBlocks;
+    public final ObjectArrayList<BlockPos> affectedBlocks;
     public final Map<PlayerEntity, Vec3d> affectedPlayers;
 
     public CustomExplosion(World world, Entity entity, double x, double y, double z, float power, BlockBreakEffect effect, Explosion.DestructionType destructionType) {
         super(world, entity, null, null, x, y, z, power, false, destructionType);
         this.random = new Random();
-        this.affectedBlocks = Lists.newArrayList();
+        this.affectedBlocks = new ObjectArrayList();
         this.affectedPlayers = Maps.newHashMap();
         this.world = world;
         this.entity = entity;
@@ -165,7 +164,7 @@ public class CustomExplosion extends Explosion {
                         double ad = getExposure(vec3d, entity);
                         double ae = (1.0D - y) * ad;
                         if (!(entity instanceof ExperienceOrbEntity || entity instanceof ItemEntity)) {
-                            entity.damage(this.getDamageSource(), (float) ((int) ((ae * ae + ae) / 2.0D * 7.0D * (double) q + 1.0D))/3f);
+                            entity.damage(this.getDamageSource(), (float) ((int) ((ae * ae + ae) / 2.0D * 7.0D * (double) q + 1.0D)) / 3f);
                         }
                         double af = ae;
                         if (entity instanceof LivingEntity) {

@@ -22,6 +22,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Util;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.world.RaycastContext;
@@ -170,7 +171,7 @@ public class BonesburrierExplosion extends CustomExplosion {
         }
         if (bl) {
             ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
-            Collections.shuffle(this.affectedBlocks, this.world.random);
+            Util.shuffle(this.affectedBlocks, this.world.random);
             for (BlockPos blockPos : this.affectedBlocks) {
                 BlockState blockState = this.world.getBlockState(blockPos);
                 Block block = blockState.getBlock();

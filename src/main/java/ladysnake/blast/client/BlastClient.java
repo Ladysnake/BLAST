@@ -16,17 +16,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.particle.BlockLeakParticle;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.registry.Registry;
 
 import java.util.function.Function;
@@ -75,8 +73,8 @@ public class BlastClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.REMOTE_DETONATOR, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.DRY_ICE, RenderLayer.getTranslucent());
 
-        EntityRendererRegistry.INSTANCE.register(BlastEntities.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
-        EntityRendererRegistry.INSTANCE.register(BlastEntities.ICICLE, IcicleEntityRenderer::new);
+        EntityRendererRegistry.register(BlastEntities.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
+        EntityRendererRegistry.register(BlastEntities.ICICLE, IcicleEntityRenderer::new);
 
     }
 
@@ -88,11 +86,11 @@ public class BlastClient implements ClientModInitializer {
     }
 
     private static <T extends Entity & FlyingItemEntity> void registerItemEntityRender(EntityType<T> entityType) {
-        EntityRendererRegistry.INSTANCE.register(entityType, ctx -> new FlyingItemEntityRenderer<>(ctx));
+        EntityRendererRegistry.register(entityType, ctx -> new FlyingItemEntityRenderer<>(ctx));
     }
 
     private static <T extends BombEntity> void registerBlockEntityRender(EntityType<T> block, Function<T, BlockState> stateGetter) {
-        EntityRendererRegistry.INSTANCE.register(block, ctx -> new BlastBlockEntityRenderer<>(ctx, stateGetter));
+        EntityRendererRegistry.register(block, ctx -> new BlastBlockEntityRenderer<>(ctx, stateGetter));
     }
 
     @Override
