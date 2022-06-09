@@ -3,6 +3,7 @@
 ### BLAST 1.10 - 1.19
 - Added the Bonesburrier, a new deadly explosive block for a powerful display!
 - Added the Remote Detonator; triggered by aiming in its direction with an ender eye, it allows you to remotely and instantly detonate Blast explosive blocks and TNT adjacent to the detonator
+  - When triggered, the ender eye wil then be placed inside the detonator. If a hopper with a free slot is located below the detonator it will remove it so the detonator can be triggered again
 - Added Folly Red Paint; resulting from the Bonesburrier, can be gathered with Silk Touch
 
 ### BLAST 1.9.1 - 1.18.2
