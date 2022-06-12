@@ -1,10 +1,11 @@
 package ladysnake.blast.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.entity.TntEntity;
+import net.minecraft.inventory.SidedInventory;
+import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -12,9 +13,12 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
+import org.jetbrains.annotations.Nullable;
 
-public class RemoteDetonatorBlock extends Block {
+@SuppressWarnings("deprecation")
+public class RemoteDetonatorBlock extends Block implements InventoryProvider {
     public static final BooleanProperty FILLED = BooleanProperty.of("filled");
 
     public RemoteDetonatorBlock(Settings settings) {
@@ -53,5 +57,65 @@ public class RemoteDetonatorBlock extends Block {
         }
 
         world.setBlockState(blockPos, world.getBlockState(blockPos).with(RemoteDetonatorBlock.FILLED, true));
+    }
+
+    @Override
+    public SidedInventory getInventory(BlockState state, WorldAccess world, BlockPos pos) {
+        return state.get(FILLED) ?
+                new FilledInventory(state, world, pos, new ItemStack(Items.ENDER_EYE))
+                : new DummyInventory();
+    }
+
+    static class FilledInventory extends SimpleInventory implements SidedInventory {
+        private final BlockState state;
+        private final WorldAccess world;
+        private final BlockPos pos;
+        private boolean dirty;
+
+        public FilledInventory(BlockState state, WorldAccess world, BlockPos pos, ItemStack outputItem) {
+            super(outputItem);
+            this.state = state;
+            this.world = world;
+            this.pos = pos;
+        }
+
+        public int getMaxCountPerStack() {
+            return 1;
+        }
+
+        public int[] getAvailableSlots(Direction side) {
+            return side == Direction.DOWN ? new int[]{0} : new int[0];
+        }
+
+        public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
+            return false;
+        }
+
+        public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+            return !this.dirty && dir == Direction.DOWN && stack.isOf(Items.ENDER_EYE);
+        }
+
+        public void markDirty() {
+            world.setBlockState(pos, state.with(FILLED, false), Block.NOTIFY_ALL);
+            this.dirty = true;
+        }
+    }
+
+    static class DummyInventory extends SimpleInventory implements SidedInventory {
+        public DummyInventory() {
+            super(0);
+        }
+
+        public int[] getAvailableSlots(Direction side) {
+            return new int[0];
+        }
+
+        public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
+            return false;
+        }
+
+        public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+            return false;
+        }
     }
 }

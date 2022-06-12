@@ -4,8 +4,7 @@
   "package": "ladysnake.blast.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "EnderEyeItemMixin",
-    "HopperBlockEntityMixin"
+    "EnderEyeItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

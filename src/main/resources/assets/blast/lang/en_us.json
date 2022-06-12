@@ -60,6 +60,8 @@
   "block.blast.bonesburrier": "Bonesburrier",
   "block.blast.dry_ice": "Dry Ice",
   "block.blast.folly_red_paint": "Folly Red Paint",
+  "block.blast.fresh_folly_red_paint": "Fresh Folly Red Paint",
+  "block.blast.dried_folly_red_paint": "Dried Folly Red Paint",
 
   "death.attack.amethyst_shard": "%1$s was shanked by an amethyst shard from %2$s's amethyst bomb",
   "death.attack.icicle": "%1$s was iced by %2$s"

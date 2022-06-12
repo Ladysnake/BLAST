@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "blast:block/dried_folly_red_paint"
+  }
+}
