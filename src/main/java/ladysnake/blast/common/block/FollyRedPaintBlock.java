@@ -57,7 +57,7 @@ public class FollyRedPaintBlock extends Block {
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if (state.getBlock() == BlastBlocks.FOLLY_RED_PAINT && random.nextInt(40) == 0) {
+        if (state.getBlock() == BlastBlocks.FOLLY_RED_PAINT && random.nextInt(50) == 0) {
             world.setBlockState(pos, BlastBlocks.DRIED_FOLLY_RED_PAINT.getDefaultState());
         }
 

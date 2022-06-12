@@ -4,7 +4,10 @@
 - Added the Bonesburrier, a new deadly explosive block for a powerful display!
 - Added the Remote Detonator; triggered by aiming in its direction with an ender eye, it allows you to remotely and instantly detonate Blast explosive blocks and TNT adjacent to the detonator
   - When triggered, the ender eye wil then be placed inside the detonator. If a hopper with a free slot is located below the detonator it will remove it so the detonator can be triggered again
-- Added Folly Red Paint; resulting from the Bonesburrier, can be gathered with Silk Touch
+- Added Folly Red Paint; resulting from the explosion of the Bonesburrier
+  - It will dry over time into Dried Folly Red Paint
+  - Honey bottles can be used on (or crafted with) Folly Red Paint and Dried Folly Red Paint to turn them into Fresh Folly Red Pain, which will not dry up
+  - Folly Red Paint and Fresh Folly Red Paint can be smelted into a furnace to give Dried Folly Red Paint
 
 ### BLAST 1.9.1 - 1.18.2
 - Fixed Blast projectiles and other entities not rendering from further than 8 blocks away
