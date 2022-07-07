@@ -14,10 +14,12 @@ import net.minecraft.world.explosion.Explosion;
 public class NavalMineEntity extends BombEntity {
     public NavalMineEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
+        this.setExplosionRadius(4f);
     }
 
     public NavalMineEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, world, livingEntity);
+        this.setExplosionRadius(4f);
     }
 
     @Override
@@ -27,7 +29,7 @@ public class NavalMineEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 4f, CustomExplosion.BlockBreakEffect.AQUATIC, Explosion.DestructionType.BREAK);
+        return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), CustomExplosion.BlockBreakEffect.AQUATIC, Explosion.DestructionType.BREAK);
 
     }
 

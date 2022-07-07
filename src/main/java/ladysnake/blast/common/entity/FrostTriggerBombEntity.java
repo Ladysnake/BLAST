@@ -13,10 +13,12 @@ import net.minecraft.world.explosion.Explosion;
 public class FrostTriggerBombEntity extends TriggerBombEntity {
     public FrostTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
+        this.setExplosionRadius(70f);
     }
 
     public FrostTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, world, livingEntity);
+        this.setExplosionRadius(70f);
     }
 
     @Override
@@ -26,7 +28,7 @@ public class FrostTriggerBombEntity extends TriggerBombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new EntityExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.ICICLE, 70, 1.4f);
+        return new EntityExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.ICICLE, Math.round(this.getExplosionRadius()), 1.4f);
     }
 
 }

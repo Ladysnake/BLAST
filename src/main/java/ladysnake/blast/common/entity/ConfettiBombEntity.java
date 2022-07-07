@@ -14,10 +14,12 @@ import net.minecraft.world.World;
 public class ConfettiBombEntity extends BombEntity {
     public ConfettiBombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
+        this.setExplosionRadius(500f);
     }
 
     public ConfettiBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, world, livingEntity);
+        this.setExplosionRadius(500f);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class ConfettiBombEntity extends BombEntity {
                 world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 10f, Math.abs(random.nextGaussian() / 10f), random.nextGaussian() / 10f);
             }
 
-            for (int i = 0; i < 500; i++) {
+            for (int i = 0; i < Math.round(this.getExplosionRadius()); i++) {
                 world.addParticle(BlastClient.CONFETTI, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
             }
 

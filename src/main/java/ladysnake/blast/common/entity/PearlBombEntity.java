@@ -26,7 +26,7 @@ public class PearlBombEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new EnderExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, Explosion.DestructionType.BREAK);
+        return new EnderExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), Explosion.DestructionType.BREAK);
     }
 
     @Override
