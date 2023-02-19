@@ -59,7 +59,8 @@ public class BlastClient implements ClientModInitializer {
                 BlastEntities.FROST_BOMB,
                 BlastEntities.FROST_TRIGGER_BOMB,
                 BlastEntities.SLIME_BOMB,
-                BlastEntities.SLIME_TRIGGER_BOMB
+                BlastEntities.SLIME_TRIGGER_BOMB,
+                BlastEntities.PIPE_BOMB
         );
         registerBlockEntityRender(BlastEntities.GUNPOWDER_BLOCK, e -> BlastBlocks.GUNPOWDER_BLOCK.getDefaultState());
         registerBlockEntityRender(BlastEntities.STRIPMINER, StripminerEntity::getState);

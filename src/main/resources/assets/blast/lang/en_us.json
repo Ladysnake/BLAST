@@ -22,6 +22,7 @@
   "item.blast.frost_trigger_bomb": "Frost Trigger Bomb",
   "item.blast.slime_bomb": "Slime Bomb",
   "item.blast.slime_trigger_bomb": "Slime Trigger Bomb",
+  "item.blast.pipe_bomb": "Pipe Bomb",
 
   "entity.blast.bombard": "Bombard",
   "entity.blast.slime_bombard": "Slime Bombard",
@@ -64,5 +65,7 @@
   "block.blast.dried_folly_red_paint": "Dried Folly Red Paint",
 
   "death.attack.amethyst_shard": "%1$s was shanked by an amethyst shard from %2$s's amethyst bomb",
-  "death.attack.icicle": "%1$s was iced by %2$s"
+  "death.attack.icicle": "%1$s was iced by %2$s",
+
+  "subtitles.blast.entity.pipe_bomb.tick": "Pipe Bomb ticks"
 }
