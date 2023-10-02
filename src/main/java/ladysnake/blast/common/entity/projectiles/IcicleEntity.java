@@ -63,13 +63,13 @@ public class IcicleEntity extends AmethystShardEntity {
             if (entity instanceof LivingEntity) {
                 LivingEntity livingEntity = (LivingEntity) entity;
 
-                if (!this.world.isClient && entity2 instanceof LivingEntity) {
+                if (!this.getWorld().isClient && entity2 instanceof LivingEntity) {
                     EnchantmentHelper.onUserDamaged(livingEntity, entity2);
                     EnchantmentHelper.onTargetDamaged((LivingEntity) entity2, livingEntity);
                 }
 
                 this.onHit(livingEntity);
-                if (entity2 != null && livingEntity != entity2 && livingEntity instanceof PlayerEntity && entity2 instanceof ServerPlayerEntity && !this.isSilent()) {
+                if (livingEntity != entity2 && livingEntity instanceof PlayerEntity && entity2 instanceof ServerPlayerEntity && !this.isSilent()) {
                     ((ServerPlayerEntity) entity2).networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.PROJECTILE_HIT_PLAYER, GameStateChangeS2CPacket.DEMO_OPEN_SCREEN));
                 }
 
@@ -81,8 +81,8 @@ public class IcicleEntity extends AmethystShardEntity {
             this.setVelocity(this.getVelocity().multiply(-0.1D));
             this.setYaw(this.getYaw() + 180.0F);
             this.prevYaw += 180.0F;
-            if (!this.world.isClient && this.getVelocity().lengthSquared() < 1.0E-7D) {
-                if (this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+            if (!this.getWorld().isClient && this.getVelocity().lengthSquared() < 1.0E-7D) {
+                if (this.pickupType == PickupPermission.ALLOWED) {
                     this.dropStack(this.asItemStack(), 0.1F);
                 }
 
@@ -90,6 +90,6 @@ public class IcicleEntity extends AmethystShardEntity {
             }
         }
 
-        this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.NEUTRAL, 1.0f, 1.5f);
+        this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.NEUTRAL, 1.0f, 1.5f);
     }
 }

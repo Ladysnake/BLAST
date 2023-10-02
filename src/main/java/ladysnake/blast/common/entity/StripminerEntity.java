@@ -41,14 +41,14 @@ public class StripminerEntity extends BombEntity {
     public void explode() {
         for (int i = 0; i <= 24; i++) {
             BlockPos bp = this.getBlockPos().offset(this.getFacing(), i);
-            if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(world, this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.BREAK);
+            if (this.getWorld().getBlockState(bp).getBlock().getBlastResistance() < 1200) {
+                CustomExplosion explosion = new CustomExplosion(this.getWorld(), this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.DESTROY);
                 explosion.collectBlocksAndDamageEntities();
                 explosion.affectWorld(true);
             } else {
                 break;
             }
-            world.playSound(null, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 0.025f);
+            this.getWorld().playSound(null, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 0.025f);
         }
         this.remove(RemovalReason.DISCARDED);
     }
@@ -85,7 +85,7 @@ public class StripminerEntity extends BombEntity {
     @Override
     public void tick() {
         super.tick();
-        this.onGround = true;
+        this.setOnGround(true);
     }
 
     @Override

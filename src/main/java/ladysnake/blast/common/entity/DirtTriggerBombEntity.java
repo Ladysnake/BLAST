@@ -25,7 +25,7 @@ public class DirtTriggerBombEntity extends TriggerBombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new BlockFillingExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 2f, Blocks.DIRT.getDefaultState());
+        return new BlockFillingExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), 2f, Blocks.DIRT.getDefaultState());
     }
 
 }

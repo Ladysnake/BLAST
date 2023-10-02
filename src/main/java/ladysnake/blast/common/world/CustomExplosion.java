@@ -19,6 +19,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.particle.ParticleTypes;
@@ -35,7 +36,7 @@ import net.minecraft.world.explosion.Explosion;
 import java.util.*;
 
 public class CustomExplosion extends Explosion {
-    public final Explosion.DestructionType destructionType;
+    public final DestructionType destructionType;
     public final Random random;
     public final World world;
     public final double x;
@@ -48,10 +49,10 @@ public class CustomExplosion extends Explosion {
     public final ObjectArrayList<BlockPos> affectedBlocks;
     public final Map<PlayerEntity, Vec3d> affectedPlayers;
 
-    public CustomExplosion(World world, Entity entity, double x, double y, double z, float power, BlockBreakEffect effect, Explosion.DestructionType destructionType) {
+    public CustomExplosion(World world, Entity entity, double x, double y, double z, float power, BlockBreakEffect effect, DestructionType destructionType) {
         super(world, entity, null, null, x, y, z, power, false, destructionType);
         this.random = new Random();
-        this.affectedBlocks = new ObjectArrayList();
+        this.affectedBlocks = new ObjectArrayList<>();
         this.affectedPlayers = Maps.newHashMap();
         this.world = world;
         this.entity = entity;
@@ -61,7 +62,7 @@ public class CustomExplosion extends Explosion {
         this.y = y;
         this.z = z;
         this.destructionType = destructionType;
-        this.damageSource = DamageSource.explosion(this);
+        this.damageSource = world.getDamageSources().explosion(this);
     }
 
     public static void method_24023(ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList, ItemStack itemStack, BlockPos blockPos) {
@@ -108,7 +109,7 @@ public class CustomExplosion extends Explosion {
                         double o = this.z;
 
                         for (float var21 = 0.3F; h > 0.0F; h -= 0.22500001F) {
-                            BlockPos blockPos = new BlockPos(m, n, o);
+                            BlockPos blockPos = new BlockPos((int) m, (int) n, (int) o);
                             BlockState blockState = this.world.getBlockState(blockPos);
                             FluidState fluidState = this.world.getFluidState(blockPos);
                             if (!blockState.isAir() || !fluidState.isEmpty()) {
@@ -172,8 +173,7 @@ public class CustomExplosion extends Explosion {
                         }
 
                         entity.setVelocity(entity.getVelocity().add(z * af, aa * af, ab * af));
-                        if (entity instanceof PlayerEntity) {
-                            PlayerEntity playerEntity = (PlayerEntity) entity;
+                        if (entity instanceof PlayerEntity playerEntity) {
                             if (!playerEntity.isSpectator() && (!playerEntity.isCreative() || !playerEntity.getAbilities().flying)) {
                                 this.affectedPlayers.put(playerEntity, new Vec3d(z * ae, aa * ae, ab * ae));
                             }
@@ -187,7 +187,7 @@ public class CustomExplosion extends Explosion {
 
     public void affectWorld(boolean boolean_1) {
         this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2F) * 0.7F);
-        boolean boolean_2 = this.destructionType != DestructionType.NONE;
+        boolean boolean_2 = this.destructionType != DestructionType.KEEP;
         if (this.power >= 2.0F && boolean_2) {
             this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
         } else {
@@ -198,7 +198,7 @@ public class CustomExplosion extends Explosion {
         BlockPos blockPos;
         if (boolean_2) {
             var3 = this.affectedBlocks.iterator();
-            ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList();
+            ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
 
             while (var3.hasNext()) {
                 blockPos = (BlockPos) var3.next();
@@ -239,11 +239,14 @@ public class CustomExplosion extends Explosion {
                             nbtList.add(EnchantmentHelper.createNbt(EnchantmentHelper.getEnchantmentId(Enchantments.FORTUNE), 3));
                             itemStack.setSubNbt("Enchantments", nbtList);
                         }
+                        LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld) world)
+                                .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos))
+                                .add(LootContextParameters.TOOL, ItemStack.EMPTY)
+                                .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
+                                .addOptional(LootContextParameters.THIS_ENTITY, this.entity);
 
-                        LootContext.Builder builder = (new LootContext.Builder((ServerWorld) this.world)).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.of(blockPos)).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
-                        if (this.destructionType == DestructionType.DESTROY) {
-                            builder.parameter(LootContextParameters.EXPLOSION_RADIUS, this.power);
-                        }
+                        if (this.destructionType == DestructionType.DESTROY)
+                            builder.add(LootContextParameters.EXPLOSION_RADIUS, this.power);
 
                         BlockPos finalBlockPos = blockPos;
                         blockState.getDroppedStacks(builder).forEach(itemStack1 -> method_24023(objectArrayList, itemStack1, finalBlockPos.toImmutable()));

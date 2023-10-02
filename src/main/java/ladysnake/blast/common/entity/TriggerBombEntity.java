@@ -31,7 +31,7 @@ public class TriggerBombEntity extends BombEntity {
     // play the click, although you can barely hear it, but you know, details
     @Override
     protected void onCollision(HitResult hitResult) {
-        world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.NEUTRAL, 1F, 0.6F);
+        this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.NEUTRAL, 1F, 0.6F);
         super.onCollision(hitResult);
     }
 

@@ -49,7 +49,7 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     protected CustomExplosion getExplosion() {
-        return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.BREAK);
+        return new CustomExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.DESTROY);
     }
 
     @Override
@@ -79,21 +79,21 @@ public class BombEntity extends ThrownItemEntity {
         } else {
             super.tick();
 
-            if (this.world.getBlockState(this.getBlockPos()).isFullCube(this.world, this.getBlockPos())) {
+            if (this.getWorld().getBlockState(this.getBlockPos()).isFullCube(this.getWorld(), this.getBlockPos())) {
                 this.setPosition(this.prevX, this.prevY, this.prevZ);
             }
 
             // drop item if in water
             if (this.isSubmergedInWater() && this.disableInLiquid()) {
-                this.world.spawnEntity(new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), new ItemStack(this.getDefaultItem())));
+                this.getWorld().spawnEntity(new ItemEntity(this.getWorld(), this.getX(), this.getY(), this.getZ(), new ItemStack(this.getDefaultItem())));
                 this.remove(RemovalReason.DISCARDED);
             }
 
             // tick down the fuse, then blow up
             if (this.getTriggerType() == BombTriggerType.FUSE) {
                 // smoke particle for lit fuse
-                if (this.world.isClient) {
-                    this.world.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.3, this.getZ(), 0, 0, 0);
+                if (this.getWorld().isClient) {
+                    this.getWorld().addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.3, this.getZ(), 0, 0, 0);
                 }
 
                 // shorten the fuse
@@ -113,8 +113,8 @@ public class BombEntity extends ThrownItemEntity {
             explosion.collectBlocksAndDamageEntities();
             explosion.affectWorld(true);
 
-            if (!this.world.isClient()) {
-                for (net.minecraft.entity.player.PlayerEntity playerEntity : this.world.getPlayers()) {
+            if (!this.getWorld().isClient()) {
+                for (net.minecraft.entity.player.PlayerEntity playerEntity : this.getWorld().getPlayers()) {
                     ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
                     if (serverPlayerEntity.squaredDistanceTo(this.getX(), this.getY(), this.getZ()) < 4096.0D) {
                         serverPlayerEntity.networkHandler.sendPacket(new ExplosionS2CPacket(this.getX(), this.getY(), this.getZ(), explosion.getPower(), explosion.getAffectedBlocks(), (Vec3d) explosion.getAffectedPlayers().get(serverPlayerEntity)));

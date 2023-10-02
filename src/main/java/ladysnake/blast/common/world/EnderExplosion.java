@@ -17,6 +17,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -63,7 +64,7 @@ public class EnderExplosion extends CustomExplosion {
                         double o = this.z;
 
                         for (float var21 = 0.3F; h > 0.0F; h -= 0.22500001F) {
-                            BlockPos blockPos = new BlockPos(m, n, o);
+                            BlockPos blockPos = new BlockPos((int) m, (int) n, (int) o);
                             BlockState blockState = this.world.getBlockState(blockPos);
                             FluidState fluidState = this.world.getFluidState(blockPos);
                             if (!blockState.isAir() || !fluidState.isEmpty()) {
@@ -103,8 +104,7 @@ public class EnderExplosion extends CustomExplosion {
         List<Entity> list = this.world.getOtherEntities(null, new Box(k, t, v, l, u, w));
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
-        for (int x = 0; x < list.size(); ++x) {
-            Entity entity = list.get(x);
+        for (Entity entity : list) {
             if (!entity.isImmuneToExplosion()) {
                 double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
@@ -144,14 +144,14 @@ public class EnderExplosion extends CustomExplosion {
     @Override
     public void affectWorld(boolean boolean_1) {
         this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2F) * 0.9F);
-        boolean boolean_2 = this.destructionType != DestructionType.NONE;
+        boolean boolean_2 = this.destructionType != DestructionType.KEEP;
         this.world.addParticle(ParticleTypes.REVERSE_PORTAL, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
 
         Iterator var3;
         BlockPos blockPos;
         if (boolean_2) {
             var3 = this.affectedBlocks.iterator();
-            ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList();
+            ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
 
             while (var3.hasNext()) {
                 blockPos = (BlockPos) var3.next();
@@ -165,10 +165,14 @@ public class EnderExplosion extends CustomExplosion {
                         ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
                         itemStack.addEnchantment(Enchantments.SILK_TOUCH, 1);
 
-                        LootContext.Builder builder = (new LootContext.Builder((ServerWorld) this.world)).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.of(blockPos)).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
-                        if (this.destructionType == DestructionType.DESTROY) {
-                            builder.parameter(LootContextParameters.EXPLOSION_RADIUS, this.power);
-                        }
+                        LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld) world)
+                                .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos))
+                                .add(LootContextParameters.TOOL, ItemStack.EMPTY)
+                                .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
+                                .addOptional(LootContextParameters.THIS_ENTITY, this.entity);
+
+                        if (this.destructionType == DestructionType.DESTROY)
+                            builder.add(LootContextParameters.EXPLOSION_RADIUS, this.power);
 
                         BlockPos finalBlockPos = blockPos;
                         blockState.getDroppedStacks(builder).forEach(itemStack1 -> method_24023(objectArrayList, itemStack1, finalBlockPos.toImmutable()));
@@ -200,8 +204,7 @@ public class EnderExplosion extends CustomExplosion {
             }
 
             for (Pair<ItemStack, BlockPos> itemStackBlockPosPair : objectArrayList) {
-                Pair<ItemStack, BlockPos> pair = itemStackBlockPosPair;
-                Block.dropStack(this.world, pair.getSecond(), pair.getFirst());
+                Block.dropStack(this.world, itemStackBlockPosPair.getSecond(), itemStackBlockPosPair.getFirst());
             }
         }
     }

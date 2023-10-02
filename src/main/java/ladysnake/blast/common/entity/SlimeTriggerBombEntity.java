@@ -25,7 +25,7 @@ public class SlimeTriggerBombEntity extends TriggerBombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new KnockbackExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f);
+        return new KnockbackExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f);
     }
 
 }

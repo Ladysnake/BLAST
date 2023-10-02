@@ -31,7 +31,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     public static final DirectionProperty FACING = DirectionProperty.of("facing", Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP, Direction.DOWN);
     public final EntityType<? extends StripminerEntity> type;
 
-    public StripminerBlock(AbstractBlock.Settings settings, EntityType<? extends StripminerEntity> type) {
+    public StripminerBlock(Settings settings, EntityType<? extends StripminerEntity> type) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
         this.type = type;

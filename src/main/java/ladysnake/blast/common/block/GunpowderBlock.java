@@ -2,6 +2,7 @@ package ladysnake.blast.common.block;
 
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.init.BlastEntities;
+import net.fabricmc.fabric.impl.content.registry.FireBlockHooks;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,7 +31,7 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
     }
 
     public static void explode(World world, BlockPos pos) {
-        explode(world, pos, (LivingEntity) null);
+        explode(world, pos, null);
     }
 
     private static void explode(World world, BlockPos pos, LivingEntity igniter) {
@@ -60,12 +61,13 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         super.onBlockAdded(state, world, pos, oldState, notify);
-        if (world.getBlockState(pos.add(-1, 0, 0)).getMaterial() == Material.FIRE ||
-                world.getBlockState(pos.add(1, 0, 0)).getMaterial() == Material.FIRE ||
-                world.getBlockState(pos.add(0, -1, 0)).getMaterial() == Material.FIRE ||
-                world.getBlockState(pos.add(0, 1, 0)).getMaterial() == Material.FIRE ||
-                world.getBlockState(pos.add(0, 0, -1)).getMaterial() == Material.FIRE ||
-                world.getBlockState(pos.add(0, 0, 1)).getMaterial() == Material.FIRE) {
+
+        if (world.getBlockState(pos.add(-1, 0, 0)).getBlock() instanceof FireBlock ||
+                world.getBlockState(pos.add(1, 0, 0)).getBlock() instanceof FireBlock ||
+                world.getBlockState(pos.add(0, -1, 0)).getBlock() instanceof FireBlock ||
+                world.getBlockState(pos.add(0, 1, 0)).getBlock() instanceof FireBlock ||
+                world.getBlockState(pos.add(0, 0, -1)).getBlock() instanceof FireBlock ||
+                world.getBlockState(pos.add(0, 0, 1)).getBlock() instanceof FireBlock) {
             explode(world, pos);
         }
     }

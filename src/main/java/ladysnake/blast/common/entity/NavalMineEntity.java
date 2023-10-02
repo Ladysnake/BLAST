@@ -27,14 +27,14 @@ public class NavalMineEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 4f, CustomExplosion.BlockBreakEffect.AQUATIC, Explosion.DestructionType.BREAK);
+        return new CustomExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), 4f, CustomExplosion.BlockBreakEffect.AQUATIC, Explosion.DestructionType.DESTROY);
 
     }
 
     // play the click, although you can barely hear it, but you know, details
     @Override
     protected void onCollision(HitResult hitResult) {
-        world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.NEUTRAL, 0.8F, 0.6F);
+        this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.NEUTRAL, 0.8F, 0.6F);
         super.onCollision(hitResult);
     }
 

@@ -4,14 +4,18 @@
 package ladysnake.blast.common.recipe;
 
 import ladysnake.blast.common.init.BlastItems;
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.recipe.book.RecipeCategory;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -21,11 +25,11 @@ public class PipeBombRecipe extends SpecialCraftingRecipe {
     private static final Ingredient FIREWORK_STAR = Ingredient.ofItems(Items.FIREWORK_STAR);
 
     public PipeBombRecipe(Identifier identifier) {
-        super(identifier);
+        super(identifier, CraftingRecipeCategory.EQUIPMENT);
     }
 
     @Override
-    public boolean matches(CraftingInventory craftingInventory, World world) {
+    public boolean matches(RecipeInputInventory craftingInventory, World world) {
         boolean bl = false;
         int i = 0;
         for (int j = 0; j < craftingInventory.size(); ++j) {
@@ -45,7 +49,7 @@ public class PipeBombRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory craftingInventory) {
+    public ItemStack craft(RecipeInputInventory craftingInventory, DynamicRegistryManager registryManager) {
         ItemStack itemStack = new ItemStack(Items.FIREWORK_ROCKET, 3);
         NbtCompound nbtCompound = itemStack.getOrCreateSubNbt("Fireworks");
         NbtList nbtList = new NbtList();
@@ -74,7 +78,7 @@ public class PipeBombRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack getOutput() {
+    public ItemStack getOutput(DynamicRegistryManager registryManager) {
         return new ItemStack(BlastItems.PIPE_BOMB);
     }
 

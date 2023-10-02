@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class KnockbackExplosion extends CustomExplosion {
     public KnockbackExplosion(World world, Entity entity, double x, double y, double z, float power) {
-        super(world, entity, x, y, z, power, null, DestructionType.NONE);
+        super(world, entity, x, y, z, power, null, DestructionType.KEEP);
     }
 
     public float getPower() {
@@ -49,7 +49,7 @@ public class KnockbackExplosion extends CustomExplosion {
                         double o = this.z;
 
                         for (float var21 = 0.3F; h > 0.0F; h -= 0.22500001F) {
-                            BlockPos blockPos = new BlockPos(m, n, o);
+                            BlockPos blockPos = new BlockPos((int) m, (int) n, (int) o);
                             BlockState blockState = this.world.getBlockState(blockPos);
                             FluidState fluidState = this.world.getFluidState(blockPos);
                             if (!blockState.isAir() || !fluidState.isEmpty()) {

@@ -22,7 +22,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class FollyRedPaintBlock extends Block {
-    public FollyRedPaintBlock(AbstractBlock.Settings settings) {
+    public FollyRedPaintBlock(Settings settings) {
         super(settings);
     }
 
