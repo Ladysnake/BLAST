@@ -62,8 +62,6 @@ public class BlastItems {
         FROST_BOMB = registerItem(new BombItem(new Item.Settings().maxCount(16), BlastEntities.FROST_BOMB), "frost_bomb", ItemGroups.COMBAT);
         FROST_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().maxCount(16), BlastEntities.FROST_TRIGGER_BOMB), "frost_trigger_bomb", ItemGroups.COMBAT);
         PIPE_BOMB = registerItem(new PipeBombItem(new Item.Settings().maxCount(16)), "pipe_bomb", ItemGroups.COMBAT);
-
-        BlastItemGroup.register();
     }
 
     public static Item registerItem(Item item, String name, RegistryKey<ItemGroup> itemGroupKey) {
@@ -78,7 +76,6 @@ public class BlastItems {
     public static Item registerItem(Item item, String name, RegistryKey<ItemGroup> itemGroupKey, boolean registerDispenserBehavior) {
         Registry.register(Registries.ITEM, Blast.MODID + ":" + name, item);
         ItemGroupEvents.modifyEntriesEvent(itemGroupKey).register((entries) -> entries.add(item));
-        BlastItemGroup.queueItem(item);
 
         if (registerDispenserBehavior) {
             DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
