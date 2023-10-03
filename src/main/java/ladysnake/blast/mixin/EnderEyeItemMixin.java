@@ -23,8 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class EnderEyeItemMixin {
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> callbackInfoReturnable) {
-
-        /*
         user.getItemCooldownManager().set(Items.ENDER_EYE, 20);
 
         BlockHitResult raycast = world.raycast(new RaycastContext(user.getEyePos(), user.getEyePos().add(user.getRotationVector().multiply(160d)), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, user));
@@ -53,6 +51,5 @@ public class EnderEyeItemMixin {
 
             callbackInfoReturnable.setReturnValue(TypedActionResult.consume(itemStack));
         }
-        */
     }
 }
