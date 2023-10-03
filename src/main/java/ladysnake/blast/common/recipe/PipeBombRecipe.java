@@ -9,10 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.recipe.*;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -20,6 +17,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public class PipeBombRecipe extends SpecialCraftingRecipe {
+
     private static final Ingredient PAPER = Ingredient.ofItems(Items.PAPER);
     private static final Ingredient DURATION_MODIFIER = Ingredient.ofItems(Items.GUNPOWDER);
     private static final Ingredient FIREWORK_STAR = Ingredient.ofItems(Items.FIREWORK_STAR);

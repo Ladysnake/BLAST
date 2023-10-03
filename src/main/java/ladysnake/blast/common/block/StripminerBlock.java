@@ -128,9 +128,8 @@ public class StripminerBlock extends Block implements DetonatableBlock {
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
             if (!player.isCreative()) {
                 if (item == Items.FLINT_AND_STEEL) {
-                    itemStack.damage(1, player, (playerEntity) -> {
-                        playerEntity.sendToolBreakStatus(hand);
-                    });
+                    itemStack.damage(1, player, (playerEntity)
+                            -> playerEntity.sendToolBreakStatus(hand));
                 } else {
                     itemStack.decrement(1);
                 }

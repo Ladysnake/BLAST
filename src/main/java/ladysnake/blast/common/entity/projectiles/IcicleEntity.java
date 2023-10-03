@@ -49,20 +49,16 @@ public class IcicleEntity extends AmethystShardEntity {
             }
         }
 
-        boolean bl = entity.getType() == EntityType.ENDERMAN;
-        int j = entity.getFireTicks();
-        if (this.isOnFire() && !bl) {
+        boolean isEnderman = entity.getType() == EntityType.ENDERMAN;
+        int fireTicks = entity.getFireTicks();
+        if (this.isOnFire() && !isEnderman) {
             entity.setOnFireFor(5);
         }
 
         if (entity.damage(damageSource2, (float) this.getDamage())) {
-            if (bl) {
+            if (isEnderman)
                 return;
-            }
-
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) entity;
-
+            if (entity instanceof LivingEntity livingEntity) {
                 if (!this.getWorld().isClient && entity2 instanceof LivingEntity) {
                     EnchantmentHelper.onUserDamaged(livingEntity, entity2);
                     EnchantmentHelper.onTargetDamaged((LivingEntity) entity2, livingEntity);
@@ -74,10 +70,10 @@ public class IcicleEntity extends AmethystShardEntity {
                 }
 
                 livingEntity.timeUntilRegen = 0;
-                livingEntity.setFrozenTicks(livingEntity.getFrozenTicks() + 100);
+                livingEntity.setFrozenTicks(200);
             }
         } else {
-            entity.setFireTicks(j);
+            entity.setFireTicks(fireTicks);
             this.setVelocity(this.getVelocity().multiply(-0.1D));
             this.setYaw(this.getYaw() + 180.0F);
             this.prevYaw += 180.0F;

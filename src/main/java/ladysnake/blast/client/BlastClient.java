@@ -68,16 +68,15 @@ public class BlastClient implements ClientModInitializer {
         registerBlockEntityRender(BlastEntities.COLD_DIGGER, ColdDiggerEntity::getState);
         registerBlockEntityRender(BlastEntities.BONESBURRIER, e -> BlastBlocks.BONESBURRIER.getDefaultState());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.GUNPOWDER_BLOCK, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.STRIPMINER, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.COLD_DIGGER, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.BONESBURRIER, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.REMOTE_DETONATOR, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
+                BlastBlocks.GUNPOWDER_BLOCK, BlastBlocks.COLD_DIGGER,
+                BlastBlocks.STRIPMINER, BlastBlocks.BONESBURRIER,
+                BlastBlocks.REMOTE_DETONATOR
+        );
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.DRY_ICE, RenderLayer.getTranslucent());
 
         EntityRendererRegistry.register(BlastEntities.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
         EntityRendererRegistry.register(BlastEntities.ICICLE, IcicleEntityRenderer::new);
-
     }
 
     @SafeVarargs

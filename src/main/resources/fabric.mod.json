@@ -24,7 +24,6 @@
   "mixins": [
     "blast.mixins.json"
   ],
-  "accessWidener": "blast.accesswidener",
   "depends": {
     "fabricloader": ">=0.13.3",
     "java": ">=17",
