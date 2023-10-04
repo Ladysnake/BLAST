@@ -13,10 +13,12 @@ public class GunpowderBlockEntity extends BombEntity {
     public GunpowderBlockEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
         this.setFuse(1);
+        this.setExplosionRadius(4f);
     }
 
     public GunpowderBlockEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, world, livingEntity);
+        this.setExplosionRadius(4f);
     }
 
     @Override
@@ -26,6 +28,6 @@ public class GunpowderBlockEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), 4f, CustomExplosion.BlockBreakEffect.FIERY, Explosion.DestructionType.DESTROY);
+        return new CustomExplosion(this.world, this, this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), CustomExplosion.BlockBreakEffect.FIERY, Explosion.DestructionType.DESTROY);
     }
 }

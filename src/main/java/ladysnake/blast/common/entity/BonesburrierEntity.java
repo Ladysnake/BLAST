@@ -15,11 +15,12 @@ public class BonesburrierEntity extends BombEntity {
     public BonesburrierEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
         this.setFuse(80);
+        this.setExplosionRadius(8f);
     }
 
     @Override
     public void explode() {
-        CustomExplosion explosion = new BonesburrierExplosion(world, this,  this.getX(), this.getBodyY(0.0625), this.getZ(), 8f, Explosion.DestructionType.DESTROY);
+        CustomExplosion explosion = new BonesburrierExplosion(world, this,  this.getX(), this.getBodyY(0.0625), this.getZ(), this.getExplosionRadius(), Explosion.DestructionType.DESTROY);
         explosion.collectBlocksAndDamageEntities();
         explosion.affectWorld(true);
 

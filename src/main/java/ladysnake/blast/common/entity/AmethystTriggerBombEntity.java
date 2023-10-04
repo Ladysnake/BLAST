@@ -13,10 +13,12 @@ import net.minecraft.world.explosion.Explosion;
 public class AmethystTriggerBombEntity extends TriggerBombEntity {
     public AmethystTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
+        this.setExplosionRadius(70f);
     }
 
     public AmethystTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, world, livingEntity);
+        this.setExplosionRadius(70f);
     }
 
     @Override
@@ -26,7 +28,7 @@ public class AmethystTriggerBombEntity extends TriggerBombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new EntityExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.AMETHYST_SHARD, 70, 1.4f);
+        return new EntityExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.AMETHYST_SHARD, Math.round(this.getExplosionRadius()), 1.4f);
     }
 
 }
