@@ -30,6 +30,7 @@ public class StripminerEntity extends BombEntity {
     public StripminerEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
         this.setFuse(80);
+        this.setExplosionRadius(2.5f);
     }
 
     protected void initDataTracker() {

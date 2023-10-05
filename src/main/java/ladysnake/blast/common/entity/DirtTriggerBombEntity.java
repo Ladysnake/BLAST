@@ -12,10 +12,12 @@ import net.minecraft.world.World;
 public class DirtTriggerBombEntity extends TriggerBombEntity {
     public DirtTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
+        this.setExplosionRadius(2f);
     }
 
     public DirtTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, world, livingEntity);
+        this.setExplosionRadius(2f);
     }
 
     @Override

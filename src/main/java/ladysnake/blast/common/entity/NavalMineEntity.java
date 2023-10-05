@@ -14,10 +14,12 @@ import net.minecraft.world.explosion.Explosion;
 public class NavalMineEntity extends BombEntity {
     public NavalMineEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
+        this.setExplosionRadius(4f);
     }
 
     public NavalMineEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, world, livingEntity);
+        this.setExplosionRadius(4f);
     }
 
     @Override

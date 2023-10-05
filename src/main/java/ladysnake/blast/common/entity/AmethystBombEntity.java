@@ -13,10 +13,12 @@ import net.minecraft.world.explosion.Explosion;
 public class AmethystBombEntity extends BombEntity {
     public AmethystBombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
+        this.setExplosionRadius(70f);
     }
 
     public AmethystBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, world, livingEntity);
+        this.setExplosionRadius(70f);
     }
 
     @Override

@@ -15,6 +15,7 @@ public class BonesburrierEntity extends BombEntity {
     public BonesburrierEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
         this.setFuse(80);
+        this.setExplosionRadius(8f);
     }
 
     @Override

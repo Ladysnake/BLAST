@@ -25,18 +25,21 @@ import net.minecraft.world.explosion.Explosion;
 
 public class BombEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private float explosionRadius = 3f;
     public int ticksUntilRemoval;
     private int fuseTimer;
 
     public BombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
         this.setFuse(40);
+        this.setExplosionRadius(3f);
         this.ticksUntilRemoval = -1;
     }
 
     public BombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, livingEntity, world);
         this.setFuse(40);
+        this.setExplosionRadius(3f);
         this.ticksUntilRemoval = -1;
     }
 
@@ -151,6 +154,22 @@ public class BombEntity extends ThrownItemEntity {
         return this.fuseTimer;
     }
 
+    public float getExplosionRadius() {
+        return this.explosionRadius;
+    }
+
+    public void setExplosionRadius(float float_1) {
+        this.explosionRadius = float_1;
+    }
+
+    @Override
+    public void setItem(ItemStack item) {
+        super.setItem(new ItemStack(item.getItem()));
+        if (item.hasNbt() && item.getOrCreateNbt().contains("ExplosionRadius")) {
+            this.setExplosionRadius(item.getOrCreateNbt().getFloat("ExplosionRadius"));
+        }
+    }
+
     protected void initDataTracker() {
         this.dataTracker.startTracking(FUSE, 40);
     }
@@ -158,11 +177,13 @@ public class BombEntity extends ThrownItemEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound NbtCompound_1) {
         NbtCompound_1.putShort("Fuse", (short) this.getFuseTimer());
+        NbtCompound_1.putFloat("ExplosionRadius", this.getExplosionRadius());
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound NbtCompound_1) {
         this.setFuse(NbtCompound_1.getShort("Fuse"));
+        this.setExplosionRadius(NbtCompound_1.getFloat("ExplosionRadius"));
     }
 
     @Override

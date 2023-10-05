@@ -13,10 +13,12 @@ public class GunpowderBlockEntity extends BombEntity {
     public GunpowderBlockEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
         this.setFuse(1);
+        this.setExplosionRadius(4f);
     }
 
     public GunpowderBlockEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, world, livingEntity);
+        this.setExplosionRadius(4f);
     }
 
     @Override

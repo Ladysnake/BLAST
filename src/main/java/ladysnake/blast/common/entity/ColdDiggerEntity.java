@@ -15,6 +15,7 @@ import net.minecraft.world.explosion.Explosion;
 public class ColdDiggerEntity extends StripminerEntity {
     public ColdDiggerEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
+        this.setExplosionRadius(3.5f);
     }
 
     @Override
