@@ -49,7 +49,7 @@ public class KnockbackExplosion extends CustomExplosion {
                         double o = this.z;
 
                         for (float var21 = 0.3F; h > 0.0F; h -= 0.22500001F) {
-                            BlockPos blockPos = new BlockPos((int) m, (int) n, (int) o);
+                            BlockPos blockPos = BlockPos.ofFloored(m, n, o);
                             BlockState blockState = this.world.getBlockState(blockPos);
                             FluidState fluidState = this.world.getFluidState(blockPos);
                             if (!blockState.isAir() || !fluidState.isEmpty()) {

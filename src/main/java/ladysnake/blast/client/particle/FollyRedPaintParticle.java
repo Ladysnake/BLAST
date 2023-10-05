@@ -47,7 +47,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         this.velocityX *= 0.98f;
         this.velocityY *= 0.98f;
         this.velocityZ *= 0.98f;
-        BlockPos blockPos = new BlockPos((int) this.x, (int) this.y, (int) this.z);
+        BlockPos blockPos = BlockPos.ofFloored(this.x, this.y, this.z);
         FluidState fluidState = this.world.getFluidState(blockPos);
         if (this.y < (double)((float)blockPos.getY() + fluidState.getHeight(this.world, blockPos))) {
             this.markDead();

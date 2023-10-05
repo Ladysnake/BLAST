@@ -76,7 +76,7 @@ public class BonesburrierExplosion extends CustomExplosion {
     public void collectBlocksAndDamageEntities() {
         int l;
         int k;
-        this.world.emitGameEvent(this.entity, GameEvent.EXPLODE, new BlockPos((int) this.x, (int) this.y, (int) this.z));
+        this.world.emitGameEvent(this.entity, GameEvent.EXPLODE, BlockPos.ofFloored(this.x, this.y, this.z));
         HashSet<BlockPos> set = Sets.newHashSet();
         int i = 16;
         for (int j = 0; j < 16; ++j) {
@@ -96,7 +96,7 @@ public class BonesburrierExplosion extends CustomExplosion {
                     double o = this.z;
                     float p = 0.3f;
                     for (float h = this.power * (0.7f + this.world.random.nextFloat() * 0.6f); h > 0.0f; h -= 0.22500001f) {
-                        BlockPos blockPos = new BlockPos((int) m, (int) n, (int) o);
+                        BlockPos blockPos = BlockPos.ofFloored(m, n, o);
                         BlockState blockState = this.world.getBlockState(blockPos);
                         FluidState fluidState = this.world.getFluidState(blockPos);
                         if (!this.world.isInBuildLimit(blockPos)) continue block2;

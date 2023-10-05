@@ -48,7 +48,7 @@ public class DryIceParticle extends SpriteBillboardParticle {
         this.prevPosY = this.y;
         this.prevPosZ = this.z;
 
-        BlockPos pos = new BlockPos((int) this.x, (int) this.y, (int) this.z);
+        BlockPos pos = BlockPos.ofFloored(this.x, this.y, this.z);
 
         // fade and die if old enough
         if (this.age++ >= this.maxAge) {
