@@ -52,7 +52,7 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     protected CustomExplosion getExplosion() {
-        return new CustomExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, null, Explosion.DestructionType.DESTROY);
+        return new CustomExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), null, Explosion.DestructionType.DESTROY);
     }
 
     @Override

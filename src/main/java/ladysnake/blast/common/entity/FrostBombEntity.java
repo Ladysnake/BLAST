@@ -28,6 +28,6 @@ public class FrostBombEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new EntityExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.ICICLE, 70, 1.4f);
+        return new EntityExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.ICICLE, Math.round(this.getExplosionRadius()), 1.4f);
     }
 }

@@ -23,7 +23,7 @@ public class ColdDiggerEntity extends StripminerEntity {
         for (int i = 0; i <= 24; i++) {
             BlockPos bp = this.getBlockPos().offset(this.getFacing(), i);
             if (this.getWorld().getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(this.getWorld(), this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, 3.5f, CustomExplosion.BlockBreakEffect.FROSTY, Explosion.DestructionType.DESTROY);
+                CustomExplosion explosion = new CustomExplosion(this.getWorld(), this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, this.getExplosionRadius(), CustomExplosion.BlockBreakEffect.FROSTY, Explosion.DestructionType.DESTROY);
                 explosion.collectBlocksAndDamageEntities();
                 explosion.affectWorld(true);
             } else {

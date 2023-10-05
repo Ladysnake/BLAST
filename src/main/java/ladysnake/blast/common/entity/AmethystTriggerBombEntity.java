@@ -28,7 +28,7 @@ public class AmethystTriggerBombEntity extends TriggerBombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new EntityExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.AMETHYST_SHARD, 70, 1.4f);
+        return new EntityExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.AMETHYST_SHARD, Math.round(this.getExplosionRadius()), 1.4f);
     }
 
 }

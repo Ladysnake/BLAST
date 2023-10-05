@@ -28,6 +28,6 @@ public class GunpowderBlockEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new CustomExplosion(this.getWorld(), this, this.getX(), this.getY(), this.getZ(), 4f, CustomExplosion.BlockBreakEffect.FIERY, Explosion.DestructionType.DESTROY);
+        return new CustomExplosion(this.getWorld(), this, this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), CustomExplosion.BlockBreakEffect.FIERY, Explosion.DestructionType.DESTROY);
     }
 }

@@ -25,6 +25,6 @@ public class SlimeBombEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new KnockbackExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f);
+        return new KnockbackExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius());
     }
 }

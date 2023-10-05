@@ -41,7 +41,7 @@ public class ConfettiTriggerBombEntity extends TriggerBombEntity {
             for (int i = 0; i < 15; i++) {
                 this.getWorld().addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 10f, Math.abs(random.nextGaussian() / 10f), random.nextGaussian() / 10f);
             }
-            for (int i = 0; i < 500; i++) {
+            for (int i = 0; i < Math.round(this.getExplosionRadius()); i++) {
                 this.getWorld().addParticle(BlastClient.CONFETTI, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
             }
 

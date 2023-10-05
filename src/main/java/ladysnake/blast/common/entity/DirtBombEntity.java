@@ -27,6 +27,6 @@ public class DirtBombEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new BlockFillingExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), 2f, Blocks.DIRT.getDefaultState());
+        return new BlockFillingExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), Blocks.DIRT.getDefaultState());
     }
 }
