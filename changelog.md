@@ -10,6 +10,8 @@ An update powered by our community !
 - Added Turkish localization (thanks Hexasan !)
 - Added Spanish localization (thanks Boxadactle !)
 
+*Also, first version on [Modrinth](https://modrinth.com/mod/blast)*
+
 ------------------------------------------------------
 BLAST 1.10 - 1.19
 ------------------------------------------------------
