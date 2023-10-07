@@ -1,0 +1,8 @@
+{
+  "entity.pipe_bomb.tick": {
+    "sounds": [
+      "blast:pipe_bomb_tick"
+    ],
+    "subtitle": "subtitles.blast.entity.pipe_bomb.tick"
+  }
+}

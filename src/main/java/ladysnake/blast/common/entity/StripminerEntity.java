@@ -30,6 +30,7 @@ public class StripminerEntity extends BombEntity {
     public StripminerEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
         this.setFuse(80);
+        this.setExplosionRadius(2.5f);
     }
 
     protected void initDataTracker() {
@@ -42,7 +43,7 @@ public class StripminerEntity extends BombEntity {
         for (int i = 0; i <= 24; i++) {
             BlockPos bp = this.getBlockPos().offset(this.getFacing(), i);
             if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(world, this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, 2.5f, null, Explosion.DestructionType.BREAK);
+                CustomExplosion explosion = new CustomExplosion(world, this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, this.getExplosionRadius(), null, Explosion.DestructionType.BREAK);
                 explosion.collectBlocksAndDamageEntities();
                 explosion.affectWorld(true);
             } else {

@@ -15,6 +15,7 @@ import net.minecraft.world.explosion.Explosion;
 public class ColdDiggerEntity extends StripminerEntity {
     public ColdDiggerEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
+        this.setExplosionRadius(3.5f);
     }
 
     @Override
@@ -22,7 +23,7 @@ public class ColdDiggerEntity extends StripminerEntity {
         for (int i = 0; i <= 24; i++) {
             BlockPos bp = this.getBlockPos().offset(this.getFacing(), i);
             if (world.getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(world, this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, 3.5f, CustomExplosion.BlockBreakEffect.FROSTY, Explosion.DestructionType.BREAK);
+                CustomExplosion explosion = new CustomExplosion(world, this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, this.getExplosionRadius(), CustomExplosion.BlockBreakEffect.FROSTY, Explosion.DestructionType.BREAK);
                 explosion.collectBlocksAndDamageEntities();
                 explosion.affectWorld(true);
             } else {

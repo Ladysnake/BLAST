@@ -9,7 +9,9 @@ import ladysnake.blast.common.entity.BombEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.TntMinecartEntityRenderer;
@@ -24,20 +26,22 @@ import java.util.function.Function;
 @Environment(EnvType.CLIENT)
 public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRenderer<T> {
     private final Function<T, BlockState> stateGetter;
+    private final BlockRenderManager blockRenderManager;
 
     public BlastBlockEntityRenderer(EntityRendererFactory.Context ctx, Function<T, BlockState> stateGetter) {
         super(ctx);
 
         this.stateGetter = stateGetter;
         this.shadowRadius = 0.5F;
+        this.blockRenderManager = ctx.getBlockRenderManager();
     }
 
     @Override
-    public void render(T stripminerEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+    public void render(T bombEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         matrixStack.push();
         matrixStack.translate(0.0D, 0.5D, 0.0D);
-        if ((float) stripminerEntity.getFuseTimer() - g + 1.0F < 10.0F) {
-            float h = 1.0F - ((float) stripminerEntity.getFuseTimer() - g + 1.0F) / 10.0F;
+        if ((float) bombEntity.getFuseTimer() - g + 1.0F < 10.0F) {
+            float h = 1.0F - ((float) bombEntity.getFuseTimer() - g + 1.0F) / 10.0F;
             h = MathHelper.clamp(h, 0.0F, 1.0F);
             h *= h;
             h *= h;
@@ -49,9 +53,9 @@ public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRender
         matrixStack.translate(-0.5D, -0.5D, 0.5D);
         matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
 
-        TntMinecartEntityRenderer.renderFlashingBlock(this.stateGetter.apply(stripminerEntity), matrixStack, vertexConsumerProvider, i, stripminerEntity.getFuseTimer() / 5 % 2 == 0);
+        TntMinecartEntityRenderer.renderFlashingBlock(this.blockRenderManager, this.stateGetter.apply(bombEntity), matrixStack, vertexConsumerProvider, i, bombEntity.getFuseTimer() / 5 % 2 == 0);
         matrixStack.pop();
-        super.render(stripminerEntity, f, g, matrixStack, vertexConsumerProvider, i);
+        super.render(bombEntity, f, g, matrixStack, vertexConsumerProvider, i);
     }
 
     @Override

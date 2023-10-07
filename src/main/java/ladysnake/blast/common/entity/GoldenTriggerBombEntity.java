@@ -24,7 +24,7 @@ public class GoldenTriggerBombEntity extends TriggerBombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, CustomExplosion.BlockBreakEffect.FORTUNE, Explosion.DestructionType.BREAK);
+        return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), CustomExplosion.BlockBreakEffect.FORTUNE, Explosion.DestructionType.BREAK);
     }
 
 }

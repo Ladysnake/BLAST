@@ -3,6 +3,7 @@ package ladysnake.blast.common.init;
 import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.item.BombItem;
+import ladysnake.blast.common.item.PipeBombItem;
 import ladysnake.blast.common.item.TriggerBombItem;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
@@ -34,6 +35,7 @@ public class BlastItems {
     public static Item AMETHYST_TRIGGER_BOMB;
     public static Item FROST_BOMB;
     public static Item FROST_TRIGGER_BOMB;
+    public static Item PIPE_BOMB;
 
     public static void init() {
         BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.TOOLS).maxCount(16), BlastEntities.BOMB), "bomb");
@@ -55,6 +57,7 @@ public class BlastItems {
         AMETHYST_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(16), BlastEntities.AMETHYST_TRIGGER_BOMB), "amethyst_trigger_bomb");
         FROST_BOMB = registerItem(new BombItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(16), BlastEntities.FROST_BOMB), "frost_bomb");
         FROST_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(16), BlastEntities.FROST_TRIGGER_BOMB), "frost_trigger_bomb");
+        PIPE_BOMB = registerItem(new PipeBombItem(new Item.Settings().group(ItemGroup.COMBAT).maxCount(16)), "pipe_bomb");
     }
 
     public static Item registerItem(Item item, String name) {
