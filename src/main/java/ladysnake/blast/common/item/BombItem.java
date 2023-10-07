@@ -18,7 +18,7 @@ import java.util.Objects;
 public class BombItem extends Item {
     EntityType<BombEntity> type;
 
-    public BombItem(Item.Settings settings, EntityType<BombEntity> entityType) {
+    public BombItem(Settings settings, EntityType<BombEntity> entityType) {
         super(settings);
         this.type = entityType;
     }

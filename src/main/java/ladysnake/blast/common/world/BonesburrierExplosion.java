@@ -17,6 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -62,7 +63,7 @@ public class BonesburrierExplosion extends CustomExplosion {
                     double o;
                     double n = MathHelper.lerp(k, box.minX, box.maxX);
                     Vec3d vec3d = new Vec3d(n + g, o = MathHelper.lerp(l, box.minY, box.maxY), (p = MathHelper.lerp(m, box.minZ, box.maxZ)) + h);
-                    if (entity.world.raycast(new RaycastContext(vec3d, source, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, entity)).getType() == HitResult.Type.MISS) {
+                    if (entity.getWorld().raycast(new RaycastContext(vec3d, source, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, entity)).getType() == HitResult.Type.MISS) {
                         ++i;
                     }
                     ++j;
@@ -75,7 +76,7 @@ public class BonesburrierExplosion extends CustomExplosion {
     public void collectBlocksAndDamageEntities() {
         int l;
         int k;
-        this.world.emitGameEvent(this.entity, GameEvent.EXPLODE, new BlockPos(this.x, this.y, this.z));
+        this.world.emitGameEvent(this.entity, GameEvent.EXPLODE, BlockPos.ofFloored(this.x, this.y, this.z));
         HashSet<BlockPos> set = Sets.newHashSet();
         int i = 16;
         for (int j = 0; j < 16; ++j) {
@@ -95,7 +96,7 @@ public class BonesburrierExplosion extends CustomExplosion {
                     double o = this.z;
                     float p = 0.3f;
                     for (float h = this.power * (0.7f + this.world.random.nextFloat() * 0.6f); h > 0.0f; h -= 0.22500001f) {
-                        BlockPos blockPos = new BlockPos(m, n, o);
+                        BlockPos blockPos = BlockPos.ofFloored(m, n, o);
                         BlockState blockState = this.world.getBlockState(blockPos);
                         FluidState fluidState = this.world.getFluidState(blockPos);
                         if (!this.world.isInBuildLimit(blockPos)) continue block2;
@@ -161,7 +162,7 @@ public class BonesburrierExplosion extends CustomExplosion {
         if (this.world.isClient) {
             this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
         }
-        boolean bl2 = bl = this.destructionType != DestructionType.NONE;
+        boolean bl2 = bl = this.destructionType != DestructionType.KEEP;
         if (particles) {
             if (this.power < 2.0f || !bl) {
                 this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
@@ -180,10 +181,15 @@ public class BonesburrierExplosion extends CustomExplosion {
                 this.world.getProfiler().push("explosion_blocks");
                 if (block.shouldDropItemsOnExplosion(this) && this.world instanceof ServerWorld) {
                     BlockEntity blockEntity = blockState.hasBlockEntity() ? this.world.getBlockEntity(blockPos) : null;
-                    LootContext.Builder builder = new LootContext.Builder((ServerWorld) this.world).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos)).parameter(LootContextParameters.TOOL, ItemStack.EMPTY).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
-                    if (this.destructionType == DestructionType.DESTROY) {
-                        builder.parameter(LootContextParameters.EXPLOSION_RADIUS, Float.valueOf(this.power));
-                    }
+                    LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld) world)
+                            .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos))
+                            .add(LootContextParameters.TOOL, ItemStack.EMPTY)
+                            .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
+                            .addOptional(LootContextParameters.THIS_ENTITY, this.entity);
+
+                    if (this.destructionType == DestructionType.DESTROY)
+                        builder.add(LootContextParameters.EXPLOSION_RADIUS, this.power);
+
                     blockState.getDroppedStacks(builder).forEach(stack -> tryMergeStack(objectArrayList, stack, blockPos2));
                 }
 

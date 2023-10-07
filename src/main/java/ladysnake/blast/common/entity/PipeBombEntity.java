@@ -12,8 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -58,12 +58,12 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
 
         this.dataTracker.startTracking(FUSE, 40);
 
-        this.rotationX = world.random.nextFloat() * 360f;
-        this.rotationY = world.random.nextFloat() * 360f;
-        this.rotationZ = world.random.nextFloat() * 360f;
-        this.rotationXmod = world.random.nextFloat() * 10f * (world.random.nextBoolean() ? -1 : 1);
-        this.rotationYmod = world.random.nextFloat() * 10f * (world.random.nextBoolean() ? -1 : 1);
-        this.rotationZmod = world.random.nextFloat() * 10f * (world.random.nextBoolean() ? -1 : 1);
+        this.rotationX = this.getWorld().random.nextFloat() * 360f;
+        this.rotationY = this.getWorld().random.nextFloat() * 360f;
+        this.rotationZ = this.getWorld().random.nextFloat() * 360f;
+        this.rotationXmod = this.getWorld().random.nextFloat() * 10f * (this.getWorld().random.nextBoolean() ? -1 : 1);
+        this.rotationYmod = this.getWorld().random.nextFloat() * 10f * (this.getWorld().random.nextBoolean() ? -1 : 1);
+        this.rotationZmod = this.getWorld().random.nextFloat() * 10f * (this.getWorld().random.nextBoolean() ? -1 : 1);
     }
 
     public int getFuse() {
@@ -127,7 +127,7 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
 
         if (this.ticksUntilExplosion >= 0) {
             if (this.ticksUntilExplosion++ >= 5) {
-                this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), 4.0F, Explosion.DestructionType.NONE);
+                this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), 4.0F, World.ExplosionSourceType.NONE);
                 this.discard();
             }
         }
@@ -145,8 +145,8 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     }
 
     public void explode() {
-        if (!this.world.isClient) {
-            world.createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), 2f, Explosion.DestructionType.NONE);
+        if (!this.getWorld().isClient) {
+            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), 2f, World.ExplosionSourceType.NONE);
             // TODO Explosion
         }
     }

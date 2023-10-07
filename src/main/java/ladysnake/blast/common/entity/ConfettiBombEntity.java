@@ -37,13 +37,12 @@ public class ConfettiBombEntity extends BombEntity {
 
     @Override
     public void explode() {
-        if (this.world.isClient) {
+        if (this.getWorld().isClient) {
             for (int i = 0; i < 15; i++) {
-                world.addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 10f, Math.abs(random.nextGaussian() / 10f), random.nextGaussian() / 10f);
+                this.getWorld().addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 10f, Math.abs(random.nextGaussian() / 10f), random.nextGaussian() / 10f);
             }
-
             for (int i = 0; i < Math.round(this.getExplosionRadius()); i++) {
-                world.addParticle(BlastClient.CONFETTI, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
+                this.getWorld().addParticle(BlastClient.CONFETTI, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
             }
 
             this.remove(RemovalReason.DISCARDED);
@@ -53,7 +52,7 @@ public class ConfettiBombEntity extends BombEntity {
         // since the server removes the bomb too early, we have to manually remove it after a delay
         // so we set the age to a normally unobtainable value (value) to mark it as "to be removed" for tick()
         if (this.age > 0) {
-            world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 4.0f, (1.5F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2F) * 0.7F);
+            this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 4.0f, (1.5F + (this.getWorld().random.nextFloat() - this.getWorld().random.nextFloat()) * 0.2F) * 0.7F);
             this.age = -1000;
         }
     }

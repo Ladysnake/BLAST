@@ -26,7 +26,7 @@ public class PearlTriggerBombEntity extends TriggerBombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new EnderExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), Explosion.DestructionType.BREAK);
+        return new EnderExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), Explosion.DestructionType.DESTROY);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class PearlTriggerBombEntity extends TriggerBombEntity {
             this.ticksUntilRemoval = 1;
 
             for (int i = 0; i < 100; i++) {
-                this.world.addParticle(ParticleTypes.REVERSE_PORTAL, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() / 8f, this.random.nextGaussian() / 8f, this.random.nextGaussian() / 8f);
+                this.getWorld().addParticle(ParticleTypes.REVERSE_PORTAL, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() / 8f, this.random.nextGaussian() / 8f, this.random.nextGaussian() / 8f);
             }
 
             CustomExplosion explosion = this.getExplosion();

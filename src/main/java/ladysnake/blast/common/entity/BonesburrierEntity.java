@@ -20,11 +20,11 @@ public class BonesburrierEntity extends BombEntity {
 
     @Override
     public void explode() {
-        CustomExplosion explosion = new BonesburrierExplosion(world, this,  this.getX(), this.getBodyY(0.0625), this.getZ(), this.getExplosionRadius(), Explosion.DestructionType.DESTROY);
+        CustomExplosion explosion = new BonesburrierExplosion(this.getWorld(), this,  this.getX(), this.getBodyY(0.0625), this.getZ(), this.getExplosionRadius(), Explosion.DestructionType.DESTROY);
         explosion.collectBlocksAndDamageEntities();
         explosion.affectWorld(true);
 
-        world.playSound(null,  this.getX(), this.getBodyY(0.0625), this.getZ(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.BLOCKS, 5f, 1.0f);
+        this.getWorld().playSound(null,  this.getX(), this.getBodyY(0.0625), this.getZ(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.BLOCKS, 5f, 1.0f);
 
         this.remove(RemovalReason.DISCARDED);
     }
@@ -37,7 +37,7 @@ public class BonesburrierEntity extends BombEntity {
     @Override
     public void tick() {
         super.tick();
-        this.onGround = true;
+        this.setOnGround(true);
     }
 
     @Override

@@ -9,7 +9,6 @@ import ladysnake.blast.common.entity.BombEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -19,12 +18,13 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 
 import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
 public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRenderer<T> {
+
     private final Function<T, BlockState> stateGetter;
     private final BlockRenderManager blockRenderManager;
 
@@ -49,9 +49,9 @@ public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRender
             matrixStack.scale(j, j, j);
         }
 
-        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-90.0F));
+        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-90.0F));
         matrixStack.translate(-0.5D, -0.5D, 0.5D);
-        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
+        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90.0F));
 
         TntMinecartEntityRenderer.renderFlashingBlock(this.blockRenderManager, this.stateGetter.apply(bombEntity), matrixStack, vertexConsumerProvider, i, bombEntity.getFuseTimer() / 5 % 2 == 0);
         matrixStack.pop();

@@ -49,40 +49,36 @@ public class IcicleEntity extends AmethystShardEntity {
             }
         }
 
-        boolean bl = entity.getType() == EntityType.ENDERMAN;
-        int j = entity.getFireTicks();
-        if (this.isOnFire() && !bl) {
+        boolean isEnderman = entity.getType() == EntityType.ENDERMAN;
+        int fireTicks = entity.getFireTicks();
+        if (this.isOnFire() && !isEnderman) {
             entity.setOnFireFor(5);
         }
 
         if (entity.damage(damageSource2, (float) this.getDamage())) {
-            if (bl) {
+            if (isEnderman)
                 return;
-            }
-
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) entity;
-
-                if (!this.world.isClient && entity2 instanceof LivingEntity) {
+            if (entity instanceof LivingEntity livingEntity) {
+                if (!this.getWorld().isClient && entity2 instanceof LivingEntity) {
                     EnchantmentHelper.onUserDamaged(livingEntity, entity2);
                     EnchantmentHelper.onTargetDamaged((LivingEntity) entity2, livingEntity);
                 }
 
                 this.onHit(livingEntity);
-                if (entity2 != null && livingEntity != entity2 && livingEntity instanceof PlayerEntity && entity2 instanceof ServerPlayerEntity && !this.isSilent()) {
+                if (livingEntity != entity2 && livingEntity instanceof PlayerEntity && entity2 instanceof ServerPlayerEntity && !this.isSilent()) {
                     ((ServerPlayerEntity) entity2).networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.PROJECTILE_HIT_PLAYER, GameStateChangeS2CPacket.DEMO_OPEN_SCREEN));
                 }
 
                 livingEntity.timeUntilRegen = 0;
-                livingEntity.setFrozenTicks(livingEntity.getFrozenTicks() + 100);
+                livingEntity.setFrozenTicks(200);
             }
         } else {
-            entity.setFireTicks(j);
+            entity.setFireTicks(fireTicks);
             this.setVelocity(this.getVelocity().multiply(-0.1D));
             this.setYaw(this.getYaw() + 180.0F);
             this.prevYaw += 180.0F;
-            if (!this.world.isClient && this.getVelocity().lengthSquared() < 1.0E-7D) {
-                if (this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+            if (!this.getWorld().isClient && this.getVelocity().lengthSquared() < 1.0E-7D) {
+                if (this.pickupType == PickupPermission.ALLOWED) {
                     this.dropStack(this.asItemStack(), 0.1F);
                 }
 
@@ -90,6 +86,6 @@ public class IcicleEntity extends AmethystShardEntity {
             }
         }
 
-        this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.NEUTRAL, 1.0f, 1.5f);
+        this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.NEUTRAL, 1.0f, 1.5f);
     }
 }

@@ -1,4 +1,0 @@
-accessWidener	v1	named
-
-accessible    method    net/minecraft/entity/damage/DamageSource     setBypassesArmor    ()Lnet/minecraft/entity/damage/DamageSource;
-accessible    field     net/minecraft/block/entity/HopperBlockEntity inventory           Lnet/minecraft/util/collection/DefaultedList;

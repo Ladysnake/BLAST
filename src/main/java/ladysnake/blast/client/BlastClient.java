@@ -25,7 +25,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 
 import java.util.function.Function;
 
@@ -67,16 +68,15 @@ public class BlastClient implements ClientModInitializer {
         registerBlockEntityRender(BlastEntities.COLD_DIGGER, ColdDiggerEntity::getState);
         registerBlockEntityRender(BlastEntities.BONESBURRIER, e -> BlastBlocks.BONESBURRIER.getDefaultState());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.GUNPOWDER_BLOCK, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.STRIPMINER, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.COLD_DIGGER, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.BONESBURRIER, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.REMOTE_DETONATOR, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
+                BlastBlocks.GUNPOWDER_BLOCK, BlastBlocks.COLD_DIGGER,
+                BlastBlocks.STRIPMINER, BlastBlocks.BONESBURRIER,
+                BlastBlocks.REMOTE_DETONATOR
+        );
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.DRY_ICE, RenderLayer.getTranslucent());
 
         EntityRendererRegistry.register(BlastEntities.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
         EntityRendererRegistry.register(BlastEntities.ICICLE, IcicleEntityRenderer::new);
-
     }
 
     @SafeVarargs
@@ -87,7 +87,7 @@ public class BlastClient implements ClientModInitializer {
     }
 
     private static <T extends Entity & FlyingItemEntity> void registerItemEntityRender(EntityType<T> entityType) {
-        EntityRendererRegistry.register(entityType, ctx -> new FlyingItemEntityRenderer<>(ctx));
+        EntityRendererRegistry.register(entityType, FlyingItemEntityRenderer::new);
     }
 
     private static <T extends BombEntity> void registerBlockEntityRender(EntityType<T> block, Function<T, BlockState> stateGetter) {
@@ -99,16 +99,16 @@ public class BlastClient implements ClientModInitializer {
         registerRenders();
 
         // particles
-        DRY_ICE = Registry.register(Registry.PARTICLE_TYPE, "blast:dry_ice", FabricParticleTypes.simple(true));
+        DRY_ICE = Registry.register(Registries.PARTICLE_TYPE, "blast:dry_ice", FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(DRY_ICE, DryIceParticle.DefaultFactory::new);
-        CONFETTI = Registry.register(Registry.PARTICLE_TYPE, "blast:confetti", FabricParticleTypes.simple(true));
+        CONFETTI = Registry.register(Registries.PARTICLE_TYPE, "blast:confetti", FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(CONFETTI, ConfettiParticle.DefaultFactory::new);
 
-        DRIPPING_FOLLY_RED_PAINT_DROP = Registry.register(Registry.PARTICLE_TYPE, "blast:dripping_folly_red_paint_drop", FabricParticleTypes.simple(true));
+        DRIPPING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, "blast:dripping_folly_red_paint_drop", FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(DRIPPING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.DrippingFollyRedPaintDropFactory::new);
-        FALLING_FOLLY_RED_PAINT_DROP = Registry.register(Registry.PARTICLE_TYPE, "blast:falling_folly_red_paint_drop", FabricParticleTypes.simple(true));
+        FALLING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, "blast:falling_folly_red_paint_drop", FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(FALLING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.FallingFollyRedPaintDropFactory::new);
-        LANDING_FOLLY_RED_PAINT_DROP = Registry.register(Registry.PARTICLE_TYPE, "blast:landing_folly_red_paint_drop", FabricParticleTypes.simple(true));
+        LANDING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, "blast:landing_folly_red_paint_drop", FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(LANDING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.LandingFollyRedPaintDropFactory::new);
     }
 }

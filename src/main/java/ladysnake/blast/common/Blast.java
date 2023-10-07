@@ -30,7 +30,6 @@ public class Blast implements ModInitializer {
     @Override
     public void onInitialize() {
         TrackedDataHandlerRegistry.register(FACING);
-
         BlastSoundEvents.initialize();
         BlastEntities.init();
         BlastItems.init();

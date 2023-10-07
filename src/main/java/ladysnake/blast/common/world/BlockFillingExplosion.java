@@ -10,6 +10,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameter;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -19,20 +21,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class BlockFillingExplosion extends CustomExplosion {
     public BlockState blockStateToPlace;
 
     public BlockFillingExplosion(World world, Entity entity, double x, double y, double z, float power, BlockState blockStateToPlace) {
-        super(world, entity, x, y, z, power, null, DestructionType.BREAK);
+        super(world, entity, x, y, z, power, null, DestructionType.DESTROY);
         this.blockStateToPlace = blockStateToPlace;
     }
 
     @Override
     public void affectWorld(boolean boolean_1) {
         this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2F) * 0.7F);
-        boolean boolean_2 = this.destructionType != DestructionType.NONE;
+        boolean boolean_2 = this.destructionType != DestructionType.KEEP;
         if (this.power >= 2.0F && boolean_2) {
             this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
         } else {
@@ -43,7 +47,7 @@ public class BlockFillingExplosion extends CustomExplosion {
         BlockPos blockPos;
         if (boolean_2) {
             var3 = this.affectedBlocks.iterator();
-            ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList();
+            ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
 
             while (var3.hasNext()) {
                 blockPos = (BlockPos) var3.next();
@@ -77,13 +81,16 @@ public class BlockFillingExplosion extends CustomExplosion {
                 if (blockState.isAir() || !blockState.getFluidState().isEmpty() || blockState.getBlock() instanceof FluidFillable) {
                     if (block_1.shouldDropItemsOnExplosion(this) && this.world instanceof ServerWorld) {
                         BlockEntity blockEntity = this.world.getBlockEntity(blockPos) != null ? this.world.getBlockEntity(blockPos) : null;
-
                         ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
+                        LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld) world)
+                                .add(LootContextParameters.ORIGIN, Vec3d.of(blockPos))
+                                .add(LootContextParameters.TOOL, itemStack)
+                                .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
+                                .addOptional(LootContextParameters.THIS_ENTITY, this.entity)
+                                .luck(this.world.random.nextFloat());
 
-                        LootContext.Builder builder = (new LootContext.Builder((ServerWorld) this.world)).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.of(blockPos)).parameter(LootContextParameters.TOOL, itemStack).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
-                        if (this.destructionType == DestructionType.DESTROY) {
-                            builder.parameter(LootContextParameters.EXPLOSION_RADIUS, this.power);
-                        }
+                        if (this.destructionType == DestructionType.DESTROY)
+                            builder.add(LootContextParameters.EXPLOSION_RADIUS, this.power);
 
                         BlockPos finalBlockPos = blockPos;
                         blockState.getDroppedStacks(builder).forEach(itemStack1 -> method_24023(objectArrayList, itemStack1, finalBlockPos.toImmutable()));

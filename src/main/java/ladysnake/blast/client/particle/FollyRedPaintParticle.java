@@ -38,16 +38,16 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         if (this.dead) {
             return;
         }
-        this.velocityY -= (double)this.gravityStrength;
+        this.velocityY -= this.gravityStrength;
         this.move(this.velocityX, this.velocityY, this.velocityZ);
         this.updateVelocity();
         if (this.dead) {
             return;
         }
-        this.velocityX *= (double)0.98f;
-        this.velocityY *= (double)0.98f;
-        this.velocityZ *= (double)0.98f;
-        BlockPos blockPos = new BlockPos(this.x, this.y, this.z);
+        this.velocityX *= 0.98f;
+        this.velocityY *= 0.98f;
+        this.velocityZ *= 0.98f;
+        BlockPos blockPos = BlockPos.ofFloored(this.x, this.y, this.z);
         FluidState fluidState = this.world.getFluidState(blockPos);
         if (this.y < (double)((float)blockPos.getY() + fluidState.getHeight(this.world, blockPos))) {
             this.markDead();

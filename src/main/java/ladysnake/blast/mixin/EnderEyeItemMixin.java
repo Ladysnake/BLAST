@@ -42,13 +42,11 @@ public class EnderEyeItemMixin {
             if (!user.getAbilities().creativeMode) {
                 itemStack.decrement(1);
             }
-
             world.playSound(null, user.getBlockPos(), SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.PLAYERS, 1.0f, 1.0f);
 
             if (!world.isClient) {
                 RemoteDetonatorBlock.trigger(world, closestDetonatorPos);
             }
-
             callbackInfoReturnable.setReturnValue(TypedActionResult.consume(itemStack));
         }
     }

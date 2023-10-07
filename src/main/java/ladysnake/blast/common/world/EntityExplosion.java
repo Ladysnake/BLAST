@@ -13,7 +13,7 @@ public class EntityExplosion extends CustomExplosion {
     public float velocity;
 
     public EntityExplosion(World world, Entity entity, double x, double y, double z, EntityType<? extends Entity> entityToSpawn, int amount, float velocity) {
-        super(world, entity, x, y, z, 0f, null, DestructionType.NONE);
+        super(world, entity, x, y, z, 0f, null, DestructionType.KEEP);
         this.entityToSpawn = entityToSpawn;
         this.amount = amount;
         this.velocity = velocity;
