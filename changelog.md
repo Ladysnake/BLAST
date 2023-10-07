@@ -1,4 +1,16 @@
 ------------------------------------------------------
+BLAST 1.11 - 1.20
+------------------------------------------------------
+An update powered by our community !
+
+- Updated to 1.20.1 (thanks Evelyn !)
+- Un-hardcoded explosion size, so you can summon customized blasts (thanks Amy !)
+- Added Ukrainian localization (thanks Cube !)
+- Added Italian localization (thanks CapoFantasma97 !)
+- Added Turkish localization (thanks Hexasan !)
+- Added Spanish localization (thanks Boxadactle !)
+
+------------------------------------------------------
 BLAST 1.10 - 1.19
 ------------------------------------------------------
 - Added the Bonesburrier, a new deadly explosive block for a powerful display!
