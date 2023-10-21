@@ -3,7 +3,6 @@ package ladysnake.blast.common.world;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
-import eu.pb4.common.protection.api.CommonProtection;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
@@ -313,7 +312,7 @@ public class CustomExplosion extends Explosion {
     }
 
     protected boolean canExplode(BlockPos blockPos) {
-        return ClaimProvider.canBreakBlock(blockPos, world, damageSource);
+        return ClaimProvider.canExplodeBlock(blockPos, world, this, damageSource);
     }
 
     protected boolean canPlace(BlockPos blockPos) {

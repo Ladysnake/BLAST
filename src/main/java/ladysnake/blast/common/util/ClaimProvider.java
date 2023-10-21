@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
@@ -26,9 +27,9 @@ public class ClaimProvider {
                 CommonProtection.canInteractEntity(entity.getWorld(), entity, ret.getFirst(), ret.getSecond()));
     }
 
-    public static boolean canBreakBlock(BlockPos blockPos, World world, DamageSource damageSource) {
+    public static boolean canExplodeBlock(BlockPos blockPos, World world, Explosion explosion, DamageSource damageSource) {
         return checkProtection(world, blockPos, damageSource, ret ->
-                CommonProtection.canBreakBlock(world, blockPos, ret.getFirst(), ret.getSecond()));
+                CommonProtection.canExplodeBlock(world, blockPos, explosion, ret.getFirst(), ret.getSecond()));
     }
 
     public static boolean canPlaceBlock(BlockPos blockPos, World world, DamageSource damageSource) {
