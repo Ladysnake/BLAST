@@ -2,7 +2,9 @@ package ladysnake.blast.common.world;
 
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
+import eu.pb4.common.protection.api.CommonProtection;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import ladysnake.blast.common.util.ClaimProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -16,7 +18,6 @@ import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
@@ -105,7 +106,7 @@ public class EnderExplosion extends CustomExplosion {
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
         for (Entity entity : list) {
-            if (!entity.isImmuneToExplosion()) {
+            if (!entity.isImmuneToExplosion() && ClaimProvider.canInteractEntity(entity, damageSource)) {
                 double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;
@@ -158,7 +159,7 @@ public class EnderExplosion extends CustomExplosion {
                 BlockState blockState = this.world.getBlockState(blockPos);
                 Block block_1 = blockState.getBlock();
 
-                if (!blockState.isAir() && blockState.getFluidState().isEmpty() || blockState.getBlock() instanceof FluidFillable) {
+                if (canExplode(blockPos) && !blockState.isAir() && blockState.getFluidState().isEmpty() || blockState.getBlock() instanceof FluidFillable) {
                     if (block_1.shouldDropItemsOnExplosion(this) && this.world instanceof ServerWorld) {
                         BlockEntity blockEntity = this.world.getBlockEntity(blockPos) != null ? this.world.getBlockEntity(blockPos) : null;
 

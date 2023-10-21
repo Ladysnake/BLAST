@@ -43,9 +43,12 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
     private static void prime(World world, BlockPos pos, LivingEntity igniter) {
         if (!world.isClient && world.getBlockState(pos).getBlock() instanceof BonesburrierBlock) {
             BonesburrierEntity entity = BlastEntities.BONESBURRIER.create(world);
-            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-            world.spawnEntity(entity);
-            world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            if (entity != null) {
+                entity.setOwner(igniter);
+                entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+                world.spawnEntity(entity);
+                world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            }
         }
     }
 

@@ -1,13 +1,13 @@
 package ladysnake.blast.common.entity.projectiles;
 
 import ladysnake.blast.common.init.BlastDamageSources;
+import ladysnake.blast.common.util.ClaimProvider;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
@@ -49,6 +49,8 @@ public class IcicleEntity extends AmethystShardEntity {
             }
         }
 
+        if (!ClaimProvider.canDamageEntity(entity, damageSource2)) return;
+
         boolean isEnderman = entity.getType() == EntityType.ENDERMAN;
         int fireTicks = entity.getFireTicks();
         if (this.isOnFire() && !isEnderman) {
@@ -88,4 +90,5 @@ public class IcicleEntity extends AmethystShardEntity {
 
         this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.NEUTRAL, 1.0f, 1.5f);
     }
+
 }
