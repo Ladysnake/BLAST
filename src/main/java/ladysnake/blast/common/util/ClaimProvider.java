@@ -6,9 +6,11 @@ import eu.pb4.common.protection.api.CommonProtection;
 import ladysnake.blast.common.entity.BombEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
@@ -32,6 +34,14 @@ public class ClaimProvider {
     public static boolean canPlaceBlock(BlockPos blockPos, World world, DamageSource damageSource) {
         return checkProtection(world, blockPos, damageSource, ret ->
                 CommonProtection.canPlaceBlock(world, blockPos, ret.getFirst(), ret.getSecond()));
+    }
+
+    public static boolean canPlaceBlock(BlockPos blockPos, World world, @Nullable PlayerEntity player) {
+        var gameProfile = (player != null) ? player.getGameProfile() : null;
+        if (gameProfile != null)
+            return CommonProtection.canPlaceBlock(world, blockPos, gameProfile,player);
+        else
+            return !CommonProtection.isProtected(world, blockPos);
     }
 
     private static boolean checkProtection(World world, BlockPos blockPos, DamageSource damageSource, Predicate<Pair<GameProfile, ServerPlayerEntity>> protectionPredicate) {

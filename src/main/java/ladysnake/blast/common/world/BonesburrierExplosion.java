@@ -3,21 +3,20 @@ package ladysnake.blast.common.world;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import ladysnake.blast.common.block.DetonatableBlock;
+import ladysnake.blast.common.entity.BombEntity;
+import ladysnake.blast.common.entity.ShrapnelBlockEntity;
 import ladysnake.blast.common.init.BlastBlocks;
-import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.util.ClaimProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.*;
-import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
@@ -33,7 +32,6 @@ import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.ExplosionBehavior;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -199,29 +197,34 @@ public class BonesburrierExplosion extends CustomExplosion {
                     }
 
                     if (!world.isClient()) {
-                        FallingBlockEntity fallingBlockEntity = FallingBlockEntity.spawnFromBlock(world, blockPos, blockState);
+                        PlayerEntity playerOwner = null;
+                        if (damageSource.getSource() instanceof BombEntity bombEntity && bombEntity.getOwner() instanceof PlayerEntity bombEntityOwner)
+                            playerOwner = bombEntityOwner;
+                        else if (damageSource.getAttacker() != null && damageSource.getAttacker() instanceof PlayerEntity playerAttacker)
+                            playerOwner = playerAttacker;
 
+                        var shrapnelBlockEntity = ShrapnelBlockEntity.spawnFromBlock(world, blockPos, blockState, playerOwner);
                         Vec3d vel = new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()).subtract(new Vec3d(this.x, this.y, this.z)).normalize().multiply(1);
 
-                        fallingBlockEntity.dropItem = false;
-                        fallingBlockEntity.setVelocity(vel);
-                        fallingBlockEntity.velocityModified = true;
-
+                        shrapnelBlockEntity.dropItem = false;
+                        shrapnelBlockEntity.setVelocity(vel);
+                        shrapnelBlockEntity.velocityModified = true;
                         this.world.setBlockState(blockPos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
 
                         // paint
                         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
                         for (Direction direction : Direction.values()) {
-                            BlockState adjacentBlockState = this.world.getBlockState(mutable.set(blockPos, direction));
-                            FluidState fluidState = this.world.getFluidState(mutable.set(blockPos, direction));
-                            Optional<Float> optional = DEFAULT_BEHAVIOR.getBlastResistance(this, this.world, mutable.set(blockPos, direction), adjacentBlockState, fluidState);
+                            if (ClaimProvider.canPlaceBlock(mutable.set(blockPos, direction), world, damageSource)) {
+                                BlockState adjacentBlockState = this.world.getBlockState(mutable.set(blockPos, direction));
+                                FluidState fluidState = this.world.getFluidState(mutable.set(blockPos, direction));
+                                Optional<Float> optional = DEFAULT_BEHAVIOR.getBlastResistance(this, this.world, mutable.set(blockPos, direction), adjacentBlockState, fluidState);
 
-                            if (optional.isPresent() && optional.get().floatValue() < 1200 && !this.affectedBlocks.contains(mutable.set(blockPos, direction))) {
-                                world.setBlockState(mutable.set(blockPos, direction), BlastBlocks.FOLLY_RED_PAINT.getDefaultState());
+                                if (optional.isPresent() && optional.get() < 1200 && !this.affectedBlocks.contains(mutable.set(blockPos, direction))) {
+                                    world.setBlockState(mutable.set(blockPos, direction), BlastBlocks.FOLLY_RED_PAINT.getDefaultState());
+                                }
                             }
                         }
-
                     }
 
                     block.onDestroyedByExplosion(this.world, blockPos, this);

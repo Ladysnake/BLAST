@@ -89,27 +89,15 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     @Override
     public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
         if (!world.isClient) {
-            Direction randomDirection = Direction.NORTH;
-            switch (ThreadLocalRandom.current().nextInt(0, 6)) {
-                case 0:
-                    randomDirection = Direction.UP;
-                    break;
-                case 1:
-                    randomDirection = Direction.DOWN;
-                    break;
-                case 2:
-                    randomDirection = Direction.NORTH;
-                    break;
-                case 3:
-                    randomDirection = Direction.SOUTH;
-                    break;
-                case 4:
-                    randomDirection = Direction.EAST;
-                    break;
-                case 5:
-                    randomDirection = Direction.WEST;
-                    break;
-            }
+            Direction randomDirection = switch (ThreadLocalRandom.current().nextInt(0, 6)) {
+                case 0 -> Direction.UP;
+                case 1 -> Direction.DOWN;
+                case 2 -> Direction.NORTH;
+                case 3 -> Direction.SOUTH;
+                case 4 -> Direction.EAST;
+                case 5 -> Direction.WEST;
+                default -> Direction.NORTH;
+            };
 
             StripminerEntity entity = this.type.create(world);
             entity.setFacing(randomDirection);
