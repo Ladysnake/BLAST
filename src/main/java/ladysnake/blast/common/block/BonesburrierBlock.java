@@ -26,6 +26,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
@@ -43,12 +44,11 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
     private static void prime(World world, BlockPos pos, LivingEntity igniter) {
         if (!world.isClient && world.getBlockState(pos).getBlock() instanceof BonesburrierBlock) {
             BonesburrierEntity entity = BlastEntities.BONESBURRIER.create(world);
-            if (entity != null) {
-                entity.setOwner(igniter);
-                entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-                world.spawnEntity(entity);
-                world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            }
+            entity.setOwner(igniter);
+            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+            world.spawnEntity(entity);
+            world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
         }
     }
 
@@ -127,7 +127,6 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
                 world.removeBlock(blockPos, false);
             }
         }
-
     }
 
     @Override

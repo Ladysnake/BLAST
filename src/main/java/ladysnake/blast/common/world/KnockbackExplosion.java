@@ -97,7 +97,7 @@ public class KnockbackExplosion extends CustomExplosion {
 
         for (int x = 0; x < list.size(); ++x) {
             Entity entity = list.get(x);
-            if (!entity.isImmuneToExplosion() && ClaimProvider.canDamageEntity(entity, damageSource)) {
+            if (!entity.isImmuneToExplosion() && ClaimProvider.canInteractEntity(entity, damageSource)) {
                 double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;
