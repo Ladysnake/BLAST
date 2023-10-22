@@ -6,17 +6,20 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.*;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ConfettiParticle extends SpriteBillboardParticle {
 
+    private static final double MAX_SQUARED_COLLISION_CHECK_DISTANCE = MathHelper.square(100.0);
     private static final Random RANDOM = new Random();
 
     private float slowing;
@@ -146,6 +149,32 @@ public class ConfettiParticle extends SpriteBillboardParticle {
             } else {
                 this.markDead();
             }
+        }
+    }
+
+    @Override
+    public void move(double dx, double dy, double dz) {
+        double d = dx;
+        double e = dy;
+        if (this.collidesWithWorld && (dx != 0.0 || dy != 0.0 || dz != 0.0) && dx * dx + dy * dy + dz * dz < MAX_SQUARED_COLLISION_CHECK_DISTANCE) {
+            Vec3d vec3d = Entity.adjustMovementForCollisions((Entity)null, new Vec3d(dx, dy, dz), this.getBoundingBox(), this.world, List.of());
+            dx = vec3d.x;
+            dy = vec3d.y;
+            dz = vec3d.z;
+        }
+
+        if (dx != 0.0 || dy != 0.0 || dz != 0.0) {
+            this.setBoundingBox(this.getBoundingBox().offset(dx, dy, dz));
+            this.repositionFromBoundingBox();
+        }
+
+        this.onGround = dy != dy && e < 0.0;
+        if (d != dx) {
+            this.velocityX = 0.0;
+        }
+
+        if (dz != dz) {
+            this.velocityZ = 0.0;
         }
     }
 
