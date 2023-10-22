@@ -6,7 +6,7 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
-import ladysnake.blast.common.util.ClaimProvider;
+import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -150,7 +150,7 @@ public class CustomExplosion extends Explosion {
 
         for (int x = 0; x < list.size(); ++x) {
             Entity entity = list.get(x);
-            if (!entity.isImmuneToExplosion() && ClaimProvider.canDamageEntity(entity, damageSource)) {
+            if (!entity.isImmuneToExplosion() && ProtectionsProvider.canDamageEntity(entity, damageSource)) {
                 double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;
@@ -302,7 +302,7 @@ public class CustomExplosion extends Explosion {
 
         if (effect == BlockBreakEffect.FIERY) {
             for (BlockPos blockPos3 : this.affectedBlocks) {
-                if (canPlace(blockPos3)) {
+                if (!world.isClient && canPlace(blockPos3)) {
                     if (this.random.nextInt(3) == 0 && this.world.getBlockState(blockPos3).isAir() && this.world.getBlockState(blockPos3.down()).isOpaqueFullCube(this.world, blockPos3.down())) {
                         this.world.setBlockState(blockPos3, AbstractFireBlock.getState(this.world, blockPos3));
                     }
@@ -312,11 +312,11 @@ public class CustomExplosion extends Explosion {
     }
 
     protected boolean canExplode(BlockPos blockPos) {
-        return ClaimProvider.canExplodeBlock(blockPos, world, this, damageSource);
+        return ProtectionsProvider.canExplodeBlock(blockPos, world, this, damageSource);
     }
 
     protected boolean canPlace(BlockPos blockPos) {
-        return ClaimProvider.canPlaceBlock(blockPos, world, damageSource);
+        return ProtectionsProvider.canPlaceBlock(blockPos, world, damageSource);
     }
 
     public enum BlockBreakEffect {

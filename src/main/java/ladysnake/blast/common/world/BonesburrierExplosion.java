@@ -6,12 +6,11 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.entity.ShrapnelBlockEntity;
 import ladysnake.blast.common.init.BlastBlocks;
-import ladysnake.blast.common.util.ClaimProvider;
+import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -134,7 +133,7 @@ public class BonesburrierExplosion extends CustomExplosion {
             double aa;
             double w;
 
-            if (ClaimProvider.canDamageEntity(value, damageSource)) {
+            if (ProtectionsProvider.canDamageEntity(value, damageSource)) {
                 if (value.isImmuneToExplosion() || !((w = Math.sqrt(value.squaredDistanceTo(vec3d)) / (double) q) <= 1.0) || (aa = Math.sqrt((x = value.getX() - this.x) * x + (y = (value instanceof TntEntity ? value.getY() : value.getEyeY()) - this.y) * y + (z = value.getZ() - this.z) * z)) == 0.0)
                     continue;
                 x /= aa;
@@ -215,7 +214,7 @@ public class BonesburrierExplosion extends CustomExplosion {
                         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
                         for (Direction direction : Direction.values()) {
-                            if (ClaimProvider.canPlaceBlock(mutable.set(blockPos, direction), world, damageSource)) {
+                            if (ProtectionsProvider.canPlaceBlock(mutable.set(blockPos, direction), world, damageSource)) {
                                 BlockState adjacentBlockState = this.world.getBlockState(mutable.set(blockPos, direction));
                                 FluidState fluidState = this.world.getFluidState(mutable.set(blockPos, direction));
                                 Optional<Float> optional = DEFAULT_BEHAVIOR.getBlastResistance(this, this.world, mutable.set(blockPos, direction), adjacentBlockState, fluidState);

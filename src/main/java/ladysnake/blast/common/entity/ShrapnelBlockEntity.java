@@ -1,6 +1,6 @@
 package ladysnake.blast.common.entity;
 
-import ladysnake.blast.common.util.ClaimProvider;
+import ladysnake.blast.common.util.ProtectionsProvider;
 import ladysnake.blast.mixin.FallingBlockEntityAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
@@ -69,8 +69,10 @@ public class ShrapnelBlockEntity extends FallingBlockEntity {
     public void move(MovementType movementType, Vec3d movement) {
         super.move(movementType, movement);
         if (this.isOnGround() && !getWorld().isClient) {
-            if(!ClaimProvider.canPlaceBlock(getBlockPos(), getWorld(), owner))
+            if(!ProtectionsProvider.canPlaceBlock(getBlockPos(), getWorld(), owner))
                 setDestroyedOnLanding();
+
+
         }
     }
 }

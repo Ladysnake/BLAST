@@ -1,8 +1,7 @@
 package ladysnake.blast.common.world;
 
 import com.google.common.collect.Sets;
-import eu.pb4.common.protection.api.ProtectionProvider;
-import ladysnake.blast.common.util.ClaimProvider;
+import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
@@ -97,7 +96,7 @@ public class KnockbackExplosion extends CustomExplosion {
 
         for (int x = 0; x < list.size(); ++x) {
             Entity entity = list.get(x);
-            if (!entity.isImmuneToExplosion() && ClaimProvider.canInteractEntity(entity, damageSource)) {
+            if (!entity.isImmuneToExplosion() && ProtectionsProvider.canInteractEntity(entity, damageSource)) {
                 double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;

@@ -1,7 +1,7 @@
 package ladysnake.blast.common.entity.projectiles;
 
 import ladysnake.blast.common.init.BlastDamageSources;
-import ladysnake.blast.common.util.ClaimProvider;
+import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -49,7 +49,7 @@ public class IcicleEntity extends AmethystShardEntity {
             }
         }
 
-        if (!ClaimProvider.canDamageEntity(entity, damageSource2)) return;
+        if (!ProtectionsProvider.canDamageEntity(entity, damageSource2)) return;
 
         boolean isEnderman = entity.getType() == EntityType.ENDERMAN;
         int fireTicks = entity.getFireTicks();

@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
-public class ClaimProvider {
+public class ProtectionsProvider {
 
     public static boolean canDamageEntity(Entity entity, DamageSource damageSource) {
         return checkProtection(entity.getWorld(), entity.getBlockPos(), damageSource, ret ->
