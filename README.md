@@ -42,3 +42,14 @@ The Cold Digger is an upgrade to the Stripminer that keeps the functionality of 
 ##### Dry Ice 
 
 Dry Ice is a kind of ice that does not melt or create water upon breaking. It emits particles and can be mined using silk touch.
+
+## Claim / Protection Mod Support
+
+Blast version 1.12 and above has support for Patbox's [Common Protection API](https://github.com/Patbox/common-protection-api). This means BLAST itema and blocks are un-able to bypass claim protections for any mod that implements this common API. This currently includes but is not limited to:
+
+- [Cadmus](https://github.com/Patbox/get-off-my-lawn-reserved) 
+- [Flan's Landclaiming Mod](https://modrinth.com/mod/flan)
+- [GOML Reserved](https://modrinth.com/mod/goml-reserved)
+- [FTB Chunks](https://github.com/FTBTeam/FTB-Chunks)
+
+`List last updated: 22/10/23`
