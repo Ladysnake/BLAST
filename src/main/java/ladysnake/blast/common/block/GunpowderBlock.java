@@ -2,7 +2,6 @@ package ladysnake.blast.common.block;
 
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.init.BlastEntities;
-import net.fabricmc.fabric.impl.content.registry.FireBlockHooks;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

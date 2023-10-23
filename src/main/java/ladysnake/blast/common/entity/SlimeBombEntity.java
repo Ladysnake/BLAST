@@ -7,7 +7,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 
 public class SlimeBombEntity extends BombEntity {
     public SlimeBombEntity(EntityType<? extends BombEntity> entityType, World world) {

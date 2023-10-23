@@ -4,7 +4,6 @@ import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.block.StripminerBlock;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntities;
-import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
