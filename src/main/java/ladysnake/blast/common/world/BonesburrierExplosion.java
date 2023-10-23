@@ -3,20 +3,22 @@ package ladysnake.blast.common.world;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import ladysnake.blast.common.block.DetonatableBlock;
+import ladysnake.blast.common.entity.BombEntity;
+import ladysnake.blast.common.entity.ShrapnelBlockEntity;
 import ladysnake.blast.common.init.BlastBlocks;
-import ladysnake.blast.common.init.BlastEntities;
+import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.ProtectionEnchantment;
-import net.minecraft.entity.*;
-import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
@@ -32,7 +34,6 @@ import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.ExplosionBehavior;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -127,30 +128,32 @@ public class BonesburrierExplosion extends CustomExplosion {
         int u = MathHelper.floor(this.z + (double) q + 1.0);
         List<Entity> list = this.world.getOtherEntities(this.entity, new Box(k, r, t, l, s, u));
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
-        for (int v = 0; v < list.size(); ++v) {
+        for (Entity value : list) {
             PlayerEntity playerEntity;
             double z;
             double y;
             double x;
             double aa;
             double w;
-            Entity entity = list.get(v);
-            if (entity.isImmuneToExplosion() || !((w = Math.sqrt(entity.squaredDistanceTo(vec3d)) / (double) q) <= 1.0) || (aa = Math.sqrt((x = entity.getX() - this.x) * x + (y = (entity instanceof TntEntity ? entity.getY() : entity.getEyeY()) - this.y) * y + (z = entity.getZ() - this.z) * z)) == 0.0)
-                continue;
-            x /= aa;
-            y /= aa;
-            z /= aa;
-            double ab = Explosion.getExposure(vec3d, entity);
-            double ac = (1.0 - w) * ab;
-            entity.damage(this.getDamageSource(), (int) ((ac * ac + ac) / 2.0 * 7.0 * (double) q + 1.0));
-            double ad = ac;
-            if (entity instanceof LivingEntity) {
-                ad = ProtectionEnchantment.transformExplosionKnockback((LivingEntity) entity, ac);
+
+            if (ProtectionsProvider.canDamageEntity(value, damageSource)) {
+                if (value.isImmuneToExplosion() || !((w = Math.sqrt(value.squaredDistanceTo(vec3d)) / (double) q) <= 1.0) || (aa = Math.sqrt((x = value.getX() - this.x) * x + (y = (value instanceof TntEntity ? value.getY() : value.getEyeY()) - this.y) * y + (z = value.getZ() - this.z) * z)) == 0.0)
+                    continue;
+                x /= aa;
+                y /= aa;
+                z /= aa;
+                double ab = Explosion.getExposure(vec3d, value);
+                double ac = (1.0 - w) * ab;
+                value.damage(this.getDamageSource(), (int) ((ac * ac + ac) / 2.0 * 7.0 * (double) q + 1.0));
+                double ad = ac;
+                if (value instanceof LivingEntity) {
+                    ad = ProtectionEnchantment.transformExplosionKnockback((LivingEntity) value, ac);
+                }
+                value.setVelocity(value.getVelocity().add(x * ad, y * ad, z * ad));
+                if (!(value instanceof PlayerEntity) || (playerEntity = (PlayerEntity) value).isSpectator() || playerEntity.isCreative() && playerEntity.getAbilities().flying)
+                    continue;
+                this.affectedPlayers.put(playerEntity, new Vec3d(x * ac, y * ac, z * ac));
             }
-            entity.setVelocity(entity.getVelocity().add(x * ad, y * ad, z * ad));
-            if (!(entity instanceof PlayerEntity) || (playerEntity = (PlayerEntity) entity).isSpectator() || playerEntity.isCreative() && playerEntity.getAbilities().flying)
-                continue;
-            this.affectedPlayers.put(playerEntity, new Vec3d(x * ac, y * ac, z * ac));
         }
     }
 
@@ -173,54 +176,62 @@ public class BonesburrierExplosion extends CustomExplosion {
         if (bl) {
             ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
             Util.shuffle(this.affectedBlocks, this.world.random);
+
             for (BlockPos blockPos : this.affectedBlocks) {
-                BlockState blockState = this.world.getBlockState(blockPos);
-                Block block = blockState.getBlock();
-                if (blockState.isAir()) continue;
-                BlockPos blockPos2 = blockPos.toImmutable();
-                this.world.getProfiler().push("explosion_blocks");
-                if (block.shouldDropItemsOnExplosion(this) && this.world instanceof ServerWorld) {
-                    BlockEntity blockEntity = blockState.hasBlockEntity() ? this.world.getBlockEntity(blockPos) : null;
-                    LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld) world)
-                            .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos))
-                            .add(LootContextParameters.TOOL, ItemStack.EMPTY)
-                            .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
-                            .addOptional(LootContextParameters.THIS_ENTITY, this.entity);
+                if (canPlace(blockPos) && canExplode(blockPos)) {
+                    BlockState blockState = this.world.getBlockState(blockPos);
+                    Block block = blockState.getBlock();
+                    if (blockState.isAir()) continue;
+                    BlockPos blockPos2 = blockPos.toImmutable();
+                    this.world.getProfiler().push("explosion_blocks");
+                    if (block.shouldDropItemsOnExplosion(this) && this.world instanceof ServerWorld) {
+                        BlockEntity blockEntity = blockState.hasBlockEntity() ? this.world.getBlockEntity(blockPos) : null;
+                        LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld) world)
+                                .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos))
+                                .add(LootContextParameters.TOOL, ItemStack.EMPTY)
+                                .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
+                                .addOptional(LootContextParameters.THIS_ENTITY, this.entity);
 
-                    if (this.destructionType == DestructionType.DESTROY)
-                        builder.add(LootContextParameters.EXPLOSION_RADIUS, this.power);
+                        if (this.destructionType == DestructionType.DESTROY)
+                            builder.add(LootContextParameters.EXPLOSION_RADIUS, this.power);
 
-                    blockState.getDroppedStacks(builder).forEach(stack -> tryMergeStack(objectArrayList, stack, blockPos2));
-                }
+                        blockState.getDroppedStacks(builder).forEach(stack -> tryMergeStack(objectArrayList, stack, blockPos2));
+                    }
 
-                if (!world.isClient()) {
-                    FallingBlockEntity fallingBlockEntity = FallingBlockEntity.spawnFromBlock(world, blockPos, blockState);
+                    if (!world.isClient()) {
+                        PlayerEntity playerOwner = null;
+                        if (damageSource.getSource() instanceof BombEntity bombEntity && bombEntity.getOwner() instanceof PlayerEntity bombEntityOwner)
+                            playerOwner = bombEntityOwner;
+                        else if (damageSource.getAttacker() != null && damageSource.getAttacker() instanceof PlayerEntity playerAttacker)
+                            playerOwner = playerAttacker;
 
-                    Vec3d vel = new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()).subtract(new Vec3d(this.x, this.y, this.z)).normalize().multiply(1);
+                        var shrapnelBlockEntity = ShrapnelBlockEntity.spawnFromBlock(world, blockPos, blockState, playerOwner);
+                        Vec3d vel = new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()).subtract(new Vec3d(this.x, this.y, this.z)).normalize().multiply(1);
 
-                    fallingBlockEntity.dropItem = false;
-                    fallingBlockEntity.setVelocity(vel);
-                    fallingBlockEntity.velocityModified = true;
+                        shrapnelBlockEntity.dropItem = false;
+                        shrapnelBlockEntity.setVelocity(vel);
+                        shrapnelBlockEntity.velocityModified = true;
+                        this.world.setBlockState(blockPos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
 
-                    this.world.setBlockState(blockPos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+                        // paint
+                        BlockPos.Mutable mutable = new BlockPos.Mutable();
 
-                    // paint
-                    BlockPos.Mutable mutable = new BlockPos.Mutable();
+                        for (Direction direction : Direction.values()) {
+                            if (ProtectionsProvider.canPlaceBlock(mutable.set(blockPos, direction), world, damageSource)) {
+                                BlockState adjacentBlockState = this.world.getBlockState(mutable.set(blockPos, direction));
+                                FluidState fluidState = this.world.getFluidState(mutable.set(blockPos, direction));
+                                Optional<Float> optional = DEFAULT_BEHAVIOR.getBlastResistance(this, this.world, mutable.set(blockPos, direction), adjacentBlockState, fluidState);
 
-                    for (Direction direction : Direction.values()) {
-                        BlockState adjacentBlockState = this.world.getBlockState(mutable.set(blockPos, direction));
-                        FluidState fluidState = this.world.getFluidState(mutable.set(blockPos, direction));
-                        Optional<Float> optional = DEFAULT_BEHAVIOR.getBlastResistance(this, this.world, mutable.set(blockPos, direction), adjacentBlockState, fluidState);
-
-                        if (optional.isPresent() && optional.get().floatValue() < 1200 && !this.affectedBlocks.contains(mutable.set(blockPos, direction))) {
-                            world.setBlockState(mutable.set(blockPos, direction), BlastBlocks.FOLLY_RED_PAINT.getDefaultState());
+                                if (optional.isPresent() && optional.get() < 1200 && !this.affectedBlocks.contains(mutable.set(blockPos, direction))) {
+                                    world.setBlockState(mutable.set(blockPos, direction), BlastBlocks.FOLLY_RED_PAINT.getDefaultState());
+                                }
+                            }
                         }
                     }
 
+                    block.onDestroyedByExplosion(this.world, blockPos, this);
+                    this.world.getProfiler().pop();
                 }
-
-                block.onDestroyedByExplosion(this.world, blockPos, this);
-                this.world.getProfiler().pop();
             }
             for (Pair pair : objectArrayList) {
                 Block.dropStack(this.world, (BlockPos) pair.getSecond(), (ItemStack) pair.getFirst());

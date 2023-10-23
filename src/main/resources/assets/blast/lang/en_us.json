@@ -53,6 +53,8 @@
   "entity.blast.bonesburrier": "Bonesburrier",
   "entity.blast.amethyst_shard": "Amethyst Shard",
   "entity.blast.icicle": "Icicle",
+  "entity.blast.pipe_bomb": "Pipe Bomb",
+  "entity.blast.shrapnel_block": "Shrapnel Block",
 
   "block.blast.gunpowder_block": "Gunpowder Block",
   "block.blast.stripminer": "Stripminer",

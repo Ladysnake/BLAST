@@ -1,35 +1,26 @@
 package ladysnake.blast.common.block;
 
 import ladysnake.blast.common.entity.BonesburrierEntity;
-import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.state.StateManager;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 public class BonesburrierBlock extends Block implements DetonatableBlock {
     public BonesburrierBlock(Settings settings) {
@@ -43,9 +34,11 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
     private static void prime(World world, BlockPos pos, LivingEntity igniter) {
         if (!world.isClient && world.getBlockState(pos).getBlock() instanceof BonesburrierBlock) {
             BonesburrierEntity entity = BlastEntities.BONESBURRIER.create(world);
+            entity.setOwner(igniter);
             entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
             world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
         }
     }
 
@@ -124,7 +117,6 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
                 world.removeBlock(blockPos, false);
             }
         }
-
     }
 
     @Override

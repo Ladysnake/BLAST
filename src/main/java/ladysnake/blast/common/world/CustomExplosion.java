@@ -6,6 +6,7 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import ladysnake.blast.common.entity.StripminerEntity;
 import ladysnake.blast.common.init.BlastBlocks;
+import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,7 +19,6 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtList;
@@ -124,7 +124,6 @@ public class CustomExplosion extends Explosion {
                                 h -= (br + 0.3F) * 0.3F;
                             }
 
-
                             if (h > 0.0F && (this.entity == null || this.entity.canExplosionDestroyBlock(this, this.world, blockPos, blockState, h))) {
                                 set.add(blockPos);
                             }
@@ -151,7 +150,7 @@ public class CustomExplosion extends Explosion {
 
         for (int x = 0; x < list.size(); ++x) {
             Entity entity = list.get(x);
-            if (!entity.isImmuneToExplosion()) {
+            if (!entity.isImmuneToExplosion() && ProtectionsProvider.canDamageEntity(entity, damageSource)) {
                 double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;
@@ -194,100 +193,104 @@ public class CustomExplosion extends Explosion {
             this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
         }
 
-        Iterator var3;
+        Iterator affectedBlocks;
         BlockPos blockPos;
+
         if (boolean_2) {
-            var3 = this.affectedBlocks.iterator();
+            affectedBlocks = this.affectedBlocks.iterator();
             ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
 
-            while (var3.hasNext()) {
-                blockPos = (BlockPos) var3.next();
+            while (affectedBlocks.hasNext()) {
+                blockPos = (BlockPos) affectedBlocks.next();
                 BlockState blockState = this.world.getBlockState(blockPos);
                 Block block_1 = blockState.getBlock();
-                if (boolean_1) {
-                    double double_1 = (float) blockPos.getX() + this.world.random.nextFloat();
-                    double double_2 = (float) blockPos.getY() + this.world.random.nextFloat();
-                    double double_3 = (float) blockPos.getZ() + this.world.random.nextFloat();
-                    double double_4 = double_1 - this.x;
-                    double double_5 = double_2 - this.y;
-                    double double_6 = double_3 - this.z;
-                    double double_7 = Math.sqrt(double_4 * double_4 + double_5 * double_5 + double_6 * double_6);
-                    double_4 /= double_7;
-                    double_5 /= double_7;
-                    double_6 /= double_7;
-                    double double_8 = 0.5D / (double_7 / (double) this.power + 0.1D);
-                    double_8 *= this.world.random.nextFloat() * this.world.random.nextFloat() + 0.3F;
-                    double_4 *= double_8;
-                    double_5 *= double_8;
-                    double_6 *= double_8;
-                    if (blockState.getFluidState().isEmpty()) {
-                        this.world.addParticle(ParticleTypes.POOF, (double_1 + this.x) / 2.0D, (double_2 + this.y) / 2.0D, (double_3 + this.z) / 2.0D, double_4, double_5, double_6);
-                        this.world.addParticle(ParticleTypes.SMOKE, double_1, double_2, double_3, double_4, double_5, double_6);
-                    } else {
-                        this.world.addParticle(ParticleTypes.BUBBLE, (double_1 + this.x) / 2.0D, (double_2 + this.y) / 2.0D, (double_3 + this.z) / 2.0D, double_4, double_5, double_6);
-                        this.world.addParticle(ParticleTypes.BUBBLE_POP, double_1, double_2, double_3, double_4, double_5, double_6);
-                    }
-                }
 
-                if (!blockState.isAir() && blockState.getFluidState().isEmpty() || blockState.getBlock() instanceof FluidFillable) {
-                    if (block_1.shouldDropItemsOnExplosion(this) && this.world instanceof ServerWorld) {
-                        BlockEntity blockEntity = this.world.getBlockEntity(blockPos) != null ? this.world.getBlockEntity(blockPos) : null;
-
-                        ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
-                        if (this.effect == BlockBreakEffect.FORTUNE) {
-                            NbtList nbtList = new NbtList();
-                            nbtList.add(EnchantmentHelper.createNbt(EnchantmentHelper.getEnchantmentId(Enchantments.FORTUNE), 3));
-                            itemStack.setSubNbt("Enchantments", nbtList);
+                if (canExplode(blockPos)) {
+                    if (boolean_1) {
+                        double double_1 = (float) blockPos.getX() + this.world.random.nextFloat();
+                        double double_2 = (float) blockPos.getY() + this.world.random.nextFloat();
+                        double double_3 = (float) blockPos.getZ() + this.world.random.nextFloat();
+                        double double_4 = double_1 - this.x;
+                        double double_5 = double_2 - this.y;
+                        double double_6 = double_3 - this.z;
+                        double double_7 = Math.sqrt(double_4 * double_4 + double_5 * double_5 + double_6 * double_6);
+                        double_4 /= double_7;
+                        double_5 /= double_7;
+                        double_6 /= double_7;
+                        double double_8 = 0.5D / (double_7 / (double) this.power + 0.1D);
+                        double_8 *= this.world.random.nextFloat() * this.world.random.nextFloat() + 0.3F;
+                        double_4 *= double_8;
+                        double_5 *= double_8;
+                        double_6 *= double_8;
+                        if (blockState.getFluidState().isEmpty()) {
+                            this.world.addParticle(ParticleTypes.POOF, (double_1 + this.x) / 2.0D, (double_2 + this.y) / 2.0D, (double_3 + this.z) / 2.0D, double_4, double_5, double_6);
+                            this.world.addParticle(ParticleTypes.SMOKE, double_1, double_2, double_3, double_4, double_5, double_6);
+                        } else {
+                            this.world.addParticle(ParticleTypes.BUBBLE, (double_1 + this.x) / 2.0D, (double_2 + this.y) / 2.0D, (double_3 + this.z) / 2.0D, double_4, double_5, double_6);
+                            this.world.addParticle(ParticleTypes.BUBBLE_POP, double_1, double_2, double_3, double_4, double_5, double_6);
                         }
-                        LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld) world)
-                                .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos))
-                                .add(LootContextParameters.TOOL, ItemStack.EMPTY)
-                                .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
-                                .addOptional(LootContextParameters.THIS_ENTITY, this.entity);
-
-                        if (this.destructionType == DestructionType.DESTROY)
-                            builder.add(LootContextParameters.EXPLOSION_RADIUS, this.power);
-
-                        BlockPos finalBlockPos = blockPos;
-                        blockState.getDroppedStacks(builder).forEach(itemStack1 -> method_24023(objectArrayList, itemStack1, finalBlockPos.toImmutable()));
                     }
 
-                    if (!this.world.isClient) {
-                        BlockState blockToPlace = Blocks.AIR.getDefaultState();
-                        if (this.effect == BlockBreakEffect.FROSTY) {
-                            blockToPlace = BlastBlocks.DRY_ICE.getDefaultState();
-                            if (this.entity instanceof StripminerEntity) {
-                                blockToPlace = blockToPlace.with(PillarBlock.AXIS, ((StripminerEntity) this.entity).getFacing().getAxis());
+                    if (!blockState.isAir() && blockState.getFluidState().isEmpty() || blockState.getBlock() instanceof FluidFillable) {
+                        if (block_1.shouldDropItemsOnExplosion(this) && this.world instanceof ServerWorld) {
+                            BlockEntity blockEntity = this.world.getBlockEntity(blockPos) != null ? this.world.getBlockEntity(blockPos) : null;
+
+                            ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
+                            if (this.effect == BlockBreakEffect.FORTUNE) {
+                                NbtList nbtList = new NbtList();
+                                nbtList.add(EnchantmentHelper.createNbt(EnchantmentHelper.getEnchantmentId(Enchantments.FORTUNE), 3));
+                                itemStack.setSubNbt("Enchantments", nbtList);
                             }
+                            LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld) world)
+                                    .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos))
+                                    .add(LootContextParameters.TOOL, ItemStack.EMPTY)
+                                    .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
+                                    .addOptional(LootContextParameters.THIS_ENTITY, this.entity);
+
+                            if (this.destructionType == DestructionType.DESTROY)
+                                builder.add(LootContextParameters.EXPLOSION_RADIUS, this.power);
+
+                            BlockPos finalBlockPos = blockPos;
+                            blockState.getDroppedStacks(builder).forEach(itemStack1 -> method_24023(objectArrayList, itemStack1, finalBlockPos.toImmutable()));
                         }
 
-                        this.world.setBlockState(blockPos, blockToPlace, 3);
-                    }
-                    block_1.onDestroyedByExplosion(this.world, blockPos, this);
-                    this.world.getProfiler().pop();
-                } else if (!blockState.getFluidState().isEmpty()) {
-                    BlockState blockToPlace = Blocks.AIR.getDefaultState();
-                    if (blockState.getFluidState().isStill()) {
-                        if (blockState.getFluidState().getFluid() == Fluids.WATER) {
+                        if (!this.world.isClient) {
+                            BlockState blockToPlace = Blocks.AIR.getDefaultState();
                             if (this.effect == BlockBreakEffect.FROSTY) {
-                                blockToPlace = Blocks.ICE.getDefaultState();
-                            } else {
-                                blockToPlace = blockState;
-                            }
-                        } else if (blockState.getFluidState().getFluid() == Fluids.LAVA) {
-                            if (this.effect == BlockBreakEffect.FROSTY) {
-                                blockToPlace = Blocks.BASALT.getDefaultState();
+                                blockToPlace = BlastBlocks.DRY_ICE.getDefaultState();
                                 if (this.entity instanceof StripminerEntity) {
                                     blockToPlace = blockToPlace.with(PillarBlock.AXIS, ((StripminerEntity) this.entity).getFacing().getAxis());
                                 }
-                            } else {
-                                blockToPlace = blockState;
                             }
+
+                            this.world.setBlockState(blockPos, blockToPlace, 3);
                         }
-                    } else {
-                        blockToPlace = Blocks.AIR.getDefaultState();
+                        block_1.onDestroyedByExplosion(this.world, blockPos, this);
+                        this.world.getProfiler().pop();
+                    } else if (!blockState.getFluidState().isEmpty()) {
+                        BlockState blockToPlace = Blocks.AIR.getDefaultState();
+                        if (blockState.getFluidState().isStill()) {
+                            if (blockState.getFluidState().getFluid() == Fluids.WATER) {
+                                if (this.effect == BlockBreakEffect.FROSTY) {
+                                    blockToPlace = Blocks.ICE.getDefaultState();
+                                } else {
+                                    blockToPlace = blockState;
+                                }
+                            } else if (blockState.getFluidState().getFluid() == Fluids.LAVA) {
+                                if (this.effect == BlockBreakEffect.FROSTY) {
+                                    blockToPlace = Blocks.BASALT.getDefaultState();
+                                    if (this.entity instanceof StripminerEntity) {
+                                        blockToPlace = blockToPlace.with(PillarBlock.AXIS, ((StripminerEntity) this.entity).getFacing().getAxis());
+                                    }
+                                } else {
+                                    blockToPlace = blockState;
+                                }
+                            }
+                        } else {
+                            blockToPlace = Blocks.AIR.getDefaultState();
+                        }
+                        this.world.setBlockState(blockPos, blockToPlace, 3);
                     }
-                    this.world.setBlockState(blockPos, blockToPlace, 3);
                 }
             }
 
@@ -299,11 +302,21 @@ public class CustomExplosion extends Explosion {
 
         if (effect == BlockBreakEffect.FIERY) {
             for (BlockPos blockPos3 : this.affectedBlocks) {
-                if (this.random.nextInt(3) == 0 && this.world.getBlockState(blockPos3).isAir() && this.world.getBlockState(blockPos3.down()).isOpaqueFullCube(this.world, blockPos3.down())) {
-                    this.world.setBlockState(blockPos3, AbstractFireBlock.getState(this.world, blockPos3));
+                if (!world.isClient && canPlace(blockPos3)) {
+                    if (this.random.nextInt(3) == 0 && this.world.getBlockState(blockPos3).isAir() && this.world.getBlockState(blockPos3.down()).isOpaqueFullCube(this.world, blockPos3.down())) {
+                        this.world.setBlockState(blockPos3, AbstractFireBlock.getState(this.world, blockPos3));
+                    }
                 }
             }
         }
+    }
+
+    protected boolean canExplode(BlockPos blockPos) {
+        return ProtectionsProvider.canExplodeBlock(blockPos, world, this, damageSource);
+    }
+
+    protected boolean canPlace(BlockPos blockPos) {
+        return ProtectionsProvider.canPlaceBlock(blockPos, world, damageSource);
     }
 
     public enum BlockBreakEffect {

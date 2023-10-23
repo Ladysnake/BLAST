@@ -2,7 +2,6 @@ package ladysnake.blast.common.block;
 
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.init.BlastEntities;
-import net.fabricmc.fabric.impl.content.registry.FireBlockHooks;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,6 +38,7 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
 
         if (!world.isClient) {
             BombEntity entity = BlastEntities.GUNPOWDER_BLOCK.create(world);
+            entity.setOwner(igniter);
             entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
             world.setBlockState(pos, Blocks.AIR.getDefaultState());

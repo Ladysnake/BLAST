@@ -8,7 +8,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 
 public class FrostTriggerBombEntity extends TriggerBombEntity {
     public FrostTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world) {

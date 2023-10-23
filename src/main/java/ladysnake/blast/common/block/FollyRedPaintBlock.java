@@ -2,7 +2,6 @@ package ladysnake.blast.common.block;
 
 import ladysnake.blast.client.BlastClient;
 import ladysnake.blast.common.init.BlastBlocks;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ParticleUtil;

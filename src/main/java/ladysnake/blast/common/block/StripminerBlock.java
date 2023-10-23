@@ -1,7 +1,10 @@
 package ladysnake.blast.common.block;
 
 import ladysnake.blast.common.entity.StripminerEntity;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -44,6 +47,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     private static void primeStripminer(World world, BlockPos pos, LivingEntity igniter) {
         if (!world.isClient && world.getBlockState(pos).getBlock() instanceof StripminerBlock) {
             StripminerEntity entity = ((StripminerBlock) world.getBlockState(pos).getBlock()).type.create(world);
+            entity.setOwner(igniter);
             entity.setFacing(world.getBlockState(pos).get(FACING));
             entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(entity);
@@ -86,27 +90,15 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     @Override
     public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
         if (!world.isClient) {
-            Direction randomDirection = Direction.NORTH;
-            switch (ThreadLocalRandom.current().nextInt(0, 6)) {
-                case 0:
-                    randomDirection = Direction.UP;
-                    break;
-                case 1:
-                    randomDirection = Direction.DOWN;
-                    break;
-                case 2:
-                    randomDirection = Direction.NORTH;
-                    break;
-                case 3:
-                    randomDirection = Direction.SOUTH;
-                    break;
-                case 4:
-                    randomDirection = Direction.EAST;
-                    break;
-                case 5:
-                    randomDirection = Direction.WEST;
-                    break;
-            }
+            Direction randomDirection = switch (ThreadLocalRandom.current().nextInt(0, 6)) {
+                case 0 -> Direction.UP;
+                case 1 -> Direction.DOWN;
+                case 2 -> Direction.NORTH;
+                case 3 -> Direction.SOUTH;
+                case 4 -> Direction.EAST;
+                case 5 -> Direction.WEST;
+                default -> Direction.NORTH;
+            };
 
             StripminerEntity entity = this.type.create(world);
             entity.setFacing(randomDirection);

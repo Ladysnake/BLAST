@@ -21,7 +21,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 
 public class PipeBombEntity extends PersistentProjectileEntity implements FlyingItemEntity {
     public final int MAX_FUSE = 20;

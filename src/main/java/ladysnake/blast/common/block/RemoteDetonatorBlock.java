@@ -45,7 +45,6 @@ public class RemoteDetonatorBlock extends Block implements InventoryProvider {
             if (block instanceof DetonatableBlock detonatableBlock) {
                 detonatableBlock.detonate(world, mutable);
             }
-
             if (block == Blocks.TNT) {
                 TntEntity tntEntity = new TntEntity(world, (double) mutable.getX() + 0.5, mutable.getY(), (double) mutable.getZ() + 0.5, null);
                 tntEntity.setFuse(1);

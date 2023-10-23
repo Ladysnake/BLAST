@@ -3,6 +3,11 @@ plugins {
 	id 'io.github.ladysnake.chenille' version '0.11.3'
 }
 
+repositories {
+	// For Common Protection API
+	maven { url "https://maven.nucleoid.xyz/" }
+}
+
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
@@ -31,6 +36,7 @@ dependencies {
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
+	modImplementation include("eu.pb4:common-protection-api:${project.common_protection_api_version}")
 }
 
 java {
