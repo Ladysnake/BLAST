@@ -54,25 +54,26 @@ public class ShrapnelBlockEntity extends FallingBlockEntity {
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        if (!getWorld().isClient && owner != null)
+        if (!getWorld().isClient && owner != null) {
             nbt.putUuid("Owner", owner.getUuid());
+        }
     }
 
     @Override
     protected void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if (nbt.containsUuid("Owner") && getWorld() instanceof ServerWorld serverWorld)
+        if (nbt.containsUuid("Owner") && getWorld() instanceof ServerWorld serverWorld) {
             owner = serverWorld.getServer().getPlayerManager().getPlayer(nbt.getUuid("Owner"));
+        }
     }
 
     @Override
     public void move(MovementType movementType, Vec3d movement) {
         super.move(movementType, movement);
         if (this.isOnGround() && !getWorld().isClient) {
-            if(!ProtectionsProvider.canPlaceBlock(getBlockPos(), getWorld(), owner))
+            if(!ProtectionsProvider.canPlaceBlock(getBlockPos(), getWorld(), owner)) {
                 setDestroyedOnLanding();
-
-
+            }
         }
     }
 }
