@@ -1,4 +1,13 @@
 ------------------------------------------------------
+BLAST 1.12 - 1.20
+------------------------------------------------------
+An update by Evelyn and WillBL 💙
+
+- Added common protection API support
+- Piglins now treat golden bombs as golden items
+- Fixed gunpowder blocks causing floating fire blocks
+
+------------------------------------------------------
 BLAST 1.11 - 1.20
 ------------------------------------------------------
 An update powered by our community !
