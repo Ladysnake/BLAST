@@ -7,20 +7,17 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.*;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ConfettiParticle extends SpriteBillboardParticle {
 
-    private static final double MAX_SQUARED_COLLISION_CHECK_DISTANCE = MathHelper.square(100.0);
     private static final Random RANDOM = new Random();
 
     private float slowing;
