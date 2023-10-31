@@ -1,5 +1,6 @@
 package ladysnake.blast.client.particle;
 
+import ladysnake.blast.mixin.client.ParticleAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
@@ -129,6 +130,7 @@ public class ConfettiParticle extends SpriteBillboardParticle {
                     this.velocityY = 0;
                 } else {
                     this.velocityY -= 0.04D * (double) this.gravityStrength;
+                    ((ParticleAccessor)this).setStopped(false);
                     this.move(this.velocityX, this.velocityY, this.velocityZ);
                     if (this.ascending && this.y == this.prevPosY) {
                         this.velocityX *= 1.1D;
@@ -149,32 +151,6 @@ public class ConfettiParticle extends SpriteBillboardParticle {
             } else {
                 this.markDead();
             }
-        }
-    }
-
-    @Override
-    public void move(double dx, double dy, double dz) {
-        double d = dx;
-        double e = dy;
-        if (this.collidesWithWorld && (dx != 0.0 || dy != 0.0 || dz != 0.0) && dx * dx + dy * dy + dz * dz < MAX_SQUARED_COLLISION_CHECK_DISTANCE) {
-            Vec3d vec3d = Entity.adjustMovementForCollisions((Entity)null, new Vec3d(dx, dy, dz), this.getBoundingBox(), this.world, List.of());
-            dx = vec3d.x;
-            dy = vec3d.y;
-            dz = vec3d.z;
-        }
-
-        if (dx != 0.0 || dy != 0.0 || dz != 0.0) {
-            this.setBoundingBox(this.getBoundingBox().offset(dx, dy, dz));
-            this.repositionFromBoundingBox();
-        }
-
-        this.onGround = dy != dy && e < 0.0;
-        if (d != dx) {
-            this.velocityX = 0.0;
-        }
-
-        if (dz != dz) {
-            this.velocityZ = 0.0;
         }
     }
 

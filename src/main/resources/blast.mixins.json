@@ -7,6 +7,9 @@
     "BundleItemMixin",
     "EnderEyeItemMixin"
   ],
+  "client": [
+    "client.ParticleAccessor"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
