@@ -1,5 +1,6 @@
 package ladysnake.blast.client.particle;
 
+import ladysnake.blast.mixin.client.ParticleAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
@@ -128,6 +129,7 @@ public class ConfettiParticle extends SpriteBillboardParticle {
                     this.velocityY = 0;
                 } else {
                     this.velocityY -= 0.04D * (double) this.gravityStrength;
+                    ((ParticleAccessor)this).setStopped(false);
                     this.move(this.velocityX, this.velocityY, this.velocityZ);
                     if (this.ascending && this.y == this.prevPosY) {
                         this.velocityX *= 1.1D;
