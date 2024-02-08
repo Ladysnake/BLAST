@@ -1,10 +1,7 @@
 package ladysnake.blast.common.entity;
 
-import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
-import ladysnake.blast.common.world.EntityExplosion;
-import ladysnake.blast.common.world.KnockbackExplosion;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -25,8 +22,8 @@ import net.minecraft.world.explosion.Explosion;
 
 public class BombEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private float explosionRadius = 3f;
     public int ticksUntilRemoval;
+    private float explosionRadius = 3f;
     private int fuseTimer;
 
     public BombEntity(EntityType<? extends BombEntity> entityType, World world) {
@@ -162,14 +159,6 @@ public class BombEntity extends ThrownItemEntity {
         this.explosionRadius = float_1;
     }
 
-    @Override
-    public void setItem(ItemStack item) {
-        super.setItem(new ItemStack(item.getItem()));
-        if (item.hasNbt() && item.getOrCreateNbt().contains("ExplosionRadius")) {
-            this.setExplosionRadius(item.getOrCreateNbt().getFloat("ExplosionRadius"));
-        }
-    }
-
     protected void initDataTracker() {
         this.dataTracker.startTracking(FUSE, 40);
     }
@@ -189,6 +178,14 @@ public class BombEntity extends ThrownItemEntity {
     @Override
     protected ItemStack getItem() {
         return new ItemStack(this.getDefaultItem());
+    }
+
+    @Override
+    public void setItem(ItemStack item) {
+        super.setItem(new ItemStack(item.getItem()));
+        if (item.hasNbt() && item.getOrCreateNbt().contains("ExplosionRadius")) {
+            this.setExplosionRadius(item.getOrCreateNbt().getFloat("ExplosionRadius"));
+        }
     }
 
 

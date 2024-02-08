@@ -36,7 +36,7 @@ public class EnderEyeItemMixin {
                 }
             }
         }
-        
+
         if (closestDetonatorPos != null) {
             ItemStack itemStack = user.getStackInHand(hand);
             if (!user.getAbilities().creativeMode) {

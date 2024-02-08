@@ -23,6 +23,15 @@ public class PipeBombItem extends Item {
         super(settings);
     }
 
+    private static Stream<ItemStack> getFireworkStacks(ItemStack stack) {
+        NbtCompound nbtCompound = stack.getNbt();
+        if (nbtCompound == null) {
+            return Stream.empty();
+        }
+        NbtList nbtList = nbtCompound.getList("Items", NbtElement.COMPOUND_TYPE);
+        return nbtList.stream().map(NbtCompound.class::cast).map(ItemStack::fromNbt);
+    }
+
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
         if (!playerEntity.isCreative()) {
             for (int i = 0; i < playerEntity.getInventory().size(); i++) {
@@ -59,15 +68,6 @@ public class PipeBombItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-    }
-
-    private static Stream<ItemStack> getFireworkStacks(ItemStack stack) {
-        NbtCompound nbtCompound = stack.getNbt();
-        if (nbtCompound == null) {
-            return Stream.empty();
-        }
-        NbtList nbtList = nbtCompound.getList("Items", NbtElement.COMPOUND_TYPE);
-        return nbtList.stream().map(NbtCompound.class::cast).map(ItemStack::fromNbt);
     }
 
 }

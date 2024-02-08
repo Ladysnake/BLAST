@@ -26,16 +26,6 @@ public class RemoteDetonatorBlock extends Block implements InventoryProvider {
         this.setDefaultState(this.stateManager.getDefaultState().with(FILLED, false));
     }
 
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
-    }
-
-    @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FILLED);
-    }
-
     public static void trigger(World world, BlockPos blockPos) {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
@@ -57,6 +47,16 @@ public class RemoteDetonatorBlock extends Block implements InventoryProvider {
         }
 
         world.setBlockState(blockPos, world.getBlockState(blockPos).with(RemoteDetonatorBlock.FILLED, true));
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(FILLED);
     }
 
     @Override

@@ -24,9 +24,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 public class PipeBombEntity extends PersistentProjectileEntity implements FlyingItemEntity {
-    public final int MAX_FUSE = 20;
-
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(PipeBombEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    public final int MAX_FUSE = 20;
     public double rotationXmod;
     public double rotationYmod;
     public double rotationZmod;

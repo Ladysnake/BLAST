@@ -3,16 +3,13 @@ package ladysnake.blast.common.world;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import ladysnake.blast.common.block.DetonatableBlock;
 import ladysnake.blast.common.init.BlastBlocks;
-import ladysnake.blast.common.init.BlastEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.*;
-import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
@@ -31,7 +28,6 @@ import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.ExplosionBehavior;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -72,6 +68,20 @@ public class BonesburrierExplosion extends CustomExplosion {
         return (float) i / (float) j;
     }
 
+    private static void tryMergeStack(ObjectArrayList<Pair<ItemStack, BlockPos>> stacks, ItemStack stack, BlockPos pos) {
+        int i = stacks.size();
+        for (int j = 0; j < i; ++j) {
+            Pair<ItemStack, BlockPos> pair = stacks.get(j);
+            ItemStack itemStack = pair.getFirst();
+            if (!ItemEntity.canMerge(itemStack, stack)) continue;
+            ItemStack itemStack2 = ItemEntity.merge(itemStack, stack, 16);
+            stacks.set(j, Pair.of(itemStack2, pair.getSecond()));
+            if (!stack.isEmpty()) continue;
+            return;
+        }
+        stacks.add(Pair.of(stack, pos));
+    }
+
     public void collectBlocksAndDamageEntities() {
         int l;
         int k;
@@ -100,7 +110,7 @@ public class BonesburrierExplosion extends CustomExplosion {
                         FluidState fluidState = this.world.getFluidState(blockPos);
                         if (!this.world.isInBuildLimit(blockPos)) continue block2;
                         Optional<Float> optional = DEFAULT_BEHAVIOR.getBlastResistance(this, this.world, blockPos, blockState, fluidState);
-                        if (blockState.getBlock()==Blocks.NETHERITE_BLOCK) {
+                        if (blockState.getBlock() == Blocks.NETHERITE_BLOCK) {
                             System.out.println(optional.get().floatValue());
                         }
                         if (optional.isPresent()) {
@@ -220,20 +230,6 @@ public class BonesburrierExplosion extends CustomExplosion {
                 Block.dropStack(this.world, (BlockPos) pair.getSecond(), (ItemStack) pair.getFirst());
             }
         }
-    }
-
-    private static void tryMergeStack(ObjectArrayList<Pair<ItemStack, BlockPos>> stacks, ItemStack stack, BlockPos pos) {
-        int i = stacks.size();
-        for (int j = 0; j < i; ++j) {
-            Pair<ItemStack, BlockPos> pair = stacks.get(j);
-            ItemStack itemStack = pair.getFirst();
-            if (!ItemEntity.canMerge(itemStack, stack)) continue;
-            ItemStack itemStack2 = ItemEntity.merge(itemStack, stack, 16);
-            stacks.set(j, Pair.of(itemStack2, pair.getSecond()));
-            if (!stack.isEmpty()) continue;
-            return;
-        }
-        stacks.add(Pair.of(stack, pos));
     }
 
 }

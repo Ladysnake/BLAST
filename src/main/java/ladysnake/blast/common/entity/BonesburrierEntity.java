@@ -1,7 +1,6 @@
 package ladysnake.blast.common.entity;
 
 import ladysnake.blast.common.init.BlastBlocks;
-import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.BonesburrierExplosion;
 import ladysnake.blast.common.world.CustomExplosion;
 import net.minecraft.entity.EntityType;
@@ -20,11 +19,11 @@ public class BonesburrierEntity extends BombEntity {
 
     @Override
     public void explode() {
-        CustomExplosion explosion = new BonesburrierExplosion(world, this,  this.getX(), this.getBodyY(0.0625), this.getZ(), this.getExplosionRadius(), Explosion.DestructionType.DESTROY);
+        CustomExplosion explosion = new BonesburrierExplosion(world, this, this.getX(), this.getBodyY(0.0625), this.getZ(), this.getExplosionRadius(), Explosion.DestructionType.DESTROY);
         explosion.collectBlocksAndDamageEntities();
         explosion.affectWorld(true);
 
-        world.playSound(null,  this.getX(), this.getBodyY(0.0625), this.getZ(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.BLOCKS, 5f, 1.0f);
+        world.playSound(null, this.getX(), this.getBodyY(0.0625), this.getZ(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.BLOCKS, 5f, 1.0f);
 
         this.remove(RemovalReason.DISCARDED);
     }

@@ -38,18 +38,18 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         if (this.dead) {
             return;
         }
-        this.velocityY -= (double)this.gravityStrength;
+        this.velocityY -= (double) this.gravityStrength;
         this.move(this.velocityX, this.velocityY, this.velocityZ);
         this.updateVelocity();
         if (this.dead) {
             return;
         }
-        this.velocityX *= (double)0.98f;
-        this.velocityY *= (double)0.98f;
-        this.velocityZ *= (double)0.98f;
+        this.velocityX *= (double) 0.98f;
+        this.velocityY *= (double) 0.98f;
+        this.velocityZ *= (double) 0.98f;
         BlockPos blockPos = new BlockPos(this.x, this.y, this.z);
         FluidState fluidState = this.world.getFluidState(blockPos);
-        if (this.y < (double)((float)blockPos.getY() + fluidState.getHeight(this.world, blockPos))) {
+        if (this.y < (double) ((float) blockPos.getY() + fluidState.getHeight(this.world, blockPos))) {
             this.markDead();
         }
     }
@@ -63,7 +63,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
     protected void updateVelocity() {
     }
 
-    @Environment(value= EnvType.CLIENT)
+    @Environment(value = EnvType.CLIENT)
     public static class LandingFollyRedPaintDropFactory
             implements ParticleFactory<DefaultParticleType> {
         protected final SpriteProvider spriteProvider;
@@ -75,14 +75,14 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         @Override
         public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
             Landing blockLeakParticle = new Landing(clientWorld, d, e, f, Fluids.EMPTY);
-            blockLeakParticle.setMaxAge((int)(28.0 / (Math.random() * 0.8 + 0.2)));
+            blockLeakParticle.setMaxAge((int) (28.0 / (Math.random() * 0.8 + 0.2)));
             blockLeakParticle.setColor(1f, 0f, 0.35f);
             blockLeakParticle.setSprite(this.spriteProvider);
             return blockLeakParticle;
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(value = EnvType.CLIENT)
     public static class FallingFollyRedPaintDropFactory implements ParticleFactory<DefaultParticleType> {
         protected final SpriteProvider spriteProvider;
 
@@ -100,7 +100,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(value = EnvType.CLIENT)
     public static class DrippingFollyRedPaintDropFactory implements ParticleFactory<DefaultParticleType> {
         protected final SpriteProvider spriteProvider;
 
@@ -119,7 +119,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(value = EnvType.CLIENT)
     static class Dripping extends FollyRedPaintParticle {
         private final ParticleEffect nextParticle;
 
@@ -146,7 +146,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(value = EnvType.CLIENT)
     static class ContinuousFalling extends Falling {
         protected final ParticleEffect nextParticle;
 
@@ -164,10 +164,10 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(value = EnvType.CLIENT)
     static class Falling extends FollyRedPaintParticle {
         Falling(ClientWorld clientWorld, double d, double e, double f, Fluid fluid) {
-            this(clientWorld, d, e, f, fluid, (int)(64.0 / (Math.random() * 0.8 + 0.2)));
+            this(clientWorld, d, e, f, fluid, (int) (64.0 / (Math.random() * 0.8 + 0.2)));
         }
 
         Falling(ClientWorld world, double x, double y, double z, Fluid fluid, int maxAge) {
@@ -183,11 +183,11 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(value = EnvType.CLIENT)
     static class Landing extends FollyRedPaintParticle {
         Landing(ClientWorld clientWorld, double d, double e, double f, Fluid fluid) {
             super(clientWorld, d, e, f, fluid);
-            this.maxAge = (int)(16.0 / (Math.random() * 0.8 + 0.2));
+            this.maxAge = (int) (16.0 / (Math.random() * 0.8 + 0.2));
         }
     }
 
