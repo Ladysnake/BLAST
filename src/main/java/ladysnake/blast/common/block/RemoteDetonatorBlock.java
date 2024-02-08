@@ -12,6 +12,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
@@ -99,6 +100,16 @@ public class RemoteDetonatorBlock extends Block implements InventoryProvider {
             world.setBlockState(pos, state.with(FILLED, false), Block.NOTIFY_ALL);
             this.dirty = true;
         }
+    }
+
+    @Override
+    public boolean emitsRedstonePower(BlockState state) {
+        return state.get(FILLED);
+    }
+
+    @Override
+    public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        return (direction != Direction.UP && state.get(FILLED)) ? 15 : 0;
     }
 
     static class DummyInventory extends SimpleInventory implements SidedInventory {
