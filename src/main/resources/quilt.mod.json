@@ -1,0 +1,24 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "ladysnake",
+		"id": "blast",
+		"version": "${version}",
+		"metadata": {
+			"name": "Blast",
+			"description": "A mod about bombs",
+			"contributors": {
+				"doctor4t": "Owner"
+			},
+			"icon": "assets/blast/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"entrypoints": {
+			"pre_launch": "ladysnake.blast.common.BlastPreLaunch",
+			"init": "ladysnake.blast.common.Blast",
+			"client_init": "ladysnake.blast.client.BlastClient"
+		}
+	},
+	"access_widener": "blast.accesswidener",
+	"mixin": "blast.mixins.json"
+}

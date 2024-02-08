@@ -1,4 +1,6 @@
-accessWidener	v1	named
+accessWidener	v2	named
 
 accessible    method    net/minecraft/entity/damage/DamageSource     setBypassesArmor    ()Lnet/minecraft/entity/damage/DamageSource;
 accessible    field     net/minecraft/block/entity/HopperBlockEntity inventory           Lnet/minecraft/util/collection/DefaultedList;
+accessible method net/minecraft/item/BundleItem getBundleOccupancy (Lnet/minecraft/item/ItemStack;)I
+accessible method net/minecraft/item/BundleItem getItemOccupancy (Lnet/minecraft/item/ItemStack;)I

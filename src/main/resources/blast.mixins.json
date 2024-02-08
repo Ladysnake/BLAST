@@ -9,10 +9,10 @@
     "FireworkRocketEntityAccessor",
     "PlayerEntityMixin"
   ],
-  "injectors": {
-    "defaultRequire": 1
-  },
   "client": [
     "client.BundleTooltipComponentMixin"
-  ]
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
