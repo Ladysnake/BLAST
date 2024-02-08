@@ -10,24 +10,22 @@ import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
 public class DirtTriggerBombEntity extends TriggerBombEntity {
-    public DirtTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world) {
-        super(entityType, world);
-        this.setExplosionRadius(2f);
-    }
+	public DirtTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world) {
+		super(entityType, world);
+	}
 
-    public DirtTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
-        super(entityType, world, livingEntity);
-        this.setExplosionRadius(2f);
-    }
+	public DirtTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
+		super(entityType, world, livingEntity);
+	}
 
-    @Override
-    protected Item getDefaultItem() {
-        return BlastItems.DIRT_TRIGGER_BOMB;
-    }
+	@Override
+	protected Item getDefaultItem() {
+		return BlastItems.DIRT_TRIGGER_BOMB;
+	}
 
-    @Override
-    protected CustomExplosion getExplosion() {
-        return new BlockFillingExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), Blocks.DIRT.getDefaultState());
-    }
+	@Override
+	protected CustomExplosion getExplosion() {
+		return new BlockFillingExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 2f, Blocks.DIRT.getDefaultState());
+	}
 
 }

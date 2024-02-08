@@ -8,12 +8,12 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 
 public class TriggerBombItem extends BombItem {
-    public TriggerBombItem(Settings settings, EntityType<BombEntity> entityType) {
-        super(settings, entityType);
-    }
+	public TriggerBombItem(Settings settings, EntityType<BombEntity> entityType) {
+		super(settings, entityType);
+	}
 
-    @Override
-    public void playSoundEffects(World world, PlayerEntity playerEntity) {
-        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_OFF, SoundCategory.NEUTRAL, 0.8F, 0.5F);
-    }
+	@Override
+	public void playSoundEffects(World world, PlayerEntity playerEntity) {
+		world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_OFF, SoundCategory.NEUTRAL, 0.8F, 0.5F);
+	}
 }

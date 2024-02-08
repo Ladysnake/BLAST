@@ -10,23 +10,21 @@ import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
 public class FrostBombEntity extends BombEntity {
-    public FrostBombEntity(EntityType<? extends BombEntity> entityType, World world) {
-        super(entityType, world);
-        this.setExplosionRadius(70f);
-    }
+	public FrostBombEntity(EntityType<? extends BombEntity> entityType, World world) {
+		super(entityType, world);
+	}
 
-    public FrostBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
-        super(entityType, world, livingEntity);
-        this.setExplosionRadius(70f);
-    }
+	public FrostBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
+		super(entityType, world, livingEntity);
+	}
 
-    @Override
-    protected Item getDefaultItem() {
-        return BlastItems.FROST_BOMB;
-    }
+	@Override
+	protected Item getDefaultItem() {
+		return BlastItems.FROST_BOMB;
+	}
 
-    @Override
-    protected CustomExplosion getExplosion() {
-        return new EntityExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.ICICLE, Math.round(this.getExplosionRadius()), 1.4f);
-    }
+	@Override
+	protected CustomExplosion getExplosion() {
+		return new EntityExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.ICICLE, 70, 1.4f);
+	}
 }
