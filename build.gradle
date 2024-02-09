@@ -1,5 +1,5 @@
 plugins {
-	id 'org.quiltmc.loom' version '0.12.+'
+	id 'org.quiltmc.loom' version '1.4.+'
 	id 'maven-publish'
 }
 
@@ -81,10 +81,6 @@ dependencies {
 	// mod menu
 	modCompileOnly "com.terraformersmc:modmenu:${mod_menu_version}"
 	modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
-
-	// mixin extras
-	implementation include ("com.github.LlamaLad7:MixinExtras:${project.mixin_extras_version}")
-	annotationProcessor ("com.github.LlamaLad7:MixinExtras:${project.mixin_extras_version}")
 }
 
 processResources {
