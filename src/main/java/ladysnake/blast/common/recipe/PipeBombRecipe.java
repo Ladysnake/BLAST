@@ -56,7 +56,9 @@ public class PipeBombRecipe extends SpecialCraftingRecipe {
 			} else if (FIREWORK_ROCKET.test(invStack)) {
 				fireworkCount++;
 				NbtCompound nbtCompound = new NbtCompound();
-				craftingInventory.getStack(i).writeNbt(nbtCompound);
+				ItemStack stackToStore = craftingInventory.getStack(i).copy();
+				stackToStore.setCount(1);
+				stackToStore.writeNbt(nbtCompound);
 				nbtList.add(nbtCompound);
 			} else if (!invStack.isEmpty()) {
 				return ItemStack.EMPTY;
