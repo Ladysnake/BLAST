@@ -62,7 +62,7 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
 		this.setFuse(MAX_FUSE);
 	}
 
-	public static PipeBombEntity fromItemStack(World world, ItemStack itemStack, PlayerEntity player, PlayerEntity pipeBombOwner) {
+	public static PipeBombEntity fromItemStack(World world, ItemStack itemStack, PlayerEntity player) {
 		PipeBombEntity pipeBombEntity = new PipeBombEntity(world, player.getX(), player.getY(), player.getZ());
 		pipeBombEntity.setPos(player.getX(), player.getY() + (double) player.getStandingEyeHeight() - 0.10000000149011612D, player.getZ());
 
@@ -72,10 +72,6 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
 				ItemStack fireworkItemStack = ItemStack.fromNbt((NbtCompound) fireworkNbt);
 				pipeBombEntity.addFireworkItemStack(fireworkItemStack);
 			}
-		}
-
-		if (pipeBombOwner != null) {
-			pipeBombEntity.setOwner(pipeBombOwner);
 		}
 
 		return pipeBombEntity;
@@ -181,13 +177,6 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
 			}
 		} else {
 			super.tick();
-		}
-
-		if (this.getOwner() == null) {
-			PlayerEntity player = world.getClosestPlayer(this, 5f);
-			if (player != null) {
-				this.setPos(player.getX(), player.getY(), player.getZ());
-			}
 		}
 	}
 

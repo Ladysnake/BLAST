@@ -33,7 +33,7 @@ public class PipeBombItem extends Item {
 		world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BLOCK_TRIPWIRE_CLICK_OFF, SoundCategory.NEUTRAL, 1.0F, 1.0f);
 
 		if (!world.isClient) {
-			PipeBombEntity pipeBombEntity = PipeBombEntity.fromItemStack(world, stackInHand, playerEntity, playerEntity);
+			PipeBombEntity pipeBombEntity = PipeBombEntity.fromItemStack(world, stackInHand, playerEntity);
 			pipeBombEntity.setProperties(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
 			world.spawnEntity(pipeBombEntity);
 		}
@@ -53,7 +53,7 @@ public class PipeBombItem extends Item {
 			if (!world.isClient) {
 				for (int i = 0; i < stack.getCount(); i++) {
 					entity.playSound(SoundEvents.BLOCK_TRIPWIRE_CLICK_OFF, 1.0F, 1.0f);
-					PipeBombEntity pipeBombEntity = PipeBombEntity.fromItemStack(world, stack, player, null);
+					PipeBombEntity pipeBombEntity = PipeBombEntity.fromItemStack(world, stack, player);
 					pipeBombEntity.setProperties(entity, entity.getPitch(), entity.getYaw(), 0.0F, 0.0f, 1.0F);
 					world.spawnEntity(pipeBombEntity);
 				}

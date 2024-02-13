@@ -34,7 +34,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 				this.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 				this.playSound(SoundEvents.BLOCK_TRIPWIRE_CLICK_OFF, 1.0F, 1.0f);
 
-				PipeBombEntity pipeBombEntity = PipeBombEntity.fromItemStack(this.world, stack, (PlayerEntity) Object.class.cast(this), null);
+				PipeBombEntity pipeBombEntity = PipeBombEntity.fromItemStack(this.world, stack, (PlayerEntity) Object.class.cast(this));
 
 				if (throwRandomly) {
 					float f = this.random.nextFloat() * 0.5f;
