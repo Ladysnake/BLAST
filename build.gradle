@@ -72,15 +72,15 @@ dependencies {
 	mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:intermediary-v2"
 
 	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
-	modImplementation "org.quiltmc:qsl:${qsl_version}+${minecraft_version}"
 
+	modImplementation "org.quiltmc:qsl:${qsl_version}+${minecraft_version}"
 	modImplementation "org.quiltmc.qsl:core:3.0.0-beta.25+1.19.2"
 
-	modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:${quilted_fabric_api_version}-${minecraft_version}"
+	modImplementation ("org.quiltmc.quilted-fabric-api:quilted-fabric-api:${quilted_fabric_api_version}-${minecraft_version}")
 
 	// mod menu
-	modCompileOnly "com.terraformersmc:modmenu:${mod_menu_version}"
-	modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
+	modCompileOnly ("com.terraformersmc:modmenu:${mod_menu_version}") { transitive = false }
+	modRuntimeOnly ("com.terraformersmc:modmenu:${mod_menu_version}") { transitive = false }
 }
 
 processResources {
