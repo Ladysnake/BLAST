@@ -1,4 +1,14 @@
 ------------------------------------------------------
+BLAST 1.11 - 1.19.2
+------------------------------------------------------
+- Added Pipe Bombs
+  - Combine a regular bomb with up to eight fireworks to create a pipe bomb
+  - When detonating, pipe bombs will gradually release all fireworks inside it and explode them
+  - Can be stored in a bundle
+    - When stored in a bundle, pipe bombs will disguise as a random item in the game
+    - When opening the bundle in the inventory or releasing it in the world, pipe bombs will automatically set off
+
+------------------------------------------------------
 BLAST 1.10 - 1.19
 ------------------------------------------------------
 - Added the Bonesburrier, a new deadly explosive block for a powerful display!
