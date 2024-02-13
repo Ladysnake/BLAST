@@ -1,5 +1,5 @@
 ------------------------------------------------------
-BLAST 1.11 - 1.19.2
+BLAST 1.14 - 1.19.2
 ------------------------------------------------------
 - Added Pipe Bombs
   - Combine a regular bomb with up to eight fireworks to create a pipe bomb
