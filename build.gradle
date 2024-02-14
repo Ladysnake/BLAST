@@ -77,22 +77,22 @@ dependencies {
 	modCompileOnly ("com.terraformersmc:modmenu:${mod_menu_version}") { transitive = false }
 	modRuntimeOnly ("com.terraformersmc:modmenu:${mod_menu_version}") { transitive = false }
 
-	modCompileOnly files('/befoul-1.1.3.jar')
+	modImplementation files('befoul-1.1.3.jar')
 //
 //	// CCA for befoul
 	modImplementation ("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}") {
 		transitive = false
 	}
-//	modImplementation ("dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cca_version}") {
-//		transitive = false
-//	}
+	modImplementation ("dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cca_version}") {
+		transitive = false
+	}
 	modImplementation ("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}") {
 		transitive = false
 	}
-//
+
 	modImplementation ("xyz.amymialee:mialeemisc:${project.mialeemisc_version}")
-//
-//	modRuntimeOnly ("io.github.ladysnake:satin:${satin_version}") { transitive = false }
+
+	modRuntimeOnly ("io.github.ladysnake:satin:${satin_version}") { transitive = false }
 }
 
 processResources {
