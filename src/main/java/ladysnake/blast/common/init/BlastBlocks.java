@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.registry.Registry;
+import org.quiltmc.loader.api.QuiltLoader;
 
 import static ladysnake.blast.common.Blast.MODID;
 
@@ -20,6 +21,7 @@ public class BlastBlocks {
 	public static Block STRIPMINER;
 	public static Block COLD_DIGGER;
 	public static Block BONESBURRIER;
+	public static Block SMILESWEEPER;
 	public static Block REMOTE_DETONATOR;
 	public static Block DRY_ICE;
 	public static Block FOLLY_RED_PAINT;
@@ -36,6 +38,10 @@ public class BlastBlocks {
 		FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(FabricBlockSettings.copyOf(Blocks.HONEY_BLOCK).ticksRandomly().strength(0.2f).mapColor(MapColor.BRIGHT_RED)), "folly_red_paint", ItemGroup.BUILDING_BLOCKS);
 		FRESH_FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(FabricBlockSettings.copyOf(Blocks.HONEY_BLOCK).strength(0.2f).mapColor(MapColor.BRIGHT_RED)), "fresh_folly_red_paint", ItemGroup.BUILDING_BLOCKS);
 		DRIED_FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(FabricBlockSettings.of(Material.SOLID_ORGANIC, MapColor.BRIGHT_RED).strength(0.4f).sounds(BlockSoundGroup.DRIPSTONE_BLOCK).mapColor(MapColor.BRIGHT_RED)), "dried_folly_red_paint", ItemGroup.BUILDING_BLOCKS);
+
+		if (QuiltLoader.isModLoaded("befoul")) {
+			SMILESWEEPER = registerBlock(new SmilesweeperBlock(FabricBlockSettings.copyOf(Blocks.COPPER_BLOCK).nonOpaque()), "smilesweeper", ItemGroup.REDSTONE);
+		}
 	}
 
 	private static Block registerBlock(Block block, String name, ItemGroup itemGroup) {

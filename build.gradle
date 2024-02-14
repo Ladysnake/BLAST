@@ -21,11 +21,7 @@ repositories {
 	// cloth config
 	maven { url "https://maven.shedaniel.me/" }
 
-	// CCA
-	maven {
-		name = 'Ladysnake Mods'
-		url = 'https://ladysnake.jfrog.io/artifactory/mods'
-	}
+	maven { url 'https://maven.ladysnake.org/releases/' }
 
 	// mod menu
 	maven {
@@ -73,14 +69,30 @@ dependencies {
 
 	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
 
-	modImplementation "org.quiltmc:qsl:${qsl_version}+${minecraft_version}"
-	modImplementation "org.quiltmc.qsl:core:3.0.0-beta.25+1.19.2"
+//	modImplementation "org.quiltmc:qsl:${qsl_version}+${minecraft_version}"
 
 	modImplementation ("org.quiltmc.quilted-fabric-api:quilted-fabric-api:${quilted_fabric_api_version}-${minecraft_version}")
 
 	// mod menu
 	modCompileOnly ("com.terraformersmc:modmenu:${mod_menu_version}") { transitive = false }
 	modRuntimeOnly ("com.terraformersmc:modmenu:${mod_menu_version}") { transitive = false }
+
+	modCompileOnly files('/befoul-1.1.3.jar')
+//
+//	// CCA for befoul
+	modImplementation ("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}") {
+		transitive = false
+	}
+//	modImplementation ("dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cca_version}") {
+//		transitive = false
+//	}
+	modImplementation ("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}") {
+		transitive = false
+	}
+//
+	modImplementation ("xyz.amymialee:mialeemisc:${project.mialeemisc_version}")
+//
+//	modRuntimeOnly ("io.github.ladysnake:satin:${satin_version}") { transitive = false }
 }
 
 processResources {

@@ -39,6 +39,7 @@ public class BlastEntities {
 	public static EntityType<StripminerEntity> STRIPMINER;
 	public static EntityType<ColdDiggerEntity> COLD_DIGGER;
 	public static EntityType<BonesburrierEntity> BONESBURRIER;
+	public static EntityType<SmilesweeperEntity> SMILESWEEPER;
 
 	public static EntityType<AmethystShardEntity> AMETHYST_SHARD;
 	public static EntityType<IcicleEntity> ICICLE;
@@ -71,6 +72,7 @@ public class BlastEntities {
 		STRIPMINER = register("stripminer", FabricEntityTypeBuilder.create(SpawnGroup.MISC, StripminerEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).forceTrackedVelocityUpdates(true).build());
 		COLD_DIGGER = register("cold_digger", FabricEntityTypeBuilder.create(SpawnGroup.MISC, ColdDiggerEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).forceTrackedVelocityUpdates(true).build());
 		BONESBURRIER = register("bonesburrier", FabricEntityTypeBuilder.create(SpawnGroup.MISC, BonesburrierEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).forceTrackedVelocityUpdates(true).build());
+		SMILESWEEPER = register("smilesweeper", FabricEntityTypeBuilder.create(SpawnGroup.MISC, SmilesweeperEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).forceTrackedVelocityUpdates(true).build());
 
 		// projectiles
 		AMETHYST_SHARD = register("amethyst_shard", FabricEntityTypeBuilder.create(SpawnGroup.MISC, AmethystShardEntity::new).dimensions(EntityDimensions.changing(0.5f, 0.5f)).build());

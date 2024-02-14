@@ -67,11 +67,13 @@ public class BlastClient implements ClientModInitializer {
 		registerBlockEntityRender(BlastEntities.STRIPMINER, StripminerEntity::getState);
 		registerBlockEntityRender(BlastEntities.COLD_DIGGER, ColdDiggerEntity::getState);
 		registerBlockEntityRender(BlastEntities.BONESBURRIER, e -> BlastBlocks.BONESBURRIER.getDefaultState());
+		registerBlockEntityRender(BlastEntities.SMILESWEEPER, e -> BlastBlocks.SMILESWEEPER.getDefaultState());
 
 		BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.GUNPOWDER_BLOCK, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.STRIPMINER, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.COLD_DIGGER, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.BONESBURRIER, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.SMILESWEEPER, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.REMOTE_DETONATOR, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.DRY_ICE, RenderLayer.getTranslucent());
 
