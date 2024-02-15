@@ -39,7 +39,7 @@ public class SmilesweeperEntity extends BombEntity {
             serverWorld.spawnParticles(
                     BefoulParticles.FALLING_INK,
                     this.getX(), this.getY() + this.getHeight() / 2d, this.getZ(),
-                    10000, 0.125, 0.125, 0.125, 0.5f);
+                    2560, 0.125, 0.125, 0.125, 0.5f);
         }
 
         this.remove(RemovalReason.DISCARDED);
