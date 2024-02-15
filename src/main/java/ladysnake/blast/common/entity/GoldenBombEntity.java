@@ -9,21 +9,21 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 public class GoldenBombEntity extends BombEntity {
-	public GoldenBombEntity(EntityType<? extends BombEntity> entityType, World world) {
-		super(entityType, world);
-	}
+    public GoldenBombEntity(EntityType<? extends BombEntity> entityType, World world) {
+        super(entityType, world);
+    }
 
-	public GoldenBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
-		super(entityType, world, livingEntity);
-	}
+    public GoldenBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
+        super(entityType, world, livingEntity);
+    }
 
-	@Override
-	protected Item getDefaultItem() {
-		return BlastItems.GOLDEN_BOMB;
-	}
+    @Override
+    protected Item getDefaultItem() {
+        return BlastItems.GOLDEN_BOMB;
+    }
 
-	@Override
-	protected CustomExplosion getExplosion() {
-		return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, CustomExplosion.BlockBreakEffect.FORTUNE, Explosion.DestructionType.BREAK);
-	}
+    @Override
+    protected CustomExplosion getExplosion() {
+        return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, CustomExplosion.BlockBreakEffect.FORTUNE, Explosion.DestructionType.BREAK);
+    }
 }

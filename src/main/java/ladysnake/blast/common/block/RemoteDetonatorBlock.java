@@ -67,6 +67,16 @@ public class RemoteDetonatorBlock extends Block implements InventoryProvider {
                 : new DummyInventory();
     }
 
+    @Override
+    public boolean emitsRedstonePower(BlockState state) {
+        return state.get(FILLED);
+    }
+
+    @Override
+    public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        return (direction != Direction.UP && state.get(FILLED)) ? 15 : 0;
+    }
+
     static class FilledInventory extends SimpleInventory implements SidedInventory {
         private final BlockState state;
         private final WorldAccess world;
@@ -100,16 +110,6 @@ public class RemoteDetonatorBlock extends Block implements InventoryProvider {
             world.setBlockState(pos, state.with(FILLED, false), Block.NOTIFY_ALL);
             this.dirty = true;
         }
-    }
-
-    @Override
-    public boolean emitsRedstonePower(BlockState state) {
-        return state.get(FILLED);
-    }
-
-    @Override
-    public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return (direction != Direction.UP && state.get(FILLED)) ? 15 : 0;
     }
 
     static class DummyInventory extends SimpleInventory implements SidedInventory {

@@ -7,12 +7,12 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class BlastDamageSources {
-	public static DamageSource amethystShard(PersistentProjectileEntity projectile, @Nullable Entity attacker) {
-		return (new ProjectileDamageSource("amethyst_shard", projectile, attacker)).setProjectile();
-	}
+    public static DamageSource amethystShard(PersistentProjectileEntity projectile, @Nullable Entity attacker) {
+        return (new ProjectileDamageSource("amethyst_shard", projectile, attacker)).setProjectile();
+    }
 
-	public static DamageSource icicle(PersistentProjectileEntity projectile, @Nullable Entity attacker) {
-		return (new ProjectileDamageSource("icicle", projectile, attacker)).setProjectile().setBypassesArmor();
-	}
+    public static DamageSource icicle(PersistentProjectileEntity projectile, @Nullable Entity attacker) {
+        return (new ProjectileDamageSource("icicle", projectile, attacker)).setProjectile().setBypassesArmor();
+    }
 
 }

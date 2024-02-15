@@ -8,8 +8,7 @@ import ladysnake.blast.common.world.SmilesweeperExplosion;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -29,18 +28,18 @@ public class SmilesweeperEntity extends BombEntity {
         Block inkBlock = Registry.BLOCK.get(INK_BLOCK);
         if (inkBlock != null) {
 
-            if (this.world.isClient) {
-                this.world.playSound(this.getX(), this.getY(), this.getZ(), BlastSoundEvents.SMILESWEEPER_EXPLODE, SoundCategory.BLOCKS, 6.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
-
-                float partSpeedMul = .5f;
-                for (int i = 0; i < 1000; i++) {
-                    this.world.addParticle(BefoulParticles.FALLING_INK, true, this.getX(), this.getY() + .5f, this.getZ(), this.random.nextGaussian() * partSpeedMul, this.random.nextGaussian() * partSpeedMul, this.random.nextGaussian() * partSpeedMul);
-                }
-            }
-
             CustomExplosion explosion = new SmilesweeperExplosion(world, this, this.getX(), this.getBodyY(0.0625), this.getZ(), 40f, Explosion.DestructionType.DESTROY, inkBlock);
             explosion.collectBlocksAndDamageEntities();
             explosion.affectWorld(true);
+        }
+
+        if (this.world instanceof ServerWorld serverWorld) {
+            this.playSound(BlastSoundEvents.SMILESWEEPER_EXPLODE, 6.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f);
+
+            serverWorld.spawnParticles(
+                    BefoulParticles.FALLING_INK,
+                    this.getX(), this.getY() + this.getHeight() / 2d, this.getZ(),
+                    10000, 0.125, 0.125, 0.125, 0.5f);
         }
 
         this.remove(RemovalReason.DISCARDED);

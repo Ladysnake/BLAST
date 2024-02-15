@@ -4,7 +4,6 @@ import ladysnake.blast.client.particle.*;
 import ladysnake.blast.common.Blast;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.client.particle.ExplosionLargeParticle;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.util.Identifier;

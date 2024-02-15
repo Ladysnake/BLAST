@@ -9,21 +9,21 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 public class DiamondBombEntity extends BombEntity {
-	public DiamondBombEntity(EntityType<? extends BombEntity> entityType, World world) {
-		super(entityType, world);
-	}
+    public DiamondBombEntity(EntityType<? extends BombEntity> entityType, World world) {
+        super(entityType, world);
+    }
 
-	public DiamondBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
-		super(entityType, world, livingEntity);
-	}
+    public DiamondBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
+        super(entityType, world, livingEntity);
+    }
 
-	@Override
-	protected Item getDefaultItem() {
-		return BlastItems.DIAMOND_BOMB;
-	}
+    @Override
+    protected Item getDefaultItem() {
+        return BlastItems.DIAMOND_BOMB;
+    }
 
-	@Override
-	public CustomExplosion getExplosion() {
-		return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, CustomExplosion.BlockBreakEffect.UNSTOPPABLE, Explosion.DestructionType.BREAK);
-	}
+    @Override
+    public CustomExplosion getExplosion() {
+        return new CustomExplosion(this.world, this.getOwner(), this.getX(), this.getY(), this.getZ(), 3f, CustomExplosion.BlockBreakEffect.UNSTOPPABLE, Explosion.DestructionType.BREAK);
+    }
 }

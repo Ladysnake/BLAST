@@ -83,6 +83,6 @@ public class BlastClient implements ClientModInitializer {
         registerRenders();
 
         // particle renderers registration
-		BlastParticles.registerFactories();
+        BlastParticles.registerFactories();
     }
 }

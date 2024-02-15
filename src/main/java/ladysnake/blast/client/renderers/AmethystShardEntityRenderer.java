@@ -7,13 +7,13 @@ import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.util.Identifier;
 
 public class AmethystShardEntityRenderer extends ProjectileEntityRenderer<AmethystShardEntity> {
-	public static final Identifier TEXTURE = new Identifier(Blast.MOD_ID, "textures/entity/projectiles/amethyst_shard.png");
+    public static final Identifier TEXTURE = new Identifier(Blast.MOD_ID, "textures/entity/projectiles/amethyst_shard.png");
 
-	public AmethystShardEntityRenderer(EntityRendererFactory.Context context) {
-		super(context);
-	}
+    public AmethystShardEntityRenderer(EntityRendererFactory.Context context) {
+        super(context);
+    }
 
-	public Identifier getTexture(AmethystShardEntity amethystShardEntity) {
-		return TEXTURE;
-	}
+    public Identifier getTexture(AmethystShardEntity amethystShardEntity) {
+        return TEXTURE;
+    }
 }

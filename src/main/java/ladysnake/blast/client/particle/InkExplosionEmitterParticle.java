@@ -12,8 +12,8 @@ import net.minecraft.particle.DefaultParticleType;
 
 @Environment(EnvType.CLIENT)
 public class InkExplosionEmitterParticle extends NoRenderParticle {
-    private int age_;
     private final int maxAge_ = 8;
+    private int age_;
 
     InkExplosionEmitterParticle(ClientWorld clientWorld, double d, double e, double f) {
         super(clientWorld, d, e, f, 0.0, 0.0, 0.0);

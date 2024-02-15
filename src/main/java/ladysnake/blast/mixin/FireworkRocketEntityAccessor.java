@@ -6,6 +6,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(FireworkRocketEntity.class)
 public interface FireworkRocketEntityAccessor {
-	@Invoker(value = "explodeAndRemove")
-	void callExplodeAndRemove();
+    @Invoker(value = "explodeAndRemove")
+    void callExplodeAndRemove();
 }

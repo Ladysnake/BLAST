@@ -1,6 +1,5 @@
 package ladysnake.blast.common.block;
 
-import ladysnake.blast.client.BlastClient;
 import ladysnake.blast.common.init.BlastParticles;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -22,48 +21,48 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class DryIceBlock extends IceBlock {
-	public static final EnumProperty<Direction.Axis> AXIS = Properties.AXIS;
+    public static final EnumProperty<Direction.Axis> AXIS = Properties.AXIS;
 
-	public DryIceBlock(Settings settings) {
-		super(settings);
-		this.setDefaultState((BlockState) this.getDefaultState().with(AXIS, Direction.Axis.Y));
-	}
+    public DryIceBlock(Settings settings) {
+        super(settings);
+        this.setDefaultState(this.getDefaultState().with(AXIS, Direction.Axis.Y));
+    }
 
-	@Override
-	protected void melt(BlockState state, World world, BlockPos pos) {
-		world.removeBlock(pos, false);
-	}
+    @Override
+    protected void melt(BlockState state, World world, BlockPos pos) {
+        world.removeBlock(pos, false);
+    }
 
-	@Override
-	public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
-		super.afterBreak(world, player, pos, state, blockEntity, stack);
-		if (EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, stack) == 0) {
-			world.removeBlock(pos, false);
-		}
-	}
+    @Override
+    public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
+        super.afterBreak(world, player, pos, state, blockEntity, stack);
+        if (EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, stack) == 0) {
+            world.removeBlock(pos, false);
+        }
+    }
 
-	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
-		super.randomDisplayTick(state, world, pos, random);
-		world.addParticle(BlastParticles.DRY_ICE, pos.getX() + random.nextGaussian(), pos.getY() + random.nextGaussian(), pos.getZ() + random.nextGaussian(), 0, -Math.abs(random.nextGaussian()) / 100, 0);
-	}
+    @Override
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
+        super.randomDisplayTick(state, world, pos, random);
+        world.addParticle(BlastParticles.DRY_ICE, pos.getX() + random.nextGaussian(), pos.getY() + random.nextGaussian(), pos.getZ() + random.nextGaussian(), 0, -Math.abs(random.nextGaussian()) / 100, 0);
+    }
 
-	public BlockState rotate(BlockState state, BlockRotation rotation) {
-		return switch (rotation) {
-			case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> switch (state.get(AXIS)) {
-				case X -> state.with(AXIS, Direction.Axis.Z);
-				case Z -> state.with(AXIS, Direction.Axis.X);
-				default -> state;
-			};
-			default -> state;
-		};
-	}
+    public BlockState rotate(BlockState state, BlockRotation rotation) {
+        return switch (rotation) {
+            case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> switch (state.get(AXIS)) {
+                case X -> state.with(AXIS, Direction.Axis.Z);
+                case Z -> state.with(AXIS, Direction.Axis.X);
+                default -> state;
+            };
+            default -> state;
+        };
+    }
 
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(AXIS);
-	}
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(AXIS);
+    }
 
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(AXIS, ctx.getSide().getAxis());
-	}
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        return this.getDefaultState().with(AXIS, ctx.getSide().getAxis());
+    }
 }
