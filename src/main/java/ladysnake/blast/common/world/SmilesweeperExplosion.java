@@ -1,5 +1,6 @@
 package ladysnake.blast.common.world;
 
+import com.google.common.collect.Sets;
 import com.luxintrus.befoul.common.block.InkBlock;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -8,9 +9,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.FallingBlockEntity;
-import net.minecraft.entity.ItemEntity;
+import net.minecraft.enchantment.ProtectionEnchantment;
+import net.minecraft.entity.*;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
@@ -21,9 +22,13 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
+import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.ExplosionBehavior;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 public class SmilesweeperExplosion extends CustomExplosion {
@@ -80,7 +85,40 @@ public class SmilesweeperExplosion extends CustomExplosion {
     }
 
     public void collectBlocksAndDamageEntities() {
-//        this.world.emitGameEvent(this.entity, GameEvent.EXPLODE, new BlockPos(this.x, this.y, this.z));
+        float q = this.power * 2.0f;
+        int k = MathHelper.floor(this.x - (double) q - 1.0);
+        int l = MathHelper.floor(this.x + (double) q + 1.0);
+        int r = MathHelper.floor(this.y - (double) q - 1.0);
+        int s = MathHelper.floor(this.y + (double) q + 1.0);
+        int t = MathHelper.floor(this.z - (double) q - 1.0);
+        int u = MathHelper.floor(this.z + (double) q + 1.0);
+        List<Entity> list = this.world.getOtherEntities(this.entity, new Box(k, r, t, l, s, u));
+        Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
+        for (int v = 0; v < list.size(); ++v) {
+            PlayerEntity playerEntity;
+            double z;
+            double y;
+            double x;
+            double aa;
+            double w;
+            Entity entity = list.get(v);
+            if (entity.isImmuneToExplosion() || !((w = Math.sqrt(entity.squaredDistanceTo(vec3d)) / (double) q) <= 1.0) || (aa = Math.sqrt((x = entity.getX() - this.x) * x + (y = (entity instanceof TntEntity ? entity.getY() : entity.getEyeY()) - this.y) * y + (z = entity.getZ() - this.z) * z)) == 0.0)
+                continue;
+            x /= aa;
+            y /= aa;
+            z /= aa;
+            double ab = Explosion.getExposure(vec3d, entity);
+            double ac = (1.0 - w) * ab;
+            entity.damage(this.getDamageSource(), (int) ((ac * ac + ac) / 2.0 * 7.0 * (double) q + 1.0));
+            double ad = ac;
+            if (entity instanceof LivingEntity) {
+                ad = ProtectionEnchantment.transformExplosionKnockback((LivingEntity) entity, ac);
+            }
+            entity.setVelocity(entity.getVelocity().add(x * ad, y * ad, z * ad));
+            if (!(entity instanceof PlayerEntity) || (playerEntity = (PlayerEntity) entity).isSpectator() || playerEntity.isCreative() && playerEntity.getAbilities().flying)
+                continue;
+            this.affectedPlayers.put(playerEntity, new Vec3d(x * ac, y * ac, z * ac));
+        }
 
         BlockPos expPos = new BlockPos(this.x, this.y, this.z);
         if (!world.isClient()) {
