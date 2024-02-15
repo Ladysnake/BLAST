@@ -10,7 +10,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.registry.Registry;
 
-import static ladysnake.blast.common.Blast.MODID;
+import static ladysnake.blast.common.Blast.MOD_ID;
 
 public class BlastEntities {
 
@@ -80,7 +80,7 @@ public class BlastEntities {
 	}
 
 	private static <T extends Entity> EntityType<T> register(String s, EntityType<T> entityType) {
-		return Registry.register(Registry.ENTITY_TYPE, MODID + ":" + s, entityType);
+		return Registry.register(Registry.ENTITY_TYPE, MOD_ID + ":" + s, entityType);
 	}
 
 	private static <T extends Entity> EntityType<T> createBombEntityType(EntityType.EntityFactory<T> factory) {

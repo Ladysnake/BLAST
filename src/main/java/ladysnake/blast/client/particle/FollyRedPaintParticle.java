@@ -1,6 +1,7 @@
 package ladysnake.blast.client.particle;
 
 import ladysnake.blast.client.BlastClient;
+import ladysnake.blast.common.init.BlastParticles;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
@@ -92,7 +93,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
 
 		@Override
 		public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-			ContinuousFalling blockLeakParticle = new ContinuousFalling(clientWorld, d, e, f, Fluids.EMPTY, BlastClient.LANDING_FOLLY_RED_PAINT_DROP);
+			ContinuousFalling blockLeakParticle = new ContinuousFalling(clientWorld, d, e, f, Fluids.EMPTY, BlastParticles.LANDING_FOLLY_RED_PAINT_DROP);
 			blockLeakParticle.gravityStrength = 0.01f;
 			blockLeakParticle.setColor(1f, 0f, 0.35f);
 			blockLeakParticle.setSprite(this.spriteProvider);
@@ -110,7 +111,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
 
 		@Override
 		public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-			Dripping dripping = new Dripping(clientWorld, d, e, f, Fluids.EMPTY, BlastClient.FALLING_FOLLY_RED_PAINT_DROP);
+			Dripping dripping = new Dripping(clientWorld, d, e, f, Fluids.EMPTY, BlastParticles.FALLING_FOLLY_RED_PAINT_DROP);
 			dripping.gravityStrength *= 0.01f;
 			dripping.setMaxAge(100);
 			dripping.setColor(1f, 0f, 0.35f);

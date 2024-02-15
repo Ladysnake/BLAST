@@ -13,7 +13,7 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.registry.Registry;
 import org.quiltmc.loader.api.QuiltLoader;
 
-import static ladysnake.blast.common.Blast.MODID;
+import static ladysnake.blast.common.Blast.MOD_ID;
 
 public class BlastBlocks {
 
@@ -45,7 +45,7 @@ public class BlastBlocks {
 	}
 
 	private static Block registerBlock(Block block, String name, ItemGroup itemGroup) {
-		Registry.register(Registry.BLOCK, MODID + ":" + name, block);
+		Registry.register(Registry.BLOCK, MOD_ID + ":" + name, block);
 
 		if (itemGroup != null) {
 			BlockItem item = new BlockItem(block, new Item.Settings().group(itemGroup));

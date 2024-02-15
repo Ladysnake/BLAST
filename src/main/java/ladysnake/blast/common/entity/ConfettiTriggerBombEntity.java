@@ -2,6 +2,7 @@ package ladysnake.blast.common.entity;
 
 import ladysnake.blast.client.BlastClient;
 import ladysnake.blast.common.init.BlastItems;
+import ladysnake.blast.common.init.BlastParticles;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -41,7 +42,7 @@ public class ConfettiTriggerBombEntity extends TriggerBombEntity {
 			}
 
 			for (int i = 0; i < 500; i++) {
-				world.addParticle(BlastClient.CONFETTI, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
+				world.addParticle(BlastParticles.CONFETTI, this.getX(), this.getY(), this.getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
 			}
 
 			this.remove(RemovalReason.DISCARDED);

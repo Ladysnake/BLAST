@@ -2,6 +2,7 @@ package ladysnake.blast.common.block;
 
 import ladysnake.blast.client.BlastClient;
 import ladysnake.blast.common.init.BlastBlocks;
+import ladysnake.blast.common.init.BlastParticles;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -47,7 +48,7 @@ public class FollyRedPaintBlock extends Block {
 		double d = direction.getOffsetX() == 0 ? random.nextDouble() : 0.5 + (double) direction.getOffsetX() * 0.6;
 		double e = direction.getOffsetY() == 0 ? random.nextDouble() : 0.5 + (double) direction.getOffsetY() * 0.6;
 		double f = direction.getOffsetZ() == 0 ? random.nextDouble() : 0.5 + (double) direction.getOffsetZ() * 0.6;
-		world.addParticle(BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, (double) pos.getX() + d, (double) pos.getY() + e, (double) pos.getZ() + f, 0.0, 0.0, 0.0);
+		world.addParticle(BlastParticles.DRIPPING_FOLLY_RED_PAINT_DROP, (double) pos.getX() + d, (double) pos.getY() + e, (double) pos.getZ() + f, 0.0, 0.0, 0.0);
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class FollyRedPaintBlock extends Block {
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (player.getStackInHand(hand).isOf(Items.HONEY_BOTTLE) && (state.getBlock() == BlastBlocks.FOLLY_RED_PAINT || state.getBlock() == BlastBlocks.DRIED_FOLLY_RED_PAINT)) {
 			world.setBlockState(pos, BlastBlocks.FRESH_FOLLY_RED_PAINT.getDefaultState());
-			ParticleUtil.spawnParticle(world, pos, BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, UniformIntProvider.create(3, 5));
+			ParticleUtil.spawnParticle(world, pos, BlastParticles.DRIPPING_FOLLY_RED_PAINT_DROP, UniformIntProvider.create(3, 5));
 			world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
 
 			if (!player.isCreative()) {

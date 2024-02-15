@@ -71,7 +71,7 @@ public class BlastItems {
 	}
 
 	public static Item registerItem(Item item, String name, boolean registerDispenserBehavior) {
-		Registry.register(Registry.ITEM, Blast.MODID + ":" + name, item);
+		Registry.register(Registry.ITEM, Blast.MOD_ID + ":" + name, item);
 		if (registerDispenserBehavior) {
 			DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
 				@Override

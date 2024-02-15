@@ -93,6 +93,14 @@ dependencies {
 	modImplementation ("xyz.amymialee:mialeemisc:${project.mialeemisc_version}")
 
 	modRuntimeOnly ("io.github.ladysnake:satin:${satin_version}") { transitive = false }
+
+
+	// iris and sodium
+	modRuntimeOnly("maven.modrinth:sodium:${project.sodium_version}")
+	modRuntimeOnly("maven.modrinth:iris:${project.iris_version}")
+	runtimeOnly compileOnly("org.anarres:jcpp:1.4.14") // for iris
+	runtimeOnly('org.joml:joml:1.10.4') // for sodium
+
 }
 
 processResources {

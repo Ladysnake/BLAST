@@ -10,5 +10,13 @@
       "blast:pipe_bomb_explode"
     ],
     "subtitle": "subtitles.blast.entity.pipe_bomb.explode"
+  },
+  "entity.smilesweeper.explode": {
+    "sounds": [
+      "blast:smilesweeper_explode_1",
+      "blast:smilesweeper_explode_2",
+      "blast:smilesweeper_explode_3"
+    ],
+    "subtitle": "subtitles.blast.entity.smilesweeper.explode"
   }
 }

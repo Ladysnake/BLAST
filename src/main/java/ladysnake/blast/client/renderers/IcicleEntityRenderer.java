@@ -7,7 +7,7 @@ import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.util.Identifier;
 
 public class IcicleEntityRenderer extends ProjectileEntityRenderer<AmethystShardEntity> {
-	public static final Identifier TEXTURE = new Identifier(Blast.MODID, "textures/entity/projectiles/icicle.png");
+	public static final Identifier TEXTURE = new Identifier(Blast.MOD_ID, "textures/entity/projectiles/icicle.png");
 
 	public IcicleEntityRenderer(EntityRendererFactory.Context context) {
 		super(context);

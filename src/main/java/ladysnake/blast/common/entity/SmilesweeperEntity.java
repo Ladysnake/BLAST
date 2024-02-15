@@ -30,7 +30,7 @@ public class SmilesweeperEntity extends BombEntity {
             explosion.collectBlocksAndDamageEntities();
             explosion.affectWorld(true);
 
-            world.playSound(null, this.getX(), this.getBodyY(0.0625), this.getZ(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.BLOCKS, 5f, 1.0f);
+            world.playSound(null, this.getX(), this.getBodyY(0.0625), this.getZ(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.BLOCKS, 1f, 1.0f);
         }
 
         this.remove(RemovalReason.DISCARDED);
