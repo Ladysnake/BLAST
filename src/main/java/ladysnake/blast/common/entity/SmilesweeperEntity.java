@@ -28,7 +28,7 @@ public class SmilesweeperEntity extends BombEntity {
         Block inkBlock = Registry.BLOCK.get(INK_BLOCK);
         if (inkBlock != null) {
 
-            CustomExplosion explosion = new SmilesweeperExplosion(world, this, this.getX(), this.getBodyY(0.0625), this.getZ(), 40f, Explosion.DestructionType.DESTROY, inkBlock);
+            CustomExplosion explosion = new SmilesweeperExplosion(world, this, this.getX(), this.getBodyY(0.0625), this.getZ(), 4f, Explosion.DestructionType.DESTROY, inkBlock);
             explosion.collectBlocksAndDamageEntities();
             explosion.affectWorld(true);
         }

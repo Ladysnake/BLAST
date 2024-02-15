@@ -123,7 +123,7 @@ public class SmilesweeperExplosion extends CustomExplosion {
         BlockPos expPos = new BlockPos(this.x, this.y, this.z);
         if (!world.isClient()) {
             BlockPos.Mutable mutable = new BlockPos.Mutable();
-            int inkSize = 4;
+            int inkSize = (int) power;
             for (float x = -inkSize; x <= inkSize; x++) {
                 for (float y = -inkSize; y <= inkSize; y++) {
                     for (float z = -inkSize; z <= inkSize; z++) {
