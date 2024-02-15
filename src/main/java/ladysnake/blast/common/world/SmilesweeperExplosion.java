@@ -5,6 +5,7 @@ import com.luxintrus.befoul.core.BefoulParticles;
 import com.luxintrus.befoul.core.BefoulSounds;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import ladysnake.blast.common.init.BlastParticles;
 import ladysnake.blast.common.init.BlastSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -86,12 +87,12 @@ public class SmilesweeperExplosion extends CustomExplosion {
     }
 
     public void collectBlocksAndDamageEntities() {
-        this.world.emitGameEvent(this.entity, GameEvent.EXPLODE, new BlockPos(this.x, this.y, this.z));
+//        this.world.emitGameEvent(this.entity, GameEvent.EXPLODE, new BlockPos(this.x, this.y, this.z));
 
         BlockPos expPos = new BlockPos(this.x, this.y, this.z);
         if (!world.isClient()) {
             BlockPos.Mutable mutable = new BlockPos.Mutable();
-            int inkSize = 6;
+            int inkSize = 4;
             for (float x = -inkSize; x <= inkSize; x++) {
                 for (float y = -inkSize; y <= inkSize; y++) {
                     for (float z = -inkSize; z <= inkSize; z++) {
@@ -108,6 +109,7 @@ public class SmilesweeperExplosion extends CustomExplosion {
 
                             BlockState blockState = world.getBlockState(mutable);
                             if (blockState.getBlock().getBlastResistance() < 1200) {
+                                blockState.getBlock().onDestroyedByExplosion(this.world, mutable, this);
                                 this.world.setBlockState(mutable, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
                             }
                         }
@@ -121,21 +123,12 @@ public class SmilesweeperExplosion extends CustomExplosion {
      * @param particles whether this explosion should emit explosion or explosion emitter particles around the source of the explosion
      */
     public void affectWorld(boolean particles) {
-        boolean bl;
-        if (this.world.isClient) {
-            this.world.playSound(this.x, this.y, this.z, BlastSoundEvents.SMILESWEEPER_EXPLODE, SoundCategory.BLOCKS, 6.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
-
-            float partSpeedMul = .5f;
-            for (int i = 0; i < 256; i++) {
-                this.world.addParticle(BefoulParticles.FALLING_INK, true, this.x, this.y + .5f, this.z, this.random.nextGaussian() * partSpeedMul, this.random.nextGaussian() * partSpeedMul, this.random.nextGaussian() * partSpeedMul);
-            }
-        }
-        boolean bl2 = bl = this.destructionType != DestructionType.NONE;
+        boolean bl = this.destructionType != DestructionType.NONE;
         if (particles) {
             if (this.power < 2.0f || !bl) {
-                this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
+                this.world.addParticle(BlastParticles.INK_EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
             } else {
-                this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0, 0.0, 0.0);
+                this.world.addParticle(BlastParticles.INK_EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0, 0.0, 0.0);
             }
         }
         if (bl) {

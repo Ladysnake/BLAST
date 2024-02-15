@@ -1,6 +1,8 @@
 package ladysnake.blast.common.entity;
 
+import com.luxintrus.befoul.core.BefoulParticles;
 import ladysnake.blast.common.init.BlastBlocks;
+import ladysnake.blast.common.init.BlastSoundEvents;
 import ladysnake.blast.common.world.CustomExplosion;
 import ladysnake.blast.common.world.SmilesweeperExplosion;
 import net.minecraft.block.Block;
@@ -26,11 +28,19 @@ public class SmilesweeperEntity extends BombEntity {
     public void explode() {
         Block inkBlock = Registry.BLOCK.get(INK_BLOCK);
         if (inkBlock != null) {
-            CustomExplosion explosion = new SmilesweeperExplosion(world, this, this.getX(), this.getBodyY(0.0625), this.getZ(), 8f, Explosion.DestructionType.DESTROY, inkBlock);
+
+            if (this.world.isClient) {
+                this.world.playSound(this.getX(), this.getY(), this.getZ(), BlastSoundEvents.SMILESWEEPER_EXPLODE, SoundCategory.BLOCKS, 6.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
+
+                float partSpeedMul = .5f;
+                for (int i = 0; i < 1000; i++) {
+                    this.world.addParticle(BefoulParticles.FALLING_INK, true, this.getX(), this.getY() + .5f, this.getZ(), this.random.nextGaussian() * partSpeedMul, this.random.nextGaussian() * partSpeedMul, this.random.nextGaussian() * partSpeedMul);
+                }
+            }
+
+            CustomExplosion explosion = new SmilesweeperExplosion(world, this, this.getX(), this.getBodyY(0.0625), this.getZ(), 40f, Explosion.DestructionType.DESTROY, inkBlock);
             explosion.collectBlocksAndDamageEntities();
             explosion.affectWorld(true);
-
-            world.playSound(null, this.getX(), this.getBodyY(0.0625), this.getZ(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.BLOCKS, 1f, 1.0f);
         }
 
         this.remove(RemovalReason.DISCARDED);

@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
 
@@ -24,7 +25,7 @@ public class InkExplosionEmitterParticle extends NoRenderParticle {
             double d = this.x + (this.random.nextDouble() - this.random.nextDouble()) * 4.0;
             double e = this.y + (this.random.nextDouble() - this.random.nextDouble()) * 4.0;
             double f = this.z + (this.random.nextDouble() - this.random.nextDouble()) * 4.0;
-//            this.world.addParticle(BlastParticles.INK_EXPLOSION, d, e, f, (float) this.age_ / (float) this.maxAge_, 0.0, 0.0);
+            this.world.addParticle(BlastParticles.INK_EXPLOSION, d, e, f, (float) this.age_ / (float) this.maxAge_, 0.0, 0.0);
         }
 
         ++this.age_;
@@ -34,7 +35,11 @@ public class InkExplosionEmitterParticle extends NoRenderParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public static class Factory implements ParticleFactory<DefaultParticleType> {
+    public static class DefaultFactory implements ParticleFactory<DefaultParticleType> {
+
+        public DefaultFactory(SpriteProvider spriteProvider) {
+        }
+
         public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
             return new InkExplosionEmitterParticle(clientWorld, d, e, f);
         }

@@ -1,15 +1,11 @@
 package ladysnake.blast.common.init;
 
-import ladysnake.blast.client.particle.ConfettiParticle;
-import ladysnake.blast.client.particle.DryIceParticle;
-import ladysnake.blast.client.particle.FollyRedPaintParticle;
-import ladysnake.blast.client.particle.InkExplosionEmitterParticle;
+import ladysnake.blast.client.particle.*;
 import ladysnake.blast.common.Blast;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.client.particle.FireworksSparkParticle;
+import net.minecraft.client.particle.ExplosionLargeParticle;
 import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -22,8 +18,8 @@ public interface BlastParticles {
     DefaultParticleType DRIPPING_FOLLY_RED_PAINT_DROP = FabricParticleTypes.simple(true);
     DefaultParticleType FALLING_FOLLY_RED_PAINT_DROP = FabricParticleTypes.simple(true);
     DefaultParticleType LANDING_FOLLY_RED_PAINT_DROP = FabricParticleTypes.simple(true);
-//    DefaultParticleType INK_EXPLOSION_EMITTER = FabricParticleTypes.simple(true);
-//    DefaultParticleType INK_EXPLOSION = FabricParticleTypes.simple(true);
+    DefaultParticleType INK_EXPLOSION_EMITTER = FabricParticleTypes.simple(true);
+    DefaultParticleType INK_EXPLOSION = FabricParticleTypes.simple(true);
 
     static void initialize() {
         initParticles(bind(Registry.PARTICLE_TYPE));
@@ -35,7 +31,8 @@ public interface BlastParticles {
         ParticleFactoryRegistry.getInstance().register(DRIPPING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.DrippingFollyRedPaintDropFactory::new);
         ParticleFactoryRegistry.getInstance().register(FALLING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.FallingFollyRedPaintDropFactory::new);
         ParticleFactoryRegistry.getInstance().register(LANDING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.LandingFollyRedPaintDropFactory::new);
-//        ParticleFactoryRegistry.getInstance().register(INK_EXPLOSION_EMITTER, (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> new InkExplosionEmitterParticle.Factory().createParticle(parameters, world, x, y, z, velocityX, velocityY, velocityZ));
+        ParticleFactoryRegistry.getInstance().register(INK_EXPLOSION_EMITTER, InkExplosionEmitterParticle.DefaultFactory::new);
+        ParticleFactoryRegistry.getInstance().register(INK_EXPLOSION, InkExplosionLargeParticle.Factory::new);
     }
 
     private static void initParticles(BiConsumer<ParticleType<?>, Identifier> registry) {
@@ -44,8 +41,8 @@ public interface BlastParticles {
         registry.accept(DRIPPING_FOLLY_RED_PAINT_DROP, Blast.id("dripping_folly_red_paint_drop"));
         registry.accept(FALLING_FOLLY_RED_PAINT_DROP, Blast.id("falling_folly_red_paint_drop"));
         registry.accept(LANDING_FOLLY_RED_PAINT_DROP, Blast.id("landing_folly_red_paint_drop"));
-//        registry.accept(INK_EXPLOSION_EMITTER, Blast.id("ink_explosion_emitter"));
-//        registry.accept(INK_EXPLOSION, Blast.id("ink_explosion"));
+        registry.accept(INK_EXPLOSION_EMITTER, Blast.id("ink_explosion_emitter"));
+        registry.accept(INK_EXPLOSION, Blast.id("ink_explosion"));
     }
 
     private static <T> BiConsumer<T, Identifier> bind(Registry<? super T> registry) {
