@@ -6,9 +6,11 @@
   "mixins": [
     "BundleItemMixin",
     "EnderEyeItemMixin",
-    "FallingBlockEntityAccessor"
+    "FallingBlockEntityAccessor",
+    "FireworkRocketEntityAccessor"
   ],
   "client": [
+    "client.BundleTooltipComponentMixin",
     "client.ParticleAccessor"
   ],
   "injectors": {

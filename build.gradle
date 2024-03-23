@@ -37,6 +37,9 @@ dependencies {
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
 	modImplementation include("eu.pb4:common-protection-api:${project.common_protection_api_version}")
+
+	// MixinExtras. Rat used this in his update to pipe bombs, so I'm adding it here too.
+	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.2")))
 }
 
 java {
