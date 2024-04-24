@@ -1,6 +1,7 @@
 package ladysnake.blast.common.entity.projectiles;
 
 import ladysnake.blast.common.init.BlastDamageSources;
+import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -36,6 +37,11 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
     @Override
     protected ItemStack asItemStack() {
         return new ItemStack(Items.AIR);
+    }
+
+    @Override
+    protected ItemStack getDefaultItemStack() {
+        return new ItemStack(Items.AMETHYST_SHARD);
     }
 
     @Override

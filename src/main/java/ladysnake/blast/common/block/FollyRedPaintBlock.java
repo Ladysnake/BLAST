@@ -13,6 +13,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -64,23 +65,23 @@ public class FollyRedPaintBlock extends Block {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (player.getStackInHand(hand).isOf(Items.HONEY_BOTTLE) && (state.getBlock() == BlastBlocks.FOLLY_RED_PAINT || state.getBlock() == BlastBlocks.DRIED_FOLLY_RED_PAINT)) {
+    public ItemActionResult onUseWithItem(ItemStack itemStack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (itemStack.isOf(Items.HONEY_BOTTLE) && (state.getBlock() == BlastBlocks.FOLLY_RED_PAINT || state.getBlock() == BlastBlocks.DRIED_FOLLY_RED_PAINT)) {
             world.setBlockState(pos, BlastBlocks.FRESH_FOLLY_RED_PAINT.getDefaultState());
             ParticleUtil.spawnParticle(world, pos, BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, UniformIntProvider.create(3, 5));
             world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
 
             if (!player.isCreative()) {
-                player.getStackInHand(hand).decrement(1);
+                itemStack.decrement(1);
                 if (!player.getInventory().insertStack(new ItemStack(Items.GLASS_BOTTLE))) {
                     player.dropStack(new ItemStack(Items.GLASS_BOTTLE));
                 }
             }
 
-            return ActionResult.SUCCESS;
+            return ItemActionResult.SUCCESS;
         }
 
-        return super.onUse(state, world, pos, player, hand, hit);
+        return super.onUseWithItem(itemStack, state, world, pos, player, hand, hit);
     }
 }
 

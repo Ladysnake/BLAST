@@ -12,7 +12,7 @@
     }
   ],
   "result": {
-    "item": "blast:diamond_bomb",
+    "id": "blast:diamond_bomb",
     "count": 4
   }
 }

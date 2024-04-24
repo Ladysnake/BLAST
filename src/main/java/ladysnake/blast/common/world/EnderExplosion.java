@@ -105,7 +105,7 @@ public class EnderExplosion extends CustomExplosion {
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
         for (Entity entity : list) {
-            if (!entity.isImmuneToExplosion() && ProtectionsProvider.canInteractEntity(entity, damageSource)) {
+            if (!entity.isImmuneToExplosion(this) && ProtectionsProvider.canInteractEntity(entity, damageSource)) {
                 double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;

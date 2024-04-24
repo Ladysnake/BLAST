@@ -1,5 +1,6 @@
 package ladysnake.blast.common.entity;
 
+import ladysnake.blast.common.init.BlastComponents;
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.init.BlastSoundEvents;
@@ -21,6 +22,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -53,13 +55,13 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     }
 
     public PipeBombEntity(World world, PlayerEntity player) {
-        super(BlastEntities.PIPE_BOMB, player, world);
+        super(BlastEntities.PIPE_BOMB, player, world, new ItemStack(BlastItems.PIPE_BOMB));
         this.setOwner(player);
         this.setFuse(MAX_FUSE);
     }
 
     public PipeBombEntity(World world, double x, double y, double z) {
-        super(BlastEntities.PIPE_BOMB, x, y, z, world);
+        super(BlastEntities.PIPE_BOMB, x, y, z, world, new ItemStack(BlastItems.PIPE_BOMB));
         this.setFuse(MAX_FUSE);
     }
 
@@ -67,10 +69,9 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
         PipeBombEntity pipeBombEntity = new PipeBombEntity(world, player.getX(), player.getY(), player.getZ());
         pipeBombEntity.setPos(player.getX(), player.getY() + (double) player.getStandingEyeHeight() - 0.10000000149011612D, player.getZ());
 
-        if (itemStack.getOrCreateNbt().contains("Fireworks", NbtElement.LIST_TYPE)) {
-            NbtList fireworksNbtList = itemStack.getOrCreateNbt().getList("Fireworks", NbtElement.COMPOUND_TYPE);
-            for (NbtElement fireworkNbt : fireworksNbtList) {
-                ItemStack fireworkItemStack = ItemStack.fromNbt((NbtCompound) fireworkNbt);
+        if (itemStack.getComponents().contains(BlastComponents.FIREWORKS)) {
+            List<ItemStack> fireworksList = itemStack.get(BlastComponents.FIREWORKS);
+            for (ItemStack fireworkItemStack : fireworksList) {
                 pipeBombEntity.addFireworkItemStack(fireworkItemStack);
             }
         }
@@ -79,10 +80,10 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
 
-        this.dataTracker.startTracking(FUSE, 40);
+        builder.add(FUSE, 40);
 
         this.rotationX = this.getWorld().random.nextFloat() * 360f;
         this.rotationY = this.getWorld().random.nextFloat() * 360f;
@@ -101,32 +102,12 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-
-        if (nbt.contains("Fireworks", NbtElement.LIST_TYPE)) {
-            NbtList fireworksNbtList = nbt.getList("Fireworks", NbtElement.COMPOUND_TYPE);
-            for (NbtElement fireworkNbtElement : fireworksNbtList) {
-                this.addFireworkItemStack(ItemStack.fromNbt((NbtCompound) fireworkNbtElement));
-            }
-        }
-    }
-
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
-        NbtList fireworksNbtList = new NbtList();
-        for (ItemStack fireworkItemStack : this.getFireworkItemStacks()) {
-            NbtCompound itemCompound = new NbtCompound();
-            fireworkItemStack.writeNbt(itemCompound);
-            fireworksNbtList.add(itemCompound);
-        }
-        nbt.put("Fireworks", fireworksNbtList);
-
-        return super.writeNbt(nbt);
-    }
-
-    @Override
     protected ItemStack asItemStack() {
+        return getDefaultItemStack();
+    }
+
+    @Override
+    protected ItemStack getDefaultItemStack() {
         return new ItemStack(BlastItems.PIPE_BOMB);
     }
 

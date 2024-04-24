@@ -7,7 +7,8 @@
     "BundleItemMixin",
     "EnderEyeItemMixin",
     "FallingBlockEntityAccessor",
-    "FireworkRocketEntityAccessor"
+    "FireworkRocketEntityAccessor",
+    "PipeBombItemMixin"
   ],
   "client": [
     "client.BundleTooltipComponentMixin",

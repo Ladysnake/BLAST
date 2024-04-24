@@ -1,6 +1,7 @@
 package ladysnake.blast.common.item;
 
 import ladysnake.blast.common.entity.PipeBombEntity;
+import ladysnake.blast.common.init.BlastComponents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -54,7 +55,7 @@ public class PipeBombItem extends Item {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
 
-        if (stack.getOrCreateNbt().getBoolean("Armed") && entity instanceof PlayerEntity player) {
+        if (stack.getComponents().getOrDefault(BlastComponents.ARMED, false) && entity instanceof PlayerEntity player) {
             if (!world.isClient) {
                 for (int i = 0; i < stack.getCount(); i++) {
                     entity.playSound(SoundEvents.BLOCK_TRIPWIRE_CLICK_OFF, 1.0F, 1.0f);

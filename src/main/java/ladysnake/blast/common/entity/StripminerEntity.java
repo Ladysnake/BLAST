@@ -6,9 +6,12 @@ import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.world.CustomExplosion;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.render.VertexFormatElement;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -18,10 +21,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 public class StripminerEntity extends BombEntity {
-    protected static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, Blast.FACING);
+    protected static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, TrackedDataHandlerRegistry.FACING);
 
     static {
-        DataTracker.registerData(StripminerEntity.class, Blast.FACING);
+        DataTracker.registerData(StripminerEntity.class, TrackedDataHandlerRegistry.FACING);
     }
 
     protected BlockState cachedState;
@@ -32,9 +35,10 @@ public class StripminerEntity extends BombEntity {
         this.setExplosionRadius(2.5f);
     }
 
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(FACING, Direction.UP);
+    @Override
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(FACING, Direction.UP);
     }
 
     @Override

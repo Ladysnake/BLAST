@@ -4,7 +4,10 @@
 package ladysnake.blast.common.recipe;
 
 import ladysnake.blast.common.Blast;
+import ladysnake.blast.common.init.BlastComponents;
 import ladysnake.blast.common.init.BlastItems;
+import net.minecraft.component.ComponentMap;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -15,16 +18,20 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PipeBombRecipe extends SpecialCraftingRecipe {
 
     private static final Ingredient BOMB = Ingredient.ofItems(BlastItems.BOMB);
     private static final Ingredient FIREWORK_ROCKET = Ingredient.ofItems(Items.FIREWORK_ROCKET);
 
-    public PipeBombRecipe(Identifier identifier, CraftingRecipeCategory category) {
-        super(identifier, category);
+    public PipeBombRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     @Override
@@ -46,9 +53,9 @@ public class PipeBombRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory craftingInventory, DynamicRegistryManager registryManager) {
+    public ItemStack craft(RecipeInputInventory craftingInventory, RegistryWrapper.WrapperLookup lookup) {
         ItemStack pipeBombStack = new ItemStack(BlastItems.PIPE_BOMB, 1);
-        NbtList nbtList = new NbtList();
+        List<ItemStack> stackList = new ArrayList<>();
 
         int bombCount = 0;
         int fireworkCount = 0;
@@ -58,17 +65,15 @@ public class PipeBombRecipe extends SpecialCraftingRecipe {
                 bombCount++;
             } else if (FIREWORK_ROCKET.test(invStack)) {
                 fireworkCount++;
-                NbtCompound nbtCompound = new NbtCompound();
                 ItemStack stackToStore = craftingInventory.getStack(i).copy();
                 stackToStore.setCount(1);
-                stackToStore.writeNbt(nbtCompound);
-                nbtList.add(nbtCompound);
+                stackList.add(stackToStore);
             } else if (!invStack.isEmpty()) {
                 return ItemStack.EMPTY;
             }
         }
 
-        pipeBombStack.getOrCreateNbt().put("Fireworks", nbtList);
+        pipeBombStack.set(BlastComponents.FIREWORKS, stackList);
 
         return bombCount == 1 && fireworkCount > 0 ? pipeBombStack : ItemStack.EMPTY;
     }
@@ -76,11 +81,6 @@ public class PipeBombRecipe extends SpecialCraftingRecipe {
     @Override
     public boolean fits(int width, int height) {
         return width * height >= 2;
-    }
-
-    @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
-        return new ItemStack(BlastItems.PIPE_BOMB);
     }
 
     @Override

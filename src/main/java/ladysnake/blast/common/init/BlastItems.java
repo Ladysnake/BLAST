@@ -65,29 +65,8 @@ public class BlastItems {
     }
 
     public static Item registerItem(Item item, String name, RegistryKey<ItemGroup> itemGroupKey) {
-        if (item instanceof BombItem) {
-            registerItem(item, name, itemGroupKey, true);
-        } else {
-            registerItem(item, name, itemGroupKey, false);
-        }
-        return item;
-    }
-
-    public static Item registerItem(Item item, String name, RegistryKey<ItemGroup> itemGroupKey, boolean registerDispenserBehavior) {
         Registry.register(Registries.ITEM, Blast.MODID + ":" + name, item);
         ItemGroupEvents.modifyEntriesEvent(itemGroupKey).register((entries) -> entries.add(item));
-
-        if (registerDispenserBehavior) {
-            DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
-                @Override
-                protected ProjectileEntity createProjectile(World world, Position position, ItemStack itemStack) {
-                    BombEntity bombEntity = ((BombItem) itemStack.getItem()).getType().create(world);
-                    bombEntity.setPos(position.getX(), position.getY(), position.getZ());
-                    itemStack.decrement(1);
-                    return bombEntity;
-                }
-            });
-        }
 
         return item;
     }

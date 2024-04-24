@@ -12,7 +12,7 @@
     }
   ],
   "result": {
-    "item": "blast:trigger_bomb",
+    "id": "blast:trigger_bomb",
     "count": 4
   }
 }

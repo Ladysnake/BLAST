@@ -3,22 +3,26 @@ package ladysnake.blast.common.item;
 import ladysnake.blast.common.entity.BombEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ProjectileItem;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
 
 import java.util.Objects;
 
-public class BombItem extends Item {
+public class BombItem extends Item implements ProjectileItem {
     EntityType<BombEntity> type;
 
-    public BombItem(Settings settings, EntityType<BombEntity> entityType) {
+    public BombItem(Item.Settings settings, EntityType<BombEntity> entityType) {
         super(settings);
         this.type = entityType;
     }
@@ -59,5 +63,12 @@ public class BombItem extends Item {
     public void playSoundEffects(World world, PlayerEntity playerEntity) {
         world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (playerEntity.getRandom().nextFloat() * 0.4F + 0.8F));
         world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.NEUTRAL, 0.5F, 0.4F / (playerEntity.getRandom().nextFloat() * 0.4F + 0.8F));
+    }
+
+    @Override
+    public ProjectileEntity createEntity(World world, Position pos, ItemStack stack, Direction direction) {
+        ProjectileEntity bomb = this.getType().create(world);
+        bomb.setPos(pos.getX(), pos.getY(), pos.getZ());
+        return bomb;
     }
 }

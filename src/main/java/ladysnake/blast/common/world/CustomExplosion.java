@@ -9,6 +9,8 @@ import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.ProtectionEnchantment;
@@ -50,7 +52,7 @@ public class CustomExplosion extends Explosion {
     public final Map<PlayerEntity, Vec3d> affectedPlayers;
 
     public CustomExplosion(World world, Entity entity, double x, double y, double z, float power, BlockBreakEffect effect, DestructionType destructionType) {
-        super(world, entity, null, null, x, y, z, power, false, destructionType);
+        super(world, entity, null, null, x, y, z, power, false, destructionType, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE);
         this.random = new Random();
         this.affectedBlocks = new ObjectArrayList<>();
         this.affectedPlayers = Maps.newHashMap();
@@ -150,7 +152,7 @@ public class CustomExplosion extends Explosion {
 
         for (int x = 0; x < list.size(); ++x) {
             Entity entity = list.get(x);
-            if (!entity.isImmuneToExplosion() && ProtectionsProvider.canDamageEntity(entity, damageSource)) {
+            if (!entity.isImmuneToExplosion(this) && ProtectionsProvider.canDamageEntity(entity, damageSource)) {
                 double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;
@@ -164,7 +166,7 @@ public class CustomExplosion extends Explosion {
                         double ad = getExposure(vec3d, entity);
                         double ae = (1.0D - y) * ad;
                         if (!(entity instanceof ExperienceOrbEntity || entity instanceof ItemEntity)) {
-                            entity.damage(this.getDamageSource(), (float) ((int) ((ae * ae + ae) / 2.0D * 7.0D * (double) q + 1.0D)) / 3f);
+                            entity.damage(this.damageSource, (float) ((int) ((ae * ae + ae) / 2.0D * 7.0D * (double) q + 1.0D)) / 3f);
                         }
                         double af = ae;
                         if (entity instanceof LivingEntity) {
@@ -185,7 +187,7 @@ public class CustomExplosion extends Explosion {
     }
 
     public void affectWorld(boolean boolean_1) {
-        this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2F) * 0.7F);
+        this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2F) * 0.7F, true);
         boolean boolean_2 = this.destructionType != DestructionType.KEEP;
         if (this.power >= 2.0F && boolean_2) {
             this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
@@ -237,9 +239,7 @@ public class CustomExplosion extends Explosion {
 
                             ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
                             if (this.effect == BlockBreakEffect.FORTUNE) {
-                                NbtList nbtList = new NbtList();
-                                nbtList.add(EnchantmentHelper.createNbt(EnchantmentHelper.getEnchantmentId(Enchantments.FORTUNE), 3));
-                                itemStack.setSubNbt("Enchantments", nbtList);
+                                itemStack.addEnchantment(Enchantments.FORTUNE, 3);
                             }
                             LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld) world)
                                     .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos))
