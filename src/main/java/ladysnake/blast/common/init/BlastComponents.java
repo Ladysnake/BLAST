@@ -1,9 +1,7 @@
 package ladysnake.blast.common.init;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.component.ComponentMap;
 import net.minecraft.component.DataComponentType;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
@@ -31,10 +29,6 @@ public class BlastComponents {
 
     public static final DataComponentType<Float> EXPLOSION_RADIUS = registerComponent("explosion_radius", (builder) -> {
         return builder.codec(Codecs.POSITIVE_FLOAT).packetCodec(PacketCodecs.FLOAT).cache();
-    });
-
-    public static final DataComponentType<Integer> FUSE = registerComponent("fuse", (builder) -> {
-        return builder.codec(Codecs.rangedInt(-32768, 32767)).packetCodec(PacketCodecs.INTEGER).cache();
     });
 
     private static <T> DataComponentType<T> registerComponent(String id, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {

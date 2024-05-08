@@ -2,6 +2,7 @@ package ladysnake.blast.common.entity;
 
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.world.CustomExplosion;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;

@@ -70,17 +70,17 @@ public class BlastEntities {
         PIPE_BOMB = register("pipe_bomb", createBombEntityType(PipeBombEntity::new));
 
         // explosive blocks
-        GUNPOWDER_BLOCK = register("gunpowder_block", FabricEntityTypeBuilder.<GunpowderBlockEntity>create(SpawnGroup.MISC, GunpowderBlockEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).forceTrackedVelocityUpdates(true).build());
-        STRIPMINER = register("stripminer", FabricEntityTypeBuilder.create(SpawnGroup.MISC, StripminerEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).forceTrackedVelocityUpdates(true).build());
-        COLD_DIGGER = register("cold_digger", FabricEntityTypeBuilder.create(SpawnGroup.MISC, ColdDiggerEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).forceTrackedVelocityUpdates(true).build());
-        BONESBURRIER = register("bonesburrier", FabricEntityTypeBuilder.create(SpawnGroup.MISC, BonesburrierEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).forceTrackedVelocityUpdates(true).build());
+        GUNPOWDER_BLOCK = register("gunpowder_block", EntityType.Builder.<GunpowderBlockEntity>create(GunpowderBlockEntity::new, SpawnGroup.MISC).dimensions(1f, 1f).alwaysUpdateVelocity(true).build());
+        STRIPMINER = register("stripminer", EntityType.Builder.create(StripminerEntity::new, SpawnGroup.MISC).dimensions(1f, 1f).alwaysUpdateVelocity(true).build());
+        COLD_DIGGER = register("cold_digger", EntityType.Builder.create(ColdDiggerEntity::new, SpawnGroup.MISC).dimensions(1f, 1f).alwaysUpdateVelocity(true).build());
+        BONESBURRIER = register("bonesburrier", EntityType.Builder.create(BonesburrierEntity::new, SpawnGroup.MISC).dimensions(1f, 1f).alwaysUpdateVelocity(true).build());
 
         // projectiles
-        AMETHYST_SHARD = register("amethyst_shard", FabricEntityTypeBuilder.create(SpawnGroup.MISC, AmethystShardEntity::new).dimensions(EntityDimensions.changing(0.5f, 0.5f)).build());
-        ICICLE = register("icicle", FabricEntityTypeBuilder.create(SpawnGroup.MISC, IcicleEntity::new).dimensions(EntityDimensions.changing(0.5f, 0.5f)).build());
+        AMETHYST_SHARD = register("amethyst_shard", EntityType.Builder.create(AmethystShardEntity::new, SpawnGroup.MISC).dimensions(0.5f, 0.5f).build());
+        ICICLE = register("icicle", EntityType.Builder.create(IcicleEntity::new, SpawnGroup.MISC).dimensions(0.5f, 0.5f).build());
 
         // custom falling block entity (Needed for claims protection)
-        SHRAPNEL_BLOCK = register("shrapnel_block", FabricEntityTypeBuilder.create(SpawnGroup.MISC, ShrapnelBlockEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).build());
+        SHRAPNEL_BLOCK = register("shrapnel_block", EntityType.Builder.create(ShrapnelBlockEntity::new, SpawnGroup.MISC).dimensions(1f, 1f).build());
     }
 
     private static <T extends Entity> EntityType<T> register(String s, EntityType<T> entityType) {
@@ -88,6 +88,6 @@ public class BlastEntities {
     }
 
     private static <T extends Entity> EntityType<T> createBombEntityType(EntityType.EntityFactory<T> factory) {
-        return FabricEntityTypeBuilder.create(SpawnGroup.MISC, factory).dimensions(EntityDimensions.changing(0.25f, 0.25f)).trackRangeBlocks(64).trackedUpdateRate(1).forceTrackedVelocityUpdates(true).build();
+        return EntityType.Builder.create(factory, SpawnGroup.MISC).dimensions(0.25f, 0.25f).maxTrackingRange(64).trackingTickInterval(1).alwaysUpdateVelocity(true).build();
     }
 }

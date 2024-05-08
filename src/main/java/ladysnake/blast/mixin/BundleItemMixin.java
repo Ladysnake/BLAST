@@ -6,18 +6,13 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import ladysnake.blast.common.init.BlastComponents;
 import ladysnake.blast.common.item.PipeBombItem;
 import net.minecraft.component.type.BundleContentsComponent;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BundleItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.ClickType;
 import net.minecraft.util.Rarity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Random;
 
