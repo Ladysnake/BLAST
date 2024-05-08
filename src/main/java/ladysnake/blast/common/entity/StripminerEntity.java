@@ -1,13 +1,10 @@
 package ladysnake.blast.common.entity;
 
-import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.block.StripminerBlock;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.world.CustomExplosion;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.render.VertexFormatElement;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -23,16 +20,13 @@ import net.minecraft.world.explosion.Explosion;
 public class StripminerEntity extends BombEntity {
     protected static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, TrackedDataHandlerRegistry.FACING);
 
-    static {
-        DataTracker.registerData(StripminerEntity.class, TrackedDataHandlerRegistry.FACING);
-    }
-
     protected BlockState cachedState;
 
     public StripminerEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
         this.setFuse(80);
         this.setExplosionRadius(2.5f);
+        this.dataTracker.set(FACING, Direction.UP);
     }
 
     @Override
