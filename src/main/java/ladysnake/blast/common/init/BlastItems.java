@@ -5,6 +5,7 @@ import ladysnake.blast.common.item.BombItem;
 import ladysnake.blast.common.item.PipeBombItem;
 import ladysnake.blast.common.item.TriggerBombItem;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
@@ -58,8 +59,21 @@ public class BlastItems {
     }
 
     public static Item registerItem(Item item, String name, RegistryKey<ItemGroup> itemGroupKey) {
+        if (item instanceof BombItem) {
+            registerItem(item, name, itemGroupKey, true);
+        } else {
+            registerItem(item, name, itemGroupKey, false);
+        }
+        return item;
+    }
+
+    public static Item registerItem(Item item, String name, RegistryKey<ItemGroup> itemGroupKey, boolean registerDispenserBehavior) {
         Registry.register(Registries.ITEM, Blast.MODID + ":" + name, item);
         ItemGroupEvents.modifyEntriesEvent(itemGroupKey).register((entries) -> entries.add(item));
+
+        if (registerDispenserBehavior)  {
+            DispenserBlock.registerProjectileBehavior(item);
+        }
 
         return item;
     }
