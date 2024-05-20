@@ -8,8 +8,8 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.util.math.BlockPos;
 
 public class FollyRedPaintParticle extends SpriteBillboardParticle {
@@ -65,7 +65,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
 
     @Environment(value= EnvType.CLIENT)
     public static class LandingFollyRedPaintDropFactory
-            implements ParticleFactory<DefaultParticleType> {
+            implements ParticleFactory<SimpleParticleType> {
         protected final SpriteProvider spriteProvider;
 
         public LandingFollyRedPaintDropFactory(SpriteProvider spriteProvider) {
@@ -73,7 +73,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
 
         @Override
-        public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
+        public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
             Landing blockLeakParticle = new Landing(clientWorld, d, e, f, Fluids.EMPTY);
             blockLeakParticle.setMaxAge((int)(28.0 / (Math.random() * 0.8 + 0.2)));
             blockLeakParticle.setColor(1f, 0f, 0.35f);
@@ -83,7 +83,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
     }
 
     @Environment(value=EnvType.CLIENT)
-    public static class FallingFollyRedPaintDropFactory implements ParticleFactory<DefaultParticleType> {
+    public static class FallingFollyRedPaintDropFactory implements ParticleFactory<SimpleParticleType> {
         protected final SpriteProvider spriteProvider;
 
         public FallingFollyRedPaintDropFactory(SpriteProvider spriteProvider) {
@@ -91,7 +91,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
 
         @Override
-        public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
+        public Particle createParticle(SimpleParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
             ContinuousFalling blockLeakParticle = new ContinuousFalling(clientWorld, d, e, f, Fluids.EMPTY, BlastClient.LANDING_FOLLY_RED_PAINT_DROP);
             blockLeakParticle.gravityStrength = 0.01f;
             blockLeakParticle.setColor(1f, 0f, 0.35f);
@@ -101,7 +101,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
     }
 
     @Environment(value=EnvType.CLIENT)
-    public static class DrippingFollyRedPaintDropFactory implements ParticleFactory<DefaultParticleType> {
+    public static class DrippingFollyRedPaintDropFactory implements ParticleFactory<SimpleParticleType> {
         protected final SpriteProvider spriteProvider;
 
         public DrippingFollyRedPaintDropFactory(SpriteProvider spriteProvider) {
@@ -109,7 +109,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
 
         @Override
-        public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
+        public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
             Dripping dripping = new Dripping(clientWorld, d, e, f, Fluids.EMPTY, BlastClient.FALLING_FOLLY_RED_PAINT_DROP);
             dripping.gravityStrength *= 0.01f;
             dripping.setMaxAge(100);

@@ -1,5 +1,6 @@
 package ladysnake.blast.common.entity;
 
+import ladysnake.blast.common.init.BlastComponents;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
 import net.minecraft.entity.EntityType;
@@ -15,8 +16,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
@@ -117,7 +118,7 @@ public class BombEntity extends ThrownItemEntity {
                 for (net.minecraft.entity.player.PlayerEntity playerEntity : this.getWorld().getPlayers()) {
                     ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
                     if (serverPlayerEntity.squaredDistanceTo(this.getX(), this.getY(), this.getZ()) < 4096.0D) {
-                        serverPlayerEntity.networkHandler.sendPacket(new ExplosionS2CPacket(this.getX(), this.getY(), this.getZ(), explosion.getPower(), explosion.getAffectedBlocks(), (Vec3d) explosion.getAffectedPlayers().get(serverPlayerEntity)));
+                        serverPlayerEntity.networkHandler.sendPacket(new ExplosionS2CPacket(this.getX(), this.getY(), this.getZ(), explosion.getPower(), explosion.getAffectedBlocks(), explosion.getAffectedPlayers().get(serverPlayerEntity), Explosion.DestructionType.DESTROY, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE));
                     }
                 }
             }
@@ -132,8 +133,8 @@ public class BombEntity extends ThrownItemEntity {
         return BombTriggerType.FUSE;
     }
 
-    public void onTrackedDataSet(TrackedData<?> trackedData_1) {
-        if (FUSE.equals(trackedData_1)) {
+    public void onTrackedDataSet(TrackedData<?> trackedData) {
+        if (FUSE.equals(trackedData)) {
             this.fuseTimer = this.getFuse();
         }
     }
@@ -142,9 +143,9 @@ public class BombEntity extends ThrownItemEntity {
         return this.dataTracker.get(FUSE);
     }
 
-    public void setFuse(int int_1) {
-        this.dataTracker.set(FUSE, int_1);
-        this.fuseTimer = int_1;
+    public void setFuse(int duration) {
+        this.dataTracker.set(FUSE, duration);
+        this.fuseTimer = duration;
     }
 
     public int getFuseTimer() {
@@ -162,13 +163,16 @@ public class BombEntity extends ThrownItemEntity {
     @Override
     public void setItem(ItemStack item) {
         super.setItem(new ItemStack(item.getItem()));
-        if (item.hasNbt() && item.getOrCreateNbt().contains("ExplosionRadius")) {
-            this.setExplosionRadius(item.getOrCreateNbt().getFloat("ExplosionRadius"));
+        if (item.getComponents().contains(BlastComponents.EXPLOSION_RADIUS)) {
+            //noinspection DataFlowIssue
+            this.setExplosionRadius(item.get(BlastComponents.EXPLOSION_RADIUS));
         }
     }
 
-    protected void initDataTracker() {
-        this.dataTracker.startTracking(FUSE, 40);
+    @Override
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(FUSE, 40);
     }
 
     @Override
@@ -184,7 +188,7 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     @Override
-    protected ItemStack getItem() {
+    public ItemStack getStack() {
         return new ItemStack(this.getDefaultItem());
     }
 

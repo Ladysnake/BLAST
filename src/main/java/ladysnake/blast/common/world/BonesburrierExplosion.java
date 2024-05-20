@@ -137,14 +137,14 @@ public class BonesburrierExplosion extends CustomExplosion {
             double w;
 
             if (ProtectionsProvider.canDamageEntity(value, damageSource)) {
-                if (value.isImmuneToExplosion() || !((w = Math.sqrt(value.squaredDistanceTo(vec3d)) / (double) q) <= 1.0) || (aa = Math.sqrt((x = value.getX() - this.x) * x + (y = (value instanceof TntEntity ? value.getY() : value.getEyeY()) - this.y) * y + (z = value.getZ() - this.z) * z)) == 0.0)
+                if (value.isImmuneToExplosion(this) || !((w = Math.sqrt(value.squaredDistanceTo(vec3d)) / (double) q) <= 1.0) || (aa = Math.sqrt((x = value.getX() - this.x) * x + (y = (value instanceof TntEntity ? value.getY() : value.getEyeY()) - this.y) * y + (z = value.getZ() - this.z) * z)) == 0.0)
                     continue;
                 x /= aa;
                 y /= aa;
                 z /= aa;
                 double ab = Explosion.getExposure(vec3d, value);
                 double ac = (1.0 - w) * ab;
-                value.damage(this.getDamageSource(), (int) ((ac * ac + ac) / 2.0 * 7.0 * (double) q + 1.0));
+                value.damage(this.damageSource, (int) ((ac * ac + ac) / 2.0 * 7.0 * (double) q + 1.0));
                 double ad = ac;
                 if (value instanceof LivingEntity) {
                     ad = ProtectionEnchantment.transformExplosionKnockback((LivingEntity) value, ac);
@@ -163,7 +163,7 @@ public class BonesburrierExplosion extends CustomExplosion {
     public void affectWorld(boolean particles) {
         boolean bl;
         if (this.world.isClient) {
-            this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
+            this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
         }
         boolean bl2 = bl = this.destructionType != DestructionType.KEEP;
         if (particles) {

@@ -14,7 +14,7 @@
                   "condition": "minecraft:block_state_property",
                   "block": "blast:remote_detonator",
                   "properties": {
-                    "filled": true
+                    "filled": "true"
                   }
                 },
                 {

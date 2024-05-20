@@ -52,7 +52,7 @@ public class ConfettiBombEntity extends BombEntity {
         // since the server removes the bomb too early, we have to manually remove it after a delay
         // so we set the age to a normally unobtainable value (value) to mark it as "to be removed" for tick()
         if (this.age > 0) {
-            this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 4.0f, (1.5F + (this.getWorld().random.nextFloat() - this.getWorld().random.nextFloat()) * 0.2F) * 0.7F);
+            this.getWorld().playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 4.0f, (1.5F + (this.getWorld().random.nextFloat() - this.getWorld().random.nextFloat()) * 0.2F) * 0.7F, true);
             this.age = -1000;
         }
     }

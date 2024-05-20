@@ -3,12 +3,13 @@ package ladysnake.blast.common.item;
 import ladysnake.blast.common.entity.BombEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 
 public class TriggerBombItem extends BombItem {
-    public TriggerBombItem(Settings settings, EntityType<BombEntity> entityType) {
+    public TriggerBombItem(Item.Settings settings, EntityType<BombEntity> entityType) {
         super(settings, entityType);
     }
 

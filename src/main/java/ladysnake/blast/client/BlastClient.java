@@ -24,7 +24,7 @@ import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
-import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
@@ -34,11 +34,11 @@ import java.util.function.Function;
 public class BlastClient implements ClientModInitializer {
 
     // particle types
-    public static DefaultParticleType DRY_ICE;
-    public static DefaultParticleType CONFETTI;
-    public static DefaultParticleType DRIPPING_FOLLY_RED_PAINT_DROP;
-    public static DefaultParticleType FALLING_FOLLY_RED_PAINT_DROP;
-    public static DefaultParticleType LANDING_FOLLY_RED_PAINT_DROP;
+    public static SimpleParticleType DRY_ICE;
+    public static SimpleParticleType CONFETTI;
+    public static SimpleParticleType DRIPPING_FOLLY_RED_PAINT_DROP;
+    public static SimpleParticleType FALLING_FOLLY_RED_PAINT_DROP;
+    public static SimpleParticleType LANDING_FOLLY_RED_PAINT_DROP;
 
     public static void registerRenders() {
         registerItemEntityRenders(

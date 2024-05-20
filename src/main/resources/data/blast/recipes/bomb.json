@@ -12,7 +12,7 @@
     }
   ],
   "result": {
-    "item": "blast:bomb",
+    "id": "blast:bomb",
     "count": 4
   }
 }

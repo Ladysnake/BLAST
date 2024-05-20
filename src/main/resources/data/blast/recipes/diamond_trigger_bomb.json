@@ -12,7 +12,7 @@
     }
   ],
   "result": {
-    "item": "blast:diamond_trigger_bomb",
+    "id": "blast:diamond_trigger_bomb",
     "count": 4
   }
 }

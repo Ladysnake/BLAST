@@ -30,7 +30,7 @@
     }
   ],
   "result": {
-    "item": "blast:confetti_trigger_bomb",
+    "id": "blast:confetti_trigger_bomb",
     "count": 4
   }
 }

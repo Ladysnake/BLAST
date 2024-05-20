@@ -18,6 +18,12 @@ Naval Mines are bombs that trigger on impact, can destroy blocks and will not si
 
 ![NavalMineRecipe](https://user-images.githubusercontent.com/83953120/122655642-4335f600-d154-11eb-83d4-774c4ec91a17.png)
 
+### Pipe Bombs
+
+Pipe bombs are bomb that detonate when thrown, with a fuse time of 2 seconds. Additionally, they explode when being unbundled. They can be crafted using a normal bomb and firework rockets, and the amount of damage scales depending on how many rockets were used to craft them, and how many firework stars were used to craft the rockets.
+
+![PipeBombRecipe](https://github.com/cph101/BLAST/assets/93673699/0b19e1bf-0f12-4820-8490-4f9d8cb390d4)
+
 
 ### Blocks
 

@@ -1,26 +1,34 @@
 package ladysnake.blast.common.entity;
 
+import ladysnake.blast.common.init.BlastComponents;
 import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.init.BlastSoundEvents;
+import ladysnake.blast.mixin.FireworkRocketEntityAccessor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.FireworkRocketItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PipeBombEntity extends PersistentProjectileEntity implements FlyingItemEntity {
     public final int MAX_FUSE = 20;
@@ -36,26 +44,42 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     public Vec3d prevVelocity;
     public float bounciness = 0.3f;
 
+    public List<ItemStack> fireworkItemStacks = new ArrayList<>();
+
     public PipeBombEntity(EntityType<PipeBombEntity> variant, World world) {
         super(variant, world);
     }
 
     public PipeBombEntity(World world, PlayerEntity player) {
-        super(BlastEntities.PIPE_BOMB, player, world);
+        super(BlastEntities.PIPE_BOMB, player, world, new ItemStack(BlastItems.PIPE_BOMB));
         this.setOwner(player);
         this.setFuse(MAX_FUSE);
     }
 
     public PipeBombEntity(World world, double x, double y, double z) {
-        super(BlastEntities.PIPE_BOMB, x, y, z, world);
+        super(BlastEntities.PIPE_BOMB, x, y, z, world, new ItemStack(BlastItems.PIPE_BOMB));
         this.setFuse(MAX_FUSE);
     }
 
-    @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
+    public static PipeBombEntity fromItemStack(World world, ItemStack itemStack, PlayerEntity player) {
+        PipeBombEntity pipeBombEntity = new PipeBombEntity(world, player.getX(), player.getY(), player.getZ());
+        pipeBombEntity.setPos(player.getX(), player.getY() + (double) player.getStandingEyeHeight() - 0.10000000149011612D, player.getZ());
 
-        this.dataTracker.startTracking(FUSE, 40);
+        if (itemStack.getComponents().contains(BlastComponents.FIREWORKS)) {
+            List<ItemStack> fireworksList = itemStack.get(BlastComponents.FIREWORKS);
+            for (ItemStack fireworkItemStack : fireworksList) {
+                pipeBombEntity.addFireworkItemStack(fireworkItemStack);
+            }
+        }
+
+        return pipeBombEntity;
+    }
+
+    @Override
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+
+        builder.add(FUSE, 40);
 
         this.rotationX = this.getWorld().random.nextFloat() * 360f;
         this.rotationY = this.getWorld().random.nextFloat() * 360f;
@@ -74,17 +98,12 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-    }
-
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
-        return super.writeNbt(nbt);
-    }
-
-    @Override
     protected ItemStack asItemStack() {
+        return getDefaultItemStack();
+    }
+
+    @Override
+    protected ItemStack getDefaultItemStack() {
         return new ItemStack(BlastItems.PIPE_BOMB);
     }
 
@@ -138,16 +157,86 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
         // shorten the fuse
         this.setFuse(this.getFuse() - 1);
         if (this.getFuse() <= 0) {
-            this.explode();
-            this.discard();
+            if (!this.getWorld().isClient) {
+                if (this.explode()) {
+                    this.discard();
+                }
+            }
+        } else {
+            super.tick();
         }
     }
 
-    public void explode() {
-        if (!this.getWorld().isClient) {
-            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), 2f, World.ExplosionSourceType.NONE);
-            // TODO Explosion
+    @Override
+    public boolean shouldRender(double distance) {
+        return super.shouldRender(distance) && !this.isInvisible();
+    }
+
+    @Override
+    public boolean shouldRender(double cameraX, double cameraY, double cameraZ) {
+        return super.shouldRender(cameraX, cameraY, cameraZ) && !this.isInvisible();
+    }
+
+    public boolean explode() {
+        if (random.nextInt(5) == 0 || !this.isInvisible()) {
+            ItemStack itemStack = this.getFirstFireworkItemStack();
+
+            float rad = 1.2f;
+            float randX = (float) random.nextGaussian() * rad;
+            float randY = random.nextFloat() * rad;
+            float randZ = (float) random.nextGaussian() * rad;
+            if (!this.isInvisible()) {
+                this.setInvisible(true);
+                randX = 0;
+                randY = 0;
+                randZ = 0;
+
+                if (itemStack == null) {
+                    this.playSound(SoundEvents.BLOCK_CANDLE_EXTINGUISH, 3.0f, 1.0f);
+                    ((ServerWorld) getWorld()).spawnParticles(ParticleTypes.SMOKE, this.getX(), this.getY(), this.getZ(), 50, 0.1, 0.1, 0.1, 0);
+                }
+            }
+
+            if (itemStack != null) {
+                ItemStack fireworkStack = itemStack.copy();
+                for (int i = 0; i < fireworkStack.getCount(); i++) {
+                    FireworkRocketEntity fireworkRocketEntity = new FireworkRocketEntity(getWorld(), this.getX() + randX, this.getY() + randY, this.getZ() + randZ, itemStack);
+                    getWorld().spawnEntity(fireworkRocketEntity);
+                    ((FireworkRocketEntityAccessor) fireworkRocketEntity).callExplodeAndRemove();
+                    this.playSound(BlastSoundEvents.PIPE_BOMB_EXPLODE, 5.0f, (float) (1.0f + random.nextGaussian() / 10f));
+                }
+
+                return this.removeFirstFireworkItemStack();
+            } else {
+                return true;
+            }
         }
+
+        return false;
+    }
+
+    public void addFireworkItemStack(ItemStack fireworkItemStack) {
+        if (fireworkItemStack.getItem() instanceof FireworkRocketItem) {
+            this.fireworkItemStacks.add(fireworkItemStack);
+        }
+    }
+
+    public ItemStack getFirstFireworkItemStack() {
+        if (fireworkItemStacks == null || fireworkItemStacks.isEmpty()) {
+            return null;
+        }
+        return this.fireworkItemStacks.get(0);
+    }
+
+    // removes first firework item stack and returns whether the list is now empty or not
+    public boolean removeFirstFireworkItemStack() {
+        fireworkItemStacks.remove(0);
+
+        return fireworkItemStacks.isEmpty();
+    }
+
+    public List<ItemStack> getFireworkItemStacks() {
+        return this.fireworkItemStacks;
     }
 
     @Override

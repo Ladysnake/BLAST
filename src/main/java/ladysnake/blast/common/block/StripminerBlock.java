@@ -18,10 +18,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -110,23 +107,22 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack itemStack = player.getStackInHand(hand);
+    public ItemActionResult onUseWithItem(ItemStack itemStack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         Item item = itemStack.getItem();
         if (item != Items.FLINT_AND_STEEL && item != Items.FIRE_CHARGE) {
-            return super.onUse(state, world, pos, player, hand, hit);
+            return super.onUseWithItem(itemStack, state, world, pos, player, hand, hit);
         } else {
             primeStripminer(world, pos, player);
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
             if (!player.isCreative()) {
                 if (item == Items.FLINT_AND_STEEL) {
-                    itemStack.damage(1, player, playerEntity -> playerEntity.sendToolBreakStatus(hand));
+                    itemStack.damage(1, player, LivingEntity.getSlotForHand(hand));
                 } else {
                     itemStack.decrement(1);
                 }
             }
 
-            return ActionResult.success(world.isClient);
+            return ItemActionResult.success(world.isClient);
         }
     }
 

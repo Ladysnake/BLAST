@@ -12,7 +12,7 @@
     }
   ],
   "result": {
-    "item": "blast:frost_bomb",
+    "id": "blast:frost_bomb",
     "count": 4
   }
 }
