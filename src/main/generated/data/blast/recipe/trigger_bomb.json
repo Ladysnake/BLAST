@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+	{
+	  "item": "minecraft:gunpowder"
+	},
+	{
+	  "tag": "c:ingots/iron"
+	},
+	{
+	  "tag": "c:dusts/redstone"
+	}
+  ],
+  "result": {
+	"count": 4,
+	"id": "blast:trigger_bomb"
+  }
+}

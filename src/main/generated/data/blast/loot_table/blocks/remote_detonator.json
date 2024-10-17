@@ -1,0 +1,44 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+	{
+	  "bonus_rolls": 0.0,
+	  "conditions": [
+		{
+		  "condition": "minecraft:survives_explosion"
+		}
+	  ],
+	  "entries": [
+		{
+		  "type": "minecraft:item",
+		  "name": "blast:remote_detonator"
+		}
+	  ],
+	  "rolls": 1.0
+	},
+	{
+	  "bonus_rolls": 0.0,
+	  "conditions": [
+		{
+		  "condition": "minecraft:survives_explosion"
+		}
+	  ],
+	  "entries": [
+		{
+		  "type": "minecraft:item",
+		  "conditions": [
+			{
+			  "block": "blast:remote_detonator",
+			  "condition": "minecraft:block_state_property",
+			  "properties": {
+				"filled": "true"
+			  }
+			}
+		  ],
+		  "name": "minecraft:ender_eye"
+		}
+	  ],
+	  "rolls": 1.0
+	}
+  ]
+}

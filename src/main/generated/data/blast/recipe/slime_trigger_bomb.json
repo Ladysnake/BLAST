@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+	{
+	  "item": "minecraft:gunpowder"
+	},
+	{
+	  "tag": "c:slime_balls"
+	},
+	{
+	  "tag": "c:dusts/redstone"
+	}
+  ],
+  "result": {
+	"count": 4,
+	"id": "blast:slime_trigger_bomb"
+  }
+}

@@ -22,7 +22,6 @@
   "item.blast.frost_trigger_bomb": "Bomba congelante a impatto",
   "item.blast.slime_bomb": "Bomba di slime",
   "item.blast.slime_trigger_bomb": "Bomba di slime a impatto",
-
   "entity.blast.bombard": "Bombarda",
   "entity.blast.slime_bombard": "Bombarda di slime",
   "entity.blast.amethyst_bombard": "Bombarda di ametista",
@@ -52,7 +51,6 @@
   "entity.blast.bonesburrier": "Spuntaossa",
   "entity.blast.amethyst_shard": "Scheggia di ametista",
   "entity.blast.icicle": "Ghiacciolo",
-
   "block.blast.gunpowder_block": "Blocco di polvere da sparo",
   "block.blast.stripminer": "Stripminer",
   "block.blast.cold_digger": "Scavatore congelante",
@@ -60,7 +58,6 @@
   "block.blast.bonesburrier": "Spuntaossa",
   "block.blast.dry_ice": "Ghiaccio secco",
   "block.blast.folly_red_paint": "Vernice rossa della follia",
-
   "death.attack.amethyst_shard": "%1$s è stato/a trafitto da una scheggia di ametista dalla bomba di ametista di %2$s",
   "death.attack.icicle": "%1$s è stato ghiacciato da %2$s"
 }

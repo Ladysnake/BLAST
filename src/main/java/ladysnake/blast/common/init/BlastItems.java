@@ -51,7 +51,7 @@ public class BlastItems {
         PEARL_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().maxCount(16), BlastEntities.PEARL_TRIGGER_BOMB), "pearl_trigger_bomb", ItemGroups.TOOLS);
         SLIME_BOMB = registerItem(new BombItem(new Item.Settings().maxCount(16), BlastEntities.SLIME_BOMB), "slime_bomb", ItemGroups.TOOLS);
         SLIME_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().maxCount(16), BlastEntities.SLIME_TRIGGER_BOMB), "slime_trigger_bomb", ItemGroups.TOOLS);
-        AMETHYST_BOMB = registerItem(new BombItem(new Item.Settings().maxCount(16), BlastEntities.AMETHYST_BOMB), "amethyst_bomb", ItemGroups.TOOLS);
+        AMETHYST_BOMB = registerItem(new BombItem(new Item.Settings().maxCount(16), BlastEntities.AMETHYST_BOMB), "amethyst_bomb", ItemGroups.COMBAT);
         AMETHYST_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().maxCount(16), BlastEntities.AMETHYST_TRIGGER_BOMB), "amethyst_trigger_bomb", ItemGroups.COMBAT);
         FROST_BOMB = registerItem(new BombItem(new Item.Settings().maxCount(16), BlastEntities.FROST_BOMB), "frost_bomb", ItemGroups.COMBAT);
         FROST_TRIGGER_BOMB = registerItem(new TriggerBombItem(new Item.Settings().maxCount(16), BlastEntities.FROST_TRIGGER_BOMB), "frost_trigger_bomb", ItemGroups.COMBAT);

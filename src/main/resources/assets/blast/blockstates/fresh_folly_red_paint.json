@@ -1,7 +1,7 @@
 {
   "variants": {
-    "": {
-      "model": "blast:block/folly_red_paint"
-    }
+	"": {
+	  "model": "blast:block/fresh_folly_red_paint"
+	}
   }
 }

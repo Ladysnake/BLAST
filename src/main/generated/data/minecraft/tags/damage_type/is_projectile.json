@@ -1,0 +1,12 @@
+{
+  "values": [
+	{
+	  "id": "blast:amethyst_shard",
+	  "required": false
+	},
+	{
+	  "id": "blast:icicle",
+	  "required": false
+	}
+  ]
+}

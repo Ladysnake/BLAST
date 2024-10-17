@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+	"has_stripminer": {
+	  "conditions": {
+		"items": [
+		  {
+			"items": "blast:stripminer"
+		  }
+		]
+	  },
+	  "trigger": "minecraft:inventory_changed"
+	},
+	"has_the_recipe": {
+	  "conditions": {
+		"recipe": "blast:cold_digger"
+	  },
+	  "trigger": "minecraft:recipe_unlocked"
+	}
+  },
+  "requirements": [
+	[
+	  "has_the_recipe",
+	  "has_stripminer"
+	]
+  ],
+  "rewards": {
+	"recipes": [
+	  "blast:cold_digger"
+	]
+  }
+}

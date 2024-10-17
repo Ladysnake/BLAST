@@ -16,7 +16,6 @@
   "item.blast.dirt_trigger_bomb": "触发型泥土炸弹",
   "item.blast.pearl_bomb": "末影炸弹",
   "item.blast.pearl_trigger_bomb": "触发型末影炸弹",
-
   "entity.blast.bombard": "投弹器",
   "entity.blast.slime_bombard": "粘液投弹器",
   "entity.blast.amethyst_bombard": "紫水晶投弹器",
@@ -39,12 +38,10 @@
   "entity.blast.cold_digger": "破冰者",
   "entity.blast.amethyst_shard": "紫水晶碎片",
   "entity.blast.icicle": "冰锥",
-
   "block.blast.gunpowder_block": "火药块",
   "block.blast.stripminer": "探矿者",
   "block.blast.cold_digger": "破冰者",
   "block.blast.dry_ice": "干冰",
-
   "death.attack.amethyst_shard": "%1$s被%2$s的紫水晶炸弹炸成碎片",
   "death.attack.icicle": "%1$s被%2$s击倒了"
 }

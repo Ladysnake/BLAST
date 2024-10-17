@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+	"E": {
+	  "tag": "c:ender_pearls"
+	},
+	"I": {
+	  "tag": "c:ingots/iron"
+	},
+	"O": {
+	  "tag": "c:obsidians"
+	},
+	"R": {
+	  "tag": "c:dusts/redstone"
+	}
+  },
+  "pattern": [
+	"IRI",
+	"RER",
+	"IOI"
+  ],
+  "result": {
+	"count": 1,
+	"id": "blast:remote_detonator"
+  }
+}

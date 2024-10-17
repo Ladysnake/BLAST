@@ -14,6 +14,9 @@
   "icon": "assets/blast/icon.png",
   "environment": "*",
   "entrypoints": {
+    "fabric-datagen": [
+      "ladysnake.blast.data.BlastDataGenerator"
+    ],
     "main": [
       "ladysnake.blast.common.Blast"
     ],

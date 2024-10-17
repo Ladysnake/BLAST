@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+	{
+	  "item": "minecraft:gunpowder"
+	},
+	{
+	  "item": "minecraft:amethyst_block"
+	},
+	{
+	  "tag": "c:strings"
+	}
+  ],
+  "result": {
+	"count": 4,
+	"id": "blast:amethyst_bomb"
+  }
+}

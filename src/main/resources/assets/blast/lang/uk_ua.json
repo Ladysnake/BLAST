@@ -16,7 +16,6 @@
   "item.blast.dirt_trigger_bomb": "Контактна ґрунтова бомба",
   "item.blast.pearl_bomb": "Намистова бомба",
   "item.blast.pearl_trigger_bomb": "Контактна намистова бомба",
-
   "entity.blast.bombard": "Бомбарда",
   "entity.blast.slime_bombard": "Липка бомбарда",
   "entity.blast.amethyst_bombard": "Аметистова бомбарда",
@@ -39,12 +38,10 @@
   "entity.blast.cold_digger": "Морозний копач",
   "entity.blast.amethyst_shard": "Уламок аметисту",
   "entity.blast.icicle": "Бурулька",
-
   "block.blast.gunpowder_block": "Блок пороху",
   "block.blast.stripminer": "Стрічковий копач",
   "block.blast.cold_digger": "Морозний копач",
   "block.blast.dry_ice": "Сухий лід",
-
   "death.attack.amethyst_shard": "%1$s був нашпигований уламками амеситу з аметистової бомби гравця %2$s",
   "death.attack.icicle": "%1$s проткнули бурулькою гравця %2$s"
 }

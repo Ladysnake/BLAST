@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+	"C": {
+	  "item": "minecraft:stonecutter"
+	},
+	"G": {
+	  "item": "blast:gunpowder_block"
+	},
+	"P": {
+	  "tag": "minecraft:planks"
+	},
+	"S": {
+	  "tag": "minecraft:wooden_slabs"
+	}
+  },
+  "pattern": [
+	"PCP",
+	"PGP",
+	"PSP"
+  ],
+  "result": {
+	"count": 1,
+	"id": "blast:stripminer"
+  }
+}

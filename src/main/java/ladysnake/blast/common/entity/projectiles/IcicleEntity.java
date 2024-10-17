@@ -1,6 +1,6 @@
 package ladysnake.blast.common.entity.projectiles;
 
-import ladysnake.blast.common.init.BlastDamageSources;
+import ladysnake.blast.common.init.BlastDamageTypes;
 import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -42,9 +42,9 @@ public class IcicleEntity extends AmethystShardEntity {
         Entity entity2 = this.getOwner();
         DamageSource damageSource2;
         if (entity2 == null) {
-            damageSource2 = BlastDamageSources.icicle(this, this);
+            damageSource2 = BlastDamageTypes.icicle(this, this);
         } else {
-            damageSource2 = BlastDamageSources.icicle(this, entity2);
+            damageSource2 = BlastDamageTypes.icicle(this, entity2);
             if (entity2 instanceof LivingEntity) {
                 ((LivingEntity) entity2).onAttacking(entity);
             }

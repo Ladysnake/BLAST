@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+	"layer0": "blast:item/dirt_trigger_bomb"
+  }
+}

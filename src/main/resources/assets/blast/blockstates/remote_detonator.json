@@ -1,10 +1,10 @@
 {
   "variants": {
-    "filled=false": {
-      "model": "blast:block/remote_detonator"
-    },
-    "filled=true": {
-      "model": "blast:block/remote_detonator_filled"
-    }
+	"filled=false": {
+	  "model": "blast:block/remote_detonator"
+	},
+	"filled=true": {
+	  "model": "blast:block/remote_detonator_filled"
+	}
   }
 }

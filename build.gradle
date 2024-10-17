@@ -22,6 +22,10 @@ chenille {
 	}
 }
 
+fabricApi {
+	configureDataGeneration()
+}
+
 repositories {
 	// For Common Protection API
 	maven { url "https://maven.nucleoid.xyz/" }

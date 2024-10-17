@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+	"has_bomb": {
+	  "conditions": {
+		"items": [
+		  {
+			"items": "blast:bomb"
+		  }
+		]
+	  },
+	  "trigger": "minecraft:inventory_changed"
+	},
+	"has_the_recipe": {
+	  "conditions": {
+		"recipe": "blast:dirt_bomb"
+	  },
+	  "trigger": "minecraft:recipe_unlocked"
+	}
+  },
+  "requirements": [
+	[
+	  "has_the_recipe",
+	  "has_bomb"
+	]
+  ],
+  "rewards": {
+	"recipes": [
+	  "blast:dirt_bomb"
+	]
+  }
+}

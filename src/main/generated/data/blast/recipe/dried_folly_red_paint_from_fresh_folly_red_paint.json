@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.05,
+  "ingredient": {
+	"item": "blast:fresh_folly_red_paint"
+  },
+  "result": {
+	"id": "blast:dried_folly_red_paint"
+  }
+}

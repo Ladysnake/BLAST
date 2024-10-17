@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+	"B": {
+	  "item": "minecraft:bone"
+	},
+	"H": {
+	  "item": "minecraft:honey_bottle"
+	},
+	"P": {
+	  "item": "minecraft:pink_dye"
+	},
+	"R": {
+	  "item": "minecraft:red_dye"
+	},
+	"T": {
+	  "item": "minecraft:tnt"
+	}
+  },
+  "pattern": [
+	"BRB",
+	"HTH",
+	"BPB"
+  ],
+  "result": {
+	"count": 1,
+	"id": "blast:bonesburrier"
+  }
+}

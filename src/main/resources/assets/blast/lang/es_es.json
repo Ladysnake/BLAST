@@ -22,7 +22,6 @@
   "item.blast.frost_trigger_bomb": "Bomba de escarcha activable",
   "item.blast.slime_bomb": "Bomba de slime",
   "item.blast.slime_trigger_bomb": "Bomba de slime activable",
-
   "entity.blast.bombard": "Cañón",
   "entity.blast.slime_bombard": "Cañón de slime",
   "entity.blast.amethyst_bombard": "Cañón de amatista",
@@ -52,7 +51,6 @@
   "entity.blast.bonesburrier": "Enterrador de los huesos",
   "entity.blast.amethyst_shard": "Fragmento de amatista",
   "entity.blast.icicle": "Carámbano",
-
   "block.blast.gunpowder_block": "Bloque de pólvora",
   "block.blast.stripminer": "Strip miner",
   "block.blast.cold_digger": "Excavadora fría",
@@ -60,7 +58,6 @@
   "block.blast.bonesburrier": "Enterrador de los huesos",
   "block.blast.dry_ice": "Hielo seco",
   "block.blast.folly_red_paint": "Pintura roja sinsentida",
-
   "death.attack.amethyst_shard": "%1$s fue apuñalado con un fragmento de la bomba de amatista de %2$s.",
   "death.attack.icicle": "%1$s fue helado por %2$s"
 }

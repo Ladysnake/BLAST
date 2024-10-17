@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+	{
+	  "item": "minecraft:gunpowder"
+	},
+	{
+	  "item": "minecraft:prismarine_shard"
+	},
+	{
+	  "tag": "c:dusts/redstone"
+	}
+  ],
+  "result": {
+	"count": 4,
+	"id": "blast:naval_mine"
+  }
+}

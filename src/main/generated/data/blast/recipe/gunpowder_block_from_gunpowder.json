@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "gunpowder",
+  "ingredients": [
+	{
+	  "item": "blast:gunpowder_block"
+	}
+  ],
+  "result": {
+	"count": 9,
+	"id": "minecraft:gunpowder"
+  }
+}

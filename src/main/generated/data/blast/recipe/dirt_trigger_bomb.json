@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+	"B": {
+	  "item": "blast:trigger_bomb"
+	},
+	"D": {
+	  "tag": "minecraft:dirt"
+	}
+  },
+  "pattern": [
+	"DDD",
+	"DBD",
+	"DDD"
+  ],
+  "result": {
+	"count": 1,
+	"id": "blast:dirt_trigger_bomb"
+  }
+}

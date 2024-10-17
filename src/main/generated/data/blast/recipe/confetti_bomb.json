@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+	{
+	  "item": "minecraft:gunpowder"
+	},
+	{
+	  "tag": "c:strings"
+	},
+	{
+	  "item": "minecraft:paper"
+	},
+	{
+	  "item": "minecraft:paper"
+	},
+	{
+	  "item": "minecraft:paper"
+	},
+	{
+	  "item": "minecraft:paper"
+	},
+	{
+	  "item": "minecraft:paper"
+	},
+	{
+	  "item": "minecraft:paper"
+	},
+	{
+	  "item": "minecraft:paper"
+	}
+  ],
+  "result": {
+	"count": 4,
+	"id": "blast:confetti_bomb"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+	{
+	  "item": "blast:dried_folly_red_paint"
+	},
+	{
+	  "item": "minecraft:honey_bottle"
+	}
+  ],
+  "result": {
+	"count": 1,
+	"id": "blast:fresh_folly_red_paint"
+  }
+}

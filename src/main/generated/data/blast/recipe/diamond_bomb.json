@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+	{
+	  "item": "minecraft:gunpowder"
+	},
+	{
+	  "tag": "c:gems/diamond"
+	},
+	{
+	  "tag": "c:strings"
+	}
+  ],
+  "result": {
+	"count": 4,
+	"id": "blast:diamond_bomb"
+  }
+}
