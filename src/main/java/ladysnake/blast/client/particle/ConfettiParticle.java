@@ -15,35 +15,28 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
 public class ConfettiParticle extends SpriteBillboardParticle {
-
-    private static final Random RANDOM = new Random();
-
-    private float slowing;
     private float rotationX;
     private float rotationY;
     private float rotationZ;
-    private double rotationXmod;
-    private double rotationYmod;
-    private double rotationZmod;
-    private float groundOffset;
+    private final float rotationXmod;
+    private final float rotationYmod;
+    private final float rotationZmod;
+    private final float groundOffset;
 
     public ConfettiParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
         super(world, x, y, z, velocityX, velocityY, velocityZ);
 
-        this.scale *= 0.1f + new Random().nextFloat() * 0.5f;
-        this.maxAge = ThreadLocalRandom.current().nextInt(20, 100);
+        this.scale *= 0.1f + world.getRandom().nextFloat() * 0.5f;
+        this.maxAge = world.getRandom().nextBetween(20, 100);
         this.collidesWithWorld = true;
         this.setSpriteForAge(spriteProvider);
         this.alpha = 1f;
 
         this.maxAge = 1200; // live one minute
-        this.red = RANDOM.nextFloat();
-        this.blue = RANDOM.nextFloat();
-        this.green = RANDOM.nextFloat();
+        this.red = world.getRandom().nextFloat();
+        this.blue = world.getRandom().nextFloat();
+        this.green = world.getRandom().nextFloat();
 
 
         this.gravityStrength = 0.1f;
@@ -52,30 +45,30 @@ public class ConfettiParticle extends SpriteBillboardParticle {
         this.velocityZ = velocityZ * 10f;
         this.velocityMultiplier = 0.5f;
 
-        this.slowing = 0.0f;
-        this.rotationX = RANDOM.nextFloat() * 360f;
-        this.rotationY = RANDOM.nextFloat() * 360f;
-        this.rotationZ = RANDOM.nextFloat() * 360f;
-        this.rotationXmod = RANDOM.nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
-        this.rotationYmod = RANDOM.nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
-        this.rotationZmod = RANDOM.nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
+        this.rotationX = world.getRandom().nextFloat() * 360f;
+        this.rotationY = world.getRandom().nextFloat() * 360f;
+        this.rotationZ = world.getRandom().nextFloat() * 360f;
+        this.rotationXmod = world.getRandom().nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
+        this.rotationYmod = world.getRandom().nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
+        this.rotationZmod = world.getRandom().nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
 
-        this.groundOffset = RANDOM.nextFloat() / 100f + 0.001f;
+        this.groundOffset = world.getRandom().nextFloat() / 100f + 0.001f;
     }
 
+    @Override
     public ParticleTextureSheet getType() {
         return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @Override
     public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
-        Vec3d vec3d = camera.getPos();
-        float f = (float) (MathHelper.lerp(tickDelta, this.prevPosX, this.x) - vec3d.getX());
-        float g = (float) (MathHelper.lerp(tickDelta, this.prevPosY, this.y) - vec3d.getY());
-        float h = (float) (MathHelper.lerp(tickDelta, this.prevPosZ, this.z) - vec3d.getZ());
+        Vec3d cameraPos = camera.getPos();
+        float x = (float) (MathHelper.lerp(tickDelta, this.prevPosX, this.x) - cameraPos.getX());
+        float y = (float) (MathHelper.lerp(tickDelta, this.prevPosY, this.y) - cameraPos.getY());
+        float z = (float) (MathHelper.lerp(tickDelta, this.prevPosZ, this.z) - cameraPos.getZ());
 
-        Vector3f[] Vec3fs = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
-        float j = this.getSize(tickDelta);
+        Vector3f[] Vec3fs = new Vector3f[]{new Vector3f(-1, -1, 0), new Vector3f(-1, 1, 0), new Vector3f(1, 1, 0), new Vector3f(1, -1, 0)};
+        float siZe = this.getSize(tickDelta);
 
         if (!this.onGround) {
             rotationX += rotationXmod;
@@ -84,9 +77,9 @@ public class ConfettiParticle extends SpriteBillboardParticle {
 
             for (int k = 0; k < 4; ++k) {
                 Vector3f Vec3f2 = Vec3fs[k];
-                Vec3f2.rotate(new Quaternionf(rotationX, rotationY, rotationZ, 1.0F));
-                Vec3f2.normalize(j);
-                Vec3f2.add(f, g, h);
+                Vec3f2.rotate(new Quaternionf(rotationX, rotationY, rotationZ, 1));
+                Vec3f2.normalize(siZe);
+                Vec3f2.add(x, y, z);
             }
         } else {
             rotationX = 90f;
@@ -94,9 +87,9 @@ public class ConfettiParticle extends SpriteBillboardParticle {
 
             for (int k = 0; k < 4; ++k) {
                 Vector3f Vec3f2 = Vec3fs[k];
-                Vec3f2.rotate(new Quaternionf(rotationX, rotationY, rotationZ, 1.0F));
-                Vec3f2.normalize(j);
-                Vec3f2.add(f, g + this.groundOffset, h);
+                Vec3f2.rotate(new Quaternionf(rotationX, rotationY, rotationZ, 1));
+                Vec3f2.normalize(siZe);
+                Vec3f2.add(x, y + this.groundOffset, z);
             }
         }
 
@@ -104,18 +97,19 @@ public class ConfettiParticle extends SpriteBillboardParticle {
         float maxU = this.getMaxU();
         float minV = this.getMinV();
         float maxV = this.getMaxV();
-        int l = this.getBrightness(tickDelta);
+        int light = this.getBrightness(tickDelta);
 
-        vertexConsumer.vertex(Vec3fs[0].x(), Vec3fs[0].y(), Vec3fs[0].z()).texture(maxU, maxV).color(red, green, blue, alpha).light(l);
-        vertexConsumer.vertex(Vec3fs[1].x(), Vec3fs[1].y(), Vec3fs[1].z()).texture(maxU, minV).color(red, green, blue, alpha).light(l);
-        vertexConsumer.vertex(Vec3fs[2].x(), Vec3fs[2].y(), Vec3fs[2].z()).texture(minU, minV).color(red, green, blue, alpha).light(l);
-        vertexConsumer.vertex(Vec3fs[3].x(), Vec3fs[3].y(), Vec3fs[3].z()).texture(minU, maxV).color(red, green, blue, alpha).light(l);
-        vertexConsumer.vertex(Vec3fs[0].x(), Vec3fs[0].y(), Vec3fs[0].z()).texture(maxU, maxV).color(red, green, blue, alpha).light(l);
-        vertexConsumer.vertex(Vec3fs[3].x(), Vec3fs[3].y(), Vec3fs[3].z()).texture(maxU, minV).color(red, green, blue, alpha).light(l);
-        vertexConsumer.vertex(Vec3fs[2].x(), Vec3fs[2].y(), Vec3fs[2].z()).texture(minU, minV).color(red, green, blue, alpha).light(l);
-        vertexConsumer.vertex(Vec3fs[1].x(), Vec3fs[1].y(), Vec3fs[1].z()).texture(minU, maxV).color(red, green, blue, alpha).light(l);
+        vertexConsumer.vertex(Vec3fs[0].x(), Vec3fs[0].y(), Vec3fs[0].z()).texture(maxU, maxV).color(red, green, blue, alpha).light(light);
+        vertexConsumer.vertex(Vec3fs[1].x(), Vec3fs[1].y(), Vec3fs[1].z()).texture(maxU, minV).color(red, green, blue, alpha).light(light);
+        vertexConsumer.vertex(Vec3fs[2].x(), Vec3fs[2].y(), Vec3fs[2].z()).texture(minU, minV).color(red, green, blue, alpha).light(light);
+        vertexConsumer.vertex(Vec3fs[3].x(), Vec3fs[3].y(), Vec3fs[3].z()).texture(minU, maxV).color(red, green, blue, alpha).light(light);
+        vertexConsumer.vertex(Vec3fs[0].x(), Vec3fs[0].y(), Vec3fs[0].z()).texture(maxU, maxV).color(red, green, blue, alpha).light(light);
+        vertexConsumer.vertex(Vec3fs[3].x(), Vec3fs[3].y(), Vec3fs[3].z()).texture(maxU, minV).color(red, green, blue, alpha).light(light);
+        vertexConsumer.vertex(Vec3fs[2].x(), Vec3fs[2].y(), Vec3fs[2].z()).texture(minU, minV).color(red, green, blue, alpha).light(light);
+        vertexConsumer.vertex(Vec3fs[1].x(), Vec3fs[1].y(), Vec3fs[1].z()).texture(minU, maxV).color(red, green, blue, alpha).light(light);
     }
 
+    @Override
     public void tick() {
         this.prevPosX = this.x;
         this.prevPosY = this.y;
@@ -129,7 +123,7 @@ public class ConfettiParticle extends SpriteBillboardParticle {
                     this.velocityY = 0;
                 } else {
                     this.velocityY -= 0.04D * (double) this.gravityStrength;
-                    ((ParticleAccessor)this).setStopped(false);
+                    ((ParticleAccessor) this).setStopped(false);
                     this.move(this.velocityX, this.velocityY, this.velocityZ);
                     if (this.ascending && this.y == this.prevPosY) {
                         this.velocityX *= 1.1D;
@@ -161,8 +155,8 @@ public class ConfettiParticle extends SpriteBillboardParticle {
             this.spriteProvider = spriteProvider;
         }
 
-        public Particle createParticle(SimpleParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-            return new ConfettiParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider);
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+            return new ConfettiParticle(world, x, y, z, velocityX, velocityY, velocityZ, this.spriteProvider);
         }
     }
 }

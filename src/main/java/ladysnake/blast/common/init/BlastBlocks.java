@@ -1,5 +1,6 @@
 package ladysnake.blast.common.init;
 
+import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.block.*;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -15,8 +16,6 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.DyeColor;
 import org.jetbrains.annotations.Nullable;
-
-import static ladysnake.blast.common.Blast.MODID;
 
 public class BlastBlocks {
 
@@ -43,7 +42,7 @@ public class BlastBlocks {
     }
 
     private static Block registerBlock(Block block, String name, @Nullable RegistryKey<ItemGroup> itemGroupKey) {
-        Registry.register(Registries.BLOCK, MODID + ":" + name, block);
+        Registry.register(Registries.BLOCK, Blast.id(name), block);
         var blockItem = new BlockItem(block, new Item.Settings());
         blockItem.appendBlocks(Item.BLOCK_ITEMS, blockItem);
         BlastItems.registerItem(blockItem, name, itemGroupKey);

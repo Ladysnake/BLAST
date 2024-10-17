@@ -7,14 +7,13 @@ import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class BlastDamageTypes {
 
-    public static final RegistryKey<DamageType> AMETHYST_SHARD = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.of(Blast.MODID, "amethyst_shard"));
-    public static final RegistryKey<DamageType> ICICLE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.of(Blast.MODID, "icicle"));
+    public static final RegistryKey<DamageType> AMETHYST_SHARD = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Blast.id("amethyst_shard"));
+    public static final RegistryKey<DamageType> ICICLE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Blast.id("icicle"));
 
     public static DamageSource amethystShard(PersistentProjectileEntity projectile, @Nullable Entity attacker) {
         return create(AMETHYST_SHARD, projectile.getWorld(), null, attacker);

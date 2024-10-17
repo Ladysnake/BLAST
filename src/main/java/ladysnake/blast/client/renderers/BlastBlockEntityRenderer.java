@@ -37,29 +37,29 @@ public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRender
     }
 
     @Override
-    public void render(T bombEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
-        matrixStack.push();
-        matrixStack.translate(0.0D, 0.5D, 0.0D);
-        if ((float) bombEntity.getFuseTimer() - g + 1.0F < 10.0F) {
-            float h = 1.0F - ((float) bombEntity.getFuseTimer() - g + 1.0F) / 10.0F;
+    public void render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        matrices.push();
+        matrices.translate(0.0D, 0.5D, 0.0D);
+        if ((float) entity.getFuseTimer() - tickDelta + 1.0F < 10.0F) {
+            float h = 1.0F - ((float) entity.getFuseTimer() - tickDelta + 1.0F) / 10.0F;
             h = MathHelper.clamp(h, 0.0F, 1.0F);
             h *= h;
             h *= h;
             float j = 1.0F + h * 0.3F;
-            matrixStack.scale(j, j, j);
+            matrices.scale(j, j, j);
         }
 
-        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-90.0F));
-        matrixStack.translate(-0.5D, -0.5D, 0.5D);
-        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90.0F));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-90.0F));
+        matrices.translate(-0.5D, -0.5D, 0.5D);
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90.0F));
 
-        TntMinecartEntityRenderer.renderFlashingBlock(this.blockRenderManager, this.stateGetter.apply(bombEntity), matrixStack, vertexConsumerProvider, i, bombEntity.getFuseTimer() / 5 % 2 == 0);
-        matrixStack.pop();
-        super.render(bombEntity, f, g, matrixStack, vertexConsumerProvider, i);
+        TntMinecartEntityRenderer.renderFlashingBlock(this.blockRenderManager, this.stateGetter.apply(entity), matrices, vertexConsumers, light, entity.getFuseTimer() / 5 % 2 == 0);
+        matrices.pop();
+        super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
     }
 
     @Override
-    public Identifier getTexture(T stripminerEntity) {
+    public Identifier getTexture(T entity) {
         return PlayerScreenHandler.BLOCK_ATLAS_TEXTURE;
     }
 }

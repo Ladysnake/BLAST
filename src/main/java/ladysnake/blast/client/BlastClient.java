@@ -6,6 +6,7 @@ import ladysnake.blast.client.particle.FollyRedPaintParticle;
 import ladysnake.blast.client.renderers.AmethystShardEntityRenderer;
 import ladysnake.blast.client.renderers.BlastBlockEntityRenderer;
 import ladysnake.blast.client.renderers.IcicleEntityRenderer;
+import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.entity.ColdDiggerEntity;
 import ladysnake.blast.common.entity.StripminerEntity;
@@ -42,26 +43,26 @@ public class BlastClient implements ClientModInitializer {
 
     public static void registerRenders() {
         registerItemEntityRenders(
-                BlastEntities.BOMB,
-                BlastEntities.TRIGGER_BOMB,
-                BlastEntities.GOLDEN_BOMB,
-                BlastEntities.GOLDEN_TRIGGER_BOMB,
-                BlastEntities.DIAMOND_BOMB,
-                BlastEntities.DIAMOND_TRIGGER_BOMB,
-                BlastEntities.NAVAL_MINE,
-                BlastEntities.CONFETTI_BOMB,
-                BlastEntities.CONFETTI_TRIGGER_BOMB,
-                BlastEntities.DIRT_BOMB,
-                BlastEntities.DIRT_TRIGGER_BOMB,
-                BlastEntities.PEARL_BOMB,
-                BlastEntities.PEARL_TRIGGER_BOMB,
-                BlastEntities.AMETHYST_BOMB,
-                BlastEntities.AMETHYST_TRIGGER_BOMB,
-                BlastEntities.FROST_BOMB,
-                BlastEntities.FROST_TRIGGER_BOMB,
-                BlastEntities.SLIME_BOMB,
-                BlastEntities.SLIME_TRIGGER_BOMB,
-                BlastEntities.PIPE_BOMB
+            BlastEntities.BOMB,
+            BlastEntities.TRIGGER_BOMB,
+            BlastEntities.GOLDEN_BOMB,
+            BlastEntities.GOLDEN_TRIGGER_BOMB,
+            BlastEntities.DIAMOND_BOMB,
+            BlastEntities.DIAMOND_TRIGGER_BOMB,
+            BlastEntities.NAVAL_MINE,
+            BlastEntities.CONFETTI_BOMB,
+            BlastEntities.CONFETTI_TRIGGER_BOMB,
+            BlastEntities.DIRT_BOMB,
+            BlastEntities.DIRT_TRIGGER_BOMB,
+            BlastEntities.PEARL_BOMB,
+            BlastEntities.PEARL_TRIGGER_BOMB,
+            BlastEntities.AMETHYST_BOMB,
+            BlastEntities.AMETHYST_TRIGGER_BOMB,
+            BlastEntities.FROST_BOMB,
+            BlastEntities.FROST_TRIGGER_BOMB,
+            BlastEntities.SLIME_BOMB,
+            BlastEntities.SLIME_TRIGGER_BOMB,
+            BlastEntities.PIPE_BOMB
         );
         registerBlockEntityRender(BlastEntities.GUNPOWDER_BLOCK, e -> BlastBlocks.GUNPOWDER_BLOCK.getDefaultState());
         registerBlockEntityRender(BlastEntities.STRIPMINER, StripminerEntity::getState);
@@ -69,9 +70,9 @@ public class BlastClient implements ClientModInitializer {
         registerBlockEntityRender(BlastEntities.BONESBURRIER, e -> BlastBlocks.BONESBURRIER.getDefaultState());
 
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
-                BlastBlocks.GUNPOWDER_BLOCK, BlastBlocks.COLD_DIGGER,
-                BlastBlocks.STRIPMINER, BlastBlocks.BONESBURRIER,
-                BlastBlocks.REMOTE_DETONATOR
+            BlastBlocks.GUNPOWDER_BLOCK, BlastBlocks.COLD_DIGGER,
+            BlastBlocks.STRIPMINER, BlastBlocks.BONESBURRIER,
+            BlastBlocks.REMOTE_DETONATOR
         );
         BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.DRY_ICE, RenderLayer.getTranslucent());
 
@@ -99,16 +100,16 @@ public class BlastClient implements ClientModInitializer {
         registerRenders();
 
         // particles
-        DRY_ICE = Registry.register(Registries.PARTICLE_TYPE, "blast:dry_ice", FabricParticleTypes.simple(true));
+        DRY_ICE = Registry.register(Registries.PARTICLE_TYPE, Blast.id("dry_ice"), FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(DRY_ICE, DryIceParticle.DefaultFactory::new);
-        CONFETTI = Registry.register(Registries.PARTICLE_TYPE, "blast:confetti", FabricParticleTypes.simple(true));
+        CONFETTI = Registry.register(Registries.PARTICLE_TYPE, Blast.id("confetti"), FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(CONFETTI, ConfettiParticle.DefaultFactory::new);
 
-        DRIPPING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, "blast:dripping_folly_red_paint_drop", FabricParticleTypes.simple(true));
+        DRIPPING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, Blast.id("dripping_folly_red_paint_drop"), FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(DRIPPING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.DrippingFollyRedPaintDropFactory::new);
-        FALLING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, "blast:falling_folly_red_paint_drop", FabricParticleTypes.simple(true));
+        FALLING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, Blast.id("falling_folly_red_paint_drop"), FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(FALLING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.FallingFollyRedPaintDropFactory::new);
-        LANDING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, "blast:landing_folly_red_paint_drop", FabricParticleTypes.simple(true));
+        LANDING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, Blast.id("landing_folly_red_paint_drop"), FabricParticleTypes.simple(true));
         ParticleFactoryRegistry.getInstance().register(LANDING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.LandingFollyRedPaintDropFactory::new);
     }
 }

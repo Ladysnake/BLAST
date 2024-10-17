@@ -1,5 +1,6 @@
 package ladysnake.blast.common.init;
 
+import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.entity.*;
 import ladysnake.blast.common.entity.projectiles.AmethystShardEntity;
 import ladysnake.blast.common.entity.projectiles.IcicleEntity;
@@ -8,8 +9,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-
-import static ladysnake.blast.common.Blast.MODID;
 
 public class BlastEntities {
 
@@ -81,8 +80,8 @@ public class BlastEntities {
         SHRAPNEL_BLOCK = register("shrapnel_block", EntityType.Builder.create(ShrapnelBlockEntity::new, SpawnGroup.MISC).dimensions(1, 1).build());
     }
 
-    private static <T extends Entity> EntityType<T> register(String s, EntityType<T> entityType) {
-        return Registry.register(Registries.ENTITY_TYPE, MODID + ":" + s, entityType);
+    private static <T extends Entity> EntityType<T> register(String name, EntityType<T> entityType) {
+        return Registry.register(Registries.ENTITY_TYPE, Blast.id(name), entityType);
     }
 
     private static <T extends Entity> EntityType<T> createBombEntityType(EntityType.EntityFactory<T> factory) {

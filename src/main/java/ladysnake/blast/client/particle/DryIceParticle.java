@@ -3,47 +3,34 @@ package ladysnake.blast.client.particle;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
 public class DryIceParticle extends SpriteBillboardParticle {
-
-    private static final Random RANDOM = new Random();
-    private final SpriteProvider spriteProvider;
     private final float maxAlpha;
 
     public DryIceParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
         super(world, x, y, z, velocityX, velocityY, velocityZ);
-        this.spriteProvider = spriteProvider;
 
-        this.scale *= 0.1f + new Random().nextFloat() * 0.5f;
-        this.maxAge = ThreadLocalRandom.current().nextInt(20, 100);
+        this.scale *= 0.1f + world.getRandom().nextFloat() * 0.5f;
+        this.maxAge = world.getRandom().nextBetween(20, 100);
         this.collidesWithWorld = true;
         this.setSpriteForAge(spriteProvider);
         this.alpha = 0f;
-        this.maxAlpha = RANDOM.nextFloat() / 25f;
-        this.velocityY = RANDOM.nextFloat() / 25f;
+        this.maxAlpha = world.getRandom().nextFloat() / 25f;
+        this.velocityY = world.getRandom().nextFloat() / 25f;
         this.velocityX = 0;
         this.velocityZ = 0;
     }
 
+    @Override
     public ParticleTextureSheet getType() {
         return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @Override
-    public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
-        super.buildGeometry(vertexConsumer, camera, tickDelta);
-    }
-
     public void tick() {
-
         this.prevPosX = this.x;
         this.prevPosY = this.y;
         this.prevPosZ = this.z;
@@ -81,8 +68,8 @@ public class DryIceParticle extends SpriteBillboardParticle {
             this.spriteProvider = spriteProvider;
         }
 
-        public Particle createParticle(SimpleParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-            return new DryIceParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider);
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+            return new DryIceParticle(world, x, y, z, velocityX, velocityY, velocityZ, this.spriteProvider);
         }
     }
 }

@@ -59,7 +59,7 @@ public class BlastItems {
     }
 
     public static Item registerItem(Item item, String name, RegistryKey<ItemGroup> itemGroupKey) {
-        Registry.register(Registries.ITEM, Blast.MODID + ":" + name, item);
+        Registry.register(Registries.ITEM, Blast.id(name), item);
         ItemGroupEvents.modifyEntriesEvent(itemGroupKey).register(entries -> entries.add(item));
 
         if (item instanceof BombItem) {

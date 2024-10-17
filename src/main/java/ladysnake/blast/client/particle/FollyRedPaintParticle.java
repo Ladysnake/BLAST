@@ -5,15 +5,13 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.util.math.BlockPos;
 
 public class FollyRedPaintParticle extends SpriteBillboardParticle {
-    FollyRedPaintParticle(ClientWorld world, double x, double y, double z, Fluid fluid) {
+    FollyRedPaintParticle(ClientWorld world, double x, double y, double z) {
         super(world, x, y, z);
         this.setBoundingBoxSpacing(0.01f, 0.01f);
         this.gravityStrength = 0.06f;
@@ -22,11 +20,6 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
     @Override
     public ParticleTextureSheet getType() {
         return ParticleTextureSheet.PARTICLE_SHEET_OPAQUE;
-    }
-
-    @Override
-    public int getBrightness(float tint) {
-        return super.getBrightness(tint);
     }
 
     @Override
@@ -49,7 +42,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         this.velocityZ *= 0.98f;
         BlockPos blockPos = BlockPos.ofFloored(this.x, this.y, this.z);
         FluidState fluidState = this.world.getFluidState(blockPos);
-        if (this.y < (double)((float)blockPos.getY() + fluidState.getHeight(this.world, blockPos))) {
+        if (this.y < (double) ((float) blockPos.getY() + fluidState.getHeight(this.world, blockPos))) {
             this.markDead();
         }
     }
@@ -63,9 +56,8 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
     protected void updateVelocity() {
     }
 
-    @Environment(value= EnvType.CLIENT)
-    public static class LandingFollyRedPaintDropFactory
-            implements ParticleFactory<SimpleParticleType> {
+    @Environment(EnvType.CLIENT)
+    public static class LandingFollyRedPaintDropFactory implements ParticleFactory<SimpleParticleType> {
         protected final SpriteProvider spriteProvider;
 
         public LandingFollyRedPaintDropFactory(SpriteProvider spriteProvider) {
@@ -73,16 +65,16 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
 
         @Override
-        public Particle createParticle(SimpleParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-            Landing blockLeakParticle = new Landing(clientWorld, d, e, f, Fluids.EMPTY);
-            blockLeakParticle.setMaxAge((int)(28.0 / (Math.random() * 0.8 + 0.2)));
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+            Landing blockLeakParticle = new Landing(world, x, y, z);
+            blockLeakParticle.setMaxAge((int) (28 / (world.getRandom().nextDouble() * 0.8 + 0.2)));
             blockLeakParticle.setColor(1f, 0f, 0.35f);
             blockLeakParticle.setSprite(this.spriteProvider);
             return blockLeakParticle;
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static class FallingFollyRedPaintDropFactory implements ParticleFactory<SimpleParticleType> {
         protected final SpriteProvider spriteProvider;
 
@@ -91,8 +83,8 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
 
         @Override
-        public Particle createParticle(SimpleParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-            ContinuousFalling blockLeakParticle = new ContinuousFalling(clientWorld, d, e, f, Fluids.EMPTY, BlastClient.LANDING_FOLLY_RED_PAINT_DROP);
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+            ContinuousFalling blockLeakParticle = new ContinuousFalling(world, x, y, z, BlastClient.LANDING_FOLLY_RED_PAINT_DROP);
             blockLeakParticle.gravityStrength = 0.01f;
             blockLeakParticle.setColor(1f, 0f, 0.35f);
             blockLeakParticle.setSprite(this.spriteProvider);
@@ -100,7 +92,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static class DrippingFollyRedPaintDropFactory implements ParticleFactory<SimpleParticleType> {
         protected final SpriteProvider spriteProvider;
 
@@ -109,8 +101,8 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
 
         @Override
-        public Particle createParticle(SimpleParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-            Dripping dripping = new Dripping(clientWorld, d, e, f, Fluids.EMPTY, BlastClient.FALLING_FOLLY_RED_PAINT_DROP);
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+            Dripping dripping = new Dripping(world, x, y, z, BlastClient.FALLING_FOLLY_RED_PAINT_DROP);
             dripping.gravityStrength *= 0.01f;
             dripping.setMaxAge(100);
             dripping.setColor(1f, 0f, 0.35f);
@@ -119,12 +111,12 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(EnvType.CLIENT)
     static class Dripping extends FollyRedPaintParticle {
         private final ParticleEffect nextParticle;
 
-        Dripping(ClientWorld world, double x, double y, double z, Fluid fluid, ParticleEffect nextParticle) {
-            super(world, x, y, z, fluid);
+        Dripping(ClientWorld world, double x, double y, double z, ParticleEffect nextParticle) {
+            super(world, x, y, z);
             this.nextParticle = nextParticle;
             this.gravityStrength *= 0.02f;
             this.maxAge = 40;
@@ -146,12 +138,12 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(EnvType.CLIENT)
     static class ContinuousFalling extends Falling {
         protected final ParticleEffect nextParticle;
 
-        ContinuousFalling(ClientWorld world, double x, double y, double z, Fluid fluid, ParticleEffect nextParticle) {
-            super(world, x, y, z, fluid);
+        ContinuousFalling(ClientWorld world, double x, double y, double z, ParticleEffect nextParticle) {
+            super(world, x, y, z);
             this.nextParticle = nextParticle;
         }
 
@@ -159,19 +151,19 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         protected void updateVelocity() {
             if (this.onGround) {
                 this.markDead();
-                this.world.addParticle(this.nextParticle, this.x, this.y, this.z, 0.0, 0.0, 0.0);
+                this.world.addParticle(this.nextParticle, this.x, this.y, this.z, 0, 0, 0);
             }
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(EnvType.CLIENT)
     static class Falling extends FollyRedPaintParticle {
-        Falling(ClientWorld clientWorld, double d, double e, double f, Fluid fluid) {
-            this(clientWorld, d, e, f, fluid, (int)(64.0 / (Math.random() * 0.8 + 0.2)));
+        Falling(ClientWorld world, double x, double y, double z) {
+            this(world, x, y, z, (int) (64 / (world.getRandom().nextDouble() * 0.8 + 0.2)));
         }
 
-        Falling(ClientWorld world, double x, double y, double z, Fluid fluid, int maxAge) {
-            super(world, x, y, z, fluid);
+        Falling(ClientWorld world, double x, double y, double z, int maxAge) {
+            super(world, x, y, z);
             this.maxAge = maxAge;
         }
 
@@ -183,12 +175,11 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         }
     }
 
-    @Environment(value=EnvType.CLIENT)
+    @Environment(EnvType.CLIENT)
     static class Landing extends FollyRedPaintParticle {
-        Landing(ClientWorld clientWorld, double d, double e, double f, Fluid fluid) {
-            super(clientWorld, d, e, f, fluid);
-            this.maxAge = (int)(16.0 / (Math.random() * 0.8 + 0.2));
+        Landing(ClientWorld world, double x, double y, double z) {
+            super(world, x, y, z);
+            this.maxAge = (int) (16 / (world.getRandom().nextDouble() * 0.8 + 0.2));
         }
     }
-
 }
