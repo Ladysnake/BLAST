@@ -25,9 +25,9 @@ public class BlastDamageTypes {
 
     private static DamageSource create(RegistryKey<DamageType> key, World world, @Nullable Entity source, @Nullable Entity attacker) {
         return world.getRegistryManager()
-                .get(RegistryKeys.DAMAGE_TYPE)
-                .getEntry(key)
-                .map((type) -> new DamageSource(type, source, attacker))
-                .orElse(world.getDamageSources().genericKill()); // Fallback, should never reach this
+            .get(RegistryKeys.DAMAGE_TYPE)
+            .getEntry(key)
+            .map((type) -> new DamageSource(type, source, attacker))
+            .orElse(world.getDamageSources().genericKill()); // Fallback, should never reach this
     }
 }

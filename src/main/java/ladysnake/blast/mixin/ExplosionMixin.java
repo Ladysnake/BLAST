@@ -59,8 +59,7 @@ public class ExplosionMixin {
             if (!fluidState.isEmpty()) {
                 return Optional.of(0F);
             }
-        }
-        else if (isEffect(explosion, CustomExplosion.BlockBreakEffect.UNSTOPPABLE) && fluidState.isEmpty() && blockState.getHardness(world, pos) >= 0) {
+        } else if (isEffect(explosion, CustomExplosion.BlockBreakEffect.UNSTOPPABLE) && fluidState.isEmpty() && blockState.getHardness(world, pos) >= 0) {
             return Optional.of(0F);
         }
         return original.call(instance, explosion, world, pos, blockState, fluidState);
@@ -82,6 +81,7 @@ public class ExplosionMixin {
         }
     }
 
+    // todo fix fortune not working for some reason even though the pickaxe does
     @ModifyArg(method = "method_24024", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/explosion/Explosion;tryMergeStack(Ljava/util/List;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/math/BlockPos;)V"))
     private static ItemStack blast$fortuneEffect(ItemStack stack) {
         if (isEffect(currentExplosion, CustomExplosion.BlockBreakEffect.FORTUNE)) {

@@ -67,7 +67,7 @@ public class BlastEntities {
         PIPE_BOMB = register("pipe_bomb", createBombEntityType(PipeBombEntity::new));
 
         // explosive blocks
-        GUNPOWDER_BLOCK = register("gunpowder_block", EntityType.Builder.<GunpowderBlockEntity>create(GunpowderBlockEntity::new, SpawnGroup.MISC).dimensions(1, 1).maxTrackingRange(10).trackingTickInterval(20).build());
+        GUNPOWDER_BLOCK = register("gunpowder_block", EntityType.Builder.create(GunpowderBlockEntity::new, SpawnGroup.MISC).dimensions(1, 1).maxTrackingRange(10).trackingTickInterval(20).build());
         STRIPMINER = register("stripminer", EntityType.Builder.create(StripminerEntity::new, SpawnGroup.MISC).dimensions(1, 1).maxTrackingRange(10).trackingTickInterval(10).build());
         COLD_DIGGER = register("cold_digger", EntityType.Builder.create(ColdDiggerEntity::new, SpawnGroup.MISC).dimensions(1, 1).maxTrackingRange(10).trackingTickInterval(10).build());
         BONESBURRIER = register("bonesburrier", EntityType.Builder.create(BonesburrierEntity::new, SpawnGroup.MISC).dimensions(1, 1).maxTrackingRange(10).trackingTickInterval(10).build());
