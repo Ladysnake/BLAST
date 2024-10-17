@@ -1,28 +1,41 @@
 package ladysnake.blast.common.item;
 
 import ladysnake.blast.common.entity.BombEntity;
+import ladysnake.blast.common.init.BlastEntities;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ProjectileItem;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
 
 import java.util.Objects;
 
-public class BombItem extends Item {
+public class BombItem extends Item implements ProjectileItem {
     EntityType<BombEntity> type;
 
-    public BombItem(Settings settings, EntityType<BombEntity> entityType) {
+    public BombItem(Item.Settings settings, EntityType<BombEntity> entityType) {
         super(settings);
         this.type = entityType;
     }
 
+    @Override
+    public ProjectileEntity createEntity(World world, Position pos, ItemStack stack, Direction direction) {
+        BombEntity bomb = type.create(world);
+        bomb.setPos(pos.getX(), pos.getY(), pos.getZ());
+        return bomb;
+    }
+
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
         if (!playerEntity.isCreative()) {
             for (int i = 0; i < playerEntity.getInventory().size(); i++) {

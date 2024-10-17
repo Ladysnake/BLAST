@@ -3,10 +3,10 @@ package ladysnake.blast.common.world;
 import com.google.common.collect.Sets;
 import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.particle.ParticleTypes;
@@ -22,10 +22,6 @@ import java.util.Set;
 public class KnockbackExplosion extends CustomExplosion {
     public KnockbackExplosion(World world, Entity entity, double x, double y, double z, float power) {
         super(world, entity, x, y, z, power, null, DestructionType.KEEP);
-    }
-
-    public float getPower() {
-        return power;
     }
 
     public void collectBlocksAndDamageEntities() {
@@ -96,7 +92,7 @@ public class KnockbackExplosion extends CustomExplosion {
 
         for (int x = 0; x < list.size(); ++x) {
             Entity entity = list.get(x);
-            if (!entity.isImmuneToExplosion() && ProtectionsProvider.canInteractEntity(entity, damageSource)) {
+            if (!entity.isImmuneToExplosion(this) && ProtectionsProvider.canInteractEntity(entity, damageSource)) {
                 double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;
@@ -110,8 +106,8 @@ public class KnockbackExplosion extends CustomExplosion {
                         double ad = getExposure(vec3d, entity);
                         double ae = (1.0D - y) * ad;
                         double af = ae;
-                        if (entity instanceof LivingEntity) {
-                            af = ProtectionEnchantment.transformExplosionKnockback((LivingEntity) entity, ae);
+                        if (entity instanceof LivingEntity living) {
+                            af *= living.getAttributeValue(EntityAttributes.GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE);
                         }
 
                         int knockbackMultiplier = 3;

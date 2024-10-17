@@ -9,10 +9,9 @@ import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.*;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -21,8 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -50,7 +49,7 @@ public class CustomExplosion extends Explosion {
     public final Map<PlayerEntity, Vec3d> affectedPlayers;
 
     public CustomExplosion(World world, Entity entity, double x, double y, double z, float power, BlockBreakEffect effect, DestructionType destructionType) {
-        super(world, entity, null, null, x, y, z, power, false, destructionType);
+        super(world, entity, x, y, z, power, false, destructionType);
         this.random = new Random();
         this.affectedBlocks = new ObjectArrayList<>();
         this.affectedPlayers = Maps.newHashMap();
@@ -150,7 +149,7 @@ public class CustomExplosion extends Explosion {
 
         for (int x = 0; x < list.size(); ++x) {
             Entity entity = list.get(x);
-            if (!entity.isImmuneToExplosion() && ProtectionsProvider.canDamageEntity(entity, damageSource)) {
+            if (!entity.isImmuneToExplosion(this) && ProtectionsProvider.canDamageEntity(entity, damageSource)) {
                 double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;
@@ -164,11 +163,11 @@ public class CustomExplosion extends Explosion {
                         double ad = getExposure(vec3d, entity);
                         double ae = (1.0D - y) * ad;
                         if (!(entity instanceof ExperienceOrbEntity || entity instanceof ItemEntity)) {
-                            entity.damage(this.getDamageSource(), (float) ((int) ((ae * ae + ae) / 2.0D * 7.0D * (double) q + 1.0D)) / 3f);
+                            entity.damage(damageSource, (float) ((int) ((ae * ae + ae) / 2.0D * 7.0D * (double) q + 1.0D)) / 3f);
                         }
                         double af = ae;
-                        if (entity instanceof LivingEntity) {
-                            af = ProtectionEnchantment.transformExplosionKnockback((LivingEntity) entity, ae);
+                        if (entity instanceof LivingEntity living) {
+                            af *= living.getAttributeValue(EntityAttributes.GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE);
                         }
 
                         entity.setVelocity(entity.getVelocity().add(z * af, aa * af, ab * af));
@@ -237,9 +236,7 @@ public class CustomExplosion extends Explosion {
 
                             ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
                             if (this.effect == BlockBreakEffect.FORTUNE) {
-                                NbtList nbtList = new NbtList();
-                                nbtList.add(EnchantmentHelper.createNbt(EnchantmentHelper.getEnchantmentId(Enchantments.FORTUNE), 3));
-                                itemStack.setSubNbt("Enchantments", nbtList);
+                                itemStack.addEnchantment(world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.FORTUNE), 3);
                             }
                             LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld) world)
                                     .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos))

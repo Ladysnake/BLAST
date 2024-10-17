@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class BlastDamageSources {
 
-    private static final RegistryKey<DamageType> AMETHYST_SHARD = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(Blast.MODID, "amethyst_shard"));
-    private static final RegistryKey<DamageType> ICICLE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(Blast.MODID, "icicle"));
+    private static final RegistryKey<DamageType> AMETHYST_SHARD = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.of(Blast.MODID, "amethyst_shard"));
+    private static final RegistryKey<DamageType> ICICLE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.of(Blast.MODID, "icicle"));
 
     public static DamageSource amethystShard(PersistentProjectileEntity projectile, @Nullable Entity attacker) {
         return create(AMETHYST_SHARD, projectile.getWorld(), null, attacker);

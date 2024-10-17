@@ -1,5 +1,6 @@
 package ladysnake.blast.common.block;
 
+import com.mojang.serialization.MapCodec;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.init.BlastEntities;
 import net.minecraft.block.*;
@@ -13,8 +14,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -22,11 +23,18 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
+    public static final MapCodec<GunpowderBlock> CODEC = createCodec(GunpowderBlock::new);
+
     public static final BooleanProperty LIT = Properties.LIT;
 
     public GunpowderBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(LIT, false));
+    }
+
+    @Override
+    protected MapCodec<? extends FallingBlock> getCodec() {
+        return CODEC;
     }
 
     public static void explode(World world, BlockPos pos) {
@@ -89,25 +97,24 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
         return false;
     }
 
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    @Override
+    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack itemStack = player.getStackInHand(hand);
         Item item = itemStack.getItem();
         if (item != Items.FLINT_AND_STEEL && item != Items.FIRE_CHARGE) {
-            return super.onUse(state, world, pos, player, hand, hit);
+            return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
         } else {
             explode(world, pos, player);
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
             if (!player.isCreative()) {
                 if (item == Items.FLINT_AND_STEEL) {
-                    itemStack.damage(1, player, (playerEntity) -> {
-                        playerEntity.sendToolBreakStatus(hand);
-                    });
+                    itemStack.damage(1, player, LivingEntity.getSlotForHand(hand));
                 } else {
                     itemStack.decrement(1);
                 }
             }
 
-            return ActionResult.success(world.isClient);
+            return ItemActionResult.success(world.isClient);
         }
     }
 

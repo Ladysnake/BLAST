@@ -1,23 +1,17 @@
 package ladysnake.blast.common.init;
 
 import ladysnake.blast.common.Blast;
-import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.item.BombItem;
 import ladysnake.blast.common.item.PipeBombItem;
 import ladysnake.blast.common.item.TriggerBombItem;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.DispenserBlock;
-import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
-import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.math.Position;
-import net.minecraft.world.World;
 
 public class BlastItems {
     public static Item BOMB;
@@ -65,31 +59,13 @@ public class BlastItems {
     }
 
     public static Item registerItem(Item item, String name, RegistryKey<ItemGroup> itemGroupKey) {
-        if (item instanceof BombItem) {
-            registerItem(item, name, itemGroupKey, true);
-        } else {
-            registerItem(item, name, itemGroupKey, false);
-        }
-        return item;
-    }
-
-    public static Item registerItem(Item item, String name, RegistryKey<ItemGroup> itemGroupKey, boolean registerDispenserBehavior) {
         Registry.register(Registries.ITEM, Blast.MODID + ":" + name, item);
-        ItemGroupEvents.modifyEntriesEvent(itemGroupKey).register((entries) -> entries.add(item));
+        ItemGroupEvents.modifyEntriesEvent(itemGroupKey).register(entries -> entries.add(item));
 
-        if (registerDispenserBehavior) {
-            DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
-                @Override
-                protected ProjectileEntity createProjectile(World world, Position position, ItemStack itemStack) {
-                    BombEntity bombEntity = ((BombItem) itemStack.getItem()).getType().create(world);
-                    bombEntity.setPos(position.getX(), position.getY(), position.getZ());
-                    itemStack.decrement(1);
-                    return bombEntity;
-                }
-            });
+        if (item instanceof BombItem) {
+            DispenserBlock.registerProjectileBehavior(item);
         }
 
         return item;
     }
-
 }

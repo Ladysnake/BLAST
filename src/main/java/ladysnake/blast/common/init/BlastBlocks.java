@@ -1,7 +1,7 @@
 package ladysnake.blast.common.init;
 
 import ladysnake.blast.common.block.*;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
@@ -31,30 +31,22 @@ public class BlastBlocks {
     public static Block DRIED_FOLLY_RED_PAINT;
 
     public static void init() {
-        GUNPOWDER_BLOCK = registerBlock(new GunpowderBlock(FabricBlockSettings.create().mapColor(DyeColor.BLACK).strength(0.5F, 0.5f).sounds(BlockSoundGroup.SAND)), "gunpowder_block", ItemGroups.BUILDING_BLOCKS);
-        STRIPMINER = registerBlock(new StripminerBlock(FabricBlockSettings.create().strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).nonOpaque(), BlastEntities.STRIPMINER), "stripminer", ItemGroups.REDSTONE);
-        COLD_DIGGER = registerBlock(new StripminerBlock(FabricBlockSettings.create().strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).nonOpaque(), BlastEntities.COLD_DIGGER), "cold_digger", ItemGroups.REDSTONE);
-        BONESBURRIER = registerBlock(new BonesburrierBlock(FabricBlockSettings.copyOf(Blocks.BONE_BLOCK)), "bonesburrier", ItemGroups.REDSTONE);
-        REMOTE_DETONATOR = registerBlock(new RemoteDetonatorBlock(FabricBlockSettings.create().strength(2.5f, 2.5f).sounds(BlockSoundGroup.LANTERN).nonOpaque()), "remote_detonator", ItemGroups.REDSTONE);
-        DRY_ICE = registerBlock(new DryIceBlock(FabricBlockSettings.create().mapColor(MapColor.LIGHT_GRAY).slipperiness(0.98F).strength(0.5F).sounds(BlockSoundGroup.GLASS).nonOpaque()), "dry_ice", ItemGroups.BUILDING_BLOCKS);
-        FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(FabricBlockSettings.copyOf(Blocks.HONEY_BLOCK).ticksRandomly().strength(0.2f).mapColor(MapColor.BRIGHT_RED)), "folly_red_paint", ItemGroups.BUILDING_BLOCKS);
-        FRESH_FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(FabricBlockSettings.copyOf(Blocks.HONEY_BLOCK).strength(0.2f).mapColor(MapColor.BRIGHT_RED)), "fresh_folly_red_paint", ItemGroups.BUILDING_BLOCKS);
-        DRIED_FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(FabricBlockSettings.create().mapColor(MapColor.BRIGHT_RED).strength(0.4f).sounds(BlockSoundGroup.DRIPSTONE_BLOCK).mapColor(MapColor.BRIGHT_RED)), "dried_folly_red_paint", ItemGroups.BUILDING_BLOCKS);
+        GUNPOWDER_BLOCK = registerBlock(new GunpowderBlock(AbstractBlock.Settings.create().mapColor(DyeColor.BLACK).strength(0.5F, 0.5f).sounds(BlockSoundGroup.SAND)), "gunpowder_block", ItemGroups.BUILDING_BLOCKS);
+        STRIPMINER = registerBlock(new StripminerBlock(AbstractBlock.Settings.create().strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).nonOpaque(), BlastEntities.STRIPMINER), "stripminer", ItemGroups.REDSTONE);
+        COLD_DIGGER = registerBlock(new StripminerBlock(AbstractBlock.Settings.create().strength(2.5f, 2.5f).sounds(BlockSoundGroup.WOOD).nonOpaque(), BlastEntities.COLD_DIGGER), "cold_digger", ItemGroups.REDSTONE);
+        BONESBURRIER = registerBlock(new BonesburrierBlock(AbstractBlock.Settings.copy(Blocks.BONE_BLOCK)), "bonesburrier", ItemGroups.REDSTONE);
+        REMOTE_DETONATOR = registerBlock(new RemoteDetonatorBlock(AbstractBlock.Settings.create().strength(2.5f, 2.5f).sounds(BlockSoundGroup.LANTERN).nonOpaque()), "remote_detonator", ItemGroups.REDSTONE);
+        DRY_ICE = registerBlock(new DryIceBlock(AbstractBlock.Settings.create().mapColor(MapColor.LIGHT_GRAY).slipperiness(0.98F).strength(0.5F).sounds(BlockSoundGroup.GLASS).nonOpaque()), "dry_ice", ItemGroups.BUILDING_BLOCKS);
+        FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(AbstractBlock.Settings.copy(Blocks.HONEY_BLOCK).ticksRandomly().strength(0.2f).mapColor(MapColor.BRIGHT_RED)), "folly_red_paint", ItemGroups.BUILDING_BLOCKS);
+        FRESH_FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(AbstractBlock.Settings.copy(Blocks.HONEY_BLOCK).strength(0.2f).mapColor(MapColor.BRIGHT_RED)), "fresh_folly_red_paint", ItemGroups.BUILDING_BLOCKS);
+        DRIED_FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(AbstractBlock.Settings.create().mapColor(MapColor.BRIGHT_RED).strength(0.4f).sounds(BlockSoundGroup.DRIPSTONE_BLOCK).mapColor(MapColor.BRIGHT_RED)), "dried_folly_red_paint", ItemGroups.BUILDING_BLOCKS);
     }
 
     private static Block registerBlock(Block block, String name, @Nullable RegistryKey<ItemGroup> itemGroupKey) {
-        return registerBlock(block, name, itemGroupKey, true);
-    }
-
-    private static Block registerBlock(Block block, String name, @Nullable RegistryKey<ItemGroup> itemGroupKey, boolean registerBlockItem) {
         Registry.register(Registries.BLOCK, MODID + ":" + name, block);
-
-        if (registerBlockItem) {
-            var blockItem = new BlockItem(block, new Item.Settings());
-            blockItem.appendBlocks(Item.BLOCK_ITEMS, blockItem);
-            BlastItems.registerItem(blockItem, name, itemGroupKey);
-        }
+        var blockItem = new BlockItem(block, new Item.Settings());
+        blockItem.appendBlocks(Item.BLOCK_ITEMS, blockItem);
+        BlastItems.registerItem(blockItem, name, itemGroupKey);
         return block;
     }
-
 }

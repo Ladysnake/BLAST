@@ -12,9 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
@@ -38,24 +35,19 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
 
     public PipeBombEntity(EntityType<PipeBombEntity> variant, World world) {
         super(variant, world);
+        setFuse(MAX_FUSE);
     }
 
-    public PipeBombEntity(World world, PlayerEntity player) {
-        super(BlastEntities.PIPE_BOMB, player, world);
+    public PipeBombEntity(World world, PlayerEntity player, ItemStack stack) {
+        super(BlastEntities.PIPE_BOMB, player, world, stack, null);
         this.setOwner(player);
         this.setFuse(MAX_FUSE);
     }
 
-    public PipeBombEntity(World world, double x, double y, double z) {
-        super(BlastEntities.PIPE_BOMB, x, y, z, world);
-        this.setFuse(MAX_FUSE);
-    }
-
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-
-        this.dataTracker.startTracking(FUSE, 40);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(FUSE, 40);
 
         this.rotationX = this.getWorld().random.nextFloat() * 360f;
         this.rotationY = this.getWorld().random.nextFloat() * 360f;
@@ -90,12 +82,12 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
 
     @Override
     public ItemStack getStack() {
-        return this.asItemStack();
+        return asItemStack();
     }
 
     @Override
-    public Packet<ClientPlayPacketListener> createSpawnPacket() {
-        return new EntitySpawnS2CPacket(this);
+    protected ItemStack getDefaultItemStack() {
+        return asItemStack();
     }
 
     @Override
@@ -171,5 +163,4 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     protected void onEntityHit(EntityHitResult entityHitResult) {
 
     }
-
 }

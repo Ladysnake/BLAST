@@ -20,10 +20,6 @@ import net.minecraft.world.explosion.Explosion;
 public class StripminerEntity extends BombEntity {
     protected static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, Blast.FACING);
 
-    static {
-        DataTracker.registerData(StripminerEntity.class, Blast.FACING);
-    }
-
     protected BlockState cachedState;
 
     public StripminerEntity(EntityType<? extends BombEntity> entityType, World world) {
@@ -32,9 +28,10 @@ public class StripminerEntity extends BombEntity {
         this.setExplosionRadius(2.5f);
     }
 
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(FACING, Direction.UP);
+    @Override
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(FACING, Direction.UP);
     }
 
     @Override

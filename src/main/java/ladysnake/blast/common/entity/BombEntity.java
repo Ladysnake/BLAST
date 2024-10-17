@@ -40,12 +40,9 @@ public class BombEntity extends ThrownItemEntity {
         this.ticksUntilRemoval = -1;
     }
 
+    @Override
     protected Item getDefaultItem() {
         return BlastItems.BOMB;
-    }
-
-    protected float getDirectHitDamage() {
-        return 4f;
     }
 
     protected CustomExplosion getExplosion() {
@@ -117,7 +114,7 @@ public class BombEntity extends ThrownItemEntity {
                 for (net.minecraft.entity.player.PlayerEntity playerEntity : this.getWorld().getPlayers()) {
                     ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
                     if (serverPlayerEntity.squaredDistanceTo(this.getX(), this.getY(), this.getZ()) < 4096.0D) {
-                        serverPlayerEntity.networkHandler.sendPacket(new ExplosionS2CPacket(this.getX(), this.getY(), this.getZ(), explosion.getPower(), explosion.getAffectedBlocks(), (Vec3d) explosion.getAffectedPlayers().get(serverPlayerEntity)));
+                        serverPlayerEntity.networkHandler.sendPacket(new ExplosionS2CPacket(this.getX(), this.getY(), this.getZ(), explosion.getPower(), explosion.getAffectedBlocks(), (Vec3d) explosion.getAffectedPlayers().get(serverPlayerEntity), explosion.getDestructionType(), explosion.getParticle(), explosion.getEmitterParticle(), explosion.getSoundEvent()));
                     }
                 }
             }
@@ -162,32 +159,34 @@ public class BombEntity extends ThrownItemEntity {
     @Override
     public void setItem(ItemStack item) {
         super.setItem(new ItemStack(item.getItem()));
-        if (item.hasNbt() && item.getOrCreateNbt().contains("ExplosionRadius")) {
-            this.setExplosionRadius(item.getOrCreateNbt().getFloat("ExplosionRadius"));
-        }
-    }
-
-    protected void initDataTracker() {
-        this.dataTracker.startTracking(FUSE, 40);
+        // todo explosion radius
+//        if (item.hasNbt() && item.getOrCreateNbt().contains("ExplosionRadius")) {
+//            this.setExplosionRadius(item.getOrCreateNbt().getFloat("ExplosionRadius"));
+//        }
     }
 
     @Override
-    public void writeCustomDataToNbt(NbtCompound NbtCompound_1) {
-        NbtCompound_1.putShort("Fuse", (short) this.getFuseTimer());
-        NbtCompound_1.putFloat("ExplosionRadius", this.getExplosionRadius());
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(FUSE, 40);
     }
 
     @Override
-    public void readCustomDataFromNbt(NbtCompound NbtCompound_1) {
-        this.setFuse(NbtCompound_1.getShort("Fuse"));
-        this.setExplosionRadius(NbtCompound_1.getFloat("ExplosionRadius"));
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        nbt.putShort("Fuse", (short) this.getFuseTimer());
+        nbt.putFloat("ExplosionRadius", this.getExplosionRadius());
     }
 
     @Override
-    protected ItemStack getItem() {
-        return new ItemStack(this.getDefaultItem());
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        this.setFuse(nbt.getShort("Fuse"));
+        this.setExplosionRadius(nbt.getFloat("ExplosionRadius"));
     }
 
+    @Override
+    public ItemStack getStack() {
+        return getDefaultItem().getDefaultStack();
+    }
 
     public enum BombTriggerType {
         FUSE,

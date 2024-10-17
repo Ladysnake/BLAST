@@ -1,28 +1,30 @@
 plugins {
-	id 'fabric-loom' version '1.1-SNAPSHOT'
-	id 'io.github.ladysnake.chenille' version '0.11.3'
+	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'io.github.ladysnake.chenille' version '0.13.1'
+
+
 }
 
-repositories {
-	// For Common Protection API
-	maven { url "https://maven.nucleoid.xyz/" }
-}
-
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+base {
+	archivesName = project.archives_base_name
+}
+
 chenille {
+	javaVersion = 21
 	configurePublishing {
 		withLadysnakeMaven()
 		withCurseforgeRelease()
 		withGithubRelease()
 		withModrinthRelease()
 	}
-	javaVersion = 17
+}
+
+repositories {
+	// For Common Protection API
+	maven { url "https://maven.nucleoid.xyz/" }
 }
 
 dependencies {
@@ -39,14 +41,27 @@ dependencies {
 	modImplementation include("eu.pb4:common-protection-api:${project.common_protection_api_version}")
 }
 
-java {
-	withSourcesJar()
-}
-
 processResources {
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
 		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+}
+
+java {
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
+
+jar {
+	from("LICENSE") {
+		rename { "${it}_${project.base.archivesName.get()}" }
 	}
 }

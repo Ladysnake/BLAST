@@ -20,6 +20,7 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -105,7 +106,7 @@ public class EnderExplosion extends CustomExplosion {
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
         for (Entity entity : list) {
-            if (!entity.isImmuneToExplosion() && ProtectionsProvider.canInteractEntity(entity, damageSource)) {
+            if (!entity.isImmuneToExplosion(this) && ProtectionsProvider.canInteractEntity(entity, damageSource)) {
                 double y = Math.sqrt(entity.squaredDistanceTo(vec3d)) / q;
                 if (y <= 1.0D) {
                     double z = entity.getX() - this.x;
@@ -163,7 +164,7 @@ public class EnderExplosion extends CustomExplosion {
                         BlockEntity blockEntity = this.world.getBlockEntity(blockPos) != null ? this.world.getBlockEntity(blockPos) : null;
 
                         ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
-                        itemStack.addEnchantment(Enchantments.SILK_TOUCH, 1);
+                        itemStack.addEnchantment(world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.SILK_TOUCH), 1);
 
                         LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld) world)
                                 .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos))
