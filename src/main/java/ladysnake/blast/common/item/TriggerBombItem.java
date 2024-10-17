@@ -14,7 +14,7 @@ public class TriggerBombItem extends BombItem {
     }
 
     @Override
-    public void playSoundEffects(World world, PlayerEntity playerEntity) {
+    protected void playSoundEffects(World world, PlayerEntity playerEntity) {
         world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_OFF, SoundCategory.NEUTRAL, 0.8F, 0.5F);
     }
 }
