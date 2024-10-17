@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnderEyeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
@@ -39,8 +40,8 @@ public class EnderEyeItemMixin {
             user.getItemCooldownManager().set(stack.getItem(), 20);
             stack.decrementUnlessCreative(1, user);
             world.playSound(null, user.getBlockPos(), SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.PLAYERS, 1, 1);
-            if (!world.isClient) {
-                RemoteDetonatorBlock.trigger(world, closestDetonatorPos);
+            if (world instanceof ServerWorld serverWorld) {
+                RemoteDetonatorBlock.trigger(serverWorld, closestDetonatorPos);
             }
             callbackInfoReturnable.setReturnValue(TypedActionResult.success(stack));
         }

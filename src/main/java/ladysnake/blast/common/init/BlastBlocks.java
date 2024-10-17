@@ -36,9 +36,9 @@ public class BlastBlocks {
         BONESBURRIER = registerBlock(new BonesburrierBlock(AbstractBlock.Settings.copy(Blocks.BONE_BLOCK)), "bonesburrier", ItemGroups.REDSTONE);
         REMOTE_DETONATOR = registerBlock(new RemoteDetonatorBlock(AbstractBlock.Settings.create().strength(2.5f, 2.5f).sounds(BlockSoundGroup.LANTERN).nonOpaque()), "remote_detonator", ItemGroups.REDSTONE);
         DRY_ICE = registerBlock(new DryIceBlock(AbstractBlock.Settings.create().mapColor(MapColor.LIGHT_GRAY).slipperiness(0.98F).strength(0.5F).sounds(BlockSoundGroup.GLASS).nonOpaque()), "dry_ice", ItemGroups.BUILDING_BLOCKS);
-        FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(AbstractBlock.Settings.copy(Blocks.HONEY_BLOCK).ticksRandomly().strength(0.2f).mapColor(MapColor.BRIGHT_RED)), "folly_red_paint", ItemGroups.BUILDING_BLOCKS);
-        FRESH_FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(AbstractBlock.Settings.copy(Blocks.HONEY_BLOCK).strength(0.2f).mapColor(MapColor.BRIGHT_RED)), "fresh_folly_red_paint", ItemGroups.BUILDING_BLOCKS);
-        DRIED_FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(AbstractBlock.Settings.create().mapColor(MapColor.BRIGHT_RED).strength(0.4f).sounds(BlockSoundGroup.DRIPSTONE_BLOCK).mapColor(MapColor.BRIGHT_RED)), "dried_folly_red_paint", ItemGroups.BUILDING_BLOCKS);
+        FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(AbstractBlock.Settings.copy(Blocks.HONEY_BLOCK).ticksRandomly().strength(0.2f).mapColor(MapColor.BRIGHT_RED), true), "folly_red_paint", ItemGroups.BUILDING_BLOCKS);
+        FRESH_FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(AbstractBlock.Settings.copy(Blocks.HONEY_BLOCK).strength(0.2f).mapColor(MapColor.BRIGHT_RED), false), "fresh_folly_red_paint", ItemGroups.BUILDING_BLOCKS);
+        DRIED_FOLLY_RED_PAINT = registerBlock(new FollyRedPaintBlock(AbstractBlock.Settings.create().mapColor(MapColor.BRIGHT_RED).strength(0.4f).sounds(BlockSoundGroup.DRIPSTONE_BLOCK).mapColor(MapColor.BRIGHT_RED), true), "dried_folly_red_paint", ItemGroups.BUILDING_BLOCKS);
     }
 
     private static Block registerBlock(Block block, String name, @Nullable RegistryKey<ItemGroup> itemGroupKey) {

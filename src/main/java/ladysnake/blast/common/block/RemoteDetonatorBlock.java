@@ -6,18 +6,17 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("deprecation")
 public class RemoteDetonatorBlock extends Block implements InventoryProvider {
     public static final BooleanProperty FILLED = BooleanProperty.of("filled");
 
@@ -36,18 +35,23 @@ public class RemoteDetonatorBlock extends Block implements InventoryProvider {
         builder.add(FILLED);
     }
 
-    public static void trigger(World world, BlockPos blockPos) {
+    @Override
+    public SidedInventory getInventory(BlockState state, WorldAccess world, BlockPos pos) {
+        return state.get(FILLED) ? new FilledInventory(state, world, pos, new ItemStack(Items.ENDER_EYE)) : new DummyInventory();
+    }
+
+    public static void trigger(ServerWorld world, BlockPos pos) {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
         for (Direction direction : Direction.values()) {
-            Block block = world.getBlockState(mutable.set(blockPos, direction)).getBlock();
+            Block block = world.getBlockState(mutable.set(pos, direction)).getBlock();
 
             if (block instanceof DetonatableBlock detonatableBlock) {
                 detonatableBlock.detonate(world, mutable);
             }
             if (block == Blocks.TNT) {
-                TntEntity tntEntity = new TntEntity(world, (double) mutable.getX() + 0.5, mutable.getY(), (double) mutable.getZ() + 0.5, null);
-                tntEntity.setFuse(1);
+                TntEntity tntEntity = new TntEntity(world, mutable.getX() + 0.5, mutable.getY(), mutable.getZ() + 0.5, null);
+                tntEntity.setFuse(0);
                 world.spawnEntity(tntEntity);
                 world.playSound(null, tntEntity.getX(), tntEntity.getY(), tntEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0f, 1.0f);
                 world.emitGameEvent(null, GameEvent.PRIME_FUSE, mutable);
@@ -55,14 +59,7 @@ public class RemoteDetonatorBlock extends Block implements InventoryProvider {
             }
         }
 
-        world.setBlockState(blockPos, world.getBlockState(blockPos).with(RemoteDetonatorBlock.FILLED, true));
-    }
-
-    @Override
-    public SidedInventory getInventory(BlockState state, WorldAccess world, BlockPos pos) {
-        return state.get(FILLED) ?
-                new FilledInventory(state, world, pos, new ItemStack(Items.ENDER_EYE))
-                : new DummyInventory();
+        world.setBlockState(pos, world.getBlockState(pos).with(RemoteDetonatorBlock.FILLED, true));
     }
 
     static class FilledInventory extends SimpleInventory implements SidedInventory {
@@ -101,12 +98,14 @@ public class RemoteDetonatorBlock extends Block implements InventoryProvider {
     }
 
     static class DummyInventory extends SimpleInventory implements SidedInventory {
+        private static final int[] EMPTY_SLOTS = new int[0];
+
         public DummyInventory() {
             super(0);
         }
 
         public int[] getAvailableSlots(Direction side) {
-            return new int[0];
+            return EMPTY_SLOTS;
         }
 
         public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {

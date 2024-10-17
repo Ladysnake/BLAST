@@ -23,16 +23,11 @@ public class DryIceBlock extends IceBlock {
     }
 
     @Override
-    protected void melt(BlockState state, World world, BlockPos pos) {
-        world.removeBlock(pos, false);
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        return this.getDefaultState().with(AXIS, ctx.getSide().getAxis());
     }
 
     @Override
-    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        super.randomDisplayTick(state, world, pos, random);
-        world.addParticle(BlastClient.DRY_ICE, pos.getX() + random.nextGaussian(), pos.getY() + random.nextGaussian(), pos.getZ() + random.nextGaussian(), 0, -Math.abs(random.nextGaussian()) / 100, 0);
-    }
-
     public BlockState rotate(BlockState state, BlockRotation rotation) {
         return switch (rotation) {
             case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> switch (state.get(AXIS)) {
@@ -44,11 +39,18 @@ public class DryIceBlock extends IceBlock {
         };
     }
 
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(AXIS);
+    @Override
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        world.addParticle(BlastClient.DRY_ICE, pos.getX() + random.nextGaussian(), pos.getY() + random.nextGaussian(), pos.getZ() + random.nextGaussian(), 0, -Math.abs(random.nextGaussian()) / 100, 0);
     }
 
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(AXIS, ctx.getSide().getAxis());
+    @Override
+    protected void melt(BlockState state, World world, BlockPos pos) {
+        world.removeBlock(pos, false);
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(AXIS);
     }
 }

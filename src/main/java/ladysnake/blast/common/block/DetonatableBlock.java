@@ -1,8 +1,8 @@
 package ladysnake.blast.common.block;
 
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public interface DetonatableBlock {
-    void detonate(World world, BlockPos pos);
+    void detonate(ServerWorld world, BlockPos pos);
 }

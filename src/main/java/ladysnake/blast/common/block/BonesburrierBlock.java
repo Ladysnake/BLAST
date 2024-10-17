@@ -1,18 +1,16 @@
 package ladysnake.blast.common.block;
 
-import ladysnake.blast.common.entity.BonesburrierEntity;
+import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.init.BlastEntities;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
@@ -27,93 +25,52 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
         super(settings);
     }
 
-    public static void prime(World world, BlockPos pos) {
-        prime(world, pos, null);
-    }
-
-    private static void prime(World world, BlockPos pos, LivingEntity igniter) {
-        if (!world.isClient && world.getBlockState(pos).getBlock() instanceof BonesburrierBlock) {
-            BonesburrierEntity entity = BlastEntities.BONESBURRIER.create(world);
-            entity.setOwner(igniter);
-            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-            world.spawnEntity(entity);
-            world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
-
-        }
-    }
-
-    @Override
-    public void detonate(World world, BlockPos pos) {
-        if (!world.isClient && world.getBlockState(pos).getBlock() instanceof BonesburrierBlock) {
-            BonesburrierEntity entity = BlastEntities.BONESBURRIER.create(world);
-            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-            entity.setFuse(0);
-            world.spawnEntity(entity);
-            world.setBlockState(pos, Blocks.AIR.getDefaultState());
-        }
-    }
-
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         if (!oldState.isOf(state.getBlock())) {
             if (world.isReceivingRedstonePower(pos)) {
-                prime(world, pos);
-                world.removeBlock(pos, false);
+                prime(world, pos, null);
             }
+        }
+    }
 
+    @Override
+    public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
+        if (!world.isClient) {
+            BombEntity bomb = prime(world, pos, explosion.getCausingEntity());
+            bomb.setFuse(world.getRandom().nextInt(bomb.getFuseTimer() / 4) + bomb.getFuseTimer() / 8);
         }
     }
 
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
         if (world.isReceivingRedstonePower(pos)) {
-            prime(world, pos);
-            world.removeBlock(pos, false);
-        }
-
-    }
-
-    @Override
-    public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
-        if (!world.isClient) {
-            BonesburrierEntity entity = BlastEntities.BONESBURRIER.create(world);
-            entity.setFuse((short) (world.random.nextInt(entity.getFuseTimer() / 4) + entity.getFuseTimer() / 8));
-            entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-            world.spawnEntity(entity);
-            world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            prime(world, pos, null);
         }
     }
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack itemStack = player.getStackInHand(hand);
-        Item item = itemStack.getItem();
-        if (item != Items.FLINT_AND_STEEL && item != Items.FIRE_CHARGE) {
-            return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
-        } else {
-            prime(world, pos, player);
-            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+        if (stack.isOf(Items.FLINT_AND_STEEL) || stack.isOf(Items.FIRE_CHARGE)) {
+            if (!world.isClient) {
+                prime(world, pos, player);
+            }
             if (!player.isCreative()) {
-                if (item == Items.FLINT_AND_STEEL) {
-                    itemStack.damage(1, player, LivingEntity.getSlotForHand(hand));
+                if (stack.isOf(Items.FLINT_AND_STEEL)) {
+                    stack.damage(1, player, LivingEntity.getSlotForHand(hand));
                 } else {
-                    itemStack.decrement(1);
+                    stack.decrement(1);
                 }
             }
-
             return ItemActionResult.success(world.isClient);
         }
+        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
 
     @Override
     public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
-        if (!world.isClient) {
-            Entity entity = projectile.getOwner();
-            if (projectile.isOnFire()) {
-                BlockPos blockPos = hit.getBlockPos();
-                prime(world, blockPos, entity instanceof LivingEntity ? (LivingEntity) entity : null);
-                world.removeBlock(blockPos, false);
-            }
+        if (!world.isClient && projectile.isOnFire()) {
+            prime(world, hit.getBlockPos(), projectile.getOwner());
         }
     }
 
@@ -128,7 +85,17 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
+    public void detonate(ServerWorld world, BlockPos pos) {
+        prime(world, pos, null).setFuse(0);
+    }
+
+    private BombEntity prime(World world, BlockPos pos, Entity igniter) {
+        BombEntity entity = BlastEntities.BONESBURRIER.create(world);
+        entity.setOwner(igniter);
+        entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+        world.spawnEntity(entity);
+        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1, 1);
+        world.removeBlock(pos, false);
+        return entity;
     }
 }

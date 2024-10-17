@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleUtil;
 import net.minecraft.server.world.ServerWorld;
@@ -21,32 +22,27 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class FollyRedPaintBlock extends Block {
-    public FollyRedPaintBlock(Settings settings) {
+    private final boolean canFreshen;
+
+    public FollyRedPaintBlock(Settings settings, boolean canFreshen) {
         super(settings);
+        this.canFreshen = canFreshen;
     }
 
     @Override
-    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        if (state.getBlock() == BlastBlocks.DRIED_FOLLY_RED_PAINT) {
-            return;
+    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (canFreshen && stack.isOf(Items.HONEY_BOTTLE)) {
+            if (world.isClient) {
+                ParticleUtil.spawnParticle(world, pos, BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, UniformIntProvider.create(3, 5));
+            } else {
+                world.setBlockState(pos, BlastBlocks.FRESH_FOLLY_RED_PAINT.getDefaultState());
+                ItemStack toGive = ItemUsage.exchangeStack(stack, player, stack.getRecipeRemainder());
+                player.setStackInHand(hand, toGive);
+            }
+            world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            return ItemActionResult.success(world.isClient);
         }
-
-        if (random.nextInt(5) != 0) {
-            return;
-        }
-        Direction direction = Direction.random(random);
-        if (direction == Direction.UP) {
-            return;
-        }
-        BlockPos blockPos = pos.offset(direction);
-        BlockState blockState = world.getBlockState(blockPos);
-        if (state.isOpaque() && blockState.isSideSolidFullSquare(world, blockPos, direction.getOpposite())) {
-            return;
-        }
-        double d = direction.getOffsetX() == 0 ? random.nextDouble() : 0.5 + (double) direction.getOffsetX() * 0.6;
-        double e = direction.getOffsetY() == 0 ? random.nextDouble() : 0.5 + (double) direction.getOffsetY() * 0.6;
-        double f = direction.getOffsetZ() == 0 ? random.nextDouble() : 0.5 + (double) direction.getOffsetZ() * 0.6;
-        world.addParticle(BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, (double) pos.getX() + d, (double) pos.getY() + e, (double) pos.getZ() + f, 0.0, 0.0, 0.0);
+        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
 
     @Override
@@ -59,27 +55,28 @@ public class FollyRedPaintBlock extends Block {
         if (state.getBlock() == BlastBlocks.FOLLY_RED_PAINT && random.nextInt(50) == 0) {
             world.setBlockState(pos, BlastBlocks.DRIED_FOLLY_RED_PAINT.getDefaultState());
         }
-
-        super.randomTick(state, world, pos, random);
     }
 
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (player.getStackInHand(hand).isOf(Items.HONEY_BOTTLE) && (state.getBlock() == BlastBlocks.FOLLY_RED_PAINT || state.getBlock() == BlastBlocks.DRIED_FOLLY_RED_PAINT)) {
-            world.setBlockState(pos, BlastBlocks.FRESH_FOLLY_RED_PAINT.getDefaultState());
-            ParticleUtil.spawnParticle(world, pos, BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, UniformIntProvider.create(3, 5));
-            world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-
-            if (!player.isCreative()) {
-                player.getStackInHand(hand).decrement(1);
-                if (!player.getInventory().insertStack(new ItemStack(Items.GLASS_BOTTLE))) {
-                    player.dropStack(new ItemStack(Items.GLASS_BOTTLE));
-                }
-            }
-
-            return ItemActionResult.success(world.isClient);
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        if (state.getBlock() == BlastBlocks.DRIED_FOLLY_RED_PAINT) {
+            return;
         }
-        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+        if (random.nextInt(5) != 0) {
+            return;
+        }
+        Direction direction = Direction.random(random);
+        if (direction == Direction.UP) {
+            return;
+        }
+        BlockPos offset = pos.offset(direction);
+        if (state.isOpaque() && world.getBlockState(offset).isSideSolidFullSquare(world, offset, direction.getOpposite())) {
+            return;
+        }
+        double dX = direction.getOffsetX() == 0 ? random.nextDouble() : 0.5 + direction.getOffsetX() * 0.6;
+        double dY = direction.getOffsetY() == 0 ? random.nextDouble() : 0.5 + direction.getOffsetY() * 0.6;
+        double dZ = direction.getOffsetZ() == 0 ? random.nextDouble() : 0.5 + direction.getOffsetZ() * 0.6;
+        world.addParticle(BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, pos.getX() + dX, pos.getY() + dY, pos.getZ() + dZ, 0.0, 0.0, 0.0);
     }
 }
 
