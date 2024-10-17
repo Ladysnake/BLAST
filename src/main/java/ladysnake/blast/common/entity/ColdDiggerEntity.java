@@ -15,50 +15,51 @@ import net.minecraft.world.explosion.Explosion;
 public class ColdDiggerEntity extends StripminerEntity {
     public ColdDiggerEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        this.setExplosionRadius(3.5f);
+        setExplosionRadius(3.5f);
     }
 
     @Override
     public void explode() {
+        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        mutable.set(getBlockPos());
         for (int i = 0; i <= 24; i++) {
-            BlockPos bp = this.getBlockPos().offset(this.getFacing(), i);
-            if (this.getWorld().getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(this.getWorld(), this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, this.getExplosionRadius(), CustomExplosion.BlockBreakEffect.FROSTY, Explosion.DestructionType.DESTROY);
+            if (getWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
+                CustomExplosion explosion = new CustomExplosion(getWorld(), this, mutable.getX() + 0.5, mutable.getY() + 0.5, mutable.getZ() + 0.5, getExplosionRadius(), CustomExplosion.BlockBreakEffect.FROSTY, Explosion.DestructionType.DESTROY);
                 explosion.collectBlocksAndDamageEntities();
                 explosion.affectWorld(true);
             } else {
                 break;
             }
-            this.getWorld().playSound(null, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 1.5f);
+            getWorld().playSound(null, mutable.getX(), mutable.getY(), mutable.getZ(), SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 1.5f);
+            mutable.move(getFacing());
         }
-
+        mutable.set(getBlockPos());
         for (int i = 0; i <= 24; i++) {
-            BlockPos bp = this.getBlockPos().offset(this.getFacing(), i);
-            if (this.getWorld().getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(this.getWorld(), this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, 1f, null, Explosion.DestructionType.DESTROY);
+            if (getWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
+                CustomExplosion explosion = new CustomExplosion(getWorld(), this, mutable.getX() + 0.5, mutable.getY() + 0.5, mutable.getZ() + 0.5, 1f, null, Explosion.DestructionType.DESTROY);
                 explosion.collectBlocksAndDamageEntities();
                 explosion.affectWorld(true);
             } else {
                 break;
             }
+            mutable.move(getFacing());
         }
-        this.remove(RemovalReason.DISCARDED);
+        remove(RemovalReason.DISCARDED);
     }
 
     @Override
     public void onTrackedDataSet(TrackedData<?> trackedData) {
         super.onTrackedDataSet(trackedData);
-
         if (FACING.equals(trackedData)) {
-            this.cachedState = BlastBlocks.COLD_DIGGER.getDefaultState().with(StripminerBlock.FACING, this.getFacing());
+            cachedState = BlastBlocks.COLD_DIGGER.getDefaultState().with(StripminerBlock.FACING, getFacing());
         }
     }
 
+    @Override
     public BlockState getState() {
-        if (this.cachedState == null) {
-            this.cachedState = BlastBlocks.COLD_DIGGER.getDefaultState().with(StripminerBlock.FACING, this.getFacing());
+        if (cachedState == null) {
+            cachedState = BlastBlocks.COLD_DIGGER.getDefaultState().with(StripminerBlock.FACING, getFacing());
         }
-        return this.cachedState;
+        return cachedState;
     }
-
 }

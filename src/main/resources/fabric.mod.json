@@ -5,32 +5,33 @@
   "name": "BLAST",
   "description": "A mod about bombs.",
   "authors": [
-    "doctor4t"
+	"doctor4t"
   ],
   "contact": {
-    "sources": "https://github.com/Ladysnake/Blast"
+	"sources": "https://github.com/Ladysnake/Blast"
   },
   "license": "ARR",
   "icon": "assets/blast/icon.png",
   "environment": "*",
   "entrypoints": {
-    "fabric-datagen": [
-      "ladysnake.blast.data.BlastDataGenerator"
-    ],
-    "main": [
-      "ladysnake.blast.common.Blast"
-    ],
-    "client": [
-      "ladysnake.blast.client.BlastClient"
-    ]
+	"fabric-datagen": [
+	  "ladysnake.blast.data.BlastDataGenerator"
+	],
+	"main": [
+	  "ladysnake.blast.common.Blast"
+	],
+	"client": [
+	  "ladysnake.blast.client.BlastClient"
+	]
   },
   "mixins": [
-    "blast.mixins.json"
+	"blast.mixins.json"
   ],
+  "accessWidener": "blast.accesswidener",
   "depends": {
-    "fabricloader": "*",
-    "minecraft": "~1.21",
-    "java": ">=21",
-    "fabric-api": "*"
+	"fabricloader": "*",
+	"minecraft": "~1.21",
+	"java": ">=21",
+	"fabric-api": "*"
   }
 }

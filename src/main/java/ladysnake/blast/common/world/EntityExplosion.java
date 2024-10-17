@@ -18,20 +18,18 @@ public class EntityExplosion extends CustomExplosion {
     }
 
     @Override
-    public void collectBlocksAndDamageEntities() {
-        super.collectBlocksAndDamageEntities();
-
-        for (int i = 0; i < amount; i++) {
-            Entity entity = entityToSpawn.create(world);
-            if (entity instanceof ProjectileEntity) {
-                ((ProjectileEntity) entity).setOwner(this.entity);
-
+    public void affectWorld(boolean particles) {
+        super.affectWorld(particles);
+        if (!world.isClient) {
+            for (int i = 0; i < amount; i++) {
+                Entity entity = entityToSpawn.create(world);
+                if (entity instanceof ProjectileEntity projectileEntity) {
+                    projectileEntity.setOwner(this.entity);
+                }
+                entity.setPosition(this.x, this.y, this.z);
+                entity.setVelocity(random.nextGaussian() * velocity, random.nextGaussian() * velocity, random.nextGaussian() * velocity);
+                world.spawnEntity(entity);
             }
-            entity.setPos(this.x, this.y, this.z);
-            entity.updateTrackedPosition(this.x, this.y + .5, this.z);
-            entity.setVelocity(random.nextGaussian() * velocity, random.nextGaussian() * velocity, random.nextGaussian() * velocity);
-
-            world.spawnEntity(entity);
         }
     }
 }

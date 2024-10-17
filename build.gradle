@@ -22,6 +22,10 @@ chenille {
 	}
 }
 
+loom {
+	accessWidenerPath = file("src/main/resources/blast.accesswidener")
+}
+
 fabricApi {
 	configureDataGeneration()
 }

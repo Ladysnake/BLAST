@@ -24,8 +24,26 @@ public class StripminerEntity extends BombEntity {
 
     public StripminerEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        this.setFuse(80);
-        this.setExplosionRadius(2.5f);
+        setFuse(80);
+        setExplosionRadius(2.5f);
+    }
+
+    @Override
+    public void explode() {
+        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        mutable.set(getBlockPos());
+        for (int i = 0; i <= 24; i++) {
+            if (getWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
+                CustomExplosion explosion = new CustomExplosion(getWorld(), this, mutable.getX() + 0.5, mutable.getY() + 0.5, mutable.getZ() + 0.5, getExplosionRadius(), null, Explosion.DestructionType.DESTROY);
+                explosion.collectBlocksAndDamageEntities();
+                explosion.affectWorld(true);
+            } else {
+                break;
+            }
+            getWorld().playSound(null, mutable.getX() + 0.5, mutable.getY() + 0.5, mutable.getZ() + 0.5, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 0.025f);
+            mutable.move(getFacing());
+        }
+        remove(RemovalReason.DISCARDED);
     }
 
     @Override
@@ -35,58 +53,35 @@ public class StripminerEntity extends BombEntity {
     }
 
     @Override
-    public void explode() {
-        for (int i = 0; i <= 24; i++) {
-            BlockPos bp = this.getBlockPos().offset(this.getFacing(), i);
-            if (this.getWorld().getBlockState(bp).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(this.getWorld(), this, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, this.getExplosionRadius(), null, Explosion.DestructionType.DESTROY);
-                explosion.collectBlocksAndDamageEntities();
-                explosion.affectWorld(true);
-            } else {
-                break;
-            }
-            this.getWorld().playSound(null, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 0.025f);
-        }
-        this.remove(RemovalReason.DISCARDED);
-    }
-
-    public Direction getFacing() {
-        return this.dataTracker.get(FACING);
-    }
-
-    public void setFacing(Direction facing) {
-        this.dataTracker.set(FACING, facing);
-    }
-
-    @Override
     public void onTrackedDataSet(TrackedData<?> trackedData) {
         super.onTrackedDataSet(trackedData);
-
         if (FACING.equals(trackedData)) {
-            this.cachedState = BlastBlocks.STRIPMINER.getDefaultState().with(StripminerBlock.FACING, this.getFacing());
+            cachedState = BlastBlocks.STRIPMINER.getDefaultState().with(StripminerBlock.FACING, getFacing());
         }
-    }
-
-    public BlockState getState() {
-        if (this.cachedState == null) {
-            this.cachedState = BlastBlocks.STRIPMINER.getDefaultState().with(StripminerBlock.FACING, this.getFacing());
-        }
-        return this.cachedState;
     }
 
     @Override
     protected Item getDefaultItem() {
-        return this.getType() == BlastEntities.COLD_DIGGER ? BlastBlocks.COLD_DIGGER.asItem() : BlastBlocks.STRIPMINER.asItem();
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        this.setOnGround(true);
+        return getType() == BlastEntities.COLD_DIGGER ? BlastBlocks.COLD_DIGGER.asItem() : BlastBlocks.STRIPMINER.asItem();
     }
 
     @Override
     public boolean disableInLiquid() {
         return false;
+    }
+
+    public Direction getFacing() {
+        return dataTracker.get(FACING);
+    }
+
+    public void setFacing(Direction facing) {
+        dataTracker.set(FACING, facing);
+    }
+
+    public BlockState getState() {
+        if (cachedState == null) {
+            cachedState = BlastBlocks.STRIPMINER.getDefaultState().with(StripminerBlock.FACING, getFacing());
+        }
+        return cachedState;
     }
 }
