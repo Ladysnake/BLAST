@@ -16,7 +16,6 @@ import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
@@ -28,16 +27,16 @@ public class BombEntity extends ThrownItemEntity {
 
     public BombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        this.setFuse(40);
-        this.setExplosionRadius(3f);
-        this.ticksUntilRemoval = -1;
+        setFuse(40);
+        setExplosionRadius(3);
+        ticksUntilRemoval = -1;
     }
 
     public BombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
         super(entityType, livingEntity, world);
-        this.setFuse(40);
-        this.setExplosionRadius(3f);
-        this.ticksUntilRemoval = -1;
+        setFuse(40);
+        setExplosionRadius(3);
+        ticksUntilRemoval = -1;
     }
 
     @Override
@@ -46,21 +45,21 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     protected CustomExplosion getExplosion() {
-        return new CustomExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), null, Explosion.DestructionType.DESTROY);
+        return new CustomExplosion(getWorld(), getOwner(), getX(), getY(), getZ(), getExplosionRadius(), null, Explosion.DestructionType.DESTROY);
     }
 
     @Override
     protected void onCollision(HitResult hitResult) {
-        if (this.age > 1) {
+        if (age > 1) {
 //            if (hitResult.getType() == HitResult.Type.ENTITY) {
 //                Entity entity = ((EntityHitResult) hitResult).getEntity();
-//                entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), this.getDirectHitDamage());
+//                entity.damage(DamageSource.thrownProjectile(this, getOwner()), getDirectHitDamage());
 //            }
 
-            this.setVelocity(0, 0, 0);
+            setVelocity(0, 0, 0);
 
-            if (this.getTriggerType() == BombTriggerType.IMPACT) {
-                this.explode();
+            if (getTriggerType() == BombTriggerType.IMPACT) {
+                explode();
             }
         }
     }
@@ -68,53 +67,53 @@ public class BombEntity extends ThrownItemEntity {
 
     @Override
     public void tick() {
-        if (this.ticksUntilRemoval > 0) {
+        if (ticksUntilRemoval > 0) {
             ticksUntilRemoval--;
             if (ticksUntilRemoval <= 0) {
-                this.remove(RemovalReason.DISCARDED);
+                remove(RemovalReason.DISCARDED);
             }
         } else {
             super.tick();
 
-            if (this.getWorld().getBlockState(this.getBlockPos()).isFullCube(this.getWorld(), this.getBlockPos())) {
-                this.setPosition(this.prevX, this.prevY, this.prevZ);
+            if (getWorld().getBlockState(getBlockPos()).isFullCube(getWorld(), getBlockPos())) {
+                setPosition(prevX, prevY, prevZ);
             }
 
             // drop item if in water
-            if (this.isSubmergedInWater() && this.disableInLiquid()) {
-                this.getWorld().spawnEntity(new ItemEntity(this.getWorld(), this.getX(), this.getY(), this.getZ(), new ItemStack(this.getDefaultItem())));
-                this.remove(RemovalReason.DISCARDED);
+            if (isSubmergedInWater() && disableInLiquid()) {
+                getWorld().spawnEntity(new ItemEntity(getWorld(), getX(), getY(), getZ(), new ItemStack(getDefaultItem())));
+                remove(RemovalReason.DISCARDED);
             }
 
             // tick down the fuse, then blow up
-            if (this.getTriggerType() == BombTriggerType.FUSE) {
+            if (getTriggerType() == BombTriggerType.FUSE) {
                 // smoke particle for lit fuse
-                if (this.getWorld().isClient) {
-                    this.getWorld().addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.3, this.getZ(), 0, 0, 0);
+                if (getWorld().isClient) {
+                    getWorld().addParticle(ParticleTypes.SMOKE, getX(), getY() + 0.3, getZ(), 0, 0, 0);
                 }
 
                 // shorten the fuse
-                this.setFuse(this.getFuse() - 1);
-                if (this.getFuse() <= 0) {
-                    this.explode();
+                setFuse(getFuse() - 1);
+                if (getFuse() <= 0) {
+                    explode();
                 }
             }
         }
     }
 
     public void explode() {
-        if (this.ticksUntilRemoval == -1) {
-            this.ticksUntilRemoval = 1;
+        if (ticksUntilRemoval == -1) {
+            ticksUntilRemoval = 1;
 
-            CustomExplosion explosion = this.getExplosion();
+            CustomExplosion explosion = getExplosion();
             explosion.collectBlocksAndDamageEntities();
             explosion.affectWorld(true);
 
-            if (!this.getWorld().isClient()) {
-                for (net.minecraft.entity.player.PlayerEntity playerEntity : this.getWorld().getPlayers()) {
+            if (!getWorld().isClient()) {
+                for (net.minecraft.entity.player.PlayerEntity playerEntity : getWorld().getPlayers()) {
                     ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
-                    if (serverPlayerEntity.squaredDistanceTo(this.getX(), this.getY(), this.getZ()) < 4096.0D) {
-                        serverPlayerEntity.networkHandler.sendPacket(new ExplosionS2CPacket(this.getX(), this.getY(), this.getZ(), explosion.getPower(), explosion.getAffectedBlocks(), (Vec3d) explosion.getAffectedPlayers().get(serverPlayerEntity), explosion.getDestructionType(), explosion.getParticle(), explosion.getEmitterParticle(), explosion.getSoundEvent()));
+                    if (serverPlayerEntity.squaredDistanceTo(getX(), getY(), getZ()) < 4096.0D) {
+                        serverPlayerEntity.networkHandler.sendPacket(new ExplosionS2CPacket(getX(), getY(), getZ(), explosion.getPower(), explosion.getAffectedBlocks(), explosion.getAffectedPlayers().get(serverPlayerEntity), explosion.getDestructionType(), explosion.getParticle(), explosion.getEmitterParticle(), explosion.getSoundEvent()));
                     }
                 }
             }
@@ -131,29 +130,29 @@ public class BombEntity extends ThrownItemEntity {
 
     public void onTrackedDataSet(TrackedData<?> trackedData_1) {
         if (FUSE.equals(trackedData_1)) {
-            this.fuseTimer = this.getFuse();
+            fuseTimer = getFuse();
         }
     }
 
     public int getFuse() {
-        return this.dataTracker.get(FUSE);
+        return dataTracker.get(FUSE);
     }
 
-    public void setFuse(int int_1) {
-        this.dataTracker.set(FUSE, int_1);
-        this.fuseTimer = int_1;
+    public void setFuse(int fuse) {
+        dataTracker.set(FUSE, fuse);
+        fuseTimer = fuse;
     }
 
     public int getFuseTimer() {
-        return this.fuseTimer;
+        return fuseTimer;
     }
 
     public float getExplosionRadius() {
-        return this.explosionRadius;
+        return explosionRadius;
     }
 
-    public void setExplosionRadius(float float_1) {
-        this.explosionRadius = float_1;
+    public void setExplosionRadius(float explosionRadius) {
+        this.explosionRadius = explosionRadius;
     }
 
     @Override
@@ -161,7 +160,7 @@ public class BombEntity extends ThrownItemEntity {
         super.setItem(new ItemStack(item.getItem()));
         // todo explosion radius
 //        if (item.hasNbt() && item.getOrCreateNbt().contains("ExplosionRadius")) {
-//            this.setExplosionRadius(item.getOrCreateNbt().getFloat("ExplosionRadius"));
+//            setExplosionRadius(item.getOrCreateNbt().getFloat("ExplosionRadius"));
 //        }
     }
 
@@ -173,14 +172,14 @@ public class BombEntity extends ThrownItemEntity {
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
-        nbt.putShort("Fuse", (short) this.getFuseTimer());
-        nbt.putFloat("ExplosionRadius", this.getExplosionRadius());
+        nbt.putShort("Fuse", (short) getFuseTimer());
+        nbt.putFloat("ExplosionRadius", getExplosionRadius());
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
-        this.setFuse(nbt.getShort("Fuse"));
-        this.setExplosionRadius(nbt.getFloat("ExplosionRadius"));
+        setFuse(nbt.getShort("Fuse"));
+        setExplosionRadius(nbt.getFloat("ExplosionRadius"));
     }
 
     @Override

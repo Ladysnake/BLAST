@@ -4,17 +4,12 @@ import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
 import ladysnake.blast.common.world.KnockbackExplosion;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
 public class SlimeTriggerBombEntity extends TriggerBombEntity {
     public SlimeTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    public SlimeTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
-        super(entityType, world, livingEntity);
     }
 
     @Override
@@ -24,7 +19,7 @@ public class SlimeTriggerBombEntity extends TriggerBombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new KnockbackExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius());
+        return new KnockbackExplosion(getWorld(), getOwner(), getX(), getY(), getZ(), getExplosionRadius());
     }
 
 }

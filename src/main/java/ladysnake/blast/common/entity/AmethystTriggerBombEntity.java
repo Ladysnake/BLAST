@@ -5,19 +5,13 @@ import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
 import ladysnake.blast.common.world.EntityExplosion;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
 public class AmethystTriggerBombEntity extends TriggerBombEntity {
     public AmethystTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        this.setExplosionRadius(70f);
-    }
-
-    public AmethystTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
-        super(entityType, world, livingEntity);
-        this.setExplosionRadius(70f);
+        setExplosionRadius(70);
     }
 
     @Override
@@ -27,7 +21,7 @@ public class AmethystTriggerBombEntity extends TriggerBombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new EntityExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.AMETHYST_SHARD, Math.round(this.getExplosionRadius()), 1.4f);
+        return new EntityExplosion(getWorld(), getOwner(), getX(), getY(), getZ(), BlastEntities.AMETHYST_SHARD, Math.round(getExplosionRadius()), 1.4f);
     }
 
 }

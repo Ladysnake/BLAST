@@ -10,8 +10,8 @@ import net.minecraft.world.explosion.Explosion;
 public class GunpowderBlockEntity extends BombEntity {
     public GunpowderBlockEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        this.setFuse(1);
-        this.setExplosionRadius(4f);
+        setFuse(1);
+        setExplosionRadius(4);
     }
 
     @Override
@@ -21,6 +21,6 @@ public class GunpowderBlockEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new CustomExplosion(this.getWorld(), this, this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), CustomExplosion.BlockBreakEffect.FIERY, Explosion.DestructionType.DESTROY);
+        return new CustomExplosion(getWorld(), this, getX(), getY(), getZ(), getExplosionRadius(), CustomExplosion.BlockBreakEffect.FIERY, Explosion.DestructionType.DESTROY);
     }
 }

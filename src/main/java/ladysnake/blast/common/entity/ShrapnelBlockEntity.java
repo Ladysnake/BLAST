@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class ShrapnelBlockEntity extends FallingBlockEntity {
-
     @Nullable
     private PlayerEntity owner;
 
@@ -26,22 +25,21 @@ public class ShrapnelBlockEntity extends FallingBlockEntity {
 
     private ShrapnelBlockEntity(World world, double x, double y, double z, BlockState block, @Nullable PlayerEntity owner) {
         this(EntityType.FALLING_BLOCK, world);
-
         ((FallingBlockEntityAccessor) this).setBlock(block);
-        this.intersectionChecked = true;
-        this.setPosition(x, y, z);
-        this.setVelocity(Vec3d.ZERO);
-        this.prevX = x;
-        this.prevY = y;
-        this.prevZ = z;
+        intersectionChecked = true;
+        setPosition(x, y, z);
+        setVelocity(Vec3d.ZERO);
+        prevX = x;
+        prevY = y;
+        prevZ = z;
         this.owner = owner;
-        this.setFallingBlockPos(this.getBlockPos());
+        setFallingBlockPos(getBlockPos());
     }
 
     public static ShrapnelBlockEntity spawnFromBlock(World world, BlockPos pos, BlockState state, @Nullable PlayerEntity owner) {
         var explosionThrownBlockEntity = new ShrapnelBlockEntity(
-                world, (double)pos.getX() + 0.5, pos.getY(), (double)pos.getZ() + 0.5,
-                state.contains(Properties.WATERLOGGED) ? state.with(Properties.WATERLOGGED, false) : state, owner
+            world, (double) pos.getX() + 0.5, pos.getY(), (double) pos.getZ() + 0.5,
+            state.contains(Properties.WATERLOGGED) ? state.with(Properties.WATERLOGGED, false) : state, owner
         );
         world.setBlockState(pos, state.getFluidState().getBlockState(), 3);
         world.spawnEntity(explosionThrownBlockEntity);
@@ -49,7 +47,9 @@ public class ShrapnelBlockEntity extends FallingBlockEntity {
     }
 
     @Nullable
-    public PlayerEntity getOwner() { return owner; }
+    public PlayerEntity getOwner() {
+        return owner;
+    }
 
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {
@@ -70,8 +70,8 @@ public class ShrapnelBlockEntity extends FallingBlockEntity {
     @Override
     public void move(MovementType movementType, Vec3d movement) {
         super.move(movementType, movement);
-        if (this.isOnGround() && !getWorld().isClient) {
-            if(!ProtectionsProvider.canPlaceBlock(getBlockPos(), getWorld(), owner)) {
+        if (isOnGround() && !getWorld().isClient) {
+            if (!ProtectionsProvider.canPlaceBlock(getBlockPos(), getWorld(), owner)) {
                 setDestroyedOnLanding();
             }
         }

@@ -5,19 +5,13 @@ import ladysnake.blast.common.world.BlockFillingExplosion;
 import ladysnake.blast.common.world.CustomExplosion;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
 public class DirtBombEntity extends BombEntity {
     public DirtBombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        this.setExplosionRadius(2f);
-    }
-
-    public DirtBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
-        super(entityType, world, livingEntity);
-        this.setExplosionRadius(2f);
+        setExplosionRadius(2);
     }
 
     @Override
@@ -27,6 +21,6 @@ public class DirtBombEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new BlockFillingExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), Blocks.DIRT.getDefaultState());
+        return new BlockFillingExplosion(getWorld(), getOwner(), getX(), getY(), getZ(), getExplosionRadius(), Blocks.DIRT.getDefaultState());
     }
 }

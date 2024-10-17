@@ -5,19 +5,13 @@ import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
 import ladysnake.blast.common.world.EntityExplosion;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
 public class FrostTriggerBombEntity extends TriggerBombEntity {
     public FrostTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        this.setExplosionRadius(70f);
-    }
-
-    public FrostTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
-        super(entityType, world, livingEntity);
-        this.setExplosionRadius(70f);
+        setExplosionRadius(70);
     }
 
     @Override
@@ -27,7 +21,7 @@ public class FrostTriggerBombEntity extends TriggerBombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new EntityExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), BlastEntities.ICICLE, Math.round(this.getExplosionRadius()), 1.4f);
+        return new EntityExplosion(getWorld(), getOwner(), getX(), getY(), getZ(), BlastEntities.ICICLE, Math.round(getExplosionRadius()), 1.4f);
     }
 
 }

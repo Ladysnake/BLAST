@@ -1,7 +1,6 @@
 package ladysnake.blast.common.entity.projectiles;
 
 import ladysnake.blast.common.init.BlastDamageTypes;
-import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -49,34 +48,27 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
         return SoundEvents.BLOCK_AMETHYST_CLUSTER_BREAK;
     }
 
-    public Item getBreakItemParticle() {
-        return Items.AMETHYST_BLOCK;
-    }
-
     @Override
     public void tick() {
         super.tick();
-
-        if (this.inGround) {
-            if (this.ticksUntilRemoval == -1) {
+        if (inGround) {
+            if (ticksUntilRemoval == -1) {
                 for (int i = 0; i < 8; ++i) {
-                    this.getWorld().addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(getBreakItemParticle(), 1)), this.getX() + random.nextGaussian() / 20f, this.getY() + random.nextGaussian() / 20f, this.getZ() + random.nextGaussian() / 20f, random.nextGaussian() / 20f, 0.2D + random.nextGaussian() / 20f, random.nextGaussian() / 20f);
+                    getWorld().addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(getBreakItemParticle(), 1)), getX() + random.nextGaussian() / 20f, getY() + random.nextGaussian() / 20f, getZ() + random.nextGaussian() / 20f, random.nextGaussian() / 20f, 0.2D + random.nextGaussian() / 20f, random.nextGaussian() / 20f);
                 }
-                this.ticksUntilRemoval = 2;
+                ticksUntilRemoval = 2;
             }
-
-            if (this.ticksUntilRemoval > 0) {
-                this.ticksUntilRemoval--;
-                if (this.ticksUntilRemoval <= 0) {
-                    this.remove(RemovalReason.DISCARDED);
+            if (ticksUntilRemoval > 0) {
+                ticksUntilRemoval--;
+                if (ticksUntilRemoval <= 0) {
+                    remove(RemovalReason.DISCARDED);
                 }
             }
         }
-
-        if (this.age < 10) {
-            for (LivingEntity livingEntity : this.getWorld().getEntitiesByClass(LivingEntity.class, this.getBoundingBox().expand(1f), LivingEntity::isAlive)) {
-                this.onEntityHit(new EntityHitResult(livingEntity));
-                this.kill();
+        if (age < 10) {
+            for (LivingEntity livingEntity : getWorld().getEntitiesByClass(LivingEntity.class, getBoundingBox().expand(1f), LivingEntity::isAlive)) {
+                onEntityHit(new EntityHitResult(livingEntity));
+                kill();
             }
         }
     }
@@ -84,57 +76,35 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-
-        Entity entity2 = this.getOwner();
-        DamageSource damageSource2;
-        if (entity2 == null) {
-            damageSource2 = BlastDamageTypes.amethystShard(this, this);
-        } else {
-            damageSource2 = BlastDamageTypes.amethystShard(this, entity2);
-            if (entity2 instanceof LivingEntity) {
-                ((LivingEntity) entity2).onAttacking(entity);
-            }
+        double damage = getDamage();
+        Entity owner = getOwner();
+        DamageSource damageSource = getDamageSource(owner);
+        if (owner instanceof LivingEntity living) {
+            living.onAttacking(entity);
         }
-
-        if (!ProtectionsProvider.canDamageEntity(entity, damageSource2)) return;
-
-        boolean bl = entity.getType() == EntityType.ENDERMAN;
-        int j = entity.getFireTicks();
-        if (this.isOnFire() && !bl) {
-            entity.setOnFireFor(5);
-        }
-
-        if (entity.damage(damageSource2, (float) this.getDamage())) {
-            if (bl) {
-                return;
+        if (entity.getType() != EntityType.ENDERMAN && entity.damage(damageSource, (float) damage)) {
+            if (isOnFire()) {
+                entity.setOnFireFor(5);
             }
-
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) entity;
-
-                if (!this.getWorld().isClient) {
-                    EnchantmentHelper.onTargetDamaged((ServerWorld) getWorld(), livingEntity, damageSource2);
+            if (entity instanceof LivingEntity living) {
+                if (getWorld() instanceof ServerWorld serverWorld) {
+                    EnchantmentHelper.onTargetDamaged(serverWorld, living, damageSource);
                 }
-
-                this.onHit(livingEntity);
-                if (entity2 != null && livingEntity != entity2 && livingEntity instanceof PlayerEntity && entity2 instanceof ServerPlayerEntity && !this.isSilent()) {
-                    ((ServerPlayerEntity) entity2).networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.PROJECTILE_HIT_PLAYER, GameStateChangeS2CPacket.DEMO_OPEN_SCREEN));
+                onHit(living);
+                if (living != owner && living instanceof PlayerEntity && owner instanceof ServerPlayerEntity serverPlayer && !isSilent()) {
+                    serverPlayer.networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.PROJECTILE_HIT_PLAYER, GameStateChangeS2CPacket.DEMO_OPEN_SCREEN));
                 }
             }
-        } else {
-            entity.setFireTicks(j);
-            this.setVelocity(this.getVelocity().multiply(-0.1D));
-            this.setYaw(this.getYaw() + 180.0F);
-            this.prevYaw += 180.0F;
-            if (!this.getWorld().isClient && this.getVelocity().lengthSquared() < 1.0E-7D) {
-                if (this.pickupType == PickupPermission.ALLOWED) {
-                    this.dropStack(this.asItemStack(), 0.1F);
-                }
-
-                this.discard();
-            }
         }
+        discard();
+        getWorld().playSound(null, getBlockPos(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.NEUTRAL, 1.0f, 1.5f);
+    }
 
-        this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.NEUTRAL, 1.0f, 1.5f);
+    protected Item getBreakItemParticle() {
+        return Items.AMETHYST_BLOCK;
+    }
+
+    protected DamageSource getDamageSource(Entity owner) {
+        return BlastDamageTypes.amethystShard(this, owner != null ? owner : this);
     }
 }

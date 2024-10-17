@@ -1,6 +1,5 @@
 package ladysnake.blast.common.entity;
 
-import ladysnake.blast.common.init.BlastEntities;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.init.BlastSoundEvents;
 import net.minecraft.entity.EntityType;
@@ -8,10 +7,8 @@ import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
@@ -38,107 +35,50 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
         setFuse(MAX_FUSE);
     }
 
-    public PipeBombEntity(World world, PlayerEntity player, ItemStack stack) {
-        super(BlastEntities.PIPE_BOMB, player, world, stack, null);
-        this.setOwner(player);
-        this.setFuse(MAX_FUSE);
-    }
-
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(FUSE, 40);
 
-        this.rotationX = this.getWorld().random.nextFloat() * 360f;
-        this.rotationY = this.getWorld().random.nextFloat() * 360f;
-        this.rotationZ = this.getWorld().random.nextFloat() * 360f;
-        this.rotationXmod = this.getWorld().random.nextFloat() * 10f * (this.getWorld().random.nextBoolean() ? -1 : 1);
-        this.rotationYmod = this.getWorld().random.nextFloat() * 10f * (this.getWorld().random.nextBoolean() ? -1 : 1);
-        this.rotationZmod = this.getWorld().random.nextFloat() * 10f * (this.getWorld().random.nextBoolean() ? -1 : 1);
-    }
-
-    public int getFuse() {
-        return this.dataTracker.get(FUSE);
-    }
-
-    public void setFuse(int fuse) {
-        this.dataTracker.set(FUSE, fuse);
-    }
-
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-    }
-
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
-        return super.writeNbt(nbt);
-    }
-
-    @Override
-    protected ItemStack asItemStack() {
-        return new ItemStack(BlastItems.PIPE_BOMB);
-    }
-
-    @Override
-    public ItemStack getStack() {
-        return asItemStack();
+        rotationX = getWorld().random.nextFloat() * 360f;
+        rotationY = getWorld().random.nextFloat() * 360f;
+        rotationZ = getWorld().random.nextFloat() * 360f;
+        rotationXmod = getWorld().random.nextFloat() * 10f * (getWorld().random.nextBoolean() ? -1 : 1);
+        rotationYmod = getWorld().random.nextFloat() * 10f * (getWorld().random.nextBoolean() ? -1 : 1);
+        rotationZmod = getWorld().random.nextFloat() * 10f * (getWorld().random.nextBoolean() ? -1 : 1);
     }
 
     @Override
     protected ItemStack getDefaultItemStack() {
-        return asItemStack();
+        return BlastItems.PIPE_BOMB.getDefaultStack();
     }
 
     @Override
-    protected void onBlockHit(BlockHitResult blockHitResult) {
-        if (this.prevVelocity != null && this.getVelocity().length() > 0.3f) {
-            float xMod = bounciness;
-            float yMod = bounciness;
-            float zMod = bounciness;
-
-            switch (blockHitResult.getSide()) {
-                case DOWN, UP -> yMod = -yMod;
-                case NORTH, SOUTH -> xMod = -xMod;
-                case WEST, EAST -> zMod = -zMod;
-            }
-
-            this.setVelocity(this.prevVelocity.getX() * xMod, this.prevVelocity.getY() * yMod, this.prevVelocity.getZ() * zMod);
-            this.playSound(SoundEvents.BLOCK_COPPER_HIT, 1.0f, 1.5f);
-        } else {
-            super.onBlockHit(blockHitResult);
-        }
+    public ItemStack getStack() {
+        return getDefaultItemStack();
     }
 
     @Override
     public void tick() {
-        this.prevVelocity = this.getVelocity();
-
+        if (age >= 18000) {
+            discard();
+        }
+        prevVelocity = getVelocity();
         super.tick();
-
-        if (this.ticksUntilExplosion >= 0) {
-            if (this.ticksUntilExplosion++ >= 5) {
-                this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), 4.0F, World.ExplosionSourceType.NONE);
-                this.discard();
+        if (ticksUntilExplosion >= 0) {
+            if (ticksUntilExplosion++ >= 5) {
+                getWorld().createExplosion(this, getX(), getY(), getZ(), 4.0F, World.ExplosionSourceType.NONE);
+                discard();
             }
         }
-
-        if (this.getFuse() % 5 == 0) {
-            this.playSound(BlastSoundEvents.PIPE_BOMB_TICK, 1.0f, 1.0f + Math.abs((float) (this.getFuse() - MAX_FUSE) / MAX_FUSE));
+        if (getFuse() % 5 == 0) {
+            playSound(BlastSoundEvents.PIPE_BOMB_TICK, 1.0f, 1.0f + Math.abs((float) (getFuse() - MAX_FUSE) / MAX_FUSE));
         }
-
         // shorten the fuse
-        this.setFuse(this.getFuse() - 1);
-        if (this.getFuse() <= 0) {
-            this.explode();
-            this.discard();
-        }
-    }
-
-    public void explode() {
-        if (!this.getWorld().isClient) {
-            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), 2f, World.ExplosionSourceType.NONE);
-            // TODO Explosion
+        setFuse(getFuse() - 1);
+        if (getFuse() <= 0) {
+            explode();
+            discard();
         }
     }
 
@@ -148,19 +88,44 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     }
 
     @Override
-    protected void age() {
-        if (this.age >= 18000) {
-            this.discard();
-        }
-    }
-
-    @Override
     public double getDamage() {
         return 0;
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
+    protected void onBlockHit(BlockHitResult blockHitResult) {
+        if (prevVelocity != null && getVelocity().length() > 0.3f) {
+            float xMod = bounciness;
+            float yMod = bounciness;
+            float zMod = bounciness;
+            switch (blockHitResult.getSide()) {
+                case DOWN, UP -> yMod = -yMod;
+                case NORTH, SOUTH -> xMod = -xMod;
+                case WEST, EAST -> zMod = -zMod;
+            }
+            setVelocity(prevVelocity.getX() * xMod, prevVelocity.getY() * yMod, prevVelocity.getZ() * zMod);
+            playSound(SoundEvents.BLOCK_COPPER_HIT, 1.0f, 1.5f);
+        } else {
+            super.onBlockHit(blockHitResult);
+        }
+    }
 
+    @Override
+    protected void onEntityHit(EntityHitResult entityHitResult) {
+    }
+
+    public int getFuse() {
+        return dataTracker.get(FUSE);
+    }
+
+    public void setFuse(int fuse) {
+        dataTracker.set(FUSE, fuse);
+    }
+
+    private void explode() {
+        if (!getWorld().isClient) {
+            getWorld().createExplosion(getOwner(), getX(), getY(), getZ(), 2f, World.ExplosionSourceType.NONE);
+            // TODO Explosion
+        }
     }
 }

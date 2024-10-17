@@ -3,7 +3,6 @@ package ladysnake.blast.common.entity;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.CustomExplosion;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -14,12 +13,7 @@ import net.minecraft.world.explosion.Explosion;
 public class NavalMineEntity extends BombEntity {
     public NavalMineEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        this.setExplosionRadius(4f);
-    }
-
-    public NavalMineEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
-        super(entityType, world, livingEntity);
-        this.setExplosionRadius(4f);
+        setExplosionRadius(4);
     }
 
     @Override
@@ -29,25 +23,24 @@ public class NavalMineEntity extends BombEntity {
 
     @Override
     protected CustomExplosion getExplosion() {
-        return new CustomExplosion(this.getWorld(), this.getOwner(), this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), CustomExplosion.BlockBreakEffect.AQUATIC, Explosion.DestructionType.DESTROY);
+        return new CustomExplosion(getWorld(), getOwner(), getX(), getY(), getZ(), getExplosionRadius(), CustomExplosion.BlockBreakEffect.AQUATIC, Explosion.DestructionType.DESTROY);
+    }
 
+    @Override
+    public BombTriggerType getTriggerType() {
+        return BombTriggerType.IMPACT;
     }
 
     // play the click, although you can barely hear it, but you know, details
     @Override
     protected void onCollision(HitResult hitResult) {
-        this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.NEUTRAL, 0.8F, 0.6F);
+        getWorld().playSound(null, getX(), getY(), getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.NEUTRAL, 0.8F, 0.6F);
         super.onCollision(hitResult);
     }
 
     @Override
     public boolean disableInLiquid() {
         return false;
-    }
-
-    @Override
-    public BombTriggerType getTriggerType() {
-        return BombTriggerType.IMPACT;
     }
 
     @Override
