@@ -15,19 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BundleItem.class)
 public class BundleItemMixin {
-    @Inject(method = "onStackClicked", at = @At("TAIL"))
-    public void onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        ItemStack itemStack = slot.getStack();
-        if (itemStack.isOf(BlastItems.PIPE_BOMB)) {
-            player.playSound(SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, 0.5F, 1);
-        }
-    }
-
-
-    @Inject(method = "onClicked", at = @At("TAIL"))
+    @Inject(method = "onClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/component/type/BundleContentsComponent$Builder;add(Lnet/minecraft/item/ItemStack;)I"))
     public void onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        ItemStack itemStack = slot.getStack();
-        if (itemStack.isOf(BlastItems.PIPE_BOMB)) {
+        if (otherStack.isOf(BlastItems.PIPE_BOMB)) {
             player.playSound(SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, 0.5F, 1);
         }
     }

@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(FallingBlockEntity.class)
 public interface FallingBlockEntityAccessor {
-
     @Accessor
     BlockState getBlock();
 
