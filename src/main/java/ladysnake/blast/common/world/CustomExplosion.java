@@ -80,10 +80,8 @@ public class CustomExplosion extends Explosion {
                         }
                     }
                     boolean canDestroy = !state.isAir();
-                    if (effect != BlockBreakEffect.AQUATIC) {
-                        if (!state.getFluidState().isEmpty()) {
-                            canDestroy = false;
-                        }
+                    if (effect != BlockBreakEffect.AQUATIC && !state.getFluidState().isEmpty()) {
+                        canDestroy = false;
                     }
                     if (canDestroy) {
                         if (state.getBlock().shouldDropItemsOnExplosion(this) && world instanceof ServerWorld serverWorld) {
