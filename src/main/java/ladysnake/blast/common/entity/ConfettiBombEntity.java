@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
 public class ConfettiBombEntity extends BombEntity {
@@ -19,14 +18,6 @@ public class ConfettiBombEntity extends BombEntity {
     @Override
     protected Item getDefaultItem() {
         return BlastItems.CONFETTI_BOMB;
-    }
-
-    @Override
-    protected void onCollision(HitResult hitResult) {
-        setVelocity(0, 0, 0);
-        if (getTriggerType() == BombTriggerType.IMPACT) {
-            explode();
-        }
     }
 
     @Override

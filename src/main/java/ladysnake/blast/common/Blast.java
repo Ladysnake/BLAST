@@ -1,9 +1,6 @@
 package ladysnake.blast.common;
 
-import ladysnake.blast.common.init.BlastBlocks;
-import ladysnake.blast.common.init.BlastEntities;
-import ladysnake.blast.common.init.BlastItems;
-import ladysnake.blast.common.init.BlastSoundEvents;
+import ladysnake.blast.common.init.*;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -30,10 +27,11 @@ public class Blast implements ModInitializer {
     @Override
     public void onInitialize() {
         TrackedDataHandlerRegistry.register(FACING);
-        BlastSoundEvents.initialize();
+        BlastBlocks.init();
+        BlastComponentTypes.init();
         BlastEntities.init();
         BlastItems.init();
-        BlastBlocks.init();
+        BlastSoundEvents.initialize();
     }
 
     public static Identifier id(String value) {

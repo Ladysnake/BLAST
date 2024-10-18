@@ -27,7 +27,7 @@ public class NavalMineEntity extends BombEntity {
     }
 
     @Override
-    public BombTriggerType getTriggerType() {
+    protected BombTriggerType getTriggerType() {
         return BombTriggerType.IMPACT;
     }
 

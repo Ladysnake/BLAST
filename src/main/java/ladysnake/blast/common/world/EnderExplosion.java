@@ -14,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-// todo teleport entities
 public class EnderExplosion extends CustomExplosion {
     public static final int PARTICLE_DISTANCE = 1;
 
