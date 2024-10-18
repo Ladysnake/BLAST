@@ -1,8 +1,6 @@
 plugins {
 	id 'fabric-loom' version '1.7-SNAPSHOT'
 	id 'io.github.ladysnake.chenille' version '0.13.1'
-
-
 }
 
 version = project.mod_version
@@ -13,6 +11,7 @@ base {
 }
 
 chenille {
+	github = new URL("https://github.com/Ladysnake/BLAST")
 	javaVersion = 21
 	configurePublishing {
 		withLadysnakeMaven()
@@ -20,6 +19,13 @@ chenille {
 		withGithubRelease()
 		withModrinthRelease()
 	}
+}
+
+modrinth {
+	dependencies {
+		required.project "fabric-api"
+	}
+	syncBodyFrom = rootProject.file("README.md").text
 }
 
 loom {
