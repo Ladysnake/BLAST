@@ -27,10 +27,10 @@ public class Blast implements ModInitializer {
     @Override
     public void onInitialize() {
         TrackedDataHandlerRegistry.register(FACING);
-        BlastBlocks.init();
-        BlastComponentTypes.init();
         BlastEntities.init();
+        BlastBlocks.init();
         BlastItems.init();
+        BlastComponentTypes.init();
         BlastRecipeSerializers.init();
         BlastSoundEvents.initialize();
     }
