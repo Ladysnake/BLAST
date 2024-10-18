@@ -37,6 +37,8 @@ public class KnockbackExplosion extends CustomExplosion {
                         double strength = (1 - distance) * getExposure(source, entity);
                         if (entity instanceof PlayerEntity player) {
                             getAffectedPlayers().put(player, new Vec3d(dX * strength, dY * strength, dZ * strength));
+                        } else {
+                            strength *= 2;
                         }
                         if (entity instanceof LivingEntity living) {
                             strength *= 1 - living.getAttributeValue(EntityAttributes.GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE);
