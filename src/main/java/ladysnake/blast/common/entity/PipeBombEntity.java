@@ -73,6 +73,7 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
 
     @Override
     public void tick() {
+        pickupType = PickupPermission.DISALLOWED;
         if (age >= 18000) {
             discard();
         }

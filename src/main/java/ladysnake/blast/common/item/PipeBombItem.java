@@ -1,11 +1,12 @@
 package ladysnake.blast.common.item;
 
 import ladysnake.blast.common.entity.PipeBombEntity;
+import ladysnake.blast.common.init.BlastComponentTypes;
 import ladysnake.blast.common.init.BlastEntities;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
@@ -29,21 +30,31 @@ public class PipeBombItem extends Item {
         }
         ItemStack stack = player.getStackInHand(hand);
         if (!world.isClient) {
-            PipeBombEntity entity = BlastEntities.PIPE_BOMB.create(world);
-            entity.setVelocity(player, player.getPitch(), player.getYaw(), 0, 1.5F, 1);
-            entity.setPos(player.getX(), player.getY() + player.getStandingEyeHeight() - 0.1, player.getZ());
-            entity.setOwner(player);
-            entity.setItem(stack);
-            world.spawnEntity(entity);
+            spawn(world, stack, player, 1.5F);
+            world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, player.getSoundCategory(), 0.5F, 0.4F / (player.getRandom().nextFloat() * 0.4F + 0.8F));
             stack.decrementUnlessCreative(1, player);
             player.incrementStat(Stats.USED.getOrCreateStat(this));
         }
-        playSoundEffects(world, player);
         return TypedActionResult.success(stack, world.isClient);
     }
 
-    private void playSoundEffects(World world, PlayerEntity playerEntity) {
-        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (playerEntity.getRandom().nextFloat() * 0.4F + 0.8F));
-        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BLOCK_TRIPWIRE_CLICK_OFF, SoundCategory.NEUTRAL, 1, 1);
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        if (!world.isClient && stack.getOrDefault(BlastComponentTypes.PRIMED, false) && entity instanceof PlayerEntity player) {
+            for (int i = 0; i < stack.getCount(); i++) {
+                spawn(world, stack.copyWithCount(1), player, 0);
+            }
+            stack.decrement(stack.getCount());
+        }
+    }
+
+    private static void spawn(World world, ItemStack stack, PlayerEntity player, float speed) {
+        PipeBombEntity entity = BlastEntities.PIPE_BOMB.create(world);
+        entity.setVelocity(player, player.getPitch(), player.getYaw(), 0, speed, 1);
+        entity.setPos(player.getX(), player.getY() + player.getStandingEyeHeight() - 0.1, player.getZ());
+        entity.setOwner(player);
+        entity.setItem(stack);
+        world.spawnEntity(entity);
+        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLOCK_TRIPWIRE_CLICK_OFF, player.getSoundCategory(), 1, 1);
     }
 }
