@@ -80,6 +80,13 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     @Override
+    public void setItem(ItemStack item) {
+        super.setItem(item.getItem().getDefaultStack());
+        setFuse(item.getOrDefault(BlastComponentTypes.FUSE, getFuse()));
+        setExplosionRadius(item.getOrDefault(BlastComponentTypes.EXPLOSION_RADIUS, getExplosionRadius()));
+    }
+
+    @Override
     protected void onCollision(HitResult hitResult) {
         if (age > 1) {
             setVelocity(0, 0, 0);
@@ -120,8 +127,8 @@ public class BombEntity extends ThrownItemEntity {
             CustomExplosion explosion = getExplosion();
             explosion.collectBlocksAndDamageEntities();
             explosion.affectWorld(true);
-            if (!getWorld().isClient()) {
-                for (ServerPlayerEntity player : PlayerLookup.world((ServerWorld) getWorld())) {
+            if (getWorld() instanceof ServerWorld serverWorld) {
+                for (ServerPlayerEntity player : PlayerLookup.world(serverWorld)) {
                     if (player.squaredDistanceTo(getX(), getY(), getZ()) < 4096) {
                         player.networkHandler.sendPacket(new ExplosionS2CPacket(getX(), getY(), getZ(), explosion.getPower(), explosion.getAffectedBlocks(), explosion.getAffectedPlayers().get(player), explosion.getDestructionType(), explosion.getParticle(), explosion.getEmitterParticle(), explosion.getSoundEvent()));
                     }
@@ -161,13 +168,6 @@ public class BombEntity extends ThrownItemEntity {
 
     public void setExplosionRadius(float explosionRadius) {
         this.explosionRadius = explosionRadius;
-    }
-
-    @Override
-    public void setItem(ItemStack item) {
-        super.setItem(item.getItem().getDefaultStack());
-        setFuse(item.getOrDefault(BlastComponentTypes.FUSE, getFuse()));
-        setExplosionRadius(item.getOrDefault(BlastComponentTypes.EXPLOSION_RADIUS, getExplosionRadius()));
     }
 
     public enum BombTriggerType {
