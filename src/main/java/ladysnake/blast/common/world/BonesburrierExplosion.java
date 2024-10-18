@@ -142,7 +142,7 @@ public class BonesburrierExplosion extends CustomExplosion {
                         world.getProfiler().push("explosion_blocks");
                         if (world instanceof ServerWorld serverWorld) {
                             if (state.getBlock().shouldDropItemsOnExplosion(this)) {
-                                state.getDroppedStacks(getBuilder(serverWorld, pos, ItemStack.EMPTY, state.hasBlockEntity() ? world.getBlockEntity(pos) : null)).forEach(stack -> tryMergeStack(destroyedBlocks, stack, pos.toImmutable()));
+                                state.getDroppedStacks(getBuilder(serverWorld, pos, ItemStack.EMPTY, state.hasBlockEntity() ? world.getBlockEntity(pos) : null)).forEach(stack -> tryMergeStack(destroyedBlocks, stack, pos));
                             }
                             // shrapnel
                             PlayerEntity owner = null;

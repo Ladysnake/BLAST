@@ -53,8 +53,8 @@ public class CustomExplosion extends Explosion {
         if (destroy) {
             ObjectArrayList<Pair<ItemStack, BlockPos>> destroyedBlocks = new ObjectArrayList<>();
             for (BlockPos pos : affectedBlocks) {
-                BlockState state = world.getBlockState(pos);
                 if (canExplode(pos)) {
+                    BlockState state = world.getBlockState(pos);
                     if (particles) {
                         double rX = pos.getX() + world.random.nextFloat();
                         double rY = pos.getY() + world.random.nextFloat();
@@ -91,7 +91,7 @@ public class CustomExplosion extends Explosion {
                                 if (effect == BlockBreakEffect.FORTUNE) {
                                     stack.addEnchantment(world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.FORTUNE), 3);
                                 }
-                                state.getDroppedStacks(getBuilder(serverWorld, pos, stack, world.getBlockEntity(pos) != null ? world.getBlockEntity(pos) : null)).forEach(droppedStack -> tryMergeStack(destroyedBlocks, droppedStack, pos.toImmutable()));
+                                state.getDroppedStacks(getBuilder(serverWorld, pos, stack, world.getBlockEntity(pos) != null ? world.getBlockEntity(pos) : null)).forEach(droppedStack -> tryMergeStack(destroyedBlocks, droppedStack, pos));
                             }
                             BlockState toPlace = Blocks.AIR.getDefaultState();
                             if (effect == BlockBreakEffect.FROSTY) {
@@ -157,7 +157,7 @@ public class CustomExplosion extends Explosion {
             .add(LootContextParameters.TOOL, stack)
             .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
             .addOptional(LootContextParameters.THIS_ENTITY, entity);
-        if (destructionType == DestructionType.DESTROY) {
+        if (destructionType == DestructionType.DESTROY_WITH_DECAY) {
             builder.add(LootContextParameters.EXPLOSION_RADIUS, getPower());
         }
         return builder;
