@@ -65,5 +65,6 @@
   "block.blast.dried_folly_red_paint": "Dried Folly Red Paint",
   "death.attack.amethyst_shard": "%1$s was shanked by an amethyst shard from %2$s's amethyst bomb",
   "death.attack.icicle": "%1$s was iced by %2$s",
-  "subtitles.blast.entity.pipe_bomb.tick": "Pipe Bomb ticks"
+  "subtitles.blast.entity.pipe_bomb.tick": "Pipe Bomb ticks",
+  "subtitles.blast.entity.pipe_bomb.explode": "Pipe Bomb explodes"
 }

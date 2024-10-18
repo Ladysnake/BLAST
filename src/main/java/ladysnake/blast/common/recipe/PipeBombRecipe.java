@@ -3,6 +3,10 @@
  */
 package ladysnake.blast.common.recipe;
 
+import ladysnake.blast.common.init.BlastItems;
+import ladysnake.blast.common.init.BlastRecipeSerializers;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ChargedProjectilesComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -13,59 +17,53 @@ import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PipeBombRecipe extends SpecialCraftingRecipe {
+    private static final Ingredient BOMB = Ingredient.ofItems(BlastItems.BOMB);
+    private static final Ingredient FIREWORK_ROCKET = Ingredient.ofItems(Items.FIREWORK_ROCKET);
 
-    private static final Ingredient PAPER = Ingredient.ofItems(Items.PAPER);
-    private static final Ingredient DURATION_MODIFIER = Ingredient.ofItems(Items.GUNPOWDER);
-    private static final Ingredient FIREWORK_STAR = Ingredient.ofItems(Items.FIREWORK_STAR);
-
-    public PipeBombRecipe() {
-        super(CraftingRecipeCategory.EQUIPMENT);
+    public PipeBombRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     @Override
     public boolean matches(CraftingRecipeInput input, World world) {
-        boolean bl = false;
-        int i = 0;
-        for (int j = 0; j < input.getSize(); ++j) {
-            ItemStack itemStack = input.getStackInSlot(j);
-            if (itemStack.isEmpty()) continue;
-            if (PAPER.test(itemStack)) {
-                if (bl) {
-                    return false;
-                }
-                bl = true;
-                continue;
+        int bombCount = 0;
+        int fireworkCount = 0;
+        for (int i = 0; i < input.getSize(); ++i) {
+            ItemStack stack = input.getStackInSlot(i);
+            if (BOMB.test(stack)) {
+                bombCount++;
+            } else if (FIREWORK_ROCKET.test(stack)) {
+                fireworkCount++;
+            } else if (!stack.isEmpty()) {
+                return false;
             }
-            if (!(DURATION_MODIFIER.test(itemStack) ? ++i > 3 : !FIREWORK_STAR.test(itemStack))) continue;
-            return false;
         }
-        return bl && i >= 1;
+        return bombCount == 1 && fireworkCount > 0;
     }
 
     @Override
     public ItemStack craft(CraftingRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
-        ItemStack itemStack = new ItemStack(Items.FIREWORK_ROCKET, 3);
-        // todo fix crafting
-//        NbtCompound nbtCompound = itemStack.getOrCreateSubNbt("Fireworks");
-//        NbtList nbtList = new NbtList();
-//        int i = 0;
-//        for (int j = 0; j < input.getSize(); ++j) {
-//            NbtCompound nbtCompound2;
-//            ItemStack itemStack2 = input.getStackInSlot(j);
-//            if (itemStack2.isEmpty()) continue;
-//            if (DURATION_MODIFIER.test(itemStack2)) {
-//                ++i;
-//                continue;
-//            }
-//            if (!FIREWORK_STAR.test(itemStack2) || (nbtCompound2 = itemStack2.getSubNbt("Explosion")) == null) continue;
-//            nbtList.add(nbtCompound2);
-//        }
-//        nbtCompound.putByte("Flight", (byte) i);
-//        if (!nbtList.isEmpty()) {
-//            nbtCompound.put("Explosions", nbtList);
-//        }
-        return itemStack;
+        ItemStack pipeBomb = BlastItems.PIPE_BOMB.getDefaultStack();
+        List<ItemStack> fireworks = new ArrayList<>();
+        int bombCount = 0;
+        int fireworkCount = 0;
+        for (int i = 0; i < input.getSize(); ++i) {
+            ItemStack invStack = input.getStackInSlot(i);
+            if (BOMB.test(invStack)) {
+                bombCount++;
+            } else if (FIREWORK_ROCKET.test(invStack)) {
+                fireworkCount++;
+                fireworks.add(input.getStackInSlot(i).copyWithCount(1));
+            } else if (!invStack.isEmpty()) {
+                return ItemStack.EMPTY;
+            }
+        }
+        pipeBomb.set(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.of(fireworks));
+        return bombCount == 1 && fireworkCount > 0 ? pipeBomb : ItemStack.EMPTY;
     }
 
     @Override
@@ -75,7 +73,7 @@ public class PipeBombRecipe extends SpecialCraftingRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecipeSerializer.FIREWORK_ROCKET;
+        return BlastRecipeSerializers.PIPE_BOMB;
     }
 }
 

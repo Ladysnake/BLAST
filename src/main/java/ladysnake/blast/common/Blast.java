@@ -31,6 +31,7 @@ public class Blast implements ModInitializer {
         BlastComponentTypes.init();
         BlastEntities.init();
         BlastItems.init();
+        BlastRecipeSerializers.init();
         BlastSoundEvents.initialize();
     }
 

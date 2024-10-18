@@ -12,7 +12,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-// todo migrate pipe bomb to bomb entity and remove this class
 public class PipeBombItem extends Item {
     public PipeBombItem(Settings settings) {
         super(settings);
@@ -31,9 +30,10 @@ public class PipeBombItem extends Item {
         ItemStack stack = player.getStackInHand(hand);
         if (!world.isClient) {
             PipeBombEntity entity = BlastEntities.PIPE_BOMB.create(world);
-            entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, 1.5F, 1.0F);
+            entity.setVelocity(player, player.getPitch(), player.getYaw(), 0, 1.5F, 1);
             entity.setPos(player.getX(), player.getY() + player.getStandingEyeHeight() - 0.1, player.getZ());
             entity.setOwner(player);
+            entity.setItem(stack);
             world.spawnEntity(entity);
             stack.decrementUnlessCreative(1, player);
             player.incrementStat(Stats.USED.getOrCreateStat(this));
@@ -44,6 +44,6 @@ public class PipeBombItem extends Item {
 
     private void playSoundEffects(World world, PlayerEntity playerEntity) {
         world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (playerEntity.getRandom().nextFloat() * 0.4F + 0.8F));
-        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.NEUTRAL, 0.5F, 0.4F / (playerEntity.getRandom().nextFloat() * 0.4F + 0.8F));
+        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BLOCK_TRIPWIRE_CLICK_OFF, SoundCategory.NEUTRAL, 1, 1);
     }
 }

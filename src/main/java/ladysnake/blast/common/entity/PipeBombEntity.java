@@ -2,33 +2,34 @@ package ladysnake.blast.common.entity;
 
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.init.BlastSoundEvents;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ChargedProjectilesComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class PipeBombEntity extends PersistentProjectileEntity implements FlyingItemEntity {
-    public final int MAX_FUSE = 20;
+import java.util.ArrayList;
+import java.util.List;
 
+public class PipeBombEntity extends PersistentProjectileEntity implements FlyingItemEntity {
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(PipeBombEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    public double rotationXmod;
-    public double rotationYmod;
-    public double rotationZmod;
-    public float rotationX;
-    public float rotationY;
-    public float rotationZ;
-    public float ticksUntilExplosion = -1;
-    public Vec3d prevVelocity;
-    public final float bounciness = 0.3f;
+    private static final int MAX_FUSE = 20;
+    private static final float BOUNCINESS = 0.3f;
+    private ItemStack stack = getDefaultItemStack();
+    private final List<ItemStack> fireworks = new ArrayList<>();
 
     public PipeBombEntity(EntityType<PipeBombEntity> variant, World world) {
         super(variant, world);
@@ -36,16 +37,28 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     }
 
     @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        if (!fireworks.isEmpty()) {
+            stack.set(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.of(fireworks));
+        }
+        nbt.put("Stack", stack.encode(getRegistryManager(), new NbtCompound()));
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        fireworks.clear();
+        stack = ItemStack.fromNbt(getRegistryManager(), nbt.getCompound("Stack")).orElse(getDefaultItemStack());
+        if (stack.contains(DataComponentTypes.CHARGED_PROJECTILES)) {
+            fireworks.addAll(stack.get(DataComponentTypes.CHARGED_PROJECTILES).getProjectiles());
+        }
+    }
+
+    @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(FUSE, 40);
-
-        rotationX = getWorld().random.nextFloat() * 360f;
-        rotationY = getWorld().random.nextFloat() * 360f;
-        rotationZ = getWorld().random.nextFloat() * 360f;
-        rotationXmod = getWorld().random.nextFloat() * 10f * (getWorld().random.nextBoolean() ? -1 : 1);
-        rotationYmod = getWorld().random.nextFloat() * 10f * (getWorld().random.nextBoolean() ? -1 : 1);
-        rotationZmod = getWorld().random.nextFloat() * 10f * (getWorld().random.nextBoolean() ? -1 : 1);
     }
 
     @Override
@@ -55,7 +68,7 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
 
     @Override
     public ItemStack getStack() {
-        return getDefaultItemStack();
+        return stack;
     }
 
     @Override
@@ -63,21 +76,13 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
         if (age >= 18000) {
             discard();
         }
-        prevVelocity = getVelocity();
         super.tick();
-        if (ticksUntilExplosion >= 0) {
-            if (ticksUntilExplosion++ >= 5) {
-                getWorld().createExplosion(this, getX(), getY(), getZ(), 4.0F, World.ExplosionSourceType.NONE);
-                discard();
-            }
-        }
         if (getFuse() % 5 == 0) {
-            playSound(BlastSoundEvents.PIPE_BOMB_TICK, 1.0f, 1.0f + Math.abs((float) (getFuse() - MAX_FUSE) / MAX_FUSE));
+            playSound(BlastSoundEvents.PIPE_BOMB_TICK, 1, 1 + Math.abs((float) (getFuse() - MAX_FUSE) / MAX_FUSE));
         }
         // shorten the fuse
         setFuse(getFuse() - 1);
-        if (getFuse() <= 0) {
-            explode();
+        if (getFuse() <= 0 && explode()) {
             discard();
         }
     }
@@ -94,17 +99,17 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
-        if (prevVelocity != null && getVelocity().length() > 0.3f) {
-            float xMod = bounciness;
-            float yMod = bounciness;
-            float zMod = bounciness;
+        if (getVelocity().length() > 0.3f) {
+            float xMod = BOUNCINESS;
+            float yMod = BOUNCINESS;
+            float zMod = BOUNCINESS;
             switch (blockHitResult.getSide()) {
                 case DOWN, UP -> yMod = -yMod;
                 case NORTH, SOUTH -> xMod = -xMod;
                 case WEST, EAST -> zMod = -zMod;
             }
-            setVelocity(prevVelocity.getX() * xMod, prevVelocity.getY() * yMod, prevVelocity.getZ() * zMod);
-            playSound(SoundEvents.BLOCK_COPPER_HIT, 1.0f, 1.5f);
+            setVelocity(getVelocity().getX() * xMod, getVelocity().getY() * yMod, getVelocity().getZ() * zMod);
+            playSound(getHitSound(), 1, 1.5f);
         } else {
             super.onBlockHit(blockHitResult);
         }
@@ -112,6 +117,13 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
+    }
+
+    public void setItem(ItemStack item) {
+        stack = item;
+        if (item.contains(DataComponentTypes.CHARGED_PROJECTILES)) {
+            fireworks.addAll(item.get(DataComponentTypes.CHARGED_PROJECTILES).getProjectiles());
+        }
     }
 
     public int getFuse() {
@@ -122,10 +134,41 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
         dataTracker.set(FUSE, fuse);
     }
 
-    private void explode() {
-        if (!getWorld().isClient) {
-            getWorld().createExplosion(getOwner(), getX(), getY(), getZ(), 2f, World.ExplosionSourceType.NONE);
-            // TODO Explosion
+    private boolean explode() {
+        if (getWorld() instanceof ServerWorld world) {
+            if (random.nextInt(5) == 0 || !isInvisible()) {
+                ItemStack stack = null;
+                if (!fireworks.isEmpty()) {
+                    stack = fireworks.getFirst();
+                }
+                float rad = 1.2f;
+                float randX = (float) random.nextGaussian() * rad;
+                float randY = random.nextFloat() * rad;
+                float randZ = (float) random.nextGaussian() * rad;
+                if (!isInvisible()) {
+                    setInvisible(true);
+                    randX = 0;
+                    randY = 0;
+                    randZ = 0;
+                    if (stack == null) {
+                        playSound(SoundEvents.BLOCK_CANDLE_EXTINGUISH, 3, 1);
+                        world.spawnParticles(ParticleTypes.SMOKE, getX(), getY(), getZ(), 50, 0.1, 0.1, 0.1, 0);
+                    }
+                }
+                if (stack != null) {
+                    ItemStack firework = stack.copy();
+                    for (int i = 0; i < firework.getCount(); i++) {
+                        FireworkRocketEntity rocket = new FireworkRocketEntity(world, getX() + randX, getY() + randY, getZ() + randZ, stack);
+                        world.spawnEntity(rocket);
+                        rocket.explodeAndRemove();
+                        playSound(BlastSoundEvents.PIPE_BOMB_EXPLODE, 5, (float) (1 + random.nextGaussian() / 10f));
+                    }
+                    fireworks.removeFirst();
+                    return fireworks.isEmpty();
+                }
+                return true;
+            }
         }
+        return false;
     }
 }

@@ -4,5 +4,11 @@
 	  "blast:pipe_bomb_tick"
 	],
 	"subtitle": "subtitles.blast.entity.pipe_bomb.tick"
+  },
+  "entity.pipe_bomb.explode": {
+	"sounds": [
+	  "blast:pipe_bomb_explode"
+	],
+	"subtitle": "subtitles.blast.entity.pipe_bomb.explode"
   }
 }
