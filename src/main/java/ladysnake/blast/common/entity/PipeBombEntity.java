@@ -28,7 +28,7 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     public float rotationZ;
     public float ticksUntilExplosion = -1;
     public Vec3d prevVelocity;
-    public float bounciness = 0.3f;
+    public final float bounciness = 0.3f;
 
     public PipeBombEntity(EntityType<PipeBombEntity> variant, World world) {
         super(variant, world);

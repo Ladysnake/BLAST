@@ -6,9 +6,9 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.world.World;
 
 public class EntityExplosion extends CustomExplosion {
-    public EntityType<? extends Entity> entityToSpawn;
-    public int amount;
-    public float velocity;
+    public final EntityType<? extends Entity> entityToSpawn;
+    public final int amount;
+    public final float velocity;
 
     public EntityExplosion(World world, Entity entity, double x, double y, double z, EntityType<? extends Entity> entityToSpawn, int amount, float velocity) {
         super(world, entity, x, y, z, 0f, null, DestructionType.KEEP);

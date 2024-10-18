@@ -41,8 +41,6 @@ public class BlastEntities {
     public static EntityType<AmethystShardEntity> AMETHYST_SHARD;
     public static EntityType<IcicleEntity> ICICLE;
 
-    public static EntityType<ShrapnelBlockEntity> SHRAPNEL_BLOCK;
-
     public static void init() {
         // throwable explosives
         BOMB = register("bomb", createBombEntityType(BombEntity::new));
@@ -77,7 +75,7 @@ public class BlastEntities {
         ICICLE = register("icicle", EntityType.Builder.create(IcicleEntity::new, SpawnGroup.MISC).dimensions(0.5f, 0.5f).build());
 
         // custom falling block entity (Needed for claims protection)
-        SHRAPNEL_BLOCK = register("shrapnel_block", EntityType.Builder.create(ShrapnelBlockEntity::new, SpawnGroup.MISC).dimensions(1, 1).build());
+        register("shrapnel_block", EntityType.Builder.create(ShrapnelBlockEntity::new, SpawnGroup.MISC).dimensions(1, 1).build());
     }
 
     private static <T extends Entity> EntityType<T> register(String name, EntityType<T> entityType) {

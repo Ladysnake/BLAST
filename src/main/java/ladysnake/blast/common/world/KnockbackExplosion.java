@@ -23,7 +23,7 @@ public class KnockbackExplosion extends CustomExplosion {
         }
         Vec3d source = new Vec3d(x, y, z);
         for (Entity entity : affectedEntities) {
-            if (ProtectionsProvider.canInteractEntity(entity, damageSource)) {
+            if (ProtectionsProvider.canDamageEntity(entity, damageSource)) {
                 double distance = Math.sqrt(entity.squaredDistanceTo(source)) / (getPower() * 2);
                 if (distance <= 1.0D) {
                     double dX = entity.getX() - this.x;

@@ -16,7 +16,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 
 public class ProtectionsProvider {
-
     public static boolean canDamageEntity(Entity entity, DamageSource damageSource) {
         return checkProtection(entity.getWorld(), entity.getBlockPos(), damageSource, ret ->
             CommonProtection.canDamageEntity(entity.getWorld(), entity, ret.getFirst(), ret.getSecond()));
@@ -48,13 +47,11 @@ public class ProtectionsProvider {
 
     private static boolean checkProtection(World world, BlockPos blockPos, DamageSource damageSource, Predicate<Pair<GameProfile, ServerPlayerEntity>> protectionPredicate) {
         Entity attacker = null;
-
         if (damageSource.getAttacker() != null) {
             attacker = damageSource.getAttacker();
         } else if (damageSource.getSource() instanceof BombEntity bombEntity) {
             attacker = bombEntity.getOwner();
         }
-
         if (attacker instanceof ServerPlayerEntity playerAttacker) {
             return protectionPredicate.test(Pair.of(playerAttacker.getGameProfile(), playerAttacker));
         } else {

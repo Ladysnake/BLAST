@@ -120,12 +120,11 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
         explode(world, pos, null);
     }
 
-    private BombEntity explode(World world, BlockPos pos, Entity igniter) {
+    private void explode(World world, BlockPos pos, Entity igniter) {
         BombEntity entity = BlastEntities.GUNPOWDER_BLOCK.create(world);
         entity.setOwner(igniter);
         entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
         world.spawnEntity(entity);
         world.removeBlock(pos, false);
-        return entity;
     }
 }

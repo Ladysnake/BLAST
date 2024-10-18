@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockFillingExplosion extends CustomExplosion {
-    public BlockState blockStateToPlace;
+    public final BlockState blockStateToPlace;
 
     public BlockFillingExplosion(World world, Entity entity, double x, double y, double z, float power, BlockState blockStateToPlace) {
         super(world, entity, x, y, z, power, null, DestructionType.DESTROY);

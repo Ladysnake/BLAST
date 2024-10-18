@@ -76,13 +76,12 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        double damage = getDamage();
         Entity owner = getOwner();
         DamageSource damageSource = getDamageSource(owner);
         if (owner instanceof LivingEntity living) {
             living.onAttacking(entity);
         }
-        if (entity.getType() != EntityType.ENDERMAN && entity.damage(damageSource, (float) damage)) {
+        if (entity.getType() != EntityType.ENDERMAN && entity.damage(damageSource, (float) getDamage())) {
             if (isOnFire()) {
                 entity.setOnFireFor(5);
             }

@@ -46,11 +46,6 @@ public class ShrapnelBlockEntity extends FallingBlockEntity {
         return explosionThrownBlockEntity;
     }
 
-    @Nullable
-    public PlayerEntity getOwner() {
-        return owner;
-    }
-
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
@@ -70,10 +65,8 @@ public class ShrapnelBlockEntity extends FallingBlockEntity {
     @Override
     public void move(MovementType movementType, Vec3d movement) {
         super.move(movementType, movement);
-        if (isOnGround() && !getWorld().isClient) {
-            if (!ProtectionsProvider.canPlaceBlock(getBlockPos(), getWorld(), owner)) {
-                setDestroyedOnLanding();
-            }
+        if (isOnGround() && !getWorld().isClient && !ProtectionsProvider.canPlaceBlock(getBlockPos(), getWorld(), owner)) {
+            setDestroyedOnLanding();
         }
     }
 }
