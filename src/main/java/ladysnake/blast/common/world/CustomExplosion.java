@@ -79,7 +79,13 @@ public class CustomExplosion extends Explosion {
                             world.addParticle(ParticleTypes.BUBBLE_POP, rX, rY, rZ, dX, dY, dZ);
                         }
                     }
-                    if (!state.isAir() && state.getFluidState().isEmpty() || state.getBlock() instanceof FluidFillable) {
+                    boolean canDestroy = !state.isAir();
+                    if (effect != BlockBreakEffect.AQUATIC) {
+                        if (!state.getFluidState().isEmpty()) {
+                            canDestroy = false;
+                        }
+                    }
+                    if (canDestroy) {
                         if (state.getBlock().shouldDropItemsOnExplosion(this) && world instanceof ServerWorld serverWorld) {
                             BlockEntity blockEntity = world.getBlockEntity(pos) != null ? world.getBlockEntity(pos) : null;
                             ItemStack stack = Items.NETHERITE_PICKAXE.getDefaultStack();
