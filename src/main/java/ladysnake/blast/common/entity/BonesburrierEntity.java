@@ -21,7 +21,7 @@ public class BonesburrierEntity extends BombEntity {
     public void explode() {
         CustomExplosion explosion = new BonesburrierExplosion(getWorld(), this, getX(), getBodyY(0.0625), getZ(), getExplosionRadius(), Explosion.DestructionType.DESTROY);
         explosion.collectBlocksAndDamageEntities();
-        explosion.affectWorld(true);
+        explosion.affectWorld(getWorld().isClient);
         getWorld().playSound(null, getX(), getBodyY(0.0625), getZ(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.BLOCKS, 5, 1);
         remove(RemovalReason.DISCARDED);
     }

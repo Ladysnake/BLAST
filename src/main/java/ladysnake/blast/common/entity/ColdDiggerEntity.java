@@ -26,7 +26,7 @@ public class ColdDiggerEntity extends StripminerEntity {
             if (getWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
                 CustomExplosion explosion = new CustomExplosion(getWorld(), this, mutable.getX() + 0.5, mutable.getY() + 0.5, mutable.getZ() + 0.5, getExplosionRadius(), CustomExplosion.BlockBreakEffect.FROSTY, Explosion.DestructionType.DESTROY);
                 explosion.collectBlocksAndDamageEntities();
-                explosion.affectWorld(true);
+                explosion.affectWorld(getWorld().isClient);
             } else {
                 break;
             }
@@ -38,7 +38,7 @@ public class ColdDiggerEntity extends StripminerEntity {
             if (getWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
                 CustomExplosion explosion = new CustomExplosion(getWorld(), this, mutable.getX() + 0.5, mutable.getY() + 0.5, mutable.getZ() + 0.5, 1f, null, Explosion.DestructionType.DESTROY);
                 explosion.collectBlocksAndDamageEntities();
-                explosion.affectWorld(true);
+                explosion.affectWorld(getWorld().isClient);
             } else {
                 break;
             }

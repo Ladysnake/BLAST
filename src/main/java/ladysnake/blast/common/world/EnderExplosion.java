@@ -40,6 +40,15 @@ public class EnderExplosion extends CustomExplosion {
             if (canExplode(pos)) {
                 BlockState state = world.getBlockState(pos);
                 if (!state.isAir()) {
+                    if (particles) {
+                        for (int x = 0; x <= 1; x += PARTICLE_DISTANCE) {
+                            for (int y = 0; y <= 1; y += PARTICLE_DISTANCE) {
+                                for (int z = 0; z <= 1; z += PARTICLE_DISTANCE) {
+                                    world.addParticle(ParticleTypes.REVERSE_PORTAL, pos.getX() + x, pos.getY() + y, pos.getZ() + z, 0, 0, 0);
+                                }
+                            }
+                        }
+                    }
                     world.getProfiler().push("explosion_blocks");
                     if (world instanceof ServerWorld serverWorld) {
                         if (state.getBlock().shouldDropItemsOnExplosion(this)) {
@@ -48,14 +57,6 @@ public class EnderExplosion extends CustomExplosion {
                             state.getDroppedStacks(getBuilder(serverWorld, pos, stack, world.getBlockEntity(pos) != null ? world.getBlockEntity(pos) : null)).forEach(droppedStack -> tryMergeStack(destroyedBlocks, droppedStack, source));
                         }
                         world.setBlockState(pos, Blocks.AIR.getDefaultState());
-                    } else {
-                        for (int x = 0; x <= 1; x += PARTICLE_DISTANCE) {
-                            for (int y = 0; y <= 1; y += PARTICLE_DISTANCE) {
-                                for (int z = 0; z <= 1; z += PARTICLE_DISTANCE) {
-                                    world.addParticle(ParticleTypes.REVERSE_PORTAL, pos.getX() + x, pos.getY() + y, pos.getZ() + z, 0, 0, 0);
-                                }
-                            }
-                        }
                     }
                     state.getBlock().onDestroyedByExplosion(world, pos, this);
                     world.getProfiler().pop();

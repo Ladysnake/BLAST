@@ -33,7 +33,7 @@ public class PearlBombEntity extends BombEntity {
             }
             CustomExplosion explosion = getExplosion();
             explosion.collectBlocksAndDamageEntities();
-            explosion.affectWorld(true);
+            explosion.affectWorld(getWorld().isClient);
         }
     }
 }

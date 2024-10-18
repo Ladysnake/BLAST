@@ -33,7 +33,7 @@ public class PearlTriggerBombEntity extends TriggerBombEntity {
             }
             CustomExplosion explosion = getExplosion();
             explosion.collectBlocksAndDamageEntities();
-            explosion.affectWorld(true);
+            explosion.affectWorld(getWorld().isClient);
         }
     }
 }

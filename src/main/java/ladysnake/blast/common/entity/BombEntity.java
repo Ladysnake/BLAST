@@ -126,7 +126,7 @@ public class BombEntity extends ThrownItemEntity {
             ticksUntilRemoval = 1;
             CustomExplosion explosion = getExplosion();
             explosion.collectBlocksAndDamageEntities();
-            explosion.affectWorld(true);
+            explosion.affectWorld(getWorld().isClient);
             if (getWorld() instanceof ServerWorld serverWorld) {
                 for (ServerPlayerEntity player : PlayerLookup.world(serverWorld)) {
                     if (player.squaredDistanceTo(getX(), getY(), getZ()) < 4096) {

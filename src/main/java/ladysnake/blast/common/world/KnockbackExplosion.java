@@ -15,13 +15,13 @@ public class KnockbackExplosion extends CustomExplosion {
 
     @Override
     public void affectWorld(boolean particles) {
+        Vec3d source = new Vec3d(x, y, z);
         collectEntities();
-        if (world.isClient) {
+        if (particles) {
             for (int i = 0; i < 500; i++) {
                 world.addParticle(ParticleTypes.SNEEZE, this.x, this.y, this.z, this.random.nextGaussian() / 5, this.random.nextGaussian() / 5, this.random.nextGaussian() / 5);
             }
         }
-        Vec3d source = new Vec3d(x, y, z);
         for (Entity entity : affectedEntities) {
             if (ProtectionsProvider.canDamageEntity(entity, damageSource)) {
                 double distance = Math.sqrt(entity.squaredDistanceTo(source)) / (getPower() * 2);
