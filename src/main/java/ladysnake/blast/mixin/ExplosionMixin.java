@@ -5,26 +5,35 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import ladysnake.blast.common.util.ProtectionsProvider;
 import ladysnake.blast.common.world.CustomExplosion;
 import ladysnake.blast.common.world.EnderExplosion;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.ExplosionBehavior;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import java.util.Optional;
 
 @Mixin(Explosion.class)
 public class ExplosionMixin {
+    @Shadow
+    @Final
+    public DamageSource damageSource;
+
     @WrapOperation(method = "collectBlocksAndDamageEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/explosion/ExplosionBehavior;getBlastResistance(Lnet/minecraft/world/explosion/Explosion;Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/fluid/FluidState;)Ljava/util/Optional;"))
     private Optional<Float> blast$overrideBlastResistance(ExplosionBehavior instance, Explosion explosion, BlockView world, BlockPos pos, BlockState blockState, FluidState fluidState, Operation<Optional<Float>> original) {
         if (isEffect(explosion, CustomExplosion.BlockBreakEffect.AQUATIC) || isEffect(explosion, CustomExplosion.BlockBreakEffect.FROSTY)) {
@@ -35,6 +44,23 @@ public class ExplosionMixin {
             return Optional.of(0F);
         }
         return original.call(instance, explosion, world, pos, blockState, fluidState);
+    }
+
+    @ModifyArg(method = "collectBlocksAndDamageEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getOtherEntities(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Box;)Ljava/util/List;"))
+    private Entity blast$removeOwner(Entity value) {
+        if ((Object) this instanceof CustomExplosion) {
+            return null;
+        }
+        return value;
+    }
+
+    @SuppressWarnings("ConstantValue")
+    @ModifyExpressionValue(method = "collectBlocksAndDamageEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isImmuneToExplosion(Lnet/minecraft/world/explosion/Explosion;)Z"))
+    private boolean blast$protections(boolean original, @Local Entity entity) {
+        if ((Object) this instanceof CustomExplosion && !ProtectionsProvider.canDamageEntity(entity, damageSource)) {
+            return false;
+        }
+        return original;
     }
 
     @ModifyExpressionValue(method = "collectBlocksAndDamageEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/explosion/ExplosionBehavior;shouldDamage(Lnet/minecraft/world/explosion/Explosion;Lnet/minecraft/entity/Entity;)Z"))

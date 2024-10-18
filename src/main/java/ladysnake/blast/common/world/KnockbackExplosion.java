@@ -4,6 +4,7 @@ import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -22,7 +23,7 @@ public class KnockbackExplosion extends CustomExplosion {
             }
         }
         for (Entity entity : affectedEntities) {
-            if (ProtectionsProvider.canDamageEntity(entity, damageSource)) {
+            if (ProtectionsProvider.canInteractEntity(entity, damageSource)) {
                 double distance = Math.sqrt(entity.squaredDistanceTo(source)) / (getPower() * 2);
                 if (distance <= 1.0D) {
                     double dX = entity.getX() - this.x;
@@ -33,7 +34,10 @@ public class KnockbackExplosion extends CustomExplosion {
                         dX /= product;
                         dY /= product;
                         dZ /= product;
-                        double strength = (1 - distance) * getExposure(source, entity) * 3;
+                        double strength = (1 - distance) * getExposure(source, entity);
+                        if (entity instanceof PlayerEntity player) {
+                            getAffectedPlayers().put(player, new Vec3d(dX * strength, dY * strength, dZ * strength));
+                        }
                         if (entity instanceof LivingEntity living) {
                             strength *= 1 - living.getAttributeValue(EntityAttributes.GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE);
                         }

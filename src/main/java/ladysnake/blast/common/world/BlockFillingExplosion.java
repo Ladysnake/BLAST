@@ -1,8 +1,6 @@
 package ladysnake.blast.common.world;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.block.FluidFillable;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,7 +19,7 @@ public class BlockFillingExplosion extends CustomExplosion {
         for (BlockPos pos : affectedBlocks) {
             if (canPlace(pos)) {
                 BlockState state = world.getBlockState(pos);
-                if (state.isAir() || state.getBlock() instanceof FluidBlock || state.getBlock() instanceof FluidFillable) {
+                if (state.isReplaceable()) {
                     if (!world.isClient) {
                         world.setBlockState(pos, blockStateToPlace);
                     }

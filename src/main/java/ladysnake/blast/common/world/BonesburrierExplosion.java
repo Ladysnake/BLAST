@@ -83,8 +83,8 @@ public class BonesburrierExplosion extends CustomExplosion {
         int minZ = MathHelper.floor(z - power - 1);
         int maxZ = MathHelper.floor(z + power + 1);
         Vec3d source = new Vec3d(x, y, z);
-        for (Entity entity : world.getOtherEntities(entity, new Box(minX, minY, minZ, maxX, maxY, maxZ))) {
-            if (!entity.isImmuneToExplosion(this)) {
+        for (Entity entity : world.getOtherEntities(null, new Box(minX, minY, minZ, maxX, maxY, maxZ))) {
+            if (!entity.isImmuneToExplosion(this) && ProtectionsProvider.canDamageEntity(entity, damageSource)) {
                 double distance = Math.sqrt(entity.squaredDistanceTo(source)) / power;
                 if (distance <= 1) {
                     double dX = entity.getX() - x;
