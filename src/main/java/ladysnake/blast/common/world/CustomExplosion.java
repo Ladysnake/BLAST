@@ -9,7 +9,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -21,7 +20,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
@@ -40,7 +38,6 @@ public class CustomExplosion extends Explosion {
 
     @Override
     public void affectWorld(boolean particles) {
-        collectEntities();
         world.playSound(null, x, y, z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4, (1 + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
         boolean destroy = destructionType != DestructionType.KEEP;
         if (particles) {
@@ -138,12 +135,6 @@ public class CustomExplosion extends Explosion {
                     }
                 }
             }
-        }
-    }
-
-    public void collectEntities() {
-        for (BlockPos pos : affectedBlocks) {
-            affectedEntities.addAll(world.getEntitiesByClass(LivingEntity.class, new Box(pos).expand(1), LivingEntity::isAlive));
         }
     }
 

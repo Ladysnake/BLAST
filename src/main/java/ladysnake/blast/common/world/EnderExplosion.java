@@ -33,7 +33,6 @@ public class EnderExplosion extends CustomExplosion {
     @Override
     public void affectWorld(boolean particles) {
         BlockPos source = BlockPos.ofFloored(new Vec3d(x, y, z));
-        collectEntities();
         world.playSound(null, x, y, z, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.BLOCKS, 4, (1 + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.9F);
         ObjectArrayList<Pair<ItemStack, BlockPos>> destroyedBlocks = new ObjectArrayList<>();
         for (BlockPos pos : affectedBlocks) {

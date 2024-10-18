@@ -49,8 +49,12 @@ public class ExplosionMixin {
     }
 
     @WrapWithCondition(method = "collectBlocksAndDamageEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V"))
-    private boolean blast$enderItemVelocity(Entity instance, Vec3d velocity) {
-        return !((Object) this instanceof EnderExplosion);
+    private boolean blast$collect(Entity instance, Vec3d velocity) {
+        if ((Object) this instanceof CustomExplosion customExplosion) {
+            customExplosion.affectedEntities.add(instance);
+            return !(customExplosion instanceof EnderExplosion);
+        }
+        return true;
     }
 
     @Unique
