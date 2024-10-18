@@ -25,7 +25,7 @@ public class ShrapnelBlockEntity extends FallingBlockEntity {
 
     private ShrapnelBlockEntity(World world, double x, double y, double z, BlockState block, @Nullable PlayerEntity owner) {
         this(EntityType.FALLING_BLOCK, world);
-        ((FallingBlockEntityAccessor) this).setBlock(block);
+        ((FallingBlockEntityAccessor) this).blast$setBlock(block);
         intersectionChecked = true;
         setPosition(x, y, z);
         setVelocity(Vec3d.ZERO);
