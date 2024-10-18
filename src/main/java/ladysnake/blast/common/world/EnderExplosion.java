@@ -1,17 +1,26 @@
 package ladysnake.blast.common.world;
 
+import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import ladysnake.blast.common.util.ProtectionsProvider;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.FoxEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EnderExplosion extends CustomExplosion {
@@ -23,12 +32,23 @@ public class EnderExplosion extends CustomExplosion {
 
     @Override
     public void affectWorld(boolean particles) {
+        BlockPos source = BlockPos.ofFloored(new Vec3d(x, y, z));
         collectEntities();
         world.playSound(null, x, y, z, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.BLOCKS, 4, (1 + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.9F);
+        ObjectArrayList<Pair<ItemStack, BlockPos>> destroyedBlocks = new ObjectArrayList<>();
         for (BlockPos pos : affectedBlocks) {
             if (canExplode(pos)) {
-                if (!world.getBlockState(pos).isAir()) {
-                    if (world.isClient) {
+                BlockState state = world.getBlockState(pos);
+                if (!state.isAir()) {
+                    world.getProfiler().push("explosion_blocks");
+                    if (world instanceof ServerWorld serverWorld) {
+                        if (state.getBlock().shouldDropItemsOnExplosion(this)) {
+                            ItemStack stack = Items.NETHERITE_PICKAXE.getDefaultStack();
+                            stack.addEnchantment(world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.SILK_TOUCH), 1);
+                            state.getDroppedStacks(getBuilder(serverWorld, pos, stack, world.getBlockEntity(pos) != null ? world.getBlockEntity(pos) : null)).forEach(droppedStack -> tryMergeStack(destroyedBlocks, droppedStack, source));
+                        }
+                        world.setBlockState(pos, Blocks.AIR.getDefaultState());
+                    } else {
                         for (int x = 0; x <= 1; x += PARTICLE_DISTANCE) {
                             for (int y = 0; y <= 1; y += PARTICLE_DISTANCE) {
                                 for (int z = 0; z <= 1; z += PARTICLE_DISTANCE) {
@@ -36,12 +56,13 @@ public class EnderExplosion extends CustomExplosion {
                                 }
                             }
                         }
-                    } else {
-                        world.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
+                    state.getBlock().onDestroyedByExplosion(world, pos, this);
+                    world.getProfiler().pop();
                 }
             }
         }
+        destroyedBlocks.forEach(pair -> Block.dropStack(world, pair.getSecond(), pair.getFirst()));
         if (!world.isClient) {
             for (Entity foundEntity : affectedEntities) {
                 if (ProtectionsProvider.canInteractEntity(foundEntity, damageSource) && foundEntity instanceof LivingEntity living) {

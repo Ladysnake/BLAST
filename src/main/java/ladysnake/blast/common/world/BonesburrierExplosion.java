@@ -9,7 +9,6 @@ import ladysnake.blast.common.util.ProtectionsProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
@@ -17,8 +16,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContextParameterSet;
-import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -143,19 +140,11 @@ public class BonesburrierExplosion extends CustomExplosion {
                     BlockState state = world.getBlockState(pos);
                     if (!state.isAir()) {
                         world.getProfiler().push("explosion_blocks");
-                        if (state.getBlock().shouldDropItemsOnExplosion(this) && world instanceof ServerWorld serverWorld) {
-                            BlockEntity blockEntity = state.hasBlockEntity() ? world.getBlockEntity(pos) : null;
-                            LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder(serverWorld)
-                                .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos))
-                                .add(LootContextParameters.TOOL, ItemStack.EMPTY)
-                                .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
-                                .addOptional(LootContextParameters.THIS_ENTITY, entity);
-                            if (destructionType == DestructionType.DESTROY) {
-                                builder.add(LootContextParameters.EXPLOSION_RADIUS, getPower());
+                        if (world instanceof ServerWorld serverWorld) {
+                            if (state.getBlock().shouldDropItemsOnExplosion(this)) {
+                                state.getDroppedStacks(getBuilder(serverWorld, pos, ItemStack.EMPTY, state.hasBlockEntity() ? world.getBlockEntity(pos) : null)).forEach(stack -> tryMergeStack(destroyedBlocks, stack, pos.toImmutable()));
                             }
-                            state.getDroppedStacks(builder).forEach(stack -> tryMergeStack(destroyedBlocks, stack, pos.toImmutable()));
-                        }
-                        if (!world.isClient()) {
+                            // shrapnel
                             PlayerEntity owner = null;
                             if (damageSource.getSource() instanceof BombEntity bomb && bomb.getOwner() instanceof PlayerEntity player) {
                                 owner = player;

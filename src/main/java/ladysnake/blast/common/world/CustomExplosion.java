@@ -84,23 +84,15 @@ public class CustomExplosion extends Explosion {
                         canDestroy = false;
                     }
                     if (canDestroy) {
-                        if (state.getBlock().shouldDropItemsOnExplosion(this) && world instanceof ServerWorld serverWorld) {
-                            BlockEntity blockEntity = world.getBlockEntity(pos) != null ? world.getBlockEntity(pos) : null;
-                            ItemStack stack = Items.NETHERITE_PICKAXE.getDefaultStack();
-                            if (effect == BlockBreakEffect.FORTUNE) {
-                                stack.addEnchantment(world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.FORTUNE), 3);
+                        world.getProfiler().push("explosion_blocks");
+                        if (world instanceof ServerWorld serverWorld) {
+                            if (state.getBlock().shouldDropItemsOnExplosion(this)) {
+                                ItemStack stack = Items.NETHERITE_PICKAXE.getDefaultStack();
+                                if (effect == BlockBreakEffect.FORTUNE) {
+                                    stack.addEnchantment(world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.FORTUNE), 3);
+                                }
+                                state.getDroppedStacks(getBuilder(serverWorld, pos, stack, world.getBlockEntity(pos) != null ? world.getBlockEntity(pos) : null)).forEach(droppedStack -> tryMergeStack(destroyedBlocks, droppedStack, pos.toImmutable()));
                             }
-                            LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder(serverWorld)
-                                .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos))
-                                .add(LootContextParameters.TOOL, stack)
-                                .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
-                                .addOptional(LootContextParameters.THIS_ENTITY, entity);
-                            if (destructionType == DestructionType.DESTROY) {
-                                builder.add(LootContextParameters.EXPLOSION_RADIUS, getPower());
-                            }
-                            state.getDroppedStacks(builder).forEach(droppedStack -> tryMergeStack(destroyedBlocks, droppedStack, pos.toImmutable()));
-                        }
-                        if (!world.isClient) {
                             BlockState toPlace = Blocks.AIR.getDefaultState();
                             if (effect == BlockBreakEffect.FROSTY) {
                                 toPlace = BlastBlocks.DRY_ICE.getDefaultState();
@@ -157,6 +149,18 @@ public class CustomExplosion extends Explosion {
 
     public boolean shouldDamageEntities() {
         return true;
+    }
+
+    protected LootContextParameterSet.Builder getBuilder(ServerWorld serverWorld, BlockPos pos, ItemStack stack, BlockEntity blockEntity) {
+        LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder(serverWorld)
+            .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos))
+            .add(LootContextParameters.TOOL, stack)
+            .addOptional(LootContextParameters.BLOCK_ENTITY, blockEntity)
+            .addOptional(LootContextParameters.THIS_ENTITY, entity);
+        if (destructionType == DestructionType.DESTROY) {
+            builder.add(LootContextParameters.EXPLOSION_RADIUS, getPower());
+        }
+        return builder;
     }
 
     protected boolean canExplode(BlockPos blockPos) {
