@@ -36,7 +36,8 @@ public class BonesburrierExplosion extends CustomExplosion {
 
     @Override
     public void collectBlocksAndDamageEntities() {
-        world.emitGameEvent(entity, GameEvent.EXPLODE, BlockPos.ofFloored(x, y, z));
+        Vec3d source = getPosition();
+        world.emitGameEvent(entity, GameEvent.EXPLODE, BlockPos.ofFloored(source.x, source.y, source.z));
         Set<BlockPos> set = new HashSet<>();
         BlockPos.Mutable mutable = new BlockPos.Mutable();
         for (int i = 0; i < 16; i++) {
@@ -50,9 +51,9 @@ public class BonesburrierExplosion extends CustomExplosion {
                         iX /= product;
                         jX /= product;
                         kX /= product;
-                        double dX = x;
-                        double dY = y;
-                        double dZ = z;
+                        double dX = source.x;
+                        double dY = source.y;
+                        double dZ = source.z;
                         for (float currentPower = getPower() * (0.7f + world.random.nextFloat() * 0.6f); currentPower > 0.0f; currentPower -= 0.22500001f) {
                             mutable.set(dX, dY, dZ);
                             if (!world.isInBuildLimit(mutable)) {
@@ -74,22 +75,21 @@ public class BonesburrierExplosion extends CustomExplosion {
                 }
             }
         }
-        affectedBlocks.addAll(set);
+        getAffectedBlocks().addAll(set);
         float power = getPower() * 2;
-        int minX = MathHelper.floor(x - power - 1);
-        int maxX = MathHelper.floor(x + power + 1);
-        int minY = MathHelper.floor(y - power - 1);
-        int maxY = MathHelper.floor(y + power + 1);
-        int minZ = MathHelper.floor(z - power - 1);
-        int maxZ = MathHelper.floor(z + power + 1);
-        Vec3d source = new Vec3d(x, y, z);
+        int minX = MathHelper.floor(source.x - power - 1);
+        int maxX = MathHelper.floor(source.x + power + 1);
+        int minY = MathHelper.floor(source.y - power - 1);
+        int maxY = MathHelper.floor(source.y + power + 1);
+        int minZ = MathHelper.floor(source.z - power - 1);
+        int maxZ = MathHelper.floor(source.z + power + 1);
         for (Entity entity : world.getOtherEntities(null, new Box(minX, minY, minZ, maxX, maxY, maxZ))) {
             if (!entity.isImmuneToExplosion(this) && ProtectionsProvider.canDamageEntity(entity, damageSource)) {
                 double distance = Math.sqrt(entity.squaredDistanceTo(source)) / power;
                 if (distance <= 1) {
-                    double dX = entity.getX() - x;
-                    double dY = (entity instanceof TntEntity ? entity.getY() : entity.getEyeY()) - y;
-                    double dZ = entity.getZ() - z;
+                    double dX = entity.getX() - source.x;
+                    double dY = (entity instanceof TntEntity ? entity.getY() : entity.getEyeY()) - source.y;
+                    double dZ = entity.getZ() - source.z;
                     double product = Math.sqrt(dX * dX + dY * dY + dZ * dZ);
                     if (product != 0) {
                         dX /= product;
@@ -122,20 +122,20 @@ public class BonesburrierExplosion extends CustomExplosion {
 
     @Override
     public void affectWorld(boolean particles) {
-        world.playSound(null, x, y, z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4, (1 + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
+        Vec3d source = getPosition();
+        world.playSound(null, source.x, source.y, source.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4, (1 + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
         boolean destroy = destructionType != DestructionType.KEEP;
         if (particles) {
             if (getPower() >= 2 && destroy) {
-                world.addParticle(ParticleTypes.EXPLOSION_EMITTER, x, y, z, 1, 0, 0);
+                world.addParticle(ParticleTypes.EXPLOSION_EMITTER, source.x, source.y, source.z, 1, 0, 0);
             } else {
-                world.addParticle(ParticleTypes.EXPLOSION, x, y, z, 1, 0, 0);
+                world.addParticle(ParticleTypes.EXPLOSION, source.x, source.y, source.z, 1, 0, 0);
             }
         }
         if (destroy) {
-            Util.shuffle(affectedBlocks, world.random);
-            Vec3d source = new Vec3d(x, y, z);
+            Util.shuffle(getAffectedBlocks(), world.random);
             ObjectArrayList<Pair<ItemStack, BlockPos>> destroyedBlocks = new ObjectArrayList<>();
-            for (BlockPos pos : affectedBlocks) {
+            for (BlockPos pos : getAffectedBlocks()) {
                 if (canPlace(pos) && canExplode(pos)) {
                     BlockState state = world.getBlockState(pos);
                     if (!state.isAir()) {
@@ -163,7 +163,7 @@ public class BonesburrierExplosion extends CustomExplosion {
                                     BlockState adjacentBlockState = world.getBlockState(mutable.set(pos, direction));
                                     FluidState fluidState = world.getFluidState(mutable.set(pos, direction));
                                     Optional<Float> optional = behavior.getBlastResistance(this, world, mutable.set(pos, direction), adjacentBlockState, fluidState);
-                                    if (optional.isPresent() && optional.get() < 1200 && !affectedBlocks.contains(mutable.set(pos, direction))) {
+                                    if (optional.isPresent() && optional.get() < 1200 && !getAffectedBlocks().contains(mutable.set(pos, direction))) {
                                         world.setBlockState(mutable.set(pos, direction), BlastBlocks.FOLLY_RED_PAINT.getDefaultState());
                                     }
                                 }

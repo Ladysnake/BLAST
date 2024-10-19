@@ -38,27 +38,28 @@ public class CustomExplosion extends Explosion {
 
     @Override
     public void affectWorld(boolean particles) {
-        world.playSound(null, x, y, z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4, (1 + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
+        Vec3d source = getPosition();
+        world.playSound(null, source.x, source.y, source.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4, (1 + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
         boolean destroy = destructionType != DestructionType.KEEP;
         if (particles) {
             if (getPower() >= 2 && destroy) {
-                world.addParticle(ParticleTypes.EXPLOSION_EMITTER, x, y, z, 1, 0, 0);
+                world.addParticle(ParticleTypes.EXPLOSION_EMITTER, source.x, source.y, source.z, 1, 0, 0);
             } else {
-                world.addParticle(ParticleTypes.EXPLOSION, x, y, z, 1, 0, 0);
+                world.addParticle(ParticleTypes.EXPLOSION, source.x, source.y, source.z, 1, 0, 0);
             }
         }
         if (destroy) {
             ObjectArrayList<Pair<ItemStack, BlockPos>> destroyedBlocks = new ObjectArrayList<>();
-            for (BlockPos pos : affectedBlocks) {
+            for (BlockPos pos : getAffectedBlocks()) {
                 if (canExplode(pos)) {
                     BlockState state = world.getBlockState(pos);
                     if (particles) {
                         double rX = pos.getX() + world.random.nextFloat();
                         double rY = pos.getY() + world.random.nextFloat();
                         double rZ = pos.getZ() + world.random.nextFloat();
-                        double dX = rX - x;
-                        double dY = rY - y;
-                        double dZ = rZ - z;
+                        double dX = rX - source.x;
+                        double dY = rY - source.y;
+                        double dZ = rZ - source.z;
                         double product = Math.sqrt(dX * dX + dY * dY + dZ * dZ);
                         dX /= product;
                         dY /= product;
@@ -69,10 +70,10 @@ public class CustomExplosion extends Explosion {
                         dY *= multiplier;
                         dZ *= multiplier;
                         if (state.getFluidState().isEmpty()) {
-                            world.addParticle(ParticleTypes.POOF, (rX + x) / 2, (rY + y) / 2, (rZ + z) / 2, dX, dY, dZ);
+                            world.addParticle(ParticleTypes.POOF, (rX + source.x) / 2, (rY + source.y) / 2, (rZ + source.z) / 2, dX, dY, dZ);
                             world.addParticle(ParticleTypes.SMOKE, rX, rY, rZ, dX, dY, dZ);
                         } else {
-                            world.addParticle(ParticleTypes.BUBBLE, (rX + x) / 2, (rY + y) / 2, (rZ + z) / 2, dX, dY, dZ);
+                            world.addParticle(ParticleTypes.BUBBLE, (rX + source.x) / 2, (rY + source.y) / 2, (rZ + source.z) / 2, dX, dY, dZ);
                             world.addParticle(ParticleTypes.BUBBLE_POP, rX, rY, rZ, dX, dY, dZ);
                         }
                     }
@@ -128,7 +129,7 @@ public class CustomExplosion extends Explosion {
             destroyedBlocks.forEach(pair -> Block.dropStack(world, pair.getSecond(), pair.getFirst()));
         }
         if (effect == BlockBreakEffect.FIERY) {
-            for (BlockPos pos : affectedBlocks) {
+            for (BlockPos pos : getAffectedBlocks()) {
                 if (!world.isClient && canPlace(pos)) {
                     if (random.nextInt(3) == 0 && world.getBlockState(pos).isAir() && world.getBlockState(pos.down()).isOpaqueFullCube(world, pos.down())) {
                         world.setBlockState(pos, AbstractFireBlock.getState(world, pos));

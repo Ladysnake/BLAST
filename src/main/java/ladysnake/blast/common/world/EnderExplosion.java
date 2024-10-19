@@ -32,10 +32,11 @@ public class EnderExplosion extends CustomExplosion {
 
     @Override
     public void affectWorld(boolean particles) {
-        BlockPos source = BlockPos.ofFloored(new Vec3d(x, y, z));
-        world.playSound(null, x, y, z, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.BLOCKS, 4, (1 + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.9F);
+        Vec3d source = getPosition();
+        BlockPos blockSource = BlockPos.ofFloored(source);
+        world.playSound(null, source.x, source.y, source.z, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.BLOCKS, 4, (1 + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.9F);
         ObjectArrayList<Pair<ItemStack, BlockPos>> destroyedBlocks = new ObjectArrayList<>();
-        for (BlockPos pos : affectedBlocks) {
+        for (BlockPos pos : getAffectedBlocks()) {
             if (canExplode(pos)) {
                 BlockState state = world.getBlockState(pos);
                 if (!state.isAir()) {
@@ -53,7 +54,7 @@ public class EnderExplosion extends CustomExplosion {
                         if (state.getBlock().shouldDropItemsOnExplosion(this)) {
                             ItemStack stack = Items.NETHERITE_PICKAXE.getDefaultStack();
                             stack.addEnchantment(world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.SILK_TOUCH), 1);
-                            state.getDroppedStacks(getBuilder(serverWorld, pos, stack, world.getBlockEntity(pos) != null ? world.getBlockEntity(pos) : null)).forEach(droppedStack -> tryMergeStack(destroyedBlocks, droppedStack, source));
+                            state.getDroppedStacks(getBuilder(serverWorld, pos, stack, world.getBlockEntity(pos) != null ? world.getBlockEntity(pos) : null)).forEach(droppedStack -> tryMergeStack(destroyedBlocks, droppedStack, blockSource));
                         }
                         world.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }

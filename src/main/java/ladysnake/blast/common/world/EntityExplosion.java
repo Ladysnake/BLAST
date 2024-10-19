@@ -26,7 +26,7 @@ public class EntityExplosion extends CustomExplosion {
                 if (entity instanceof ProjectileEntity projectileEntity) {
                     projectileEntity.setOwner(this.entity);
                 }
-                entity.setPosition(this.x, this.y, this.z);
+                entity.setPosition(getPosition());
                 entity.setVelocity(random.nextGaussian() * velocity, random.nextGaussian() * velocity, random.nextGaussian() * velocity);
                 world.spawnEntity(entity);
             }

@@ -16,7 +16,7 @@ public class BlockFillingExplosion extends CustomExplosion {
     @Override
     public void affectWorld(boolean particles) {
         super.affectWorld(particles);
-        for (BlockPos pos : affectedBlocks) {
+        for (BlockPos pos : getAffectedBlocks()) {
             if (canPlace(pos)) {
                 BlockState state = world.getBlockState(pos);
                 if (state.isReplaceable()) {
