@@ -8,6 +8,7 @@
 	"EnderEyeItemMixin",
 	"ExplosionMixin",
 	"FallingBlockEntityAccessor",
+	"ItemEntityMixin",
 	"PersistentProjectileEntityMixin"
   ],
   "client": [

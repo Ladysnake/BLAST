@@ -41,10 +41,10 @@ public class PipeBombItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if (!world.isClient && stack.getOrDefault(BlastComponentTypes.PRIMED, false) && entity instanceof PlayerEntity player) {
-            for (int i = 0; i < stack.getCount(); i++) {
+            while (!stack.isEmpty()) {
                 spawn(world, stack.copyWithCount(1), player, 0);
+                stack.decrement(1);
             }
-            stack.decrement(stack.getCount());
         }
     }
 
