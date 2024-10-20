@@ -1,7 +1,12 @@
 ------------------------------------------------------
-BLAST 1.13 - 1.21
+BLAST 1.13 - 1.21.1
 ------------------------------------------------------
-- Ported to Minecraft 1.21 thanks to MoriyaShiine!
+Update all thanks to MoriyaShiine!
+- Updated to Minecraft 1.21.1
+- Added pipe bomb functionality and recipe
+- Moved amethyst bombs from tools tab to combat tab
+- Added custom bomb fuse time component
+- Massive code cleanup
 
 ------------------------------------------------------
 BLAST 1.13 - 1.20
