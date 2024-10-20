@@ -1,12 +1,9 @@
 package ladysnake.blast.common.world;
 
-import com.mojang.datafixers.util.Pair;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.entity.ShrapnelBlockEntity;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.util.ProtectionsProvider;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -15,9 +12,7 @@ import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Util;
@@ -134,16 +129,12 @@ public class BonesburrierExplosion extends CustomExplosion {
         }
         if (destroy) {
             Util.shuffle(getAffectedBlocks(), world.random);
-            ObjectArrayList<Pair<ItemStack, BlockPos>> destroyedBlocks = new ObjectArrayList<>();
             for (BlockPos pos : getAffectedBlocks()) {
                 if (canPlace(pos) && canExplode(pos)) {
                     BlockState state = world.getBlockState(pos);
                     if (!state.isAir()) {
                         world.getProfiler().push("explosion_blocks");
-                        if (world instanceof ServerWorld serverWorld) {
-                            if (state.getBlock().shouldDropItemsOnExplosion(this)) {
-                                state.getDroppedStacks(getBuilder(serverWorld, pos, ItemStack.EMPTY, state.hasBlockEntity() ? world.getBlockEntity(pos) : null)).forEach(stack -> tryMergeStack(destroyedBlocks, stack, pos));
-                            }
+                        if (!world.isClient) {
                             // shrapnel
                             PlayerEntity owner = null;
                             if (damageSource.getSource() instanceof BombEntity bomb && bomb.getOwner() instanceof PlayerEntity player) {
@@ -174,7 +165,6 @@ public class BonesburrierExplosion extends CustomExplosion {
                     }
                 }
             }
-            destroyedBlocks.forEach(pair -> Block.dropStack(world, pair.getSecond(), pair.getFirst()));
         }
     }
 }
