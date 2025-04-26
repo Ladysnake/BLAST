@@ -40,8 +40,6 @@ public class BlastEntities {
     public static EntityType<IcicleEntity> ICICLE = registerEntityType("icicle", EntityType.Builder.create(IcicleEntity::new, SpawnGroup.MISC).dimensions(0.5f, 0.5f));
 
     public static void init() {
-        // custom falling block entity (Needed for claims protection)
-        registerEntityType("shrapnel_block", EntityType.Builder.create(ShrapnelBlockEntity::new, SpawnGroup.MISC).dimensions(1, 1));
     }
 
     private static <T extends Entity> EntityType.Builder<T> createBombEntityType(EntityType.EntityFactory<T> factory) {
