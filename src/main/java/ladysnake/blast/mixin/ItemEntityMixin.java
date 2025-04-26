@@ -7,6 +7,7 @@ import ladysnake.blast.common.init.BlastItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,7 +29,7 @@ public abstract class ItemEntityMixin extends Entity {
     private void blast$pipeBomb(CallbackInfo ci) {
         if (getStack().isOf(BlastItems.PIPE_BOMB) && getStack().getOrDefault(BlastComponentTypes.PRIMED, false)) {
             while (!getStack().isEmpty()) {
-                PipeBombEntity pipeBomb = BlastEntities.PIPE_BOMB.create(getWorld());
+                PipeBombEntity pipeBomb = BlastEntities.PIPE_BOMB.create(getWorld(), SpawnReason.SPAWN_ITEM_USE);
                 pipeBomb.setPosition(getPos());
                 pipeBomb.setVelocity(getVelocity());
                 pipeBomb.setItem(getStack().copyWithCount(1));

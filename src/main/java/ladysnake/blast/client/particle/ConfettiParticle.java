@@ -61,14 +61,14 @@ public class ConfettiParticle extends SpriteBillboardParticle {
     }
 
     @Override
-    public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
+    public void render(VertexConsumer vertexConsumer, Camera camera, float tickProgress) {
         Vec3d cameraPos = camera.getPos();
-        float x = (float) (MathHelper.lerp(tickDelta, this.prevPosX, this.x) - cameraPos.getX());
-        float y = (float) (MathHelper.lerp(tickDelta, this.prevPosY, this.y) - cameraPos.getY());
-        float z = (float) (MathHelper.lerp(tickDelta, this.prevPosZ, this.z) - cameraPos.getZ());
+        float x = (float) (MathHelper.lerp(tickProgress, this.lastX, this.x) - cameraPos.getX());
+        float y = (float) (MathHelper.lerp(tickProgress, this.lastY, this.y) - cameraPos.getY());
+        float z = (float) (MathHelper.lerp(tickProgress, this.lastZ, this.z) - cameraPos.getZ());
 
         Vector3f[] Vec3fs = new Vector3f[]{new Vector3f(-1, -1, 0), new Vector3f(-1, 1, 0), new Vector3f(1, 1, 0), new Vector3f(1, -1, 0)};
-        float siZe = this.getSize(tickDelta);
+        float siZe = this.getSize(tickProgress);
 
         if (!this.onGround) {
             rotationX += rotationXmod;
@@ -97,7 +97,7 @@ public class ConfettiParticle extends SpriteBillboardParticle {
         float maxU = this.getMaxU();
         float minV = this.getMinV();
         float maxV = this.getMaxV();
-        int light = this.getBrightness(tickDelta);
+        int light = this.getBrightness(tickProgress);
 
         vertexConsumer.vertex(Vec3fs[0].x(), Vec3fs[0].y(), Vec3fs[0].z()).texture(maxU, maxV).color(red, green, blue, alpha).light(light);
         vertexConsumer.vertex(Vec3fs[1].x(), Vec3fs[1].y(), Vec3fs[1].z()).texture(maxU, minV).color(red, green, blue, alpha).light(light);
@@ -130,9 +130,9 @@ public class ConfettiParticle extends SpriteBillboardParticle {
 
     @Override
     public void tick() {
-        this.prevPosX = this.x;
-        this.prevPosY = this.y;
-        this.prevPosZ = this.z;
+        this.lastX = this.x;
+        this.lastY = this.y;
+        this.lastZ = this.z;
         if (this.age++ >= this.maxAge) {
             this.markDead();
         } else {
@@ -144,7 +144,7 @@ public class ConfettiParticle extends SpriteBillboardParticle {
                     this.velocityY -= 0.04D * (double) this.gravityStrength;
                     ((ParticleAccessor) this).setStopped(false);
                     this.move(this.velocityX, this.velocityY, this.velocityZ);
-                    if (this.ascending && this.y == this.prevPosY) {
+                    if (this.ascending && this.y == this.lastY) {
                         this.velocityX *= 1.1D;
                         this.velocityZ *= 1.1D;
                     }

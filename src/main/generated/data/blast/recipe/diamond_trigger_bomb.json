@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
   "ingredients": [
-	{
-	  "item": "minecraft:gunpowder"
-	},
-	{
-	  "tag": "c:gems/diamond"
-	},
-	{
-	  "tag": "c:dusts/redstone"
-	}
+	"minecraft:gunpowder",
+	"#c:gems/diamond",
+	"#c:dusts/redstone"
   ],
   "result": {
 	"count": 4,

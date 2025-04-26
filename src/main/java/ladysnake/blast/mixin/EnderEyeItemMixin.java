@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EnderEyeItem.class)
 public class EnderEyeItemMixin {
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
-    private void blast$remoteDetonator(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> callbackInfoReturnable) {
+    private void blast$remoteDetonator(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         BlockPos hitPos = world.raycast(new RaycastContext(user.getEyePos(), user.getEyePos().add(user.getRotationVector().multiply(160)), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, user)).getBlockPos();
 
         BlockPos closestDetonatorPos = null;
@@ -37,13 +37,13 @@ public class EnderEyeItemMixin {
 
         if (closestDetonatorPos != null) {
             ItemStack stack = user.getStackInHand(hand);
-            user.getItemCooldownManager().set(stack.getItem(), 20);
+            user.getItemCooldownManager().set(stack, 20);
             stack.decrementUnlessCreative(1, user);
             world.playSound(null, user.getBlockPos(), SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.PLAYERS, 1, 1);
             if (world instanceof ServerWorld serverWorld) {
                 RemoteDetonatorBlock.trigger(serverWorld, closestDetonatorPos);
             }
-            callbackInfoReturnable.setReturnValue(TypedActionResult.success(stack));
+            cir.setReturnValue(ActionResult.SUCCESS);
         }
     }
 }

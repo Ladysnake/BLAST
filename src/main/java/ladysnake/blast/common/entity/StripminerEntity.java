@@ -4,18 +4,19 @@ import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.block.StripminerBlock;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntities;
-import ladysnake.blast.common.world.CustomExplosion;
+import ladysnake.blast.common.world.explosion.CustomExplosionBehavior;
+import ladysnake.blast.common.world.explosion.StripMinerExplosionBehavior;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.item.Item;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 
 public class StripminerEntity extends BombEntity {
     protected static final TrackedData<Direction> FACING = DataTracker.registerData(StripminerEntity.class, Blast.FACING);
@@ -25,7 +26,12 @@ public class StripminerEntity extends BombEntity {
     public StripminerEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
         setFuse(80);
-        setExplosionRadius(2.5f);
+        setExplosionPower(2.5f);
+    }
+
+    @Override
+    protected CustomExplosionBehavior getExplosionBehavior() {
+        return StripMinerExplosionBehavior.INSTANCE;
     }
 
     @Override
@@ -34,9 +40,8 @@ public class StripminerEntity extends BombEntity {
         mutable.set(getBlockPos());
         for (int i = 0; i <= 24; i++) {
             if (getWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(getWorld(), this, mutable.getX() + 0.5, mutable.getY() + 0.5, mutable.getZ() + 0.5, getExplosionRadius(), null, Explosion.DestructionType.DESTROY);
-                explosion.collectBlocksAndDamageEntities();
-                explosion.affectWorld(getWorld().isClient);
+                CustomExplosionBehavior behavior = getExplosionBehavior();
+                createExplosion(behavior, mutable.toCenterPos(), behavior.getPower().orElse(getExplosionPower()), ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE.value());
             } else {
                 break;
             }

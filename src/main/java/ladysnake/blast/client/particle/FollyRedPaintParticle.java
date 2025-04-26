@@ -24,9 +24,9 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
 
     @Override
     public void tick() {
-        this.prevPosX = this.x;
-        this.prevPosY = this.y;
-        this.prevPosZ = this.z;
+        this.lastX = this.x;
+        this.lastY = this.y;
+        this.lastZ = this.z;
         this.updateAge();
         if (this.dead) {
             return;
@@ -126,7 +126,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         protected void updateAge() {
             if (this.maxAge-- <= 0) {
                 this.markDead();
-                this.world.addParticle(this.nextParticle, this.x, this.y, this.z, this.velocityX, this.velocityY, this.velocityZ);
+                this.world.addParticleClient(this.nextParticle, this.x, this.y, this.z, this.velocityX, this.velocityY, this.velocityZ);
             }
         }
 
@@ -151,7 +151,7 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
         protected void updateVelocity() {
             if (this.onGround) {
                 this.markDead();
-                this.world.addParticle(this.nextParticle, this.x, this.y, this.z, 0, 0, 0);
+                this.world.addParticleClient(this.nextParticle, this.x, this.y, this.z, 0, 0, 0);
             }
         }
     }

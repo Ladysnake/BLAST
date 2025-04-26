@@ -51,10 +51,10 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
     @Override
     public void tick() {
         super.tick();
-        if (inGround) {
+        if (isInGround()) {
             if (ticksUntilRemoval == -1) {
                 for (int i = 0; i < 8; ++i) {
-                    getWorld().addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(getBreakItemParticle(), 1)), getX() + random.nextGaussian() / 20f, getY() + random.nextGaussian() / 20f, getZ() + random.nextGaussian() / 20f, random.nextGaussian() / 20f, 0.2D + random.nextGaussian() / 20f, random.nextGaussian() / 20f);
+                    getWorld().addParticleClient(new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(getBreakItemParticle(), 1)), getX() + random.nextGaussian() / 20f, getY() + random.nextGaussian() / 20f, getZ() + random.nextGaussian() / 20f, random.nextGaussian() / 20f, 0.2D + random.nextGaussian() / 20f, random.nextGaussian() / 20f);
                 }
                 ticksUntilRemoval = 2;
             }
@@ -68,7 +68,7 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
         if (age < 10) {
             for (LivingEntity livingEntity : getWorld().getEntitiesByClass(LivingEntity.class, getBoundingBox().expand(1f), LivingEntity::isAlive)) {
                 onEntityHit(new EntityHitResult(livingEntity));
-                kill();
+                discard();
             }
         }
     }
@@ -81,15 +81,13 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
         if (owner instanceof LivingEntity living) {
             living.onAttacking(entity);
         }
-        if (entity.getType() != EntityType.ENDERMAN && entity.damage(damageSource, (float) getDamage())) {
+        if (entity.getType() != EntityType.ENDERMAN && getWorld() instanceof ServerWorld world && entity.damage(world, damageSource, (float) damage)) {
             if (isOnFire()) {
                 entity.setOnFireFor(5);
             }
             if (entity instanceof LivingEntity living) {
-                if (getWorld() instanceof ServerWorld serverWorld) {
-                    EnchantmentHelper.onTargetDamaged(serverWorld, living, damageSource);
-                }
                 onHit(living);
+                EnchantmentHelper.onTargetDamaged(world, living, damageSource);
                 if (living != owner && living instanceof PlayerEntity && owner instanceof ServerPlayerEntity serverPlayer && !isSilent()) {
                     serverPlayer.networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.PROJECTILE_HIT_PLAYER, GameStateChangeS2CPacket.DEMO_OPEN_SCREEN));
                 }

@@ -1,6 +1,7 @@
 package ladysnake.blast.common;
 
 import ladysnake.blast.common.init.*;
+import moriyashiine.strawberrylib.api.SLib;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -26,6 +27,7 @@ public class Blast implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        SLib.init(MODID);
         TrackedDataHandlerRegistry.register(FACING);
         BlastEntities.init();
         BlastBlocks.init();

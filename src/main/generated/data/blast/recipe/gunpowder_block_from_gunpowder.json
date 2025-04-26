@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "gunpowder",
   "ingredients": [
-	{
-	  "item": "blast:gunpowder_block"
-	}
+	"blast:gunpowder_block"
   ],
   "result": {
 	"count": 9,

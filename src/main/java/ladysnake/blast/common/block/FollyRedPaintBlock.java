@@ -12,8 +12,8 @@ import net.minecraft.particle.ParticleUtil;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -30,7 +30,7 @@ public class FollyRedPaintBlock extends Block {
     }
 
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (canFreshen && stack.isOf(Items.HONEY_BOTTLE)) {
             if (world.isClient) {
                 ParticleUtil.spawnParticle(world, pos, BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, UniformIntProvider.create(3, 5));
@@ -40,7 +40,7 @@ public class FollyRedPaintBlock extends Block {
                 player.setStackInHand(hand, toGive);
             }
             world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-            return ItemActionResult.success(world.isClient);
+            return ActionResult.SUCCESS;
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
@@ -76,7 +76,7 @@ public class FollyRedPaintBlock extends Block {
         double dX = direction.getOffsetX() == 0 ? random.nextDouble() : 0.5 + direction.getOffsetX() * 0.6;
         double dY = direction.getOffsetY() == 0 ? random.nextDouble() : 0.5 + direction.getOffsetY() * 0.6;
         double dZ = direction.getOffsetZ() == 0 ? random.nextDouble() : 0.5 + direction.getOffsetZ() * 0.6;
-        world.addParticle(BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, pos.getX() + dX, pos.getY() + dY, pos.getZ() + dZ, 0.0, 0.0, 0.0);
+        world.addParticleClient(BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, pos.getX() + dX, pos.getY() + dY, pos.getZ() + dZ, 0.0, 0.0, 0.0);
     }
 }
 

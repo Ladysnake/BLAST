@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
   "ingredients": [
-	{
-	  "item": "minecraft:gunpowder"
-	},
-	{
-	  "tag": "c:ender_pearls"
-	},
-	{
-	  "tag": "c:dusts/redstone"
-	}
+	"minecraft:gunpowder",
+	"#c:ender_pearls",
+	"#c:dusts/redstone"
   ],
   "result": {
 	"count": 4,

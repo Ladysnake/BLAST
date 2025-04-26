@@ -14,16 +14,15 @@ import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.TntMinecartEntityRenderer;
+import net.minecraft.client.render.entity.state.TntEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 
 import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
-public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRenderer<T> {
+public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRenderer<T, TntEntityRenderState> {
 
     private final Function<T, BlockState> stateGetter;
     private final BlockRenderManager blockRenderManager;
@@ -37,29 +36,39 @@ public class BlastBlockEntityRenderer<T extends BombEntity> extends EntityRender
     }
 
     @Override
-    public void render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    public void render(TntEntityRenderState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         matrices.push();
-        matrices.translate(0.0D, 0.5D, 0.0D);
-        if ((float) entity.getFuseTimer() - tickDelta + 1.0F < 10.0F) {
-            float h = 1.0F - ((float) entity.getFuseTimer() - tickDelta + 1.0F) / 10.0F;
-            h = MathHelper.clamp(h, 0.0F, 1.0F);
-            h *= h;
-            h *= h;
-            float j = 1.0F + h * 0.3F;
-            matrices.scale(j, j, j);
+        matrices.translate(0.0F, 0.5F, 0.0F);
+        float f = state.fuse;
+        if (state.fuse < 10.0F) {
+            float g = 1.0F - state.fuse / 10.0F;
+            g = MathHelper.clamp(g, 0.0F, 1.0F);
+            g *= g;
+            g *= g;
+            float h = 1.0F + g * 0.3F;
+            matrices.scale(h, h, h);
         }
 
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-90.0F));
-        matrices.translate(-0.5D, -0.5D, 0.5D);
+        matrices.translate(-0.5F, -0.5F, 0.5F);
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90.0F));
+        if (state.blockState != null) {
+            TntMinecartEntityRenderer.renderFlashingBlock(blockRenderManager, state.blockState, matrices, vertexConsumers, light, (int) f / 5 % 2 == 0);
+        }
 
-        TntMinecartEntityRenderer.renderFlashingBlock(this.blockRenderManager, this.stateGetter.apply(entity), matrices, vertexConsumers, light, entity.getFuseTimer() / 5 % 2 == 0);
         matrices.pop();
-        super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
+        super.render(state, matrices, vertexConsumers, light);
     }
 
     @Override
-    public Identifier getTexture(T entity) {
-        return PlayerScreenHandler.BLOCK_ATLAS_TEXTURE;
+    public TntEntityRenderState createRenderState() {
+        return new TntEntityRenderState();
+    }
+
+    @Override
+    public void updateRenderState(T entity, TntEntityRenderState state, float tickProgress) {
+        super.updateRenderState(entity, state, tickProgress);
+        state.blockState = stateGetter.apply(entity);
+        state.fuse = entity.getFuseTimer();
     }
 }

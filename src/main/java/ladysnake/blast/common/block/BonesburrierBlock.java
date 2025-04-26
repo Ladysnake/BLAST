@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -13,12 +14,14 @@ import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.block.WireOrientation;
 import net.minecraft.world.explosion.Explosion;
+import org.jetbrains.annotations.Nullable;
 
 public class BonesburrierBlock extends Block implements DetonatableBlock {
     public BonesburrierBlock(Settings settings) {
@@ -35,7 +38,7 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
     }
 
     @Override
-    public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
+    public void onDestroyedByExplosion(ServerWorld world, BlockPos pos, Explosion explosion) {
         if (!world.isClient) {
             BombEntity bomb = prime(world, pos, explosion.getCausingEntity());
             bomb.setFuse(world.getRandom().nextInt(bomb.getFuseTimer() / 4) + bomb.getFuseTimer() / 8);
@@ -43,14 +46,14 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
     }
 
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
         if (world.isReceivingRedstonePower(pos)) {
             prime(world, pos, null);
         }
     }
 
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (stack.isOf(Items.FLINT_AND_STEEL) || stack.isOf(Items.FIRE_CHARGE)) {
             if (!world.isClient) {
                 prime(world, pos, player);
@@ -62,7 +65,7 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
                     stack.decrement(1);
                 }
             }
-            return ItemActionResult.success(world.isClient);
+            return ActionResult.SUCCESS;
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
@@ -90,7 +93,7 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
     }
 
     private BombEntity prime(World world, BlockPos pos, Entity igniter) {
-        BombEntity entity = BlastEntities.BONESBURRIER.create(world);
+        BombEntity entity = BlastEntities.BONESBURRIER.create(world, SpawnReason.TRIGGERED);
         entity.setOwner(igniter);
         entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
         world.spawnEntity(entity);

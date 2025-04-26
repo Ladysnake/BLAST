@@ -1,0 +1,6 @@
+{
+  "model": {
+	"type": "minecraft:model",
+	"model": "blast:item/trigger_bomb"
+  }
+}

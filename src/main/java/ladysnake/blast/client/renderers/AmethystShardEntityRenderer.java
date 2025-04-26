@@ -4,9 +4,10 @@ import ladysnake.blast.common.Blast;
 import ladysnake.blast.common.entity.projectiles.AmethystShardEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
+import net.minecraft.client.render.entity.state.ProjectileEntityRenderState;
 import net.minecraft.util.Identifier;
 
-public class AmethystShardEntityRenderer extends ProjectileEntityRenderer<AmethystShardEntity> {
+public class AmethystShardEntityRenderer extends ProjectileEntityRenderer<AmethystShardEntity, ProjectileEntityRenderState> {
     public static final Identifier TEXTURE = Blast.id("textures/entity/projectiles/amethyst_shard.png");
 
     public AmethystShardEntityRenderer(EntityRendererFactory.Context context) {
@@ -14,7 +15,12 @@ public class AmethystShardEntityRenderer extends ProjectileEntityRenderer<Amethy
     }
 
     @Override
-    public Identifier getTexture(AmethystShardEntity entity) {
+    public ProjectileEntityRenderState createRenderState() {
+        return new ProjectileEntityRenderState();
+    }
+
+    @Override
+    protected Identifier getTexture(ProjectileEntityRenderState state) {
         return TEXTURE;
     }
 }

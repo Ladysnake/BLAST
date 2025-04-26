@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-	"C": {
-	  "item": "minecraft:stonecutter"
-	},
-	"G": {
-	  "item": "blast:gunpowder_block"
-	},
-	"P": {
-	  "tag": "minecraft:planks"
-	},
-	"S": {
-	  "tag": "minecraft:wooden_slabs"
-	}
+	"C": "minecraft:stonecutter",
+	"G": "blast:gunpowder_block",
+	"P": "#minecraft:planks",
+	"S": "#minecraft:wooden_slabs"
   },
   "pattern": [
 	"PCP",

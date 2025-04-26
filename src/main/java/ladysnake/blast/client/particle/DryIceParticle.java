@@ -31,9 +31,9 @@ public class DryIceParticle extends SpriteBillboardParticle {
 
     @Override
     public void tick() {
-        this.prevPosX = this.x;
-        this.prevPosY = this.y;
-        this.prevPosZ = this.z;
+        this.lastX = this.x;
+        this.lastY = this.y;
+        this.lastZ = this.z;
 
         BlockPos pos = BlockPos.ofFloored(this.x, this.y, this.z);
 

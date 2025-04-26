@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -15,19 +16,22 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.minecraft.world.block.WireOrientation;
 import net.minecraft.world.explosion.Explosion;
+import org.jetbrains.annotations.Nullable;
 
 public class StripminerBlock extends Block implements DetonatableBlock {
-    public static final DirectionProperty FACING = DirectionProperty.of("facing", Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP, Direction.DOWN);
+    public static final EnumProperty<Direction> FACING = Properties.FACING;
     public final EntityType<? extends StripminerEntity> type;
 
     public StripminerBlock(Settings settings, EntityType<? extends StripminerEntity> type) {
@@ -63,7 +67,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     }
 
     @Override
-    public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
+    public void onDestroyedByExplosion(ServerWorld world, BlockPos pos, Explosion explosion) {
         if (!world.isClient) {
             StripminerEntity stripminer = prime(world, pos, explosion.getCausingEntity());
             stripminer.setFuse(world.random.nextInt(stripminer.getFuseTimer() / 4) + stripminer.getFuseTimer() / 8);
@@ -71,14 +75,14 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     }
 
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
         if (!world.isClient && world.isReceivingRedstonePower(pos)) {
             prime(world, pos, null);
         }
     }
 
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (stack.isOf(Items.FLINT_AND_STEEL) || stack.isOf(Items.FIRE_CHARGE)) {
             if (!world.isClient) {
                 prime(world, pos, player);
@@ -90,7 +94,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
                     stack.decrement(1);
                 }
             }
-            return ItemActionResult.success(world.isClient);
+            return ActionResult.SUCCESS;
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
@@ -123,7 +127,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     }
 
     private StripminerEntity prime(World world, BlockPos pos, Entity igniter) {
-        StripminerEntity entity = type.create(world);
+        StripminerEntity entity = type.create(world, SpawnReason.TRIGGERED);
         entity.setOwner(igniter);
         if (world.getBlockState(pos).getBlock() instanceof StripminerBlock) {
             entity.setFacing(world.getBlockState(pos).get(FACING));

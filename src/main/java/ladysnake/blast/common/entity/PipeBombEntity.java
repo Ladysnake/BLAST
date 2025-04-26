@@ -13,6 +13,7 @@ import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -34,6 +35,7 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     public PipeBombEntity(EntityType<PipeBombEntity> variant, World world) {
         super(variant, world);
         setFuse(MAX_FUSE);
+        setDamage(0);
     }
 
     @Override
@@ -42,14 +44,14 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
         if (!fireworks.isEmpty()) {
             stack.set(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.of(fireworks));
         }
-        nbt.put("Stack", stack.encode(getRegistryManager(), new NbtCompound()));
+        nbt.put("Stack", ItemStack.CODEC, getRegistryManager().getOps(NbtOps.INSTANCE), stack);
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         fireworks.clear();
-        stack = ItemStack.fromNbt(getRegistryManager(), nbt.getCompound("Stack")).orElse(getDefaultItemStack());
+        nbt.get("Stack", ItemStack.CODEC, getRegistryManager().getOps(NbtOps.INSTANCE)).ifPresentOrElse(stack -> this.stack = stack, () -> stack = getDefaultItemStack());
         if (stack.contains(DataComponentTypes.CHARGED_PROJECTILES)) {
             fireworks.addAll(stack.get(DataComponentTypes.CHARGED_PROJECTILES).getProjectiles());
         }
@@ -91,11 +93,6 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     @Override
     protected SoundEvent getHitSound() {
         return SoundEvents.BLOCK_COPPER_HIT;
-    }
-
-    @Override
-    public double getDamage() {
-        return 0;
     }
 
     @Override
@@ -161,7 +158,7 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
                     for (int i = 0; i < firework.getCount(); i++) {
                         FireworkRocketEntity rocket = new FireworkRocketEntity(world, getX() + randX, getY() + randY, getZ() + randZ, stack);
                         world.spawnEntity(rocket);
-                        rocket.explodeAndRemove();
+                        rocket.explodeAndRemove(world);
                         playSound(BlastSoundEvents.PIPE_BOMB_EXPLODE, 5, (float) (1 + random.nextGaussian() / 10f));
                     }
                     fireworks.removeFirst();

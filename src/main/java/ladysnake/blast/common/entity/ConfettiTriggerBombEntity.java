@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 public class ConfettiTriggerBombEntity extends TriggerBombEntity {
     public ConfettiTriggerBombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        setExplosionRadius(500);
+        setExplosionPower(500);
     }
 
     @Override
@@ -24,10 +24,10 @@ public class ConfettiTriggerBombEntity extends TriggerBombEntity {
     public void explode() {
         if (getWorld().isClient) {
             for (int i = 0; i < 15; i++) {
-                getWorld().addParticle(ParticleTypes.POOF, getX(), getY(), getZ(), random.nextGaussian() / 10f, Math.abs(random.nextGaussian() / 10f), random.nextGaussian() / 10f);
+                getWorld().addParticleClient(ParticleTypes.POOF, getX(), getY(), getZ(), random.nextGaussian() / 10f, Math.abs(random.nextGaussian() / 10f), random.nextGaussian() / 10f);
             }
-            for (int i = 0; i < Math.round(getExplosionRadius()); i++) {
-                getWorld().addParticle(BlastClient.CONFETTI, getX(), getY(), getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
+            for (int i = 0; i < Math.round(getExplosionPower()); i++) {
+                getWorld().addParticleClient(BlastClient.CONFETTI, getX(), getY(), getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
             }
             remove(RemovalReason.DISCARDED);
         }

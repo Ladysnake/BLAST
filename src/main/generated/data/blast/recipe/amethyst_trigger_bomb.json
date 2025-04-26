@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
   "ingredients": [
-	{
-	  "item": "minecraft:gunpowder"
-	},
-	{
-	  "item": "minecraft:amethyst_block"
-	},
-	{
-	  "tag": "c:dusts/redstone"
-	}
+	"minecraft:gunpowder",
+	"minecraft:amethyst_block",
+	"#c:dusts/redstone"
   ],
   "result": {
 	"count": 4,

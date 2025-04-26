@@ -44,6 +44,5 @@ public class BlastBlockLootTableProvider extends FabricBlockLootTableProvider {
                 )
             ));
         addDrop(BlastBlocks.STRIPMINER);
-
     }
 }

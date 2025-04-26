@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'fabric-loom' version '1.10-SNAPSHOT'
 	id 'io.github.ladysnake.chenille' version '0.14.0'
 }
 
@@ -24,10 +24,17 @@ loom {
 }
 
 fabricApi {
-	configureDataGeneration()
+	configureDataGeneration() {
+		client = true
+	}
 }
 
 repositories {
+	chenille.repositories.ladysnake()
+	maven {
+		name "datasync"
+		url "https://maven.uuid.gg/releases"
+	}
 	// For Common Protection API
 	maven { url "https://maven.nucleoid.xyz/" }
 }
@@ -43,7 +50,8 @@ dependencies {
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
-	modImplementation include("eu.pb4:common-protection-api:${project.common_protection_api_version}")
+	modIncludeImplementation "eu.pb4:common-protection-api:${project.common_protection_api_version}"
+	modIncludeImplementation "moriyashiine:strawberrylib:${strawberrylib_version}"
 }
 
 processResources {

@@ -35,6 +35,6 @@ public class IcicleEntity extends AmethystShardEntity {
     @Override
     protected void onHit(LivingEntity target) {
         target.timeUntilRegen = 0;
-        target.setFrozenTicks(200);
+        target.setFrozenTicks(target.getFrozenTicks() + 20);
     }
 }

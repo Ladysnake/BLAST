@@ -3,28 +3,29 @@ package ladysnake.blast.common.block;
 import com.mojang.serialization.MapCodec;
 import ladysnake.blast.common.entity.BombEntity;
 import ladysnake.blast.common.init.BlastEntities;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.block.FireBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.block.WireOrientation;
 import net.minecraft.world.explosion.Explosion;
+import org.jetbrains.annotations.Nullable;
 
 public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
     public static final MapCodec<GunpowderBlock> CODEC = createCodec(GunpowderBlock::new);
@@ -39,6 +40,11 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
     @Override
     protected MapCodec<? extends FallingBlock> getCodec() {
         return CODEC;
+    }
+
+    @Override
+    public int getColor(BlockState state, BlockView world, BlockPos pos) {
+        return state.getMapColor(world, pos).color;
     }
 
     @Override
@@ -57,17 +63,21 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
     }
 
     @Override
-    public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
+    public void onDestroyedByExplosion(ServerWorld world, BlockPos pos, Explosion explosion) {
         if (!world.isClient) {
             explode(world, pos, explosion.getCausingEntity());
         }
     }
 
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-        super.neighborUpdate(state, world, pos, block, fromPos, notify);
-        if (!world.isClient && world.getBlockState(fromPos).isIn(BlockTags.FIRE)) {
-            explode(world, pos, null);
+    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
+        if (!world.isClient) {
+            for (Direction direction : Direction.values()) {
+                if (world.getBlockState(pos.offset(direction)).isOf(Blocks.FIRE)) {
+                    explode(world, pos, null);
+                    return;
+                }
+            }
         }
     }
 
@@ -81,7 +91,7 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
     }
 
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (stack.isOf(Items.FLINT_AND_STEEL) || stack.isOf(Items.FIRE_CHARGE)) {
             if (!world.isClient) {
                 explode(world, pos, player);
@@ -93,7 +103,7 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
                     stack.decrement(1);
                 }
             }
-            return ItemActionResult.success(world.isClient);
+            return ActionResult.SUCCESS;
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
@@ -121,7 +131,7 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
     }
 
     private void explode(World world, BlockPos pos, Entity igniter) {
-        BombEntity entity = BlastEntities.GUNPOWDER_BLOCK.create(world);
+        BombEntity entity = BlastEntities.GUNPOWDER_BLOCK.create(world, SpawnReason.TRIGGERED);
         entity.setOwner(igniter);
         entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
         world.spawnEntity(entity);

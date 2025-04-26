@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
   "ingredients": [
-	{
-	  "item": "minecraft:gunpowder"
-	},
-	{
-	  "tag": "c:slime_balls"
-	},
-	{
-	  "tag": "c:dusts/redstone"
-	}
+	"minecraft:gunpowder",
+	"#c:slime_balls",
+	"#c:dusts/redstone"
   ],
   "result": {
 	"count": 4,

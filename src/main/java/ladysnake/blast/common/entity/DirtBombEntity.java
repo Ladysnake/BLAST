@@ -1,17 +1,19 @@
 package ladysnake.blast.common.entity;
 
 import ladysnake.blast.common.init.BlastItems;
-import ladysnake.blast.common.world.BlockFillingExplosion;
-import ladysnake.blast.common.world.CustomExplosion;
+import ladysnake.blast.common.world.explosion.CustomExplosionBehavior;
+import ladysnake.blast.common.world.explosion.FillingExplosionBehavior;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
 public class DirtBombEntity extends BombEntity {
+    public static final CustomExplosionBehavior BEHAVIOR = new FillingExplosionBehavior(Blocks.DIRT.getDefaultState(), true);
+
     public DirtBombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        setExplosionRadius(2);
+        setExplosionPower(2);
     }
 
     @Override
@@ -20,7 +22,7 @@ public class DirtBombEntity extends BombEntity {
     }
 
     @Override
-    protected CustomExplosion getExplosion() {
-        return new BlockFillingExplosion(getWorld(), getOwner(), getX(), getY(), getZ(), getExplosionRadius(), Blocks.DIRT.getDefaultState());
+    protected CustomExplosionBehavior getExplosionBehavior() {
+        return BEHAVIOR;
     }
 }

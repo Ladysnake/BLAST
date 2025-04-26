@@ -3,9 +3,7 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.05,
-  "ingredient": {
-	"item": "blast:folly_red_paint"
-  },
+  "ingredient": "blast:folly_red_paint",
   "result": {
 	"id": "blast:dried_folly_red_paint"
   }

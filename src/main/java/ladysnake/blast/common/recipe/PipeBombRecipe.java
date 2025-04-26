@@ -32,7 +32,7 @@ public class PipeBombRecipe extends SpecialCraftingRecipe {
     public boolean matches(CraftingRecipeInput input, World world) {
         int bombCount = 0;
         int fireworkCount = 0;
-        for (int i = 0; i < input.getSize(); ++i) {
+        for (int i = 0; i < input.size(); ++i) {
             ItemStack stack = input.getStackInSlot(i);
             if (BOMB.test(stack)) {
                 bombCount++;
@@ -51,7 +51,7 @@ public class PipeBombRecipe extends SpecialCraftingRecipe {
         List<ItemStack> fireworks = new ArrayList<>();
         int bombCount = 0;
         int fireworkCount = 0;
-        for (int i = 0; i < input.getSize(); ++i) {
+        for (int i = 0; i < input.size(); ++i) {
             ItemStack invStack = input.getStackInSlot(i);
             if (BOMB.test(invStack)) {
                 bombCount++;
@@ -67,12 +67,7 @@ public class PipeBombRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean fits(int width, int height) {
-        return width * height >= 2;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends SpecialCraftingRecipe> getSerializer() {
         return BlastRecipeSerializers.PIPE_BOMB;
     }
 }

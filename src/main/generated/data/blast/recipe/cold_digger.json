@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-	"P": {
-	  "item": "minecraft:packed_ice"
-	},
-	"S": {
-	  "item": "blast:stripminer"
-	}
+	"P": "minecraft:packed_ice",
+	"S": "blast:stripminer"
   },
   "pattern": [
 	" P ",

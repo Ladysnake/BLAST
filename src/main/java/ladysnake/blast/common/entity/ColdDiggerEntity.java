@@ -1,21 +1,50 @@
 package ladysnake.blast.common.entity;
 
+import com.mojang.datafixers.util.Pair;
 import ladysnake.blast.common.block.StripminerBlock;
 import ladysnake.blast.common.init.BlastBlocks;
-import ladysnake.blast.common.world.CustomExplosion;
+import ladysnake.blast.common.world.explosion.CustomExplosionBehavior;
+import ladysnake.blast.common.world.explosion.StripMinerExplosionBehavior;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.TrackedData;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
+import java.util.Optional;
+
 public class ColdDiggerEntity extends StripminerEntity {
+    public static final CustomExplosionBehavior BEHAVIOR = new StripMinerExplosionBehavior() {
+        private static final Pair<BlockState, Boolean> FILL_STATE = Pair.of(BlastBlocks.DRY_ICE.getDefaultState(), false);
+
+        @Override
+        public Optional<Float> getBlastResistance(Explosion explosion, BlockView world, BlockPos pos, BlockState blockState, FluidState fluidState) {
+            if (!fluidState.isEmpty()) {
+                return Optional.of(0F);
+            }
+            return super.getBlastResistance(explosion, world, pos, blockState, fluidState);
+        }
+
+        @Override
+        public Pair<BlockState, Boolean> getCustomFillState() {
+            return FILL_STATE;
+        }
+    };
+
     public ColdDiggerEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
-        setExplosionRadius(3.5f);
+        setExplosionPower(3.5f);
+    }
+
+    @Override
+    protected CustomExplosionBehavior getExplosionBehavior() {
+        return BEHAVIOR;
     }
 
     @Override
@@ -24,9 +53,8 @@ public class ColdDiggerEntity extends StripminerEntity {
         mutable.set(getBlockPos());
         for (int i = 0; i <= 24; i++) {
             if (getWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(getWorld(), this, mutable.getX() + 0.5, mutable.getY() + 0.5, mutable.getZ() + 0.5, getExplosionRadius(), CustomExplosion.BlockBreakEffect.FROSTY, Explosion.DestructionType.DESTROY);
-                explosion.collectBlocksAndDamageEntities();
-                explosion.affectWorld(getWorld().isClient);
+                CustomExplosionBehavior behavior = getExplosionBehavior();
+                createExplosion(behavior, mutable.toCenterPos(), behavior.getPower().orElse(getExplosionPower()), ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE.value());
             } else {
                 break;
             }
@@ -36,9 +64,8 @@ public class ColdDiggerEntity extends StripminerEntity {
         mutable.set(getBlockPos());
         for (int i = 0; i <= 24; i++) {
             if (getWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
-                CustomExplosion explosion = new CustomExplosion(getWorld(), this, mutable.getX() + 0.5, mutable.getY() + 0.5, mutable.getZ() + 0.5, 1f, null, Explosion.DestructionType.DESTROY);
-                explosion.collectBlocksAndDamageEntities();
-                explosion.affectWorld(getWorld().isClient);
+                CustomExplosionBehavior behavior = super.getExplosionBehavior();
+                createExplosion(behavior, mutable.toCenterPos(), 1, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE.value());
             } else {
                 break;
             }

@@ -2,33 +2,15 @@
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
   "ingredients": [
-	{
-	  "item": "minecraft:gunpowder"
-	},
-	{
-	  "tag": "c:strings"
-	},
-	{
-	  "item": "minecraft:paper"
-	},
-	{
-	  "item": "minecraft:paper"
-	},
-	{
-	  "item": "minecraft:paper"
-	},
-	{
-	  "item": "minecraft:paper"
-	},
-	{
-	  "item": "minecraft:paper"
-	},
-	{
-	  "item": "minecraft:paper"
-	},
-	{
-	  "item": "minecraft:paper"
-	}
+	"minecraft:gunpowder",
+	"#c:strings",
+	"minecraft:paper",
+	"minecraft:paper",
+	"minecraft:paper",
+	"minecraft:paper",
+	"minecraft:paper",
+	"minecraft:paper",
+	"minecraft:paper"
   ],
   "result": {
 	"count": 4,

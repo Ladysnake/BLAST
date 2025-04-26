@@ -2,11 +2,9 @@ package ladysnake.blast.common.entity;
 
 import ladysnake.blast.common.init.BlastComponentTypes;
 import ladysnake.blast.common.init.BlastItems;
-import ladysnake.blast.common.world.CustomExplosion;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import ladysnake.blast.common.world.explosion.CustomExplosionBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -14,31 +12,25 @@ import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.registry.Registries;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 
 public class BombEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private float explosionRadius = 3f;
+    private float explosionPower = 3f;
     public int ticksUntilRemoval;
     private int fuseTimer;
 
     public BombEntity(EntityType<? extends BombEntity> entityType, World world) {
         super(entityType, world);
         setFuse(40);
-        setExplosionRadius(3);
-        ticksUntilRemoval = -1;
-    }
-
-    public BombEntity(EntityType<? extends BombEntity> entityType, World world, LivingEntity livingEntity) {
-        super(entityType, livingEntity, world);
-        setFuse(40);
-        setExplosionRadius(3);
+        setExplosionPower(3);
         ticksUntilRemoval = -1;
     }
 
@@ -52,7 +44,7 @@ public class BombEntity extends ThrownItemEntity {
         } else {
             super.tick();
             if (getWorld().getBlockState(getBlockPos()).isFullCube(getWorld(), getBlockPos())) {
-                setPosition(prevX, prevY, prevZ);
+                setPosition(lastX, lastY, lastZ);
             }
             // drop item if in water
             if (isSubmergedInWater() && disableInLiquid()) {
@@ -63,7 +55,7 @@ public class BombEntity extends ThrownItemEntity {
             if (getTriggerType() == BombTriggerType.FUSE) {
                 // smoke particle for lit fuse
                 if (getWorld().isClient) {
-                    getWorld().addParticle(ParticleTypes.SMOKE, getX(), getY() + 0.3, getZ(), 0, 0, 0);
+                    getWorld().addParticleClient(ParticleTypes.SMOKE, getX(), getY() + 0.3, getZ(), 0, 0, 0);
                 }
                 // shorten the fuse
                 setFuse(getFuse() - 1);
@@ -83,7 +75,7 @@ public class BombEntity extends ThrownItemEntity {
     public void setItem(ItemStack item) {
         super.setItem(item.getItem().getDefaultStack());
         setFuse(item.getOrDefault(BlastComponentTypes.FUSE, getFuse()));
-        setExplosionRadius(item.getOrDefault(BlastComponentTypes.EXPLOSION_RADIUS, getExplosionRadius()));
+        setExplosionPower(item.getOrDefault(BlastComponentTypes.EXPLOSION_POWER, getExplosionPower()));
     }
 
     @Override
@@ -112,33 +104,39 @@ public class BombEntity extends ThrownItemEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         nbt.putInt("Fuse", getFuseTimer());
-        nbt.putFloat("ExplosionRadius", getExplosionRadius());
+        nbt.putFloat("ExplosionPower", getExplosionPower());
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
-        setFuse(nbt.getInt("Fuse"));
-        setExplosionRadius(nbt.getFloat("ExplosionRadius"));
+        setFuse(nbt.getInt("Fuse", 0));
+        setExplosionPower(nbt.getFloat("ExplosionPower", 0));
     }
 
-    public void explode() {
+    protected void explode() {
         if (ticksUntilRemoval == -1) {
             ticksUntilRemoval = 1;
-            CustomExplosion explosion = getExplosion();
-            explosion.collectBlocksAndDamageEntities();
-            explosion.affectWorld(getWorld().isClient);
-            if (getWorld() instanceof ServerWorld serverWorld) {
-                for (ServerPlayerEntity player : PlayerLookup.world(serverWorld)) {
-                    if (player.squaredDistanceTo(getX(), getY(), getZ()) < 4096) {
-                        player.networkHandler.sendPacket(new ExplosionS2CPacket(getX(), getY(), getZ(), explosion.getPower(), explosion.getAffectedBlocks(), explosion.getAffectedPlayers().get(player), explosion.getDestructionType(), explosion.getParticle(), explosion.getEmitterParticle(), explosion.getSoundEvent()));
-                    }
-                }
-            }
+            CustomExplosionBehavior behavior = getExplosionBehavior();
+            createExplosion(behavior, getPos(), behavior.getPower().orElse(getExplosionPower()), ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE.value());
         }
     }
 
-    protected CustomExplosion getExplosion() {
-        return new CustomExplosion(getWorld(), getOwner(), getX(), getY(), getZ(), getExplosionRadius(), null, Explosion.DestructionType.DESTROY);
+    protected void createExplosion(CustomExplosionBehavior behavior, Vec3d pos, float power, ParticleEffect smallParticle, ParticleEffect largeParticle, SoundEvent soundEvent) {
+        getWorld().createExplosion(
+            getOwner(),
+            null,
+            behavior,
+            pos.getX(), pos.getY(), pos.getZ(),
+            power,
+            behavior.createsFire(),
+            World.ExplosionSourceType.TNT,
+            smallParticle,
+            largeParticle,
+            Registries.SOUND_EVENT.getEntry(soundEvent));
+    }
+
+    protected CustomExplosionBehavior getExplosionBehavior() {
+        return new CustomExplosionBehavior();
     }
 
     protected BombTriggerType getTriggerType() {
@@ -162,12 +160,12 @@ public class BombEntity extends ThrownItemEntity {
         return fuseTimer;
     }
 
-    public float getExplosionRadius() {
-        return explosionRadius;
+    public float getExplosionPower() {
+        return explosionPower;
     }
 
-    public void setExplosionRadius(float explosionRadius) {
-        this.explosionRadius = explosionRadius;
+    public void setExplosionPower(float explosionRadius) {
+        this.explosionPower = explosionRadius;
     }
 
     public enum BombTriggerType {

@@ -1,0 +1,6 @@
+{
+  "parent": "blast:block/template_stripminer",
+  "textures": {
+	"particle": "blast:block/cold_digger"
+  }
+}
