@@ -40,13 +40,11 @@ public class BundleItemMixin {
     private Object blast$showFakeItem(ItemStack instance, ComponentType<BundleContentsComponent> componentType, Operation<Object> original) {
         Object component = original.call(instance, componentType);
         if (component instanceof BundleContentsComponent bundleContentsComponent) {
-            BundleContentsComponent.Builder builder = new BundleContentsComponent.Builder(BundleContentsComponent.DEFAULT);
+            BundleContentsComponent.Builder builder = new BundleContentsComponent.Builder(bundleContentsComponent);
             for (int i = 0; i < bundleContentsComponent.size(); i++) {
                 ItemStack stack = bundleContentsComponent.get(i);
                 if (stack.contains(BlastComponentTypes.FAKE_ITEM_ID)) {
-                    builder.add(new ItemStack(Registries.ITEM.get(stack.get(BlastComponentTypes.FAKE_ITEM_ID)), stack.getCount() * (64 / stack.getMaxCount())));
-                } else {
-                    builder.add(stack);
+                    builder.stacks.set(i, new ItemStack(Registries.ITEM.get(stack.get(BlastComponentTypes.FAKE_ITEM_ID)), stack.getCount() * (64 / stack.getMaxCount())));
                 }
             }
             return builder.build();
