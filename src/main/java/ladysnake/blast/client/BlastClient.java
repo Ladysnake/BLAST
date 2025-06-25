@@ -15,12 +15,12 @@ import ladysnake.blast.common.init.BlastEntities;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -69,12 +69,12 @@ public class BlastClient implements ClientModInitializer {
         registerBlockEntityRender(BlastEntities.COLD_DIGGER, ColdDiggerEntity::getState);
         registerBlockEntityRender(BlastEntities.BONESBURRIER, e -> BlastBlocks.BONESBURRIER.getDefaultState());
 
-        BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
+        BlockRenderLayerMap.putBlocks(BlockRenderLayer.CUTOUT,
             BlastBlocks.GUNPOWDER_BLOCK, BlastBlocks.COLD_DIGGER,
             BlastBlocks.STRIPMINER, BlastBlocks.BONESBURRIER,
             BlastBlocks.REMOTE_DETONATOR
         );
-        BlockRenderLayerMap.INSTANCE.putBlock(BlastBlocks.DRY_ICE, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.putBlock(BlastBlocks.DRY_ICE, BlockRenderLayer.TRANSLUCENT);
 
         EntityRendererRegistry.register(BlastEntities.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
         EntityRendererRegistry.register(BlastEntities.ICICLE, IcicleEntityRenderer::new);

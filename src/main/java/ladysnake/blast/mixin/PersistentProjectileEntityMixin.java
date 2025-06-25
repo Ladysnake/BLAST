@@ -6,7 +6,8 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,15 +28,15 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
         super(entityType, world);
     }
 
-    @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
-    private void blast$fixModProjectileSerializationRead(NbtCompound nbt, CallbackInfo ci) {
+    @Inject(method = "readCustomData", at = @At("TAIL"))
+    private void blast$fixModProjectileSerializationRead(ReadView view, CallbackInfo ci) {
         if (isDisallowed()) {
             stack = getDefaultItemStack();
         }
     }
 
-    @Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
-    private void blast$fixModProjectileSerializationWrite(NbtCompound nbt, CallbackInfo ci) {
+    @Inject(method = "writeCustomData", at = @At("HEAD"))
+    private void blast$fixModProjectileSerializationWrite(WriteView view, CallbackInfo ci) {
         if (isDisallowed()) {
             stack = Items.BEDROCK.getDefaultStack();
         }

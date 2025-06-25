@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "minecraft:stripminer_from_gunpowder_block"
+		"recipe": "blast:stripminer_from_gunpowder_block"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}
@@ -26,7 +26,7 @@
   ],
   "rewards": {
 	"recipes": [
-	  "minecraft:stripminer_from_gunpowder_block"
+	  "blast:stripminer_from_gunpowder_block"
 	]
   }
 }

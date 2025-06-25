@@ -21,11 +21,11 @@ public class BlastDamageTypeTagProvider extends FabricTagProvider<DamageType> {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        getOrCreateTagBuilder(DamageTypeTags.BYPASSES_ARMOR)
+        builder(DamageTypeTags.BYPASSES_ARMOR)
             .addOptional(BlastDamageTypes.ICICLE);
-        getOrCreateTagBuilder(DamageTypeTags.IS_FREEZING)
+        builder(DamageTypeTags.IS_FREEZING)
             .addOptional(BlastDamageTypes.ICICLE);
-        getOrCreateTagBuilder(DamageTypeTags.IS_PROJECTILE)
+        builder(DamageTypeTags.IS_PROJECTILE)
             .addOptional(BlastDamageTypes.AMETHYST_SHARD)
             .addOptional(BlastDamageTypes.ICICLE);
     }

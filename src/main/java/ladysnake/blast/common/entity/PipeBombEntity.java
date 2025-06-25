@@ -12,12 +12,12 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
@@ -39,19 +39,19 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     }
 
     @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
+    protected void writeCustomData(WriteView view) {
+        super.writeCustomData(view);
         if (!fireworks.isEmpty()) {
             stack.set(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.of(fireworks));
         }
-        nbt.put("Stack", ItemStack.CODEC, getRegistryManager().getOps(NbtOps.INSTANCE), stack);
+        view.put("Stack", ItemStack.CODEC, stack);
     }
 
     @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
+    protected void readCustomData(ReadView view) {
+        super.readCustomData(view);
         fireworks.clear();
-        nbt.get("Stack", ItemStack.CODEC, getRegistryManager().getOps(NbtOps.INSTANCE)).ifPresentOrElse(stack -> this.stack = stack, () -> stack = getDefaultItemStack());
+        view.read("Stack", ItemStack.CODEC).ifPresentOrElse(stack -> this.stack = stack, () -> stack = getDefaultItemStack());
         if (stack.contains(DataComponentTypes.CHARGED_PROJECTILES)) {
             fireworks.addAll(stack.get(DataComponentTypes.CHARGED_PROJECTILES).getProjectiles());
         }

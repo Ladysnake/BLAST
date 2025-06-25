@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "minecraft:dried_folly_red_paint_from_fresh_folly_red_paint"
+		"recipe": "blast:dried_folly_red_paint_from_fresh_folly_red_paint"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}
@@ -26,7 +26,7 @@
   ],
   "rewards": {
 	"recipes": [
-	  "minecraft:dried_folly_red_paint_from_fresh_folly_red_paint"
+	  "blast:dried_folly_red_paint_from_fresh_folly_red_paint"
 	]
   }
 }

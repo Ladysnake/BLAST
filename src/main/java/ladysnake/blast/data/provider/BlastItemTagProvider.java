@@ -19,7 +19,7 @@ public class BlastItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        getOrCreateTagBuilder(ItemTags.PIGLIN_LOVED)
+        valueLookupBuilder(ItemTags.PIGLIN_LOVED)
             .add(BlastItems.GOLDEN_BOMB)
             .add(BlastItems.GOLDEN_TRIGGER_BOMB);
     }

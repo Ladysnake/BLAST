@@ -11,12 +11,13 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -102,15 +103,17 @@ public class BombEntity extends ThrownItemEntity {
     }
 
     @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        nbt.putInt("Fuse", getFuseTimer());
-        nbt.putFloat("ExplosionPower", getExplosionPower());
+    protected void writeCustomData(WriteView view) {
+        super.writeCustomData(view);
+        view.putInt("Fuse", getFuseTimer());
+        view.putFloat("ExplosionPower", getExplosionPower());
     }
 
     @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        setFuse(nbt.getInt("Fuse", 0));
-        setExplosionPower(nbt.getFloat("ExplosionPower", 0));
+    protected void readCustomData(ReadView view) {
+        super.readCustomData(view);
+        setFuse(view.getInt("Fuse", 0));
+        setExplosionPower(view.getFloat("ExplosionPower", 0));
     }
 
     protected void explode() {
