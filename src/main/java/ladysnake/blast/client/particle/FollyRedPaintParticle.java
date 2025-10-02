@@ -3,23 +3,27 @@ package ladysnake.blast.client.particle;
 import ladysnake.blast.client.BlastClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.BillboardParticle;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 
-public class FollyRedPaintParticle extends SpriteBillboardParticle {
-    FollyRedPaintParticle(ClientWorld world, double x, double y, double z) {
-        super(world, x, y, z);
+public class FollyRedPaintParticle extends BillboardParticle {
+    FollyRedPaintParticle(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider) {
+        super(world, x, y, z, spriteProvider.getFirst());
         this.setBoundingBoxSpacing(0.01f, 0.01f);
         this.gravityStrength = 0.06f;
     }
 
     @Override
-    public ParticleTextureSheet getType() {
-        return ParticleTextureSheet.PARTICLE_SHEET_OPAQUE;
+    protected RenderType getRenderType() {
+        return RenderType.PARTICLE_ATLAS_OPAQUE;
     }
 
     @Override
@@ -57,56 +61,35 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public static class LandingFollyRedPaintDropFactory implements ParticleFactory<SimpleParticleType> {
-        protected final SpriteProvider spriteProvider;
-
-        public LandingFollyRedPaintDropFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
+    public record LandingFollyRedPaintDropFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            Landing blockLeakParticle = new Landing(world, x, y, z);
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
+            Landing blockLeakParticle = new Landing(world, x, y, z, spriteProvider());
             blockLeakParticle.setMaxAge((int) (28 / (world.getRandom().nextDouble() * 0.8 + 0.2)));
             blockLeakParticle.setColor(1f, 0f, 0.35f);
-            blockLeakParticle.setSprite(this.spriteProvider);
             return blockLeakParticle;
         }
     }
 
     @Environment(EnvType.CLIENT)
-    public static class FallingFollyRedPaintDropFactory implements ParticleFactory<SimpleParticleType> {
-        protected final SpriteProvider spriteProvider;
-
-        public FallingFollyRedPaintDropFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
+    public record FallingFollyRedPaintDropFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            ContinuousFalling blockLeakParticle = new ContinuousFalling(world, x, y, z, BlastClient.LANDING_FOLLY_RED_PAINT_DROP);
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
+            ContinuousFalling blockLeakParticle = new ContinuousFalling(world, x, y, z, spriteProvider(), BlastClient.LANDING_FOLLY_RED_PAINT_DROP);
             blockLeakParticle.gravityStrength = 0.01f;
             blockLeakParticle.setColor(1f, 0f, 0.35f);
-            blockLeakParticle.setSprite(this.spriteProvider);
             return blockLeakParticle;
         }
     }
 
     @Environment(EnvType.CLIENT)
-    public static class DrippingFollyRedPaintDropFactory implements ParticleFactory<SimpleParticleType> {
-        protected final SpriteProvider spriteProvider;
-
-        public DrippingFollyRedPaintDropFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
+    public record DrippingFollyRedPaintDropFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            Dripping dripping = new Dripping(world, x, y, z, BlastClient.FALLING_FOLLY_RED_PAINT_DROP);
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
+            Dripping dripping = new Dripping(world, x, y, z, spriteProvider(), BlastClient.FALLING_FOLLY_RED_PAINT_DROP);
             dripping.gravityStrength *= 0.01f;
             dripping.setMaxAge(100);
             dripping.setColor(1f, 0f, 0.35f);
-            dripping.setSprite(this.spriteProvider);
             return dripping;
         }
     }
@@ -115,8 +98,8 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
     static class Dripping extends FollyRedPaintParticle {
         private final ParticleEffect nextParticle;
 
-        Dripping(ClientWorld world, double x, double y, double z, ParticleEffect nextParticle) {
-            super(world, x, y, z);
+        Dripping(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider, ParticleEffect nextParticle) {
+            super(world, x, y, z, spriteProvider);
             this.nextParticle = nextParticle;
             this.gravityStrength *= 0.02f;
             this.maxAge = 40;
@@ -142,8 +125,8 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
     static class ContinuousFalling extends Falling {
         protected final ParticleEffect nextParticle;
 
-        ContinuousFalling(ClientWorld world, double x, double y, double z, ParticleEffect nextParticle) {
-            super(world, x, y, z);
+        ContinuousFalling(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider, ParticleEffect nextParticle) {
+            super(world, x, y, z, spriteProvider);
             this.nextParticle = nextParticle;
         }
 
@@ -158,12 +141,12 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
 
     @Environment(EnvType.CLIENT)
     static class Falling extends FollyRedPaintParticle {
-        Falling(ClientWorld world, double x, double y, double z) {
-            this(world, x, y, z, (int) (64 / (world.getRandom().nextDouble() * 0.8 + 0.2)));
+        Falling(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider) {
+            this(world, x, y, z, (int) (64 / (world.getRandom().nextDouble() * 0.8 + 0.2)), spriteProvider);
         }
 
-        Falling(ClientWorld world, double x, double y, double z, int maxAge) {
-            super(world, x, y, z);
+        Falling(ClientWorld world, double x, double y, double z, int maxAge, SpriteProvider spriteProvider) {
+            super(world, x, y, z, spriteProvider);
             this.maxAge = maxAge;
         }
 
@@ -177,8 +160,8 @@ public class FollyRedPaintParticle extends SpriteBillboardParticle {
 
     @Environment(EnvType.CLIENT)
     static class Landing extends FollyRedPaintParticle {
-        Landing(ClientWorld world, double x, double y, double z) {
-            super(world, x, y, z);
+        Landing(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider) {
+            super(world, x, y, z, spriteProvider);
             this.maxAge = (int) (16 / (world.getRandom().nextDouble() * 0.8 + 0.2));
         }
     }

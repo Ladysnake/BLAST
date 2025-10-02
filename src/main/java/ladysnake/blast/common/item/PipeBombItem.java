@@ -34,7 +34,7 @@ public class PipeBombItem extends Item {
             }
         }
         ItemStack stack = user.getStackInHand(hand);
-        if (!world.isClient) {
+        if (!world.isClient()) {
             spawn(world, stack, user, 1.5F);
             world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, user.getSoundCategory(), 0.5F, 0.4F / (user.getRandom().nextFloat() * 0.4F + 0.8F));
             stack.decrementUnlessCreative(1, user);
@@ -45,7 +45,7 @@ public class PipeBombItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
-        if (!world.isClient && stack.getOrDefault(BlastComponentTypes.PRIMED, false) && entity instanceof PlayerEntity player) {
+        if (!world.isClient() && stack.getOrDefault(BlastComponentTypes.PRIMED, false) && entity instanceof PlayerEntity player) {
             while (!stack.isEmpty()) {
                 spawn(world, stack.copyWithCount(1), player, 0);
                 stack.decrement(1);

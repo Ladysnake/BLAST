@@ -50,7 +50,7 @@ public class NavalMineEntity extends BombEntity {
     // play the click, although you can barely hear it, but you know, details
     @Override
     protected void onCollision(HitResult hitResult) {
-        getWorld().playSound(null, getX(), getY(), getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.NEUTRAL, 0.8F, 0.6F);
+        getEntityWorld().playSound(null, getX(), getY(), getZ(), SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.NEUTRAL, 0.8F, 0.6F);
         super.onCollision(hitResult);
     }
 

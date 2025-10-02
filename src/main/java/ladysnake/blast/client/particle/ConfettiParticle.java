@@ -5,17 +5,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
-public class ConfettiParticle extends SpriteBillboardParticle {
+public class ConfettiParticle extends BillboardParticle {
     private float rotationX;
     private float rotationY;
     private float rotationZ;
@@ -25,12 +23,12 @@ public class ConfettiParticle extends SpriteBillboardParticle {
     private final float groundOffset;
 
     public ConfettiParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
-        super(world, x, y, z, velocityX, velocityY, velocityZ);
+        super(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.getFirst());
 
         this.scale *= 0.1f + world.getRandom().nextFloat() * 0.5f;
         this.maxAge = world.getRandom().nextBetween(20, 100);
         this.collidesWithWorld = true;
-        this.setSpriteForAge(spriteProvider);
+        this.updateSprite(spriteProvider);
         this.alpha = 1f;
 
         this.maxAge = 1200; // live one minute
@@ -56,57 +54,27 @@ public class ConfettiParticle extends SpriteBillboardParticle {
     }
 
     @Override
-    public ParticleTextureSheet getType() {
-        return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
+    protected RenderType getRenderType() {
+        return RenderType.PARTICLE_ATLAS_OPAQUE;
     }
 
     @Override
-    public void render(VertexConsumer vertexConsumer, Camera camera, float tickProgress) {
-        Vec3d cameraPos = camera.getPos();
-        float x = (float) (MathHelper.lerp(tickProgress, this.lastX, this.x) - cameraPos.getX());
-        float y = (float) (MathHelper.lerp(tickProgress, this.lastY, this.y) - cameraPos.getY());
-        float z = (float) (MathHelper.lerp(tickProgress, this.lastZ, this.z) - cameraPos.getZ());
-
-        Vector3f[] Vec3fs = new Vector3f[]{new Vector3f(-1, -1, 0), new Vector3f(-1, 1, 0), new Vector3f(1, 1, 0), new Vector3f(1, -1, 0)};
-        float siZe = this.getSize(tickProgress);
-
-        if (!this.onGround) {
+    public void render(BillboardParticleSubmittable submittable, Camera camera, float tickProgress) {
+        if (onGround) {
+            rotationX = 90;
+            rotationY = 0;
+        } else {
             rotationX += rotationXmod;
             rotationY += rotationYmod;
             rotationZ += rotationZmod;
-
-            for (int k = 0; k < 4; ++k) {
-                Vector3f Vec3f2 = Vec3fs[k];
-                Vec3f2.rotate(eulerToQuaternion(rotationX, rotationY, rotationZ));
-                Vec3f2.normalize(siZe);
-                Vec3f2.add(x, y, z);
-            }
-        } else {
-            rotationX = 90f;
-            rotationY = 0;
-
-            for (int k = 0; k < 4; ++k) {
-                Vector3f Vec3f2 = Vec3fs[k];
-                Vec3f2.rotate(eulerToQuaternion(rotationX, rotationY, rotationZ));
-                Vec3f2.normalize(siZe);
-                Vec3f2.add(x, y + this.groundOffset, z);
-            }
         }
+        render(submittable, camera, eulerToQuaternion(rotationX, rotationY, rotationZ), tickProgress);
+        render(submittable, camera, eulerToQuaternion(-rotationX, -rotationY, -rotationZ), tickProgress);
+    }
 
-        float minU = this.getMinU();
-        float maxU = this.getMaxU();
-        float minV = this.getMinV();
-        float maxV = this.getMaxV();
-        int light = this.getBrightness(tickProgress);
-
-        vertexConsumer.vertex(Vec3fs[0].x(), Vec3fs[0].y(), Vec3fs[0].z()).texture(maxU, maxV).color(red, green, blue, alpha).light(light);
-        vertexConsumer.vertex(Vec3fs[1].x(), Vec3fs[1].y(), Vec3fs[1].z()).texture(maxU, minV).color(red, green, blue, alpha).light(light);
-        vertexConsumer.vertex(Vec3fs[2].x(), Vec3fs[2].y(), Vec3fs[2].z()).texture(minU, minV).color(red, green, blue, alpha).light(light);
-        vertexConsumer.vertex(Vec3fs[3].x(), Vec3fs[3].y(), Vec3fs[3].z()).texture(minU, maxV).color(red, green, blue, alpha).light(light);
-        vertexConsumer.vertex(Vec3fs[0].x(), Vec3fs[0].y(), Vec3fs[0].z()).texture(maxU, maxV).color(red, green, blue, alpha).light(light);
-        vertexConsumer.vertex(Vec3fs[3].x(), Vec3fs[3].y(), Vec3fs[3].z()).texture(maxU, minV).color(red, green, blue, alpha).light(light);
-        vertexConsumer.vertex(Vec3fs[2].x(), Vec3fs[2].y(), Vec3fs[2].z()).texture(minU, minV).color(red, green, blue, alpha).light(light);
-        vertexConsumer.vertex(Vec3fs[1].x(), Vec3fs[1].y(), Vec3fs[1].z()).texture(minU, maxV).color(red, green, blue, alpha).light(light);
+    @Override
+    protected void renderVertex(BillboardParticleSubmittable submittable, Quaternionf rotation, float x, float y, float z, float tickProgress) {
+        super.renderVertex(submittable, rotation, x, y + (onGround ? groundOffset : 0), z, tickProgress);
     }
 
     public Quaternionf eulerToQuaternion(float x, float y, float z) {
@@ -167,15 +135,10 @@ public class ConfettiParticle extends SpriteBillboardParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public static class DefaultFactory implements ParticleFactory<SimpleParticleType> {
-        private final SpriteProvider spriteProvider;
-
-        public DefaultFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new ConfettiParticle(world, x, y, z, velocityX, velocityY, velocityZ, this.spriteProvider);
+    public record DefaultFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
+        @Override
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
+            return new ConfettiParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider());
         }
     }
 }

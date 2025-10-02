@@ -30,7 +30,7 @@
   "accessWidener": "blast.accesswidener",
   "depends": {
 	"fabricloader": "*",
-	"minecraft": "~1.21.7",
+	"minecraft": "~1.21.9",
 	"java": ">=21",
 	"fabric-api": "*"
   }

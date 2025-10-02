@@ -42,6 +42,10 @@ public class CustomExplosionBehavior extends ExplosionBehavior {
         return false;
     }
 
+    public boolean createsPoof() {
+        return true;
+    }
+
     public boolean dropsAtSource() {
         return false;
     }

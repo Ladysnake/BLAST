@@ -52,18 +52,18 @@ public class ColdDiggerEntity extends StripminerEntity {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
         mutable.set(getBlockPos());
         for (int i = 0; i <= 24; i++) {
-            if (getWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
+            if (getEntityWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
                 CustomExplosionBehavior behavior = getExplosionBehavior();
                 createExplosion(behavior, mutable.toCenterPos(), behavior.getPower().orElse(getExplosionPower()), ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE.value());
             } else {
                 break;
             }
-            getWorld().playSound(null, mutable.getX(), mutable.getY(), mutable.getZ(), SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 1.5f);
+            getEntityWorld().playSound(null, mutable.getX(), mutable.getY(), mutable.getZ(), SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 1f, 1.5f);
             mutable.move(getFacing());
         }
         mutable.set(getBlockPos());
         for (int i = 0; i <= 24; i++) {
-            if (getWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
+            if (getEntityWorld().getBlockState(mutable).getBlock().getBlastResistance() < 1200) {
                 CustomExplosionBehavior behavior = super.getExplosionBehavior();
                 createExplosion(behavior, mutable.toCenterPos(), 1, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE.value());
             } else {

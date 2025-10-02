@@ -50,7 +50,7 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         super.onBlockAdded(state, world, pos, oldState, notify);
-        if (!world.isClient) {
+        if (!world.isClient()) {
             if (world.getBlockState(pos.add(-1, 0, 0)).getBlock() instanceof FireBlock ||
                 world.getBlockState(pos.add(1, 0, 0)).getBlock() instanceof FireBlock ||
                 world.getBlockState(pos.add(0, -1, 0)).getBlock() instanceof FireBlock ||
@@ -64,14 +64,14 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
 
     @Override
     public void onDestroyedByExplosion(ServerWorld world, BlockPos pos, Explosion explosion) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             explode(world, pos, explosion.getCausingEntity());
         }
     }
 
     @Override
     protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             for (Direction direction : Direction.values()) {
                 if (world.getBlockState(pos.offset(direction)).isOf(Blocks.FIRE)) {
                     explode(world, pos, null);
@@ -93,12 +93,12 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (stack.isOf(Items.FLINT_AND_STEEL) || stack.isOf(Items.FIRE_CHARGE)) {
-            if (!world.isClient) {
+            if (!world.isClient()) {
                 explode(world, pos, player);
             }
             if (!player.isCreative()) {
                 if (stack.isOf(Items.FLINT_AND_STEEL)) {
-                    stack.damage(1, player, LivingEntity.getSlotForHand(hand));
+                    stack.damage(1, player, hand.getEquipmentSlot());
                 } else {
                     stack.decrement(1);
                 }
@@ -110,7 +110,7 @@ public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
 
     @Override
     public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
-        if (!world.isClient && projectile.isOnFire()) {
+        if (!world.isClient() && projectile.isOnFire()) {
             explode(world, hit.getBlockPos(), projectile.getOwner());
         }
     }

@@ -1,5 +1,6 @@
 accessWidener v2 named
 accessible method net/minecraft/entity/projectile/FireworkRocketEntity explodeAndRemove (Lnet/minecraft/server/world/ServerWorld;)V
+accessible field net/minecraft/world/World EXPLOSION_BLOCK_PARTICLES Lnet/minecraft/util/collection/Pool;
 accessible field net/minecraft/entity/projectile/PersistentProjectileEntity damage D
 accessible field net/minecraft/world/explosion/ExplosionImpl behavior Lnet/minecraft/world/explosion/ExplosionBehavior;
 accessible field net/minecraft/component/type/BundleContentsComponent$Builder stacks Ljava/util/List;

@@ -133,7 +133,7 @@ public class PipeBombEntity extends PersistentProjectileEntity implements Flying
     }
 
     private boolean explode() {
-        if (getWorld() instanceof ServerWorld world) {
+        if (getEntityWorld() instanceof ServerWorld world) {
             if (random.nextInt(5) == 0 || !isInvisible()) {
                 ItemStack stack = null;
                 if (!fireworks.isEmpty()) {

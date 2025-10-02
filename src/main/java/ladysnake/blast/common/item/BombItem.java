@@ -47,7 +47,7 @@ public class BombItem extends Item implements ProjectileItem {
             }
         }
         ItemStack stack = user.getStackInHand(hand);
-        if (!world.isClient) {
+        if (!world.isClient()) {
             BombEntity entity = type.create(world, SpawnReason.SPAWN_ITEM_USE);
             entity.setItem(stack);
             entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);

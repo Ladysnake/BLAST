@@ -28,9 +28,9 @@ public class PearlTriggerBombEntity extends TriggerBombEntity {
         if (ticksUntilRemoval == -1) {
             ticksUntilRemoval = 1;
             CustomExplosionBehavior behavior = getExplosionBehavior();
-            createExplosion(behavior, getPos(), behavior.getPower().orElse(getExplosionPower()), ParticleTypes.REVERSE_PORTAL, ParticleTypes.REVERSE_PORTAL, SoundEvents.ENTITY_ENDERMAN_TELEPORT);
+            createExplosion(behavior, getEntityPos(), behavior.getPower().orElse(getExplosionPower()), ParticleTypes.REVERSE_PORTAL, ParticleTypes.REVERSE_PORTAL, SoundEvents.ENTITY_ENDERMAN_TELEPORT);
             for (int i = 0; i < 100; i++) {
-                getWorld().addParticleClient(ParticleTypes.REVERSE_PORTAL, getX(), getY(), getZ(), random.nextGaussian() / 8f, random.nextGaussian() / 8f, random.nextGaussian() / 8f);
+                getEntityWorld().addParticleClient(ParticleTypes.REVERSE_PORTAL, getX(), getY(), getZ(), random.nextGaussian() / 8f, random.nextGaussian() / 8f, random.nextGaussian() / 8f);
             }
         }
     }

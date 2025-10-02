@@ -39,7 +39,7 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
 
     @Override
     public void onDestroyedByExplosion(ServerWorld world, BlockPos pos, Explosion explosion) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             BombEntity bomb = prime(world, pos, explosion.getCausingEntity());
             bomb.setFuse(world.getRandom().nextInt(bomb.getFuseTimer() / 4) + bomb.getFuseTimer() / 8);
         }
@@ -55,12 +55,12 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (stack.isOf(Items.FLINT_AND_STEEL) || stack.isOf(Items.FIRE_CHARGE)) {
-            if (!world.isClient) {
+            if (!world.isClient()) {
                 prime(world, pos, player);
             }
             if (!player.isCreative()) {
                 if (stack.isOf(Items.FLINT_AND_STEEL)) {
-                    stack.damage(1, player, LivingEntity.getSlotForHand(hand));
+                    stack.damage(1, player, hand.getEquipmentSlot());
                 } else {
                     stack.decrement(1);
                 }
@@ -72,7 +72,7 @@ public class BonesburrierBlock extends Block implements DetonatableBlock {
 
     @Override
     public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
-        if (!world.isClient && projectile.isOnFire()) {
+        if (!world.isClient() && projectile.isOnFire()) {
             prime(world, hit.getBlockPos(), projectile.getOwner());
         }
     }

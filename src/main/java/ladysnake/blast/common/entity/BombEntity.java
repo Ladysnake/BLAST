@@ -11,6 +11,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.BlockParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
@@ -18,11 +19,14 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
+import net.minecraft.util.collection.Pool;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class BombEntity extends ThrownItemEntity {
+    private static final Pool<BlockParticleEffect> EMPTY_PARTICLES = Pool.<BlockParticleEffect>builder().build();
+
     private static final TrackedData<Integer> FUSE = DataTracker.registerData(BombEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private float explosionPower = 3f;
     public int ticksUntilRemoval;
@@ -44,19 +48,19 @@ public class BombEntity extends ThrownItemEntity {
             }
         } else {
             super.tick();
-            if (getWorld().getBlockState(getBlockPos()).isFullCube(getWorld(), getBlockPos())) {
+            if (getEntityWorld().getBlockState(getBlockPos()).isFullCube(getEntityWorld(), getBlockPos())) {
                 setPosition(lastX, lastY, lastZ);
             }
             // drop item if in water
             if (isSubmergedInWater() && disableInLiquid()) {
-                getWorld().spawnEntity(new ItemEntity(getWorld(), getX(), getY(), getZ(), new ItemStack(getDefaultItem())));
+                getEntityWorld().spawnEntity(new ItemEntity(getEntityWorld(), getX(), getY(), getZ(), new ItemStack(getDefaultItem())));
                 remove(RemovalReason.DISCARDED);
             }
             // tick down the fuse, then blow up
             if (getTriggerType() == BombTriggerType.FUSE) {
                 // smoke particle for lit fuse
-                if (getWorld().isClient) {
-                    getWorld().addParticleClient(ParticleTypes.SMOKE, getX(), getY() + 0.3, getZ(), 0, 0, 0);
+                if (getEntityWorld().isClient()) {
+                    getEntityWorld().addParticleClient(ParticleTypes.SMOKE, getX(), getY() + 0.3, getZ(), 0, 0, 0);
                 }
                 // shorten the fuse
                 setFuse(getFuse() - 1);
@@ -120,12 +124,12 @@ public class BombEntity extends ThrownItemEntity {
         if (ticksUntilRemoval == -1) {
             ticksUntilRemoval = 1;
             CustomExplosionBehavior behavior = getExplosionBehavior();
-            createExplosion(behavior, getPos(), behavior.getPower().orElse(getExplosionPower()), ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE.value());
+            createExplosion(behavior, getEntityPos(), behavior.getPower().orElse(getExplosionPower()), ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE.value());
         }
     }
 
     protected void createExplosion(CustomExplosionBehavior behavior, Vec3d pos, float power, ParticleEffect smallParticle, ParticleEffect largeParticle, SoundEvent soundEvent) {
-        getWorld().createExplosion(
+        getEntityWorld().createExplosion(
             getOwner(),
             null,
             behavior,
@@ -135,6 +139,7 @@ public class BombEntity extends ThrownItemEntity {
             World.ExplosionSourceType.TNT,
             smallParticle,
             largeParticle,
+            behavior.createsPoof() ? World.EXPLOSION_BLOCK_PARTICLES : EMPTY_PARTICLES,
             Registries.SOUND_EVENT.getEntry(soundEvent));
     }
 

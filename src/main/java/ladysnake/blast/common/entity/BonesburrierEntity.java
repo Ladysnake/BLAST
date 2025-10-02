@@ -70,7 +70,7 @@ public class BonesburrierEntity extends BombEntity {
     @Override
     public void explode() {
         super.explode();
-        getWorld().playSound(null, getX(), getBodyY(0.0625), getZ(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.BLOCKS, 5, 1);
+        getEntityWorld().playSound(null, getX(), getBodyY(0.0625), getZ(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.BLOCKS, 5, 1);
         remove(RemovalReason.DISCARDED);
     }
 

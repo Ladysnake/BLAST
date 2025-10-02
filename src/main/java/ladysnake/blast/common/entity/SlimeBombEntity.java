@@ -50,7 +50,7 @@ public class SlimeBombEntity extends BombEntity {
     public void explode() {
         super.explode();
         for (int i = 0; i < 500; i++) {
-            getWorld().addParticleClient(ParticleTypes.SNEEZE, getX(), getY(), getZ(), random.nextGaussian() / 5, random.nextGaussian() / 5, random.nextGaussian() / 5);
+            getEntityWorld().addParticleClient(ParticleTypes.SNEEZE, getX(), getY(), getZ(), random.nextGaussian() / 5, random.nextGaussian() / 5, random.nextGaussian() / 5);
         }
     }
 }

@@ -6,17 +6,18 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 
-public class DryIceParticle extends SpriteBillboardParticle {
+public class DryIceParticle extends BillboardParticle {
     private final float maxAlpha;
 
     public DryIceParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
-        super(world, x, y, z, velocityX, velocityY, velocityZ);
+        super(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.getFirst());
 
         this.scale *= 0.1f + world.getRandom().nextFloat() * 0.5f;
         this.maxAge = world.getRandom().nextBetween(20, 100);
         this.collidesWithWorld = true;
-        this.setSpriteForAge(spriteProvider);
+        this.updateSprite(spriteProvider);
         this.alpha = 0f;
         this.maxAlpha = world.getRandom().nextFloat() / 25f;
         this.velocityY = world.getRandom().nextFloat() / 25f;
@@ -25,8 +26,8 @@ public class DryIceParticle extends SpriteBillboardParticle {
     }
 
     @Override
-    public ParticleTextureSheet getType() {
-        return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
+    protected RenderType getRenderType() {
+        return RenderType.PARTICLE_ATLAS_TRANSLUCENT;
     }
 
     @Override
@@ -61,15 +62,10 @@ public class DryIceParticle extends SpriteBillboardParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public static class DefaultFactory implements ParticleFactory<SimpleParticleType> {
-        private final SpriteProvider spriteProvider;
-
-        public DefaultFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new DryIceParticle(world, x, y, z, velocityX, velocityY, velocityZ, this.spriteProvider);
+    public record DefaultFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
+        @Override
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
+            return new DryIceParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider());
         }
     }
 }

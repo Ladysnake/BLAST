@@ -5,7 +5,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -61,14 +60,14 @@ public class StripminerBlock extends Block implements DetonatableBlock {
 
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        if (!world.isClient && !oldState.isOf(state.getBlock()) && world.isReceivingRedstonePower(pos)) {
+        if (!world.isClient() && !oldState.isOf(state.getBlock()) && world.isReceivingRedstonePower(pos)) {
             prime(world, pos, null);
         }
     }
 
     @Override
     public void onDestroyedByExplosion(ServerWorld world, BlockPos pos, Explosion explosion) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             StripminerEntity stripminer = prime(world, pos, explosion.getCausingEntity());
             stripminer.setFuse(world.random.nextInt(stripminer.getFuseTimer() / 4) + stripminer.getFuseTimer() / 8);
         }
@@ -76,7 +75,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
 
     @Override
     protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
-        if (!world.isClient && world.isReceivingRedstonePower(pos)) {
+        if (!world.isClient() && world.isReceivingRedstonePower(pos)) {
             prime(world, pos, null);
         }
     }
@@ -84,12 +83,12 @@ public class StripminerBlock extends Block implements DetonatableBlock {
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (stack.isOf(Items.FLINT_AND_STEEL) || stack.isOf(Items.FIRE_CHARGE)) {
-            if (!world.isClient) {
+            if (!world.isClient()) {
                 prime(world, pos, player);
             }
             if (!player.isCreative()) {
                 if (stack.isOf(Items.FLINT_AND_STEEL)) {
-                    stack.damage(1, player, LivingEntity.getSlotForHand(hand));
+                    stack.damage(1, player, hand.getEquipmentSlot());
                 } else {
                     stack.decrement(1);
                 }
@@ -101,7 +100,7 @@ public class StripminerBlock extends Block implements DetonatableBlock {
 
     @Override
     public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
-        if (!world.isClient && projectile.isOnFire()) {
+        if (!world.isClient() && projectile.isOnFire()) {
             prime(world, hit.getBlockPos(), projectile.getOwner());
         }
     }

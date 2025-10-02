@@ -22,6 +22,11 @@ public class PearlBombEntity extends BombEntity {
         private static final ConsumeEffect TELEPORT_EFFECT = new TeleportRandomlyConsumeEffect();
 
         @Override
+        public boolean createsPoof() {
+            return false;
+        }
+
+        @Override
         public boolean shouldDamage(Explosion explosion, Entity entity) {
             return false;
         }
@@ -39,7 +44,7 @@ public class PearlBombEntity extends BombEntity {
         @Override
         public void affectEntity(Vec3d pos, Entity entity) {
             if (entity instanceof LivingEntity living) {
-                TELEPORT_EFFECT.onConsume(entity.getWorld(), ItemStack.EMPTY, living);
+                TELEPORT_EFFECT.onConsume(entity.getEntityWorld(), ItemStack.EMPTY, living);
             }
         }
     };
@@ -63,9 +68,9 @@ public class PearlBombEntity extends BombEntity {
         if (ticksUntilRemoval == -1) {
             ticksUntilRemoval = 1;
             CustomExplosionBehavior behavior = getExplosionBehavior();
-            createExplosion(behavior, getPos(), behavior.getPower().orElse(getExplosionPower()), ParticleTypes.REVERSE_PORTAL, ParticleTypes.REVERSE_PORTAL, SoundEvents.ENTITY_ENDERMAN_TELEPORT);
+            createExplosion(behavior, getEntityPos(), behavior.getPower().orElse(getExplosionPower()), ParticleTypes.REVERSE_PORTAL, ParticleTypes.REVERSE_PORTAL, SoundEvents.ENTITY_ENDERMAN_TELEPORT);
             for (int i = 0; i < 100; i++) {
-                getWorld().addParticleClient(ParticleTypes.REVERSE_PORTAL, getX(), getY(), getZ(), random.nextGaussian() / 8f, random.nextGaussian() / 8f, random.nextGaussian() / 8f);
+                getEntityWorld().addParticleClient(ParticleTypes.REVERSE_PORTAL, getX(), getY(), getZ(), random.nextGaussian() / 8f, random.nextGaussian() / 8f, random.nextGaussian() / 8f);
             }
         }
     }

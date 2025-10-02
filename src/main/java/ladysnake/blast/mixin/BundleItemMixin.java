@@ -1,5 +1,6 @@
 package ladysnake.blast.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -26,9 +27,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BundleItem.class)
 public class BundleItemMixin {
-    @Inject(method = "onStackClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/component/type/BundleContentsComponent$Builder;<init>(Lnet/minecraft/component/type/BundleContentsComponent;)V"))
-    public void blast$primePipeBomb(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player, CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 1) ItemStack otherStack) {
-        prime(otherStack, player);
+    @ModifyExpressionValue(method = "onStackClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/slot/Slot;getStack()Lnet/minecraft/item/ItemStack;"))
+    public ItemStack blast$primePipeBomb(ItemStack original, @Local(argsOnly = true) PlayerEntity player) {
+        prime(original, player);
+        return original;
     }
 
     @Inject(method = "onClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/component/type/BundleContentsComponent$Builder;add(Lnet/minecraft/item/ItemStack;)I"))

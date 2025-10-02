@@ -1,47 +1,35 @@
 package ladysnake.blast.mixin;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.mojang.serialization.Codec;
 import ladysnake.blast.common.entity.projectiles.AmethystShardEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PersistentProjectileEntity.class)
 public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
-    @Shadow
-    private ItemStack stack;
-
-    @Shadow
-    protected abstract ItemStack getDefaultItemStack();
-
     public PersistentProjectileEntityMixin(EntityType<? extends ProjectileEntity> entityType, World world) {
         super(entityType, world);
     }
 
-    @Inject(method = "readCustomData", at = @At("TAIL"))
-    private void blast$fixModProjectileSerializationRead(ReadView view, CallbackInfo ci) {
-        if (isDisallowed()) {
-            stack = getDefaultItemStack();
-        }
+    @WrapWithCondition(method = "readCustomData", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;setStack(Lnet/minecraft/item/ItemStack;)V"))
+    private boolean blast$fixModProjectileSerializationRead(PersistentProjectileEntity instance, ItemStack stack) {
+        return !isDisallowed();
     }
 
-    @Inject(method = "writeCustomData", at = @At("HEAD"))
-    private void blast$fixModProjectileSerializationWrite(WriteView view, CallbackInfo ci) {
-        if (isDisallowed()) {
-            stack = Items.BEDROCK.getDefaultStack();
-        }
+    @WrapWithCondition(method = "writeCustomData", at = @At(value = "INVOKE", target = "Lnet/minecraft/storage/WriteView;put(Ljava/lang/String;Lcom/mojang/serialization/Codec;Ljava/lang/Object;)V"))
+    private <T> boolean blast$fixModProjectileSerializationWrite(WriteView instance, String key, Codec<T> codec, T value) {
+        return codec != ItemStack.CODEC || !isDisallowed();
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     @Unique
     private boolean isDisallowed() {
         return (PersistentProjectileEntity) (Object) this instanceof AmethystShardEntity;

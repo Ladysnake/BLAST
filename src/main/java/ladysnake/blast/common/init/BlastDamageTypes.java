@@ -16,11 +16,11 @@ public class BlastDamageTypes {
     public static final RegistryKey<DamageType> ICICLE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Blast.id("icicle"));
 
     public static DamageSource amethystShard(PersistentProjectileEntity projectile, @Nullable Entity attacker) {
-        return create(AMETHYST_SHARD, projectile.getWorld(), attacker);
+        return create(AMETHYST_SHARD, projectile.getEntityWorld(), attacker);
     }
 
     public static DamageSource icicle(PersistentProjectileEntity projectile, @Nullable Entity attacker) {
-        return create(ICICLE, projectile.getWorld(), attacker);
+        return create(ICICLE, projectile.getEntityWorld(), attacker);
     }
 
     private static DamageSource create(RegistryKey<DamageType> key, World world, @Nullable Entity attacker) {

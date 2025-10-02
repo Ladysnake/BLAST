@@ -32,7 +32,7 @@ public class FollyRedPaintBlock extends Block {
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (canFreshen && stack.isOf(Items.HONEY_BOTTLE)) {
-            if (world.isClient) {
+            if (world.isClient()) {
                 ParticleUtil.spawnParticle(world, pos, BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, UniformIntProvider.create(3, 5));
             } else {
                 world.setBlockState(pos, BlastBlocks.FRESH_FOLLY_RED_PAINT.getDefaultState());

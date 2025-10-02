@@ -17,10 +17,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.BlockRenderLayer;
+import net.minecraft.client.render.entity.EntityRendererFactories;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -76,8 +76,8 @@ public class BlastClient implements ClientModInitializer {
         );
         BlockRenderLayerMap.putBlock(BlastBlocks.DRY_ICE, BlockRenderLayer.TRANSLUCENT);
 
-        EntityRendererRegistry.register(BlastEntities.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
-        EntityRendererRegistry.register(BlastEntities.ICICLE, IcicleEntityRenderer::new);
+        EntityRendererFactories.register(BlastEntities.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
+        EntityRendererFactories.register(BlastEntities.ICICLE, IcicleEntityRenderer::new);
     }
 
     @SafeVarargs
@@ -88,11 +88,11 @@ public class BlastClient implements ClientModInitializer {
     }
 
     private static <T extends Entity & FlyingItemEntity> void registerItemEntityRender(EntityType<T> entityType) {
-        EntityRendererRegistry.register(entityType, FlyingItemEntityRenderer::new);
+        EntityRendererFactories.register(entityType, FlyingItemEntityRenderer::new);
     }
 
     private static <T extends BombEntity> void registerBlockEntityRender(EntityType<T> block, Function<T, BlockState> stateGetter) {
-        EntityRendererRegistry.register(block, ctx -> new BlastBlockEntityRenderer<>(ctx, stateGetter));
+        EntityRendererFactories.register(block, ctx -> new BlastBlockEntityRenderer<>(ctx, stateGetter));
     }
 
     @Override

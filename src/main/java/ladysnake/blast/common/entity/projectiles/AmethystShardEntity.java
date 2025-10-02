@@ -54,7 +54,7 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
         if (isInGround()) {
             if (ticksUntilRemoval == -1) {
                 for (int i = 0; i < 8; ++i) {
-                    getWorld().addParticleClient(new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(getBreakItemParticle(), 1)), getX() + random.nextGaussian() / 20f, getY() + random.nextGaussian() / 20f, getZ() + random.nextGaussian() / 20f, random.nextGaussian() / 20f, 0.2D + random.nextGaussian() / 20f, random.nextGaussian() / 20f);
+                    getEntityWorld().addParticleClient(new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(getBreakItemParticle(), 1)), getX() + random.nextGaussian() / 20f, getY() + random.nextGaussian() / 20f, getZ() + random.nextGaussian() / 20f, random.nextGaussian() / 20f, 0.2D + random.nextGaussian() / 20f, random.nextGaussian() / 20f);
                 }
                 ticksUntilRemoval = 2;
             }
@@ -66,7 +66,7 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
             }
         }
         if (age < 10) {
-            for (LivingEntity livingEntity : getWorld().getEntitiesByClass(LivingEntity.class, getBoundingBox().expand(1f), LivingEntity::isAlive)) {
+            for (LivingEntity livingEntity : getEntityWorld().getEntitiesByClass(LivingEntity.class, getBoundingBox().expand(1f), LivingEntity::isAlive)) {
                 onEntityHit(new EntityHitResult(livingEntity));
                 discard();
             }
@@ -81,7 +81,7 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
         if (owner instanceof LivingEntity living) {
             living.onAttacking(entity);
         }
-        if (entity.getType() != EntityType.ENDERMAN && getWorld() instanceof ServerWorld world && entity.damage(world, damageSource, (float) damage)) {
+        if (entity.getType() != EntityType.ENDERMAN && getEntityWorld() instanceof ServerWorld world && entity.damage(world, damageSource, (float) damage)) {
             if (isOnFire()) {
                 entity.setOnFireFor(5);
             }
@@ -94,7 +94,7 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
             }
         }
         discard();
-        getWorld().playSound(null, getBlockPos(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.NEUTRAL, 1.0f, 1.5f);
+        getEntityWorld().playSound(null, getBlockPos(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.NEUTRAL, 1.0f, 1.5f);
     }
 
     protected Item getBreakItemParticle() {

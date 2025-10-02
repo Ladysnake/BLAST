@@ -29,11 +29,11 @@ public abstract class ItemEntityMixin extends Entity {
     private void blast$pipeBomb(CallbackInfo ci) {
         if (getStack().isOf(BlastItems.PIPE_BOMB) && getStack().getOrDefault(BlastComponentTypes.PRIMED, false)) {
             while (!getStack().isEmpty()) {
-                PipeBombEntity pipeBomb = BlastEntities.PIPE_BOMB.create(getWorld(), SpawnReason.SPAWN_ITEM_USE);
-                pipeBomb.setPosition(getPos());
+                PipeBombEntity pipeBomb = BlastEntities.PIPE_BOMB.create(getEntityWorld(), SpawnReason.SPAWN_ITEM_USE);
+                pipeBomb.setPosition(getEntityPos());
                 pipeBomb.setVelocity(getVelocity());
                 pipeBomb.setItem(getStack().copyWithCount(1));
-                getWorld().spawnEntity(pipeBomb);
+                getEntityWorld().spawnEntity(pipeBomb);
                 getStack().decrement(1);
             }
             discard();
