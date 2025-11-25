@@ -29,13 +29,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BundleItemMixin {
     @ModifyExpressionValue(method = "onStackClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/slot/Slot;getStack()Lnet/minecraft/item/ItemStack;"))
     public ItemStack blast$primePipeBomb(ItemStack original, @Local(argsOnly = true) PlayerEntity player) {
-        prime(original, player);
+        if (player != null && !player.getWorld().isClient()) {
+            prime(original, player);
+        }
         return original;
     }
 
     @Inject(method = "onClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/component/type/BundleContentsComponent$Builder;add(Lnet/minecraft/item/ItemStack;)I"))
     public void blast$primePipeBomb(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        prime(otherStack, player);
+        if (player != null && !player.getWorld().isClient()) {
+            prime(otherStack, player);
+        }
     }
 
     @WrapOperation(method = "getTooltipData", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;get(Lnet/minecraft/component/ComponentType;)Ljava/lang/Object;"))
