@@ -41,6 +41,6 @@ public class BundleItemMixin {
         ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player,
         StackReference cursorStackReference, CallbackInfoReturnable<Boolean> cir
     ) {
-        PipeBombItem.PIPE_PLAYER.set(player);
+        PipeBombItem.PIPE_PLAYER.remove();
     }
 }
