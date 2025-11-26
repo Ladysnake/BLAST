@@ -76,17 +76,17 @@ public class PipeBombItem extends Item {
             }
             stack = stack.copy();
             stack.set(BlastComponentTypes.PRIMED, true);
-            stack.set(BlastComponentTypes.FAKE_ITEM_ID, getRandomFakeItem(random));
+            stack.set(BlastComponentTypes.FAKE_ITEM_ID, Registries.ITEM.getId(getRandomFakeItem(random)));
         }
         return stack;
     }
 
-    private static Identifier getRandomFakeItem(Random random) {
+    public static Item getRandomFakeItem(Random random) {
         Item item;
         do {
             item = Registries.ITEM.get(random.nextInt(Registries.ITEM.size()));
         }
-        while (item.getMaxCount() != 64);
-        return Registries.ITEM.getId(item);
+        while (item.getMaxCount() != 64 && item != BlastItems.PIPE_BOMB);
+        return item;
     }
 }
