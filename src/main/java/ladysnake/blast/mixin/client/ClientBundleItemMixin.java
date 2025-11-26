@@ -15,6 +15,8 @@ import net.minecraft.util.math.random.Random;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+import java.util.function.Predicate;
+
 @Environment(EnvType.CLIENT)
 @Mixin(BundleItem.class)
 public abstract class ClientBundleItemMixin {
@@ -23,18 +25,20 @@ public abstract class ClientBundleItemMixin {
     private Object blast$showFakeItem(ItemStack instance, ComponentType<BundleContentsComponent> componentType, Operation<Object> original) {
         Object component = original.call(instance, componentType);
         if (component instanceof BundleContentsComponent bundleContentsComponent) {
-            BundleContentsComponent.Builder builder = new BundleContentsComponent.Builder(BundleContentsComponent.DEFAULT);
-            for (int i = 0; i < bundleContentsComponent.size(); i++) {
-                ItemStack stack = bundleContentsComponent.get(i);
-                if (stack.contains(BlastComponentTypes.FAKE_ITEM_ID)) {
-                    var item = Registries.ITEM.getOrEmpty(stack.get(BlastComponentTypes.FAKE_ITEM_ID))
-                        .orElse(PipeBombItem.getRandomFakeItem(Random.create()));
-                    builder.add(new ItemStack(item, stack.getCount() * (64 / stack.getMaxCount())));
-                } else {
-                    builder.add(stack);
-                }
-            }
-            return builder.build();
+            return new BundleContentsComponent(
+                bundleContentsComponent.stream().map(ItemStack::copy)
+                    .map(stack -> {
+                        if (stack.contains(BlastComponentTypes.FAKE_ITEM_ID)) {
+                            var item = Registries.ITEM.getOrEmpty(stack.get(BlastComponentTypes.FAKE_ITEM_ID))
+                                .orElse(PipeBombItem.getRandomFakeItem(Random.create()));
+                            return new ItemStack(item, stack.getCount() * (64 / stack.getMaxCount()));
+                        } else {
+                            return stack;
+                        }
+                    })
+                    .filter(Predicate.not(ItemStack::isEmpty))
+                    .toList()
+            );
         }
         return component;
     }
