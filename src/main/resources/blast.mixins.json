@@ -4,6 +4,7 @@
   "package": "ladysnake.blast.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "BundleContentsComponentBuilderMixin",
     "BundleItemMixin",
     "EnderEyeItemMixin",
     "ExplosionMixin",

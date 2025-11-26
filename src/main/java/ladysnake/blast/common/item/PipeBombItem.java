@@ -3,20 +3,26 @@ package ladysnake.blast.common.item;
 import ladysnake.blast.common.entity.PipeBombEntity;
 import ladysnake.blast.common.init.BlastComponentTypes;
 import ladysnake.blast.common.init.BlastEntities;
+import ladysnake.blast.common.init.BlastItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class PipeBombItem extends Item {
     public PipeBombItem(Settings settings) {
         super(settings);
     }
+
+    public static final ThreadLocal<PlayerEntity> PIPE_PLAYER = new ThreadLocal<>();
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
@@ -56,5 +62,31 @@ public class PipeBombItem extends Item {
         entity.setItem(stack);
         world.spawnEntity(entity);
         world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLOCK_TRIPWIRE_CLICK_OFF, player.getSoundCategory(), 1, 1);
+    }
+
+    public static ItemStack prime(ItemStack stack) {
+        if (stack.isOf(BlastItems.PIPE_BOMB)) {
+            PlayerEntity player = PIPE_PLAYER.get();
+            Random random;
+            if (player != null) {
+                random = player.getRandom();
+                player.playSound(SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, 0.5F, 1);
+            } else {
+                random = Random.create();
+            }
+            stack = stack.copy();
+            stack.set(BlastComponentTypes.PRIMED, true);
+            stack.set(BlastComponentTypes.FAKE_ITEM_ID, getRandomFakeItem(random));
+        }
+        return stack;
+    }
+
+    private static Identifier getRandomFakeItem(Random random) {
+        Item item;
+        do {
+            item = Registries.ITEM.get(random.nextInt(Registries.ITEM.size()));
+        }
+        while (item.getMaxCount() != 64);
+        return Registries.ITEM.getId(item);
     }
 }
