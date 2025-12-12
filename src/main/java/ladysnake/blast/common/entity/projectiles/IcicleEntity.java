@@ -29,7 +29,7 @@ public class IcicleEntity extends AmethystShardEntity {
 
     @Override
     protected DamageSource getDamageSource(Entity owner) {
-        return BlastDamageTypes.icicle(this, owner != null ? owner : this);
+        return getDamageSources().create(BlastDamageTypes.ICICLE, this, owner != null ? owner : this);
     }
 
     @Override

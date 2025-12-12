@@ -102,6 +102,6 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
     }
 
     protected DamageSource getDamageSource(Entity owner) {
-        return BlastDamageTypes.amethystShard(this, owner != null ? owner : this);
+        return getDamageSources().create(BlastDamageTypes.AMETHYST_SHARD, this, owner != null ? owner : this);
     }
 }
