@@ -1,4 +1,11 @@
 ------------------------------------------------------
+BLAST 1.13.5 - 1.21.11
+------------------------------------------------------
+Update thanks to MoriyaShiine
+ - Update to 1.21.11
+ - Fix Amethyst and Frost trigger bombs activating enchantments on mainhand stack when thrown in offhand stack
+
+------------------------------------------------------
 BLAST 1.13.4 - 1.21.9
 ------------------------------------------------------
 - Completed French translation, thanks Crackle!
