@@ -38,7 +38,7 @@ public class BonesburrierEntity extends BombEntity {
                     FallingBlockEntity fallingBlock = FallingBlockEntity.spawnFromBlock(world, pos, state);
                     fallingBlock.setVelocity(new Vec3d(pos.getX(), pos.getY(), pos.getZ()).subtract(sourcePos).normalize());
                     fallingBlock.dropItem = false;
-                    fallingBlock.velocityModified = true;
+                    fallingBlock.knockedBack = true;
                     world.setBlockState(pos, Blocks.AIR.getDefaultState());
                     // paint
                     BlockPos.Mutable mutable = new BlockPos.Mutable();

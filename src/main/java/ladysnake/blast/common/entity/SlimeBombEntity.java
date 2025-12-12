@@ -26,7 +26,7 @@ public class SlimeBombEntity extends BombEntity {
                     dZ /= product;
                     double strength = (1 - distance) * 3;
                     entity.addVelocity(dX * strength, dY * strength, dZ * strength);
-                    entity.velocityModified = true;
+                    entity.knockedBack = true;
                 }
             }
         }

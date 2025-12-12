@@ -61,7 +61,8 @@ public class FollyRedPaintParticle extends BillboardParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public record LandingFollyRedPaintDropFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
+    public record LandingFollyRedPaintDropFactory(
+        SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
         @Override
         public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
             Landing blockLeakParticle = new Landing(world, x, y, z, spriteProvider());
@@ -72,7 +73,8 @@ public class FollyRedPaintParticle extends BillboardParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public record FallingFollyRedPaintDropFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
+    public record FallingFollyRedPaintDropFactory(
+        SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
         @Override
         public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
             ContinuousFalling blockLeakParticle = new ContinuousFalling(world, x, y, z, spriteProvider(), BlastClient.LANDING_FOLLY_RED_PAINT_DROP);
@@ -83,7 +85,8 @@ public class FollyRedPaintParticle extends BillboardParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public record DrippingFollyRedPaintDropFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
+    public record DrippingFollyRedPaintDropFactory(
+        SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
         @Override
         public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
             Dripping dripping = new Dripping(world, x, y, z, spriteProvider(), BlastClient.FALLING_FOLLY_RED_PAINT_DROP);

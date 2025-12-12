@@ -64,7 +64,7 @@ public class BlastModelGenerator extends FabricModelProvider {
 
     private void registerStripminer(BlockStateModelGenerator generator, Block block, Identifier textureId) {
         TEMPLATE_STRIPMINER.upload(block, TextureMap.of(TextureKey.PARTICLE, textureId), generator.modelCollector);
-        generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, BlockStateModelGenerator.createWeightedVariant(ModelIds.getBlockModelId(block))).coordinate(BlockStateModelGenerator.UP_DEFAULT_ROTATION_OPERATIONS));
+        generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, BlockStateModelGenerator.createWeightedVariant(ModelIds.getBlockModelId(block))).apply(BlockStateModelGenerator.UP_DEFAULT_ROTATION_OPERATIONS));
     }
 
     private void registerRemoteDetonator(BlockStateModelGenerator generator) {
