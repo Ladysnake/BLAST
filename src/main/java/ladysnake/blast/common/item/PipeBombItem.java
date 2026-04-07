@@ -3,23 +3,37 @@ package ladysnake.blast.common.item;
 import ladysnake.blast.common.entity.PipeBombEntity;
 import ladysnake.blast.common.init.BlastComponentTypes;
 import ladysnake.blast.common.init.BlastEntities;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ProjectileItem;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class PipeBombItem extends Item {
-    public PipeBombItem(Settings settings) {
+public class PipeBombItem extends Item implements ProjectileItem {
+    public PipeBombItem(Item.Settings settings) {
         super(settings);
+        DispenserBlock.registerProjectileBehavior(this);
+    }
+
+    @Override
+    public ProjectileEntity createEntity(World world, Position pos, ItemStack stack, Direction direction) {
+        PipeBombEntity bomb = BlastEntities.PIPE_BOMB.create(world, SpawnReason.SPAWN_ITEM_USE);
+        bomb.setItem(stack);
+        bomb.setPosition(pos.getX(), pos.getY(), pos.getZ());
+        return bomb;
     }
 
     @Override
