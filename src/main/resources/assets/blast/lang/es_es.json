@@ -58,6 +58,6 @@
   "block.blast.bonesburrier": "Enterrador de los huesos",
   "block.blast.dry_ice": "Hielo seco",
   "block.blast.folly_red_paint": "Pintura roja sinsentida",
-  "death.attack.amethyst_shard": "%1$s fue apuñalado con un fragmento de la bomba de amatista de %2$s.",
-  "death.attack.icicle": "%1$s fue helado por %2$s"
+  "death.attack.blast.amethyst_shard": "%1$s fue apuñalado con un fragmento de la bomba de amatista de %2$s.",
+  "death.attack.blast.icicle": "%1$s fue helado por %2$s"
 }

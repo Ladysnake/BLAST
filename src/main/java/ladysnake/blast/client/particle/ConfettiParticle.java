@@ -1,19 +1,22 @@
 package ladysnake.blast.client.particle;
 
-import ladysnake.blast.mixin.client.ParticleAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.*;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import org.joml.Quaternionf;
 
-public class ConfettiParticle extends BillboardParticle {
+public class ConfettiParticle extends SingleQuadParticle {
     private float rotationX;
     private float rotationY;
     private float rotationZ;
@@ -22,44 +25,42 @@ public class ConfettiParticle extends BillboardParticle {
     private final float rotationZmod;
     private final float groundOffset;
 
-    public ConfettiParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
-        super(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.getFirst());
+    public ConfettiParticle(ClientLevel level, double x, double y, double z, double xa, double ya, double za, SpriteSet sprites) {
+        super(level, x, y, z, xa, ya, za, sprites.first());
+        quadSize *= 0.1f + level.getRandom().nextFloat() * 0.5f;
+        lifetime = level.getRandom().nextIntBetweenInclusive(20, 100);
+        hasPhysics = true;
+        setSpriteFromAge(sprites);
+        alpha = 1f;
 
-        this.scale *= 0.1f + world.getRandom().nextFloat() * 0.5f;
-        this.maxAge = world.getRandom().nextBetween(20, 100);
-        this.collidesWithWorld = true;
-        this.updateSprite(spriteProvider);
-        this.alpha = 1f;
+        lifetime = 1200; // live one minute
+        rCol = level.getRandom().nextFloat();
+        bCol = level.getRandom().nextFloat();
+        gCol = level.getRandom().nextFloat();
 
-        this.maxAge = 1200; // live one minute
-        this.red = world.getRandom().nextFloat();
-        this.blue = world.getRandom().nextFloat();
-        this.green = world.getRandom().nextFloat();
+        gravity = 0.1f;
+        xd = xa * 10f;
+        yd = ya * 10f;
+        zd = za * 10f;
+        friction = 0.5f;
 
+        rotationX = level.getRandom().nextFloat() * 360f;
+        rotationY = level.getRandom().nextFloat() * 360f;
+        rotationZ = level.getRandom().nextFloat() * 360f;
+        rotationXmod = level.getRandom().nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
+        rotationYmod = level.getRandom().nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
+        rotationZmod = level.getRandom().nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
 
-        this.gravityStrength = 0.1f;
-        this.velocityX = velocityX * 10f;
-        this.velocityY = velocityY * 10f;
-        this.velocityZ = velocityZ * 10f;
-        this.velocityMultiplier = 0.5f;
-
-        this.rotationX = world.getRandom().nextFloat() * 360f;
-        this.rotationY = world.getRandom().nextFloat() * 360f;
-        this.rotationZ = world.getRandom().nextFloat() * 360f;
-        this.rotationXmod = world.getRandom().nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
-        this.rotationYmod = world.getRandom().nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
-        this.rotationZmod = world.getRandom().nextFloat() * 10f * (random.nextBoolean() ? -1 : 1);
-
-        this.groundOffset = world.getRandom().nextFloat() / 100f + 0.001f;
+        groundOffset = level.getRandom().nextFloat() / 100f + 0.001f;
     }
 
     @Override
-    protected RenderType getRenderType() {
-        return RenderType.PARTICLE_ATLAS_OPAQUE;
+    protected Layer getLayer() {
+        return Layer.OPAQUE;
     }
 
     @Override
-    public void render(BillboardParticleSubmittable submittable, Camera camera, float tickProgress) {
+    public void extract(QuadParticleRenderState particleTypeRenderState, Camera camera, float partialTickTime) {
         if (onGround) {
             rotationX = 90;
             rotationY = 0;
@@ -68,13 +69,13 @@ public class ConfettiParticle extends BillboardParticle {
             rotationY += rotationYmod;
             rotationZ += rotationZmod;
         }
-        render(submittable, camera, eulerToQuaternion(rotationX, rotationY, rotationZ), tickProgress);
-        render(submittable, camera, eulerToQuaternion(-rotationX, -rotationY, -rotationZ), tickProgress);
+        extractRotatedQuad(particleTypeRenderState, camera, eulerToQuaternion(rotationX, rotationY, rotationZ), partialTickTime);
+        extractRotatedQuad(particleTypeRenderState, camera, eulerToQuaternion(-rotationX, -rotationY, -rotationZ), partialTickTime);
     }
 
     @Override
-    protected void renderVertex(BillboardParticleSubmittable submittable, Quaternionf rotation, float x, float y, float z, float tickProgress) {
-        super.renderVertex(submittable, rotation, x, y + (onGround ? groundOffset : 0), z, tickProgress);
+    protected void extractRotatedQuad(QuadParticleRenderState particleTypeRenderState, Quaternionf rotation, float x, float y, float z, float partialTickTime) {
+        super.extractRotatedQuad(particleTypeRenderState, rotation, x, y + (onGround ? groundOffset : 0), z, partialTickTime);
     }
 
     public Quaternionf eulerToQuaternion(float x, float y, float z) {
@@ -82,12 +83,12 @@ public class ConfettiParticle extends BillboardParticle {
         y *= ((float) Math.PI / 180F);
         z *= ((float) Math.PI / 180F);
 
-        float f = MathHelper.sin(0.5F * x);
-        float g = MathHelper.cos(0.5F * x);
-        float h = MathHelper.sin(0.5F * y);
-        float i = MathHelper.cos(0.5F * y);
-        float j = MathHelper.sin(0.5F * z);
-        float k = MathHelper.cos(0.5F * z);
+        float f = Mth.sin(0.5F * x);
+        float g = Mth.cos(0.5F * x);
+        float h = Mth.sin(0.5F * y);
+        float i = Mth.cos(0.5F * y);
+        float j = Mth.sin(0.5F * z);
+        float k = Mth.cos(0.5F * z);
         x = f * i * k + g * h * j;
         y = g * h * k - f * i * j;
         z = f * h * k + g * i * j;
@@ -98,47 +99,47 @@ public class ConfettiParticle extends BillboardParticle {
 
     @Override
     public void tick() {
-        this.lastX = this.x;
-        this.lastY = this.y;
-        this.lastZ = this.z;
-        if (this.age++ >= this.maxAge) {
-            this.markDead();
+        xo = x;
+        yo = y;
+        zo = z;
+        if (age++ >= lifetime) {
+            remove();
         } else {
-            if (this.world.getFluidState(BlockPos.ofFloored(this.x, (this.y + 0.2), this.z)).isEmpty()) {
-                if (this.world.getFluidState(BlockPos.ofFloored(this.x, (this.y - 0.01), this.z)).isIn(FluidTags.WATER)) {
-                    this.onGround = true;
-                    this.velocityY = 0;
+            if (level.getFluidState(BlockPos.containing(x, (y + 0.2), z)).isEmpty()) {
+                if (level.getFluidState(BlockPos.containing(x, (y - 0.01), z)).is(FluidTags.WATER)) {
+                    onGround = true;
+                    yd = 0;
                 } else {
-                    this.velocityY -= 0.04D * (double) this.gravityStrength;
-                    ((ParticleAccessor) this).setStopped(false);
-                    this.move(this.velocityX, this.velocityY, this.velocityZ);
-                    if (this.ascending && this.y == this.lastY) {
-                        this.velocityX *= 1.1D;
-                        this.velocityZ *= 1.1D;
+                    yd -= 0.04D * (double) gravity;
+                    stoppedByCollision = false;
+                    move(xd, yd, zd);
+                    if (speedUpWhenYMotionIsBlocked && y == yo) {
+                        xd *= 1.1D;
+                        zd *= 1.1D;
                     }
 
-                    this.velocityX *= this.velocityMultiplier;
-                    this.velocityY *= this.velocityMultiplier;
-                    this.velocityZ *= this.velocityMultiplier;
+                    xd *= friction;
+                    yd *= friction;
+                    zd *= friction;
 
-                    this.velocityMultiplier = Math.min(0.98f, this.velocityMultiplier * 1.15f);
+                    friction = Math.min(0.98f, friction * 1.15f);
 
-                    if (this.onGround) {
-                        this.velocityX *= 0.699999988079071D;
-                        this.velocityZ *= 0.699999988079071D;
+                    if (onGround) {
+                        xd *= 0.699999988079071D;
+                        zd *= 0.699999988079071D;
                     }
                 }
             } else {
-                this.markDead();
+                remove();
             }
         }
     }
 
     @Environment(EnvType.CLIENT)
-    public record DefaultFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
-            return new ConfettiParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider());
+        public Particle createParticle(SimpleParticleType options, ClientLevel level, double x, double y, double z, double xAux, double yAux, double zAux, RandomSource random) {
+            return new ConfettiParticle(level, x, y, z, xAux, yAux, zAux, sprites());
         }
     }
 }

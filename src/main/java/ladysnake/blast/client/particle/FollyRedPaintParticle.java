@@ -3,169 +3,152 @@ package ladysnake.blast.client.particle;
 import ladysnake.blast.client.BlastClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.BillboardParticle;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.material.FluidState;
 
-public class FollyRedPaintParticle extends BillboardParticle {
-    FollyRedPaintParticle(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider) {
-        super(world, x, y, z, spriteProvider.getFirst());
-        this.setBoundingBoxSpacing(0.01f, 0.01f);
-        this.gravityStrength = 0.06f;
+public class FollyRedPaintParticle extends SingleQuadParticle {
+    FollyRedPaintParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
+        super(level, x, y, z, sprites.first());
+        setSize(0.01f, 0.01f);
+        gravity = 0.06f;
     }
 
     @Override
-    protected RenderType getRenderType() {
-        return RenderType.PARTICLE_ATLAS_OPAQUE;
+    protected Layer getLayer() {
+        return Layer.OPAQUE;
     }
 
     @Override
     public void tick() {
-        this.lastX = this.x;
-        this.lastY = this.y;
-        this.lastZ = this.z;
-        this.updateAge();
-        if (this.dead) {
+        xo = x;
+        yo = y;
+        zo = z;
+        updateAge();
+        if (removed) {
             return;
         }
-        this.velocityY -= this.gravityStrength;
-        this.move(this.velocityX, this.velocityY, this.velocityZ);
-        this.updateVelocity();
-        if (this.dead) {
+        yd -= gravity;
+        move(xd, yd, zd);
+        updateDeltaMovement();
+        if (removed) {
             return;
         }
-        this.velocityX *= 0.98f;
-        this.velocityY *= 0.98f;
-        this.velocityZ *= 0.98f;
-        BlockPos blockPos = BlockPos.ofFloored(this.x, this.y, this.z);
-        FluidState fluidState = this.world.getFluidState(blockPos);
-        if (this.y < (double) ((float) blockPos.getY() + fluidState.getHeight(this.world, blockPos))) {
-            this.markDead();
+        xd *= 0.98f;
+        yd *= 0.98f;
+        zd *= 0.98f;
+        BlockPos blockPos = BlockPos.containing(x, y, z);
+        FluidState fluidState = level.getFluidState(blockPos);
+        if (y < (double) ((float) blockPos.getY() + fluidState.getHeight(level, blockPos))) {
+            remove();
         }
     }
 
     protected void updateAge() {
-        if (this.maxAge-- <= 0) {
-            this.markDead();
+        if (lifetime-- <= 0) {
+            remove();
         }
     }
 
-    protected void updateVelocity() {
-    }
-
-    @Environment(EnvType.CLIENT)
-    public record LandingFollyRedPaintDropFactory(
-        SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
-        @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
-            Landing blockLeakParticle = new Landing(world, x, y, z, spriteProvider());
-            blockLeakParticle.setMaxAge((int) (28 / (world.getRandom().nextDouble() * 0.8 + 0.2)));
-            blockLeakParticle.setColor(1f, 0f, 0.35f);
-            return blockLeakParticle;
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public record FallingFollyRedPaintDropFactory(
-        SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
-        @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
-            ContinuousFalling blockLeakParticle = new ContinuousFalling(world, x, y, z, spriteProvider(), BlastClient.LANDING_FOLLY_RED_PAINT_DROP);
-            blockLeakParticle.gravityStrength = 0.01f;
-            blockLeakParticle.setColor(1f, 0f, 0.35f);
-            return blockLeakParticle;
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public record DrippingFollyRedPaintDropFactory(
-        SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
-        @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
-            Dripping dripping = new Dripping(world, x, y, z, spriteProvider(), BlastClient.FALLING_FOLLY_RED_PAINT_DROP);
-            dripping.gravityStrength *= 0.01f;
-            dripping.setMaxAge(100);
-            dripping.setColor(1f, 0f, 0.35f);
-            return dripping;
-        }
+    protected void updateDeltaMovement() {
     }
 
     @Environment(EnvType.CLIENT)
     static class Dripping extends FollyRedPaintParticle {
-        private final ParticleEffect nextParticle;
+        private final ParticleOptions nextParticle;
 
-        Dripping(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider, ParticleEffect nextParticle) {
-            super(world, x, y, z, spriteProvider);
+        Dripping(ClientLevel level, double x, double y, double z, SpriteSet sprites, ParticleOptions nextParticle) {
+            super(level, x, y, z, sprites);
             this.nextParticle = nextParticle;
-            this.gravityStrength *= 0.02f;
-            this.maxAge = 40;
+            gravity *= 0.02f;
+            lifetime = 40;
         }
 
         @Override
         protected void updateAge() {
-            if (this.maxAge-- <= 0) {
-                this.markDead();
-                this.world.addParticleClient(this.nextParticle, this.x, this.y, this.z, this.velocityX, this.velocityY, this.velocityZ);
+            if (lifetime-- <= 0) {
+                remove();
+                level.addParticle(nextParticle, x, y, z, xd, yd, zd);
             }
         }
 
         @Override
-        protected void updateVelocity() {
-            this.velocityX *= 0.02;
-            this.velocityY *= 0.02;
-            this.velocityZ *= 0.02;
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    static class ContinuousFalling extends Falling {
-        protected final ParticleEffect nextParticle;
-
-        ContinuousFalling(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider, ParticleEffect nextParticle) {
-            super(world, x, y, z, spriteProvider);
-            this.nextParticle = nextParticle;
-        }
-
-        @Override
-        protected void updateVelocity() {
-            if (this.onGround) {
-                this.markDead();
-                this.world.addParticleClient(this.nextParticle, this.x, this.y, this.z, 0, 0, 0);
-            }
+        protected void updateDeltaMovement() {
+            xd *= 0.02;
+            yd *= 0.02;
+            zd *= 0.02;
         }
     }
 
     @Environment(EnvType.CLIENT)
     static class Falling extends FollyRedPaintParticle {
-        Falling(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider) {
-            this(world, x, y, z, (int) (64 / (world.getRandom().nextDouble() * 0.8 + 0.2)), spriteProvider);
+        protected final ParticleOptions nextParticle;
+
+        Falling(ClientLevel level, double x, double y, double z, SpriteSet sprites, ParticleOptions nextParticle) {
+            this(level, x, y, z, (int) (64 / (level.getRandom().nextDouble() * 0.8 + 0.2)), sprites, nextParticle);
         }
 
-        Falling(ClientWorld world, double x, double y, double z, int maxAge, SpriteProvider spriteProvider) {
-            super(world, x, y, z, spriteProvider);
-            this.maxAge = maxAge;
+        Falling(ClientLevel level, double x, double y, double z, int maxAge, SpriteSet sprites, ParticleOptions nextParticle) {
+            super(level, x, y, z, sprites);
+            this.nextParticle = nextParticle;
+            lifetime = maxAge;
         }
 
         @Override
-        protected void updateVelocity() {
-            if (this.onGround) {
-                this.markDead();
+        protected void updateDeltaMovement() {
+            if (onGround) {
+                level.addParticle(nextParticle, x, y, z, 0, 0, 0);
+                remove();
             }
         }
     }
 
     @Environment(EnvType.CLIENT)
     static class Landing extends FollyRedPaintParticle {
-        Landing(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider) {
-            super(world, x, y, z, spriteProvider);
-            this.maxAge = (int) (16 / (world.getRandom().nextDouble() * 0.8 + 0.2));
+        Landing(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
+            super(level, x, y, z, sprites);
+            lifetime = (int) (16 / (level.getRandom().nextDouble() * 0.8 + 0.2));
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public record DrippingProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
+        @Override
+        public Particle createParticle(SimpleParticleType options, ClientLevel level, double x, double y, double z, double xAux, double yAux, double zAux, RandomSource random) {
+            Dripping dripping = new Dripping(level, x, y, z, sprites(), BlastClient.FALLING_FOLLY_RED_PAINT_DROP);
+            dripping.gravity *= 0.01f;
+            dripping.setLifetime(100);
+            dripping.setColor(1f, 0f, 0.35f);
+            return dripping;
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public record FallingProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
+        @Override
+        public Particle createParticle(SimpleParticleType options, ClientLevel level, double x, double y, double z, double xAux, double yAux, double zAux, RandomSource random) {
+            Falling falling = new Falling(level, x, y, z, sprites(), BlastClient.LANDING_FOLLY_RED_PAINT_DROP);
+            falling.gravity = 0.01f;
+            falling.setColor(1f, 0f, 0.35f);
+            return falling;
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public record LandingProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
+        @Override
+        public Particle createParticle(SimpleParticleType options, ClientLevel level, double x, double y, double z, double xAux, double yAux, double zAux, RandomSource random) {
+            Landing landing = new Landing(level, x, y, z, sprites());
+            landing.setLifetime((int) (28 / (level.getRandom().nextDouble() * 0.8 + 0.2)));
+            landing.setColor(1f, 0f, 0.35f);
+            return landing;
         }
     }
 }

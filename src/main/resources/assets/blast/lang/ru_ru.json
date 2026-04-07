@@ -42,6 +42,6 @@
   "block.blast.stripminer": "Ленточный копатель",
   "block.blast.cold_digger": "Морозный копатель",
   "block.blast.dry_ice": "Сухой лёд",
-  "death.attack.amethyst_shard": "%1$s был нашпигован осколками аместита из аметистовой бомбы игрока %2$s",
-  "death.attack.icicle": "%1$s был проткнут сосулькой игрока %2$s"
+  "death.attack.blast.amethyst_shard": "%1$s был нашпигован осколками аместита из аметистовой бомбы игрока %2$s",
+  "death.attack.blast.icicle": "%1$s был проткнут сосулькой игрока %2$s"
 }

@@ -6,19 +6,20 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import ladysnake.blast.common.init.BlastComponentTypes;
 import ladysnake.blast.common.init.BlastItems;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.type.BundleContentsComponent;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.StackReference;
-import net.minecraft.item.BundleItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ClickType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BundleItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.component.BundleContents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,49 +28,50 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BundleItem.class)
 public class BundleItemMixin {
-    @ModifyExpressionValue(method = "onStackClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/slot/Slot;getStack()Lnet/minecraft/item/ItemStack;"))
-    public ItemStack blast$primePipeBomb(ItemStack original, @Local(argsOnly = true) PlayerEntity player) {
+    @ModifyExpressionValue(method = "overrideStackedOnOther", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;getItem()Lnet/minecraft/world/item/ItemStack;"))
+    public ItemStack blast$primePipeBomb(ItemStack original, @Local(argsOnly = true) Player player) {
         prime(original, player);
         return original;
     }
 
-    @Inject(method = "onClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/component/type/BundleContentsComponent$Builder;add(Lnet/minecraft/item/ItemStack;)I"))
-    public void blast$primePipeBomb(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        prime(otherStack, player);
+    @Inject(method = "overrideOtherStackedOnMe", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/component/BundleContents$Mutable;tryInsert(Lnet/minecraft/world/item/ItemStack;)I"))
+    public void blast$primePipeBomb(ItemStack self, ItemStack other, Slot slot, ClickAction clickAction, Player player, SlotAccess carriedItem, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+        prime(other, player);
     }
 
-    @WrapOperation(method = "getTooltipData", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;get(Lnet/minecraft/component/ComponentType;)Ljava/lang/Object;"))
-    private Object blast$showFakeItem(ItemStack instance, ComponentType<BundleContentsComponent> componentType, Operation<Object> original) {
+    @WrapOperation(method = "getTooltipImage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;get(Lnet/minecraft/core/component/DataComponentType;)Ljava/lang/Object;"))
+    private Object blast$showFakeItem(ItemStack instance, DataComponentType<BundleContents> componentType, Operation<Object> original) {
         Object component = original.call(instance, componentType);
-        if (component instanceof BundleContentsComponent bundleContentsComponent) {
-            BundleContentsComponent.Builder builder = new BundleContentsComponent.Builder(bundleContentsComponent);
-            for (int i = 0; i < bundleContentsComponent.size(); i++) {
-                ItemStack stack = bundleContentsComponent.get(i);
-                if (stack.contains(BlastComponentTypes.FAKE_ITEM_ID)) {
-                    builder.stacks.set(i, new ItemStack(Registries.ITEM.get(stack.get(BlastComponentTypes.FAKE_ITEM_ID)), stack.getCount() * (64 / stack.getMaxCount())));
+        if (component instanceof BundleContents bundleContents) {
+            BundleContents.Mutable mutable = new BundleContents.Mutable(bundleContents);
+            for (int i = 0; i < bundleContents.size(); i++) {
+                ItemStackTemplate template = bundleContents.items().get(i);
+                Identifier fakeItemId = template.get(BlastComponentTypes.FAKE_ITEM_ID);
+                if (fakeItemId != null) {
+                    mutable.items.set(i, new ItemStack(BuiltInRegistries.ITEM.getValue(fakeItemId), template.count() * (64 / template.getMaxStackSize())));
                 }
             }
-            return builder.build();
+            return mutable.toImmutable();
         }
         return component;
     }
 
     @Unique
-    private static void prime(ItemStack stack, PlayerEntity player) {
-        if (stack.isOf(BlastItems.PIPE_BOMB)) {
-            player.playSound(SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, 0.5F, 1);
+    private static void prime(ItemStack stack, Player player) {
+        if (stack.is(BlastItems.PIPE_BOMB)) {
+            player.playSound(SoundEvents.TRIPWIRE_CLICK_ON, 0.5F, 1);
             stack.set(BlastComponentTypes.PRIMED, true);
             stack.set(BlastComponentTypes.FAKE_ITEM_ID, getRandomFakeItem(player.getRandom()));
         }
     }
 
     @Unique
-    private static Identifier getRandomFakeItem(Random random) {
+    private static Identifier getRandomFakeItem(RandomSource random) {
         Item item;
         do {
-            item = Registries.ITEM.get(random.nextInt(Registries.ITEM.size()));
+            item = BuiltInRegistries.ITEM.byId(random.nextInt(BuiltInRegistries.ITEM.size()));
         }
-        while (item.getMaxCount() != 64);
-        return Registries.ITEM.getId(item);
+        while (item.getDefaultMaxStackSize() != 64);
+        return BuiltInRegistries.ITEM.getKey(item);
     }
 }

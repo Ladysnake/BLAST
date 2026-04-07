@@ -1,6 +1,6 @@
 package ladysnake.blast.common.init;
 
-import net.minecraft.sound.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
 
 import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerSoundEvent;
 

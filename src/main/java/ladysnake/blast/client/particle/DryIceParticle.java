@@ -2,73 +2,72 @@ package ladysnake.blast.client.particle;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.BillboardParticle;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
-public class DryIceParticle extends BillboardParticle {
+public class DryIceParticle extends SingleQuadParticle {
     private final float maxAlpha;
 
-    public DryIceParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
-        super(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.getFirst());
-
-        this.scale *= 0.1f + world.getRandom().nextFloat() * 0.5f;
-        this.maxAge = world.getRandom().nextBetween(20, 100);
-        this.collidesWithWorld = true;
-        this.updateSprite(spriteProvider);
-        this.alpha = 0f;
-        this.maxAlpha = world.getRandom().nextFloat() / 25f;
-        this.velocityY = world.getRandom().nextFloat() / 25f;
-        this.velocityX = 0;
-        this.velocityZ = 0;
+    public DryIceParticle(ClientLevel level, double x, double y, double z, double xa, double ya, double za, SpriteSet sprites) {
+        super(level, x, y, z, xa, ya, za, sprites.first());
+        quadSize *= 0.1f + level.getRandom().nextFloat() * 0.5f;
+        lifetime = level.getRandom().nextIntBetweenInclusive(20, 100);
+        hasPhysics = true;
+        setSpriteFromAge(sprites);
+        alpha = 0f;
+        maxAlpha = level.getRandom().nextFloat() / 25f;
+        yd = level.getRandom().nextFloat() / 25f;
+        xd = 0;
+        zd = 0;
     }
 
     @Override
-    protected RenderType getRenderType() {
-        return RenderType.PARTICLE_ATLAS_TRANSLUCENT;
+    protected Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     @Override
     public void tick() {
-        this.lastX = this.x;
-        this.lastY = this.y;
-        this.lastZ = this.z;
+        xo = x;
+        yo = y;
+        zo = z;
 
-        BlockPos pos = BlockPos.ofFloored(this.x, this.y, this.z);
+        BlockPos pos = BlockPos.containing(x, y, z);
 
         // fade and die if old enough
-        if (this.age++ >= this.maxAge) {
-            this.alpha -= 0.001f;
+        if (age++ >= lifetime) {
+            alpha -= 0.001f;
             if (alpha < 0f) {
-                this.markDead();
+                remove();
             }
         } else {
-            if (this.alpha <= this.maxAlpha) {
-                this.alpha = Math.min(this.maxAlpha, this.alpha + 0.01f);
+            if (alpha <= maxAlpha) {
+                alpha = Math.min(maxAlpha, alpha + 0.01f);
             }
         }
 
-        if (!world.getBlockState(pos.add(0, (int) -this.scale, 0)).isAir()) {
-            this.velocityY /= 1.05;
+        if (!level.getBlockState(pos.offset(0, (int) -quadSize, 0)).isAir()) {
+            yd /= 1.05;
         }
 
-        if (!world.getBlockState(pos).isAir()) {
-            this.maxAge = 0;
+        if (!level.getBlockState(pos).isAir()) {
+            lifetime = 0;
         }
 
-        this.move(velocityX, -velocityY, velocityZ);
+        move(xd, -yd, zd);
     }
 
     @Environment(EnvType.CLIENT)
-    public record DefaultFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
-            return new DryIceParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider());
+        public Particle createParticle(SimpleParticleType options, ClientLevel level, double x, double y, double z, double xAux, double yAux, double zAux, RandomSource random) {
+            return new DryIceParticle(level, x, y, z, xAux, yAux, zAux, sprites());
         }
     }
 }

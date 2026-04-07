@@ -42,6 +42,6 @@
   "block.blast.stripminer": "Stripminer",
   "block.blast.cold_digger": "Săpător rece",
   "block.blast.dry_ice": "Gheata uscata",
-  "death.attack.amethyst_shard": "%1$ a fost lovit de o bucată de ametist din bomba de ametist a lui %2$s",
-  "death.attack.icicle": "%1$ a fost înghețat de %2$"
+  "death.attack.blast.amethyst_shard": "%1$ a fost lovit de o bucată de ametist din bomba de ametist a lui %2$s",
+  "death.attack.blast.icicle": "%1$ a fost înghețat de %2$"
 }

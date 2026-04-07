@@ -27,11 +27,12 @@
   "mixins": [
 	"blast.mixins.json"
   ],
-  "accessWidener": "blast.accesswidener",
+  "accessWidener": "blast.classtweaker",
   "depends": {
 	"fabricloader": "*",
-	"minecraft": "~1.21.11",
-	"java": ">=21",
-	"fabric-api": "*"
+	"minecraft": "~26.1.1",
+	"java": ">=25",
+	"fabric-api": "*",
+	"strawberrylib": "*"
   }
 }

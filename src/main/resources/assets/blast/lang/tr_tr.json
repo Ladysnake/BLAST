@@ -58,6 +58,6 @@
   "block.blast.bonesburrier": "Bonesburrier",
   "block.blast.dry_ice": "Kuru Buz",
   "block.blast.folly_red_paint": "Kıpkırmızı Boya",
-  "death.attack.amethyst_shard": "%1$s, %2$s'nın ametist bombasından bir ametist tarafından delindi",
-  "death.attack.icicle": "%1$s, %2$s tarafından buzlandı"
+  "death.attack.blast.amethyst_shard": "%1$s, %2$s'nın ametist bombasından bir ametist tarafından delindi",
+  "death.attack.blast.icicle": "%1$s, %2$s tarafından buzlandı"
 }

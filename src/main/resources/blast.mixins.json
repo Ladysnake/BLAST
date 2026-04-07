@@ -1,20 +1,19 @@
 {
   "required": true,
-  "minVersion": "0.8",
   "package": "ladysnake.blast.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [
-	"AbstractBlockMixin",
+	"AbstractArrowMixin",
+	"BlockBehaviourMixin",
 	"BundleItemMixin",
 	"EnderEyeItemMixin",
-	"ExplosionImplMixin",
 	"ItemEntityMixin",
-	"PersistentProjectileEntityMixin"
-  ],
-  "client": [
-	"client.ParticleAccessor"
+	"ServerExplosionMixin"
   ],
   "injectors": {
 	"defaultRequire": 1
+  },
+  "overwrites": {
+	"requireAnnotations": true
   }
 }

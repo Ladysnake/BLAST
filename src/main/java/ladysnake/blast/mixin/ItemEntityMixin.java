@@ -1,15 +1,15 @@
 package ladysnake.blast.mixin;
 
-import ladysnake.blast.common.entity.PipeBombEntity;
 import ladysnake.blast.common.init.BlastComponentTypes;
-import ladysnake.blast.common.init.BlastEntities;
+import ladysnake.blast.common.init.BlastEntityTypes;
 import ladysnake.blast.common.init.BlastItems;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import ladysnake.blast.common.world.entity.projectile.throwableitemprojectile.PipeBomb;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,22 +19,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin extends Entity {
     @Shadow
-    public abstract ItemStack getStack();
+    public abstract ItemStack getItem();
 
-    public ItemEntityMixin(EntityType<?> type, World world) {
-        super(type, world);
+    public ItemEntityMixin(EntityType<?> type, Level level) {
+        super(type, level);
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tick()V"), cancellable = true)
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;tick()V"), cancellable = true)
     private void blast$pipeBomb(CallbackInfo ci) {
-        if (getStack().isOf(BlastItems.PIPE_BOMB) && getStack().getOrDefault(BlastComponentTypes.PRIMED, false)) {
-            while (!getStack().isEmpty()) {
-                PipeBombEntity pipeBomb = BlastEntities.PIPE_BOMB.create(getEntityWorld(), SpawnReason.SPAWN_ITEM_USE);
-                pipeBomb.setPosition(getEntityPos());
-                pipeBomb.setVelocity(getVelocity());
-                pipeBomb.setItem(getStack().copyWithCount(1));
-                getEntityWorld().spawnEntity(pipeBomb);
-                getStack().decrement(1);
+        if (getItem().is(BlastItems.PIPE_BOMB) && getItem().getOrDefault(BlastComponentTypes.PRIMED, false)) {
+            while (!getItem().isEmpty()) {
+                PipeBomb bomb = BlastEntityTypes.PIPE_BOMB.create(level(), EntitySpawnReason.SPAWN_ITEM_USE);
+                bomb.setPos(position());
+                bomb.setDeltaMovement(getDeltaMovement());
+                bomb.setItem(getItem().copyWithCount(1));
+                level().addFreshEntity(bomb);
+                getItem().shrink(1);
             }
             discard();
             ci.cancel();

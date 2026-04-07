@@ -63,8 +63,8 @@
   "block.blast.folly_red_paint": "愚红漆",
   "block.blast.fresh_folly_red_paint": "新鲜的愚红漆",
   "block.blast.dried_folly_red_paint": "干枯的愚红漆",
-  "death.attack.amethyst_shard": "%1$s被%2$s的紫水晶炸弹炸成碎片",
-  "death.attack.icicle": "%1$s被%2$s击倒了",
+  "death.attack.blast.amethyst_shard": "%1$s被%2$s的紫水晶炸弹炸成碎片",
+  "death.attack.blast.icicle": "%1$s被%2$s击倒了",
   "subtitles.blast.entity.pipe_bomb.tick": "管状炸弹滴答",
   "subtitles.blast.entity.pipe_bomb.explode": "管状炸弹爆炸"
 }

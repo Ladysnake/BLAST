@@ -58,6 +58,6 @@
   "block.blast.bonesburrier": "Spuntaossa",
   "block.blast.dry_ice": "Ghiaccio secco",
   "block.blast.folly_red_paint": "Vernice rossa della follia",
-  "death.attack.amethyst_shard": "%1$s è stato/a trafitto da una scheggia di ametista dalla bomba di ametista di %2$s",
-  "death.attack.icicle": "%1$s è stato ghiacciato da %2$s"
+  "death.attack.blast.amethyst_shard": "%1$s è stato/a trafitto da una scheggia di ametista dalla bomba di ametista di %2$s",
+  "death.attack.blast.icicle": "%1$s è stato ghiacciato da %2$s"
 }

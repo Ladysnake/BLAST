@@ -1,5 +1,5 @@
 plugins {
-    id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
 	id 'io.github.ladysnake.chenille' version "${chenille_version}"
 }
 
@@ -11,7 +11,9 @@ base {
 }
 
 chenille {
-	javaVersion = 21
+    customLicense = rootProject.file("LICENSE")
+    github = new URL("https://github.com/Ladysnake/BLAST")
+	javaVersion = 25
 	configurePublishing {
 		withLadysnakeMaven()
 		withGithubRelease()
@@ -20,7 +22,7 @@ chenille {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/blast.accesswidener")
+	accessWidenerPath = file("src/main/resources/blast.classtweaker")
 }
 
 fabricApi {
@@ -31,43 +33,40 @@ fabricApi {
 
 repositories {
 	chenille.repositories.ladysnake()
-	maven {
-		name "datasync"
-		url "https://maven.uuid.gg/releases"
-	}
+	chenille.repositories.up()
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-	modIncludeImplementation "moriyashiine:strawberrylib:${strawberrylib_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    implementation "moriyashiine:strawberrylib:${strawberrylib_version}"
 }
 
 processResources {
-	inputs.property "version", project.version
+    inputs.property "version", project.version
 
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
+    it.options.release = 25
 }
 
 java {
-	withSourcesJar()
+    withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
-	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}" }
-	}
+    inputs.property "archivesName", project.base.archivesName
+
+    from("LICENSE") {
+        rename { "${it}_${inputs.properties.archivesName}"}
+    }
 }

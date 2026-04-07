@@ -63,8 +63,8 @@
   "block.blast.folly_red_paint": "Peinture rouge folie",
   "block.blast.fresh_folly_red_paint": "Peinture rouge folie fraîche",
   "block.blast.dried_folly_red_paint": "Peinture rouge folie séchée",
-  "death.attack.amethyst_shard": "%1$s a été poignardé par un éclat d’améthyste provenant de la bombe en améthyste de %2$s",
-  "death.attack.icicle": "%1$s a été glacé par %2$s",
+  "death.attack.blast.amethyst_shard": "%1$s a été poignardé par un éclat d’améthyste provenant de la bombe en améthyste de %2$s",
+  "death.attack.blast.icicle": "%1$s a été glacé par %2$s",
   "subtitles.blast.entity.pipe_bomb.tick": "La bombe artisanale fait tic-tac",
   "subtitles.blast.entity.pipe_bomb.explode": "La bombe artisanale explose"
 }

@@ -3,113 +3,89 @@ package ladysnake.blast.client;
 import ladysnake.blast.client.particle.ConfettiParticle;
 import ladysnake.blast.client.particle.DryIceParticle;
 import ladysnake.blast.client.particle.FollyRedPaintParticle;
-import ladysnake.blast.client.renderers.AmethystShardEntityRenderer;
-import ladysnake.blast.client.renderers.BlastBlockEntityRenderer;
-import ladysnake.blast.client.renderers.IcicleEntityRenderer;
-import ladysnake.blast.common.Blast;
-import ladysnake.blast.common.entity.BombEntity;
-import ladysnake.blast.common.entity.ColdDiggerEntity;
-import ladysnake.blast.common.entity.StripminerEntity;
+import ladysnake.blast.client.renderer.entity.AmethystShardRenderer;
+import ladysnake.blast.client.renderer.entity.BlastBlockEntityRenderer;
+import ladysnake.blast.client.renderer.entity.IcicleRenderer;
 import ladysnake.blast.common.init.BlastBlocks;
-import ladysnake.blast.common.init.BlastEntities;
+import ladysnake.blast.common.init.BlastEntityTypes;
+import ladysnake.blast.common.world.entity.item.ColdDigger;
+import ladysnake.blast.common.world.entity.item.Stripminer;
+import ladysnake.blast.common.world.entity.projectile.throwableitemprojectile.Bomb;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.entity.EntityRendererFactories;
-import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.FlyingItemEntity;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Function;
 
+import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerParticleType;
+
 @Environment(EnvType.CLIENT)
 public class BlastClient implements ClientModInitializer {
-
     // particle types
-    public static SimpleParticleType DRY_ICE;
-    public static SimpleParticleType CONFETTI;
-    public static SimpleParticleType DRIPPING_FOLLY_RED_PAINT_DROP;
-    public static SimpleParticleType FALLING_FOLLY_RED_PAINT_DROP;
-    public static SimpleParticleType LANDING_FOLLY_RED_PAINT_DROP;
+    public static SimpleParticleType DRY_ICE = registerParticleType("dry_ice", FabricParticleTypes.simple(true));
+    public static SimpleParticleType CONFETTI = registerParticleType("confetti", FabricParticleTypes.simple(true));
+    public static SimpleParticleType DRIPPING_FOLLY_RED_PAINT_DROP = registerParticleType("dripping_folly_red_paint_drop", FabricParticleTypes.simple(true));
+    public static SimpleParticleType FALLING_FOLLY_RED_PAINT_DROP = registerParticleType("falling_folly_red_paint_drop", FabricParticleTypes.simple(true));
+    public static SimpleParticleType LANDING_FOLLY_RED_PAINT_DROP = registerParticleType("landing_folly_red_paint_drop", FabricParticleTypes.simple(true));
 
-    public static void registerRenders() {
+    @Override
+    public void onInitializeClient() {
+        initRenderers();
+        initParticles();
+    }
+
+    private void initRenderers() {
         registerItemEntityRenders(
-            BlastEntities.BOMB,
-            BlastEntities.TRIGGER_BOMB,
-            BlastEntities.GOLDEN_BOMB,
-            BlastEntities.GOLDEN_TRIGGER_BOMB,
-            BlastEntities.DIAMOND_BOMB,
-            BlastEntities.DIAMOND_TRIGGER_BOMB,
-            BlastEntities.NAVAL_MINE,
-            BlastEntities.CONFETTI_BOMB,
-            BlastEntities.CONFETTI_TRIGGER_BOMB,
-            BlastEntities.DIRT_BOMB,
-            BlastEntities.DIRT_TRIGGER_BOMB,
-            BlastEntities.PEARL_BOMB,
-            BlastEntities.PEARL_TRIGGER_BOMB,
-            BlastEntities.AMETHYST_BOMB,
-            BlastEntities.AMETHYST_TRIGGER_BOMB,
-            BlastEntities.FROST_BOMB,
-            BlastEntities.FROST_TRIGGER_BOMB,
-            BlastEntities.SLIME_BOMB,
-            BlastEntities.SLIME_TRIGGER_BOMB,
-            BlastEntities.PIPE_BOMB
+            BlastEntityTypes.BOMB, BlastEntityTypes.TRIGGER_BOMB,
+            BlastEntityTypes.GOLDEN_BOMB, BlastEntityTypes.GOLDEN_TRIGGER_BOMB,
+            BlastEntityTypes.DIAMOND_BOMB, BlastEntityTypes.DIAMOND_TRIGGER_BOMB,
+            BlastEntityTypes.NAVAL_MINE,
+            BlastEntityTypes.CONFETTI_BOMB, BlastEntityTypes.CONFETTI_TRIGGER_BOMB,
+            BlastEntityTypes.DIRT_BOMB, BlastEntityTypes.DIRT_TRIGGER_BOMB,
+            BlastEntityTypes.PEARL_BOMB, BlastEntityTypes.PEARL_TRIGGER_BOMB,
+            BlastEntityTypes.AMETHYST_BOMB, BlastEntityTypes.AMETHYST_TRIGGER_BOMB,
+            BlastEntityTypes.FROST_BOMB, BlastEntityTypes.FROST_TRIGGER_BOMB,
+            BlastEntityTypes.SLIME_BOMB, BlastEntityTypes.SLIME_TRIGGER_BOMB,
+            BlastEntityTypes.PIPE_BOMB
         );
-        registerBlockEntityRender(BlastEntities.GUNPOWDER_BLOCK, e -> BlastBlocks.GUNPOWDER_BLOCK.getDefaultState());
-        registerBlockEntityRender(BlastEntities.STRIPMINER, StripminerEntity::getState);
-        registerBlockEntityRender(BlastEntities.COLD_DIGGER, ColdDiggerEntity::getState);
-        registerBlockEntityRender(BlastEntities.BONESBURRIER, e -> BlastBlocks.BONESBURRIER.getDefaultState());
+        registerBlockEntityRender(BlastEntityTypes.GUNPOWDER_BLOCK, _ -> BlastBlocks.GUNPOWDER_BLOCK.defaultBlockState());
+        registerBlockEntityRender(BlastEntityTypes.STRIPMINER, Stripminer::getState);
+        registerBlockEntityRender(BlastEntityTypes.COLD_DIGGER, ColdDigger::getState);
+        registerBlockEntityRender(BlastEntityTypes.BONESBURRIER, _ -> BlastBlocks.BONESBURRIER.defaultBlockState());
 
-        BlockRenderLayerMap.putBlocks(BlockRenderLayer.CUTOUT,
-            BlastBlocks.GUNPOWDER_BLOCK, BlastBlocks.COLD_DIGGER,
-            BlastBlocks.STRIPMINER, BlastBlocks.BONESBURRIER,
-            BlastBlocks.REMOTE_DETONATOR
-        );
-        BlockRenderLayerMap.putBlock(BlastBlocks.DRY_ICE, BlockRenderLayer.TRANSLUCENT);
+        EntityRenderers.register(BlastEntityTypes.AMETHYST_SHARD, AmethystShardRenderer::new);
+        EntityRenderers.register(BlastEntityTypes.ICICLE, IcicleRenderer::new);
+    }
 
-        EntityRendererFactories.register(BlastEntities.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
-        EntityRendererFactories.register(BlastEntities.ICICLE, IcicleEntityRenderer::new);
+    private void initParticles() {
+        ParticleProviderRegistry.getInstance().register(DRY_ICE, DryIceParticle.Provider::new);
+        ParticleProviderRegistry.getInstance().register(CONFETTI, ConfettiParticle.Provider::new);
+        ParticleProviderRegistry.getInstance().register(DRIPPING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.DrippingProvider::new);
+        ParticleProviderRegistry.getInstance().register(FALLING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.FallingProvider::new);
+        ParticleProviderRegistry.getInstance().register(LANDING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.LandingProvider::new);
     }
 
     @SafeVarargs
-    private static void registerItemEntityRenders(EntityType<? extends FlyingItemEntity>... entityTypes) {
-        for (EntityType<? extends FlyingItemEntity> entityType : entityTypes) {
+    private static void registerItemEntityRenders(EntityType<? extends ItemSupplier>... types) {
+        for (EntityType<? extends ItemSupplier> entityType : types) {
             registerItemEntityRender(entityType);
         }
     }
 
-    private static <T extends Entity & FlyingItemEntity> void registerItemEntityRender(EntityType<T> entityType) {
-        EntityRendererFactories.register(entityType, FlyingItemEntityRenderer::new);
+    private static <T extends Entity & ItemSupplier> void registerItemEntityRender(EntityType<T> type) {
+        EntityRenderers.register(type, ThrownItemRenderer::new);
     }
 
-    private static <T extends BombEntity> void registerBlockEntityRender(EntityType<T> block, Function<T, BlockState> stateGetter) {
-        EntityRendererFactories.register(block, ctx -> new BlastBlockEntityRenderer<>(ctx, stateGetter));
-    }
-
-    @Override
-    public void onInitializeClient() {
-        registerRenders();
-
-        // particles
-        DRY_ICE = Registry.register(Registries.PARTICLE_TYPE, Blast.id("dry_ice"), FabricParticleTypes.simple(true));
-        ParticleFactoryRegistry.getInstance().register(DRY_ICE, DryIceParticle.DefaultFactory::new);
-        CONFETTI = Registry.register(Registries.PARTICLE_TYPE, Blast.id("confetti"), FabricParticleTypes.simple(true));
-        ParticleFactoryRegistry.getInstance().register(CONFETTI, ConfettiParticle.DefaultFactory::new);
-
-        DRIPPING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, Blast.id("dripping_folly_red_paint_drop"), FabricParticleTypes.simple(true));
-        ParticleFactoryRegistry.getInstance().register(DRIPPING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.DrippingFollyRedPaintDropFactory::new);
-        FALLING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, Blast.id("falling_folly_red_paint_drop"), FabricParticleTypes.simple(true));
-        ParticleFactoryRegistry.getInstance().register(FALLING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.FallingFollyRedPaintDropFactory::new);
-        LANDING_FOLLY_RED_PAINT_DROP = Registry.register(Registries.PARTICLE_TYPE, Blast.id("landing_folly_red_paint_drop"), FabricParticleTypes.simple(true));
-        ParticleFactoryRegistry.getInstance().register(LANDING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.LandingFollyRedPaintDropFactory::new);
+    private static <T extends Bomb> void registerBlockEntityRender(EntityType<T> type, Function<T, BlockState> stateGetter) {
+        EntityRenderers.register(type, ctx -> new BlastBlockEntityRenderer<>(ctx, stateGetter));
     }
 }
