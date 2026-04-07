@@ -1,4 +1,12 @@
 ------------------------------------------------------
+BLAST 1.13.6 - 1.21.11
+------------------------------------------------------
+- Update Chinese translation, thanks 704009905!
+  - Merges https://github.com/Ladysnake/BLAST/pull/64
+- Pipe Bombs can now be dispensed from Dispensers
+  - Fixes https://github.com/Ladysnake/BLAST/issues/65
+
+------------------------------------------------------
 BLAST 1.13.5 - 1.21.11
 ------------------------------------------------------
 Update thanks to MoriyaShiine
