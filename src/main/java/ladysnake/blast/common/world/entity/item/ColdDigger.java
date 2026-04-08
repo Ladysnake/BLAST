@@ -69,7 +69,7 @@ public class ColdDigger extends Stripminer {
         mutable.set(blockPosition());
         for (int i = 0; i <= 24; i++) {
             if (level().getBlockState(mutable).getBlock().getExplosionResistance() < 1200) {
-                CustomExplosionDamageCalculator calculator = getExplosionCalculator();
+                CustomExplosionDamageCalculator calculator = super.getExplosionCalculator();
                 createExplosion(calculator, mutable.getCenter(), 1, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE.value());
             } else {
                 break;
