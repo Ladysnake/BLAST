@@ -61,8 +61,8 @@ public class BlastClient implements ClientModInitializer {
     }
 
     private void initParticles() {
-        ParticleProviderRegistry.getInstance().register(BlastParticleTypes.DRY_ICE, DryIceParticle.Provider::new);
         ParticleProviderRegistry.getInstance().register(BlastParticleTypes.CONFETTI, ConfettiParticle.Provider::new);
+        ParticleProviderRegistry.getInstance().register(BlastParticleTypes.DRY_ICE, DryIceParticle.Provider::new);
         ParticleProviderRegistry.getInstance().register(BlastParticleTypes.DRIPPING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.DrippingProvider::new);
         ParticleProviderRegistry.getInstance().register(BlastParticleTypes.FALLING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.FallingProvider::new);
         ParticleProviderRegistry.getInstance().register(BlastParticleTypes.LANDING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.LandingProvider::new);

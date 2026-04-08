@@ -20,13 +20,13 @@ public class DryIceParticle extends SingleQuadParticle {
 
     public DryIceParticle(ClientLevel level, double x, double y, double z, double xa, double ya, double za, SpriteSet sprites) {
         super(level, x, y, z, xa, ya, za, sprites.first());
-        quadSize *= 0.1f + level.getRandom().nextFloat() * 0.5f;
+        quadSize *= 0.1F + level.getRandom().nextFloat() * 0.5F;
         lifetime = level.getRandom().nextIntBetweenInclusive(20, 100);
         hasPhysics = true;
         setSpriteFromAge(sprites);
-        alpha = 0f;
-        maxAlpha = level.getRandom().nextFloat() / 25f;
-        yd = level.getRandom().nextFloat() / 25f;
+        alpha = 0;
+        maxAlpha = level.getRandom().nextFloat() / 25;
+        yd = level.getRandom().nextFloat() / 25;
         xd = 0;
         zd = 0;
     }
@@ -47,12 +47,12 @@ public class DryIceParticle extends SingleQuadParticle {
         // fade and die if old enough
         if (age++ >= lifetime) {
             alpha -= 0.001f;
-            if (alpha < 0f) {
+            if (alpha < 0) {
                 remove();
             }
         } else {
             if (alpha <= maxAlpha) {
-                alpha = Math.min(maxAlpha, alpha + 0.01f);
+                alpha = Math.min(maxAlpha, alpha + 0.01F);
             }
         }
 
