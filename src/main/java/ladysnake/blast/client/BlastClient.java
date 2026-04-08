@@ -12,6 +12,7 @@ import ladysnake.blast.client.renderer.entity.BlastBlockEntityRenderer;
 import ladysnake.blast.client.renderer.entity.IcicleRenderer;
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.init.BlastEntityTypes;
+import ladysnake.blast.common.init.BlastParticleTypes;
 import ladysnake.blast.common.world.entity.item.ColdDigger;
 import ladysnake.blast.common.world.entity.item.Stripminer;
 import ladysnake.blast.common.world.entity.projectile.throwableitemprojectile.Bomb;
@@ -19,10 +20,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -30,17 +29,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Function;
 
-import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerParticleType;
-
 @Environment(EnvType.CLIENT)
 public class BlastClient implements ClientModInitializer {
-    // particle types
-    public static SimpleParticleType DRY_ICE = registerParticleType("dry_ice", FabricParticleTypes.simple(true));
-    public static SimpleParticleType CONFETTI = registerParticleType("confetti", FabricParticleTypes.simple(true));
-    public static SimpleParticleType DRIPPING_FOLLY_RED_PAINT_DROP = registerParticleType("dripping_folly_red_paint_drop", FabricParticleTypes.simple(true));
-    public static SimpleParticleType FALLING_FOLLY_RED_PAINT_DROP = registerParticleType("falling_folly_red_paint_drop", FabricParticleTypes.simple(true));
-    public static SimpleParticleType LANDING_FOLLY_RED_PAINT_DROP = registerParticleType("landing_folly_red_paint_drop", FabricParticleTypes.simple(true));
-
     @Override
     public void onInitializeClient() {
         initRenderers();
@@ -71,11 +61,11 @@ public class BlastClient implements ClientModInitializer {
     }
 
     private void initParticles() {
-        ParticleProviderRegistry.getInstance().register(DRY_ICE, DryIceParticle.Provider::new);
-        ParticleProviderRegistry.getInstance().register(CONFETTI, ConfettiParticle.Provider::new);
-        ParticleProviderRegistry.getInstance().register(DRIPPING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.DrippingProvider::new);
-        ParticleProviderRegistry.getInstance().register(FALLING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.FallingProvider::new);
-        ParticleProviderRegistry.getInstance().register(LANDING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.LandingProvider::new);
+        ParticleProviderRegistry.getInstance().register(BlastParticleTypes.DRY_ICE, DryIceParticle.Provider::new);
+        ParticleProviderRegistry.getInstance().register(BlastParticleTypes.CONFETTI, ConfettiParticle.Provider::new);
+        ParticleProviderRegistry.getInstance().register(BlastParticleTypes.DRIPPING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.DrippingProvider::new);
+        ParticleProviderRegistry.getInstance().register(BlastParticleTypes.FALLING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.FallingProvider::new);
+        ParticleProviderRegistry.getInstance().register(BlastParticleTypes.LANDING_FOLLY_RED_PAINT_DROP, FollyRedPaintParticle.LandingProvider::new);
     }
 
     @SafeVarargs

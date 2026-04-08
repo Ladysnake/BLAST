@@ -4,8 +4,8 @@
 
 package ladysnake.blast.common.world.entity.projectile.throwableitemprojectile;
 
-import ladysnake.blast.client.BlastClient;
 import ladysnake.blast.common.init.BlastItems;
+import ladysnake.blast.common.init.BlastParticleTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -31,7 +31,7 @@ public class ConfettiBomb extends Bomb {
                 level().addParticle(ParticleTypes.POOF, getX(), getY(), getZ(), random.nextGaussian() / 10f, Math.abs(random.nextGaussian() / 10f), random.nextGaussian() / 10f);
             }
             for (int i = 0; i < Math.round(getExplosionPower()); i++) {
-                level().addParticle(BlastClient.CONFETTI, getX(), getY(), getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
+                level().addParticle(BlastParticleTypes.CONFETTI, getX(), getY(), getZ(), random.nextGaussian() / 8f, Math.abs(random.nextGaussian() / 8f), random.nextGaussian() / 8f);
             }
             remove(RemovalReason.DISCARDED);
         }

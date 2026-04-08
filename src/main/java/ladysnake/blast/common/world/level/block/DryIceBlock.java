@@ -4,7 +4,7 @@
 
 package ladysnake.blast.common.world.level.block;
 
-import ladysnake.blast.client.BlastClient;
+import ladysnake.blast.common.init.BlastParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -45,7 +45,7 @@ public class DryIceBlock extends IceBlock {
 
     @Override
     public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
-        world.addParticle(BlastClient.DRY_ICE, pos.getX() + random.nextGaussian(), pos.getY() + random.nextGaussian(), pos.getZ() + random.nextGaussian(), 0, -Math.abs(random.nextGaussian()) / 100, 0);
+        world.addParticle(BlastParticleTypes.DRY_ICE, pos.getX() + random.nextGaussian(), pos.getY() + random.nextGaussian(), pos.getZ() + random.nextGaussian(), 0, -Math.abs(random.nextGaussian()) / 100, 0);
     }
 
     @Override

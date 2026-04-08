@@ -4,7 +4,7 @@
 
 package ladysnake.blast.client.particle;
 
-import ladysnake.blast.client.BlastClient;
+import ladysnake.blast.common.init.BlastParticleTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -126,7 +126,7 @@ public class FollyRedPaintParticle extends SingleQuadParticle {
     public record DrippingProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
         @Override
         public Particle createParticle(SimpleParticleType options, ClientLevel level, double x, double y, double z, double xAux, double yAux, double zAux, RandomSource random) {
-            Dripping dripping = new Dripping(level, x, y, z, sprites(), BlastClient.FALLING_FOLLY_RED_PAINT_DROP);
+            Dripping dripping = new Dripping(level, x, y, z, sprites(), BlastParticleTypes.FALLING_FOLLY_RED_PAINT_DROP);
             dripping.gravity *= 0.01f;
             dripping.setLifetime(100);
             dripping.setColor(1f, 0f, 0.35f);
@@ -138,7 +138,7 @@ public class FollyRedPaintParticle extends SingleQuadParticle {
     public record FallingProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
         @Override
         public Particle createParticle(SimpleParticleType options, ClientLevel level, double x, double y, double z, double xAux, double yAux, double zAux, RandomSource random) {
-            Falling falling = new Falling(level, x, y, z, sprites(), BlastClient.LANDING_FOLLY_RED_PAINT_DROP);
+            Falling falling = new Falling(level, x, y, z, sprites(), BlastParticleTypes.LANDING_FOLLY_RED_PAINT_DROP);
             falling.gravity = 0.01f;
             falling.setColor(1f, 0f, 0.35f);
             return falling;

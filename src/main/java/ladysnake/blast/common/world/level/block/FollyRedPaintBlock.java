@@ -4,8 +4,8 @@
 
 package ladysnake.blast.common.world.level.block;
 
-import ladysnake.blast.client.BlastClient;
 import ladysnake.blast.common.init.BlastBlocks;
+import ladysnake.blast.common.init.BlastParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -37,7 +37,7 @@ public class FollyRedPaintBlock extends Block {
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (canFreshen && stack.is(Items.HONEY_BOTTLE)) {
             if (level.isClientSide()) {
-                ParticleUtils.spawnParticlesOnBlockFaces(level, pos, BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, UniformInt.of(3, 5));
+                ParticleUtils.spawnParticlesOnBlockFaces(level, pos, BlastParticleTypes.DRIPPING_FOLLY_RED_PAINT_DROP, UniformInt.of(3, 5));
             } else {
                 level.setBlockAndUpdate(pos, BlastBlocks.FRESH_FOLLY_RED_PAINT.defaultBlockState());
                 ItemStack toGive = ItemUtils.createFilledResult(stack, player, stack.getCraftingRemainder().create());
@@ -80,7 +80,7 @@ public class FollyRedPaintBlock extends Block {
         double dX = direction.getStepX() == 0 ? random.nextDouble() : 0.5 + direction.getStepX() * 0.6;
         double dY = direction.getStepY() == 0 ? random.nextDouble() : 0.5 + direction.getStepY() * 0.6;
         double dZ = direction.getStepZ() == 0 ? random.nextDouble() : 0.5 + direction.getStepZ() * 0.6;
-        level.addParticle(BlastClient.DRIPPING_FOLLY_RED_PAINT_DROP, pos.getX() + dX, pos.getY() + dY, pos.getZ() + dZ, 0.0, 0.0, 0.0);
+        level.addParticle(BlastParticleTypes.DRIPPING_FOLLY_RED_PAINT_DROP, pos.getX() + dX, pos.getY() + dY, pos.getZ() + dZ, 0.0, 0.0, 0.0);
     }
 }
 
