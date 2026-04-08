@@ -1,4 +1,11 @@
 ------------------------------------------------------
+BLAST 1.13.7 - 26.1.1
+------------------------------------------------------
+- fix https://github.com/Ladysnake/BLAST/issues/67
+- fix dry ice particles not being visible
+- fix cold digger not carving properly
+
+------------------------------------------------------
 BLAST 1.13.6 - 26.1.1
 ------------------------------------------------------
 - Update thanks to MoriyaShiine
