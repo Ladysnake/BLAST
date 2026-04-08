@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) doctor4t. All Rights Reserved.
+ */
+
 package ladysnake.blast.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;

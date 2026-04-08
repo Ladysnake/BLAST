@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) doctor4t. All Rights Reserved.
+ */
+
 package ladysnake.blast.data;
 
 import ladysnake.blast.common.init.BlastDamageTypes;

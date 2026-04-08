@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) doctor4t. All Rights Reserved.
+ */
+
 package ladysnake.blast.client;
 
 import ladysnake.blast.client.particle.ConfettiParticle;

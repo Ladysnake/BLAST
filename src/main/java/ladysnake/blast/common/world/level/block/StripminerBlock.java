@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) doctor4t. All Rights Reserved.
+ */
+
 package ladysnake.blast.common.world.level.block;
 
 import ladysnake.blast.common.world.entity.item.Stripminer;

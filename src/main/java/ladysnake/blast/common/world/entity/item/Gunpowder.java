@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) doctor4t. All Rights Reserved.
+ */
+
 package ladysnake.blast.common.world.entity.item;
 
 import ladysnake.blast.common.init.BlastBlocks;

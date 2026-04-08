@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) doctor4t. All Rights Reserved.
+ */
+
 package ladysnake.blast.client.renderer.entity;
 
 import ladysnake.blast.common.Blast;
