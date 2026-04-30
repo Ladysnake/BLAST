@@ -14,6 +14,8 @@ import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerCompo
 
 public class BlastComponentTypes {
     public static final DataComponentType<Boolean> PRIMED = registerComponentType("primed", new DataComponentType.Builder<Boolean>().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+    public static final DataComponentType<Identifier> FAKE_ENCHANTMENT_ID = registerComponentType("fake_enchantment_id", new DataComponentType.Builder<Identifier>().persistent(Identifier.CODEC).networkSynchronized(Identifier.STREAM_CODEC));
+    public static final DataComponentType<Integer> FAKE_ENCHANTMENT_LEVEL = registerComponentType("fake_enchantment_level", new DataComponentType.Builder<Integer>().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
     public static final DataComponentType<Identifier> FAKE_ITEM_ID = registerComponentType("fake_item_id", new DataComponentType.Builder<Identifier>().persistent(Identifier.CODEC).networkSynchronized(Identifier.STREAM_CODEC));
     public static final DataComponentType<Integer> FUSE = registerComponentType("fuse", new DataComponentType.Builder<Integer>().persistent(ExtraCodecs.POSITIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT));
     public static final DataComponentType<Float> EXPLOSION_POWER = registerComponentType("explosion_power", new DataComponentType.Builder<Float>().persistent(ExtraCodecs.POSITIVE_FLOAT).networkSynchronized(ByteBufCodecs.FLOAT));

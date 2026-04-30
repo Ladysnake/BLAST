@@ -4,7 +4,9 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [
 	"AbstractArrowMixin",
+	"ApplyBonusCountMixin",
 	"BlockBehaviourMixin",
+	"BonusLevelTableConditionMixin",
 	"BundleItemMixin",
 	"EnderEyeItemMixin",
 	"ItemEntityMixin",
