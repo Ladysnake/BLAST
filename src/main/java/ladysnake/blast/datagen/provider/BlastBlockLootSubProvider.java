@@ -2,7 +2,7 @@
  * Copyright (c) doctor4t. All Rights Reserved.
  */
 
-package ladysnake.blast.data.provider;
+package ladysnake.blast.datagen.provider;
 
 import ladysnake.blast.common.init.BlastBlocks;
 import ladysnake.blast.common.world.level.block.RemoteDetonatorBlock;

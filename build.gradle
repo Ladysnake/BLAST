@@ -22,9 +22,10 @@ loom {
 }
 
 fabricApi {
-	configureDataGeneration() {
-		client = true
-	}
+    configureDataGeneration() {
+        client = true
+        modId = project.archives_base_name
+    }
 }
 
 repositories {
@@ -41,10 +42,11 @@ dependencies {
 }
 
 processResources {
-    inputs.property "version", project.version
+    def version = project.version
+    inputs.property "version", version
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand "version": version
     }
 }
 
@@ -60,9 +62,10 @@ java {
 }
 
 jar {
-    inputs.property "archivesName", project.base.archivesName
+    def projectName = project.name
+    inputs.property "projectName", projectName
 
     from("LICENSE") {
-        rename { "${it}_${inputs.properties.archivesName}"}
+        rename { "${it}_$projectName"}
     }
 }
