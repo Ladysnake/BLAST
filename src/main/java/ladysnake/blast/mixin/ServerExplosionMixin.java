@@ -87,4 +87,11 @@ public abstract class ServerExplosionMixin implements Explosion {
         }
         original.call(level, pos, itemStack);
     }
+
+    @Inject(method = "createFire", at = @At("HEAD"), cancellable = true)
+    private void blast$shouldCollectAirWithLithium(List<BlockPos> targetBlocks, CallbackInfo ci) {
+        if (damageCalculator instanceof CustomExplosionDamageCalculator calculator && calculator.shouldCollectAirWithLithium()) {
+            ci.cancel();
+        }
+    }
 }

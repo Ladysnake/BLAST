@@ -46,6 +46,10 @@ public class CustomExplosionDamageCalculator extends ExplosionDamageCalculator {
         return false;
     }
 
+    public boolean shouldCollectAirWithLithium() {
+        return false;
+    }
+
     public boolean createsPoof() {
         return true;
     }

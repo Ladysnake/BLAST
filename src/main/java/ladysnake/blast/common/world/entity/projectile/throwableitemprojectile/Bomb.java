@@ -139,7 +139,7 @@ public class Bomb extends ThrowableItemProjectile {
             calculator,
             pos.x(), pos.y(), pos.z(),
             power,
-            calculator.createsFire(),
+            calculator.createsFire() || calculator.shouldCollectAirWithLithium(),
             Level.ExplosionInteraction.TNT,
             smallParticle,
             largeParticle,

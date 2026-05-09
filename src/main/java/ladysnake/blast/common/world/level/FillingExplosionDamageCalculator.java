@@ -18,4 +18,9 @@ public class FillingExplosionDamageCalculator extends CustomExplosionDamageCalcu
     public Pair<BlockState, Boolean> getFillState() {
         return fillState;
     }
+
+    @Override
+    public boolean shouldCollectAirWithLithium() {
+        return true;
+    }
 }
