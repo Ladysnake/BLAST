@@ -4,7 +4,7 @@
 
 package ladysnake.blast.common.world.item;
 
-import ladysnake.blast.common.init.BlastComponentTypes;
+import ladysnake.blast.common.init.BlastDataComponents;
 import ladysnake.blast.common.init.BlastEntityTypes;
 import ladysnake.blast.common.world.entity.projectile.throwableitemprojectile.PipeBomb;
 import net.minecraft.core.Direction;
@@ -63,7 +63,7 @@ public class PipeBombItem extends Item implements ProjectileItem {
 
     @Override
     public void inventoryTick(ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
-        if (!level.isClientSide() && stack.getOrDefault(BlastComponentTypes.PRIMED, false) && owner instanceof Player player) {
+        if (!level.isClientSide() && stack.getOrDefault(BlastDataComponents.PRIMED, false) && owner instanceof Player player) {
             while (!stack.isEmpty()) {
                 spawn(level, stack.copyWithCount(1), player, 0);
                 stack.shrink(1);

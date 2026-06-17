@@ -8,7 +8,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import ladysnake.blast.common.init.BlastComponentTypes;
+import ladysnake.blast.common.init.BlastDataComponents;
 import ladysnake.blast.common.init.BlastItems;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -50,7 +50,7 @@ public class BundleItemMixin {
             BundleContents.Mutable mutable = new BundleContents.Mutable(bundleContents);
             for (int i = 0; i < bundleContents.size(); i++) {
                 ItemStackTemplate template = bundleContents.items().get(i);
-                Identifier fakeItemId = template.get(BlastComponentTypes.FAKE_ITEM_ID);
+                Identifier fakeItemId = template.get(BlastDataComponents.FAKE_ITEM_ID);
                 if (fakeItemId != null) {
                     mutable.items.set(i, new ItemStack(BuiltInRegistries.ITEM.getValue(fakeItemId), template.count() * (64 / template.getMaxStackSize())));
                 }
@@ -64,8 +64,8 @@ public class BundleItemMixin {
     private static void prime(ItemStack stack, Player player) {
         if (stack.is(BlastItems.PIPE_BOMB)) {
             player.playSound(SoundEvents.TRIPWIRE_CLICK_ON, 0.5F, 1);
-            stack.set(BlastComponentTypes.PRIMED, true);
-            stack.set(BlastComponentTypes.FAKE_ITEM_ID, getRandomFakeItem(player.getRandom()));
+            stack.set(BlastDataComponents.PRIMED, true);
+            stack.set(BlastDataComponents.FAKE_ITEM_ID, getRandomFakeItem(player.getRandom()));
         }
     }
 

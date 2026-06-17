@@ -4,7 +4,7 @@
 
 package ladysnake.blast.common.world.entity.projectile.throwableitemprojectile;
 
-import ladysnake.blast.common.init.BlastComponentTypes;
+import ladysnake.blast.common.init.BlastDataComponents;
 import ladysnake.blast.common.init.BlastItems;
 import ladysnake.blast.common.world.level.CustomExplosionDamageCalculator;
 import net.minecraft.core.particles.ExplosionParticleInfo;
@@ -83,8 +83,8 @@ public class Bomb extends ThrowableItemProjectile {
     @Override
     public void setItem(ItemStack source) {
         super.setItem(source.getItem().getDefaultInstance());
-        setFuse(source.getOrDefault(BlastComponentTypes.FUSE, getFuse()));
-        setExplosionPower(source.getOrDefault(BlastComponentTypes.EXPLOSION_POWER, getExplosionPower()));
+        setFuse(source.getOrDefault(BlastDataComponents.FUSE, getFuse()));
+        setExplosionPower(source.getOrDefault(BlastDataComponents.EXPLOSION_POWER, getExplosionPower()));
     }
 
     @Override

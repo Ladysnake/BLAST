@@ -1,0 +1,25 @@
+/*
+ * Copyright (c) doctor4t. All Rights Reserved.
+ */
+
+package ladysnake.blast.common.init;
+
+import com.mojang.serialization.Codec;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ExtraCodecs;
+
+import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerDataComponentType;
+
+public class BlastDataComponents {
+    public static final DataComponentType<Boolean> PRIMED = registerDataComponentType("primed", new DataComponentType.Builder<Boolean>().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+    public static final DataComponentType<Identifier> FAKE_ENCHANTMENT_ID = registerDataComponentType("fake_enchantment_id", new DataComponentType.Builder<Identifier>().persistent(Identifier.CODEC).networkSynchronized(Identifier.STREAM_CODEC));
+    public static final DataComponentType<Integer> FAKE_ENCHANTMENT_LEVEL = registerDataComponentType("fake_enchantment_level", new DataComponentType.Builder<Integer>().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+    public static final DataComponentType<Identifier> FAKE_ITEM_ID = registerDataComponentType("fake_item_id", new DataComponentType.Builder<Identifier>().persistent(Identifier.CODEC).networkSynchronized(Identifier.STREAM_CODEC));
+    public static final DataComponentType<Integer> FUSE = registerDataComponentType("fuse", new DataComponentType.Builder<Integer>().persistent(ExtraCodecs.POSITIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+    public static final DataComponentType<Float> EXPLOSION_POWER = registerDataComponentType("explosion_power", new DataComponentType.Builder<Float>().persistent(ExtraCodecs.POSITIVE_FLOAT).networkSynchronized(ByteBufCodecs.FLOAT));
+
+    public static void init() {
+    }
+}

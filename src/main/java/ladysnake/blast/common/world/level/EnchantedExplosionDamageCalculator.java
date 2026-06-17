@@ -5,7 +5,7 @@
 package ladysnake.blast.common.world.level;
 
 import ladysnake.blast.common.Blast;
-import ladysnake.blast.common.init.BlastComponentTypes;
+import ladysnake.blast.common.init.BlastDataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -28,14 +28,14 @@ public class EnchantedExplosionDamageCalculator extends CustomExplosionDamageCal
     @Override
     public ItemStack getBreakTool(ServerLevel level) {
         ItemStack stack = Items.NETHERITE_PICKAXE.getDefaultInstance();
-        stack.set(BlastComponentTypes.FAKE_ENCHANTMENT_ID, enchantment.identifier());
-        stack.set(BlastComponentTypes.FAKE_ENCHANTMENT_LEVEL, enchantmentLevel);
+        stack.set(BlastDataComponents.FAKE_ENCHANTMENT_ID, enchantment.identifier());
+        stack.set(BlastDataComponents.FAKE_ENCHANTMENT_LEVEL, enchantmentLevel);
         return stack;
     }
 
     public static int getFakeEnchantmentLevel(ItemInstance tool, ResourceKey<Enchantment> enchantment) {
-        if (tool.getOrDefault(BlastComponentTypes.FAKE_ENCHANTMENT_ID, PLACEHOLDER_ID) == enchantment.identifier()) {
-            return tool.getOrDefault(BlastComponentTypes.FAKE_ENCHANTMENT_LEVEL, 0);
+        if (tool.getOrDefault(BlastDataComponents.FAKE_ENCHANTMENT_ID, PLACEHOLDER_ID) == enchantment.identifier()) {
+            return tool.getOrDefault(BlastDataComponents.FAKE_ENCHANTMENT_LEVEL, 0);
         }
         return 0;
     }

@@ -22,6 +22,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class Stripminer extends Bomb {
     public static final EntityDataSerializer<Direction> FACING_TYPE = EntityDataSerializer.forValueType(Direction.STREAM_CODEC);
@@ -47,7 +48,7 @@ public class Stripminer extends Bomb {
         for (int i = 0; i <= 24; i++) {
             if (level().getBlockState(mutable).getBlock().getExplosionResistance() < 1200) {
                 CustomExplosionDamageCalculator calculator = getExplosionCalculator();
-                createExplosion(calculator, mutable.getCenter(), calculator.getPower().orElse(getExplosionPower()), ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE.value());
+                createExplosion(calculator, Vec3.atCenterOf(mutable), calculator.getPower().orElse(getExplosionPower()), ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE.value());
             } else {
                 break;
             }

@@ -4,7 +4,7 @@
 
 package ladysnake.blast.datagen.provider;
 
-import ladysnake.blast.common.init.BlastBlocks;
+import ladysnake.blast.common.references.BlastBlockItemIds;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
@@ -19,17 +19,17 @@ public class BlastBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider
 
     @Override
     protected void addTags(HolderLookup.Provider registries) {
-        valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
-            .add(BlastBlocks.STRIPMINER)
-            .add(BlastBlocks.COLD_DIGGER);
-        valueLookupBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
-            .add(BlastBlocks.DRY_ICE)
-            .add(BlastBlocks.REMOTE_DETONATOR)
-            .add(BlastBlocks.BONESBURRIER);
-        valueLookupBuilder(BlockTags.MINEABLE_WITH_SHOVEL)
-            .add(BlastBlocks.GUNPOWDER_BLOCK)
-            .add(BlastBlocks.FOLLY_RED_PAINT)
-            .add(BlastBlocks.FRESH_FOLLY_RED_PAINT)
-            .add(BlastBlocks.DRIED_FOLLY_RED_PAINT);
+        builder(BlockTags.MINEABLE_WITH_AXE)
+            .add(BlastBlockItemIds.STRIPMINER)
+            .add(BlastBlockItemIds.COLD_DIGGER);
+        builder(BlockTags.MINEABLE_WITH_PICKAXE)
+            .add(BlastBlockItemIds.DRY_ICE)
+            .add(BlastBlockItemIds.REMOTE_DETONATOR)
+            .add(BlastBlockItemIds.BONESBURRIER);
+        builder(BlockTags.MINEABLE_WITH_SHOVEL)
+            .add(BlastBlockItemIds.GUNPOWDER_BLOCK)
+            .add(BlastBlockItemIds.FOLLY_RED_PAINT)
+            .add(BlastBlockItemIds.FRESH_FOLLY_RED_PAINT)
+            .add(BlastBlockItemIds.DRIED_FOLLY_RED_PAINT);
     }
 }

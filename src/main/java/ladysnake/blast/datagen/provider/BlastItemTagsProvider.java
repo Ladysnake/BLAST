@@ -4,7 +4,7 @@
 
 package ladysnake.blast.datagen.provider;
 
-import ladysnake.blast.common.init.BlastItems;
+import ladysnake.blast.common.references.BlastItemIds;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
@@ -19,8 +19,8 @@ public class BlastItemTagsProvider extends FabricTagsProvider.ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider registries) {
-        valueLookupBuilder(ItemTags.PIGLIN_LOVED)
-            .add(BlastItems.GOLDEN_BOMB)
-            .add(BlastItems.GOLDEN_TRIGGER_BOMB);
+        builder(ItemTags.PIGLIN_LOVED)
+            .add(BlastItemIds.GOLDEN_BOMB)
+            .add(BlastItemIds.GOLDEN_TRIGGER_BOMB);
     }
 }

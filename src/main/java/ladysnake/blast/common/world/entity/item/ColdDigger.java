@@ -21,6 +21,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
 
@@ -59,7 +60,7 @@ public class ColdDigger extends Stripminer {
         for (int i = 0; i <= 24; i++) {
             if (level().getBlockState(mutable).getBlock().getExplosionResistance() < 1200) {
                 CustomExplosionDamageCalculator calculator = getExplosionCalculator();
-                createExplosion(calculator, mutable.getCenter(), calculator.getPower().orElse(getExplosionPower()), ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE.value());
+                createExplosion(calculator, Vec3.atCenterOf(mutable), calculator.getPower().orElse(getExplosionPower()), ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE.value());
             } else {
                 break;
             }
@@ -70,7 +71,7 @@ public class ColdDigger extends Stripminer {
         for (int i = 0; i <= 24; i++) {
             if (level().getBlockState(mutable).getBlock().getExplosionResistance() < 1200) {
                 CustomExplosionDamageCalculator calculator = super.getExplosionCalculator();
-                createExplosion(calculator, mutable.getCenter(), 1, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE.value());
+                createExplosion(calculator, Vec3.atCenterOf(mutable), 1, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE.value());
             } else {
                 break;
             }
