@@ -38,7 +38,7 @@ dependencies {
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    implementation "moriyashiine:strawberrylib:${strawberrylib_version}"
+    implementation "moriyashiine.strawberrylib:strawberrylib-fabric:${strawberrylib_version}"
 }
 
 processResources {

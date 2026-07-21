@@ -16,7 +16,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
@@ -86,7 +85,7 @@ public class AmethystShard extends AbstractArrow {
         if (owner instanceof LivingEntity living) {
             living.setLastHurtMob(entity);
         }
-        if (entity.getType() != EntityTypes.ENDERMAN && level() instanceof ServerLevel level && entity.hurtServer(level, source, (float) baseDamage)) {
+        if (entity.getType() != EntityType.ENDERMAN && level() instanceof ServerLevel level && entity.hurtServer(level, source, (float) baseDamage)) {
             if (isOnFire()) {
                 entity.igniteForSeconds(5);
             }
