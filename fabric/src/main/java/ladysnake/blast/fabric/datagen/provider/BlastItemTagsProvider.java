@@ -1,4 +1,4 @@
-package ladysnake.blast.datagen.provider;
+package ladysnake.blast.fabric.datagen.provider;
 
 import ladysnake.blast.common.references.BlastItemIds;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
