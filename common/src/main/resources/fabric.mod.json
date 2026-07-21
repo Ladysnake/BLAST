@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+	"doctor4t"
+  ],
+  "contributors": [
+	"MoriyaShiine"
+  ],
+  "contact": {
+	"homepage": "https://modrinth.com/mod/${project_name}",
+	"sources": "https://github.com/Ladysnake/${project_name}",
+	"issues": "https://github.com/Ladysnake/${project_name}/issues"
+  },
+  "license": "All Rights Reserved",
+  "icon": "assets/${mod_id}/icon.png",
+  "environment": "*",
+  "entrypoints": {
+	"fabric-datagen": [
+	  "ladysnake.blast.datagen.BlastDataGenerator"
+	],
+	"main": [
+	  "ladysnake.blast.common.Blast"
+	],
+	"client": [
+	  "ladysnake.blast.client.BlastClient"
+	]
+  },
+  "mixins": [
+	"${mod_id}.mixins.json",
+	"${mod_id}_fabric.mixins.json"
+  ],
+  "accessWidener": "${mod_id}.classtweaker",
+  "depends": {
+	"fabricloader": "*",
+	"minecraft": "~26.1",
+	"java": ">=25",
+	"fabric-api": "*",
+	"strawberrylib": "*"
+  },
+  "custom": {
+	"launchpad:compatible": true,
+	"launchpad:overrides": {
+	  "mixins": [
+		"${mod_id}.mixins.json",
+		"${mod_id}_neoforge.mixins.json"
+	  ]
+	}
+  }
+}
