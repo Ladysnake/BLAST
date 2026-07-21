@@ -20,7 +20,7 @@
   "environment": "*",
   "entrypoints": {
 	"fabric-datagen": [
-	  "ladysnake.blast.fabric.datagen.BlastDataGenerator"
+	  "ladysnake.blast.datagen.BlastDataGenerator"
 	],
 	"main": [
 	  "ladysnake.blast.common.Blast"

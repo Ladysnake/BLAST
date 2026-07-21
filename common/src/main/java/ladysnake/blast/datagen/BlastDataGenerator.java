@@ -1,7 +1,7 @@
-package ladysnake.blast.fabric.datagen;
+package ladysnake.blast.datagen;
 
 import ladysnake.blast.common.init.BlastDamageTypes;
-import ladysnake.blast.fabric.datagen.provider.*;
+import ladysnake.blast.datagen.provider.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.RegistrySetBuilder;

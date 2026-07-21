@@ -13,8 +13,6 @@ pluginManagement {
 	}
 }
 
-rootProject.name = "blast"
-
 includeBuild("build-logic")
 ["common", "fabric", "neoforge"]
 //["common", "fabric"]

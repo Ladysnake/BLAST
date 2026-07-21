@@ -31,7 +31,7 @@ loom {
 	runs {
 		fabricApi.configureDataGeneration {
 			outputDirectory = project(":${rootProject.name}-common").file("src/main/generated")
-			modId = rootProject.name
+			modId = mod_id
 			client = true
 			addToResources = false
 		}
