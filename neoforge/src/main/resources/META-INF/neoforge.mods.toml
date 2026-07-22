@@ -6,7 +6,7 @@ displayName = "${mod_name}"
 description = '''
 ${mod_description}
 '''
-[[dependencies.${mod_id}]]
+[[dependencies.${ mod_id }]]
 modId = "launchpad"
 type = "required"
 versionRange = "[0,)"
