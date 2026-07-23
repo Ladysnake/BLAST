@@ -15,6 +15,7 @@ chenille {
 		neoforgeCompatible = quiltCompatible = false
 	}
 }
+githubRelease.allowUploadToExisting = true
 
 loom {
 	def classTweaker = project(":${rootProject.name}-common").file("src/main/resources/${mod_id}.classtweaker")
