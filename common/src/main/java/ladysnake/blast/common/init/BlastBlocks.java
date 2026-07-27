@@ -3,7 +3,7 @@ package ladysnake.blast.common.init;
 import ladysnake.blast.common.references.BlastBlockItemIds;
 import ladysnake.blast.common.world.level.block.*;
 import moriyashiine.strawberrylib.api.module.SLibRegistries;
-import moriyashiine.strawberrylib.api.objects.records.BlockItemId;
+import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
