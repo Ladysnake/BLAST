@@ -31,7 +31,7 @@ public class BlastModelProvider extends FabricModelProvider {
         generators.createTrivialCube(BlastBlocks.GUNPOWDER_BLOCK);
         registerStripminer(generators, BlastBlocks.STRIPMINER, Blast.id("block/stripminer"));
         registerStripminer(generators, BlastBlocks.COLD_DIGGER, Blast.id("block/cold_digger"));
-        generators.createTrivialBlock(BlastBlocks.BONESBURRIER, TexturedModel.CUBE_TOP_BOTTOM);
+        generators.createTrivialBlock(BlastBlocks.BONESBURRIER, TexturedModel.CUBE_BOTTOM_TOP);
         registerRemoteDetonator(generators);
         generators.createRotatedPillarWithHorizontalVariant(BlastBlocks.DRY_ICE, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT);
         generators.createTrivialCube(BlastBlocks.FOLLY_RED_PAINT);

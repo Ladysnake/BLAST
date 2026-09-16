@@ -34,7 +34,7 @@ public class Icicle extends AmethystShard {
 
     @Override
     protected void doPostHurtEffects(LivingEntity target) {
-        target.invulnerableTime = 0;
+        target.setInvulnerableTime(0);
         target.setTicksFrozen(target.getTicksFrozen() + 20);
     }
 }

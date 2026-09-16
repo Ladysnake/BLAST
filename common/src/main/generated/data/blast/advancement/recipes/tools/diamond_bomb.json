@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:diamond_bomb"
+		"recipes": "blast:diamond_bomb"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}

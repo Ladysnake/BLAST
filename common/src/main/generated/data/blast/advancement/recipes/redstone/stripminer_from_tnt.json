@@ -3,7 +3,7 @@
   "criteria": {
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:stripminer_from_tnt"
+		"recipes": "blast:stripminer_from_tnt"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	},

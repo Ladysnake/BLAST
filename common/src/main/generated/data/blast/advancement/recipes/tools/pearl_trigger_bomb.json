@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:pearl_trigger_bomb"
+		"recipes": "blast:pearl_trigger_bomb"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}

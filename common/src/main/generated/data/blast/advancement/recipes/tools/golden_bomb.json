@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:golden_bomb"
+		"recipes": "blast:golden_bomb"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}

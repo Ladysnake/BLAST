@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:slime_trigger_bomb"
+		"recipes": "blast:slime_trigger_bomb"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}

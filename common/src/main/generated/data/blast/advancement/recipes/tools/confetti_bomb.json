@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:confetti_bomb"
+		"recipes": "blast:confetti_bomb"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}

@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:gunpowder_block_from_gunpowder"
+		"recipes": "blast:gunpowder_block_from_gunpowder"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}

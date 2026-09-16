@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:bonesburrier_from_gunpowder_block"
+		"recipes": "blast:bonesburrier_from_gunpowder_block"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}

@@ -9,8 +9,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -33,10 +33,10 @@ public class BlastBlockLootSubProvider extends FabricBlockLootSubProvider {
                 applyExplosionCondition(
                     BlastBlocks.REMOTE_DETONATOR,
                     LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(1))
+                        .setRolls(ContextIntProviders.exactly(1))
                         .add(
                             LootItem.lootTableItem(Items.ENDER_EYE)
-                                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(BlastBlocks.REMOTE_DETONATOR).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(RemoteDetonatorBlock.FILLED, true)))
+                                .when(MatchBlock.blockMatches(blocks, BlastBlocks.REMOTE_DETONATOR, StatePropertiesPredicate.Builder.properties().hasProperty(RemoteDetonatorBlock.FILLED, true)))
                         )
                 )
             ));

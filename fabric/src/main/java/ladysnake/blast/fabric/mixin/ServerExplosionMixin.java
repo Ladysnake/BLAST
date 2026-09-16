@@ -30,7 +30,7 @@ public abstract class ServerExplosionMixin implements Explosion {
     @Final
     private Vec3 center;
 
-    @WrapWithCondition(method = "hurtEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;push(Lnet/minecraft/world/phys/Vec3;)V"))
+    @WrapWithCondition(method = "hurtEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;pushFromExplosion(Lnet/minecraft/world/phys/Vec3;)V"))
     private boolean blast$pushesEntity(Entity instance, Vec3 impulse) {
         if (damageCalculator instanceof CustomExplosionDamageCalculator calculator) {
             return calculator.pushesEntity(instance);

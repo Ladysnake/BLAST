@@ -43,7 +43,7 @@ public class BundleItemMixin {
     private Object blast$showFakeItem(ItemStack instance, DataComponentType<BundleContents> componentType, Operation<Object> original) {
         Object component = original.call(instance, componentType);
         if (component instanceof BundleContents bundleContents) {
-            BundleContents.Mutable mutable = new BundleContents.Mutable(bundleContents);
+            BundleContents.Mutable mutable = bundleContents.asMutable();
             for (int i = 0; i < bundleContents.size(); i++) {
                 ItemStackTemplate template = bundleContents.items().get(i);
                 Identifier fakeItemId = template.get(BlastDataComponents.FAKE_ITEM_ID);

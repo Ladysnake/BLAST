@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:cold_digger"
+		"recipes": "blast:cold_digger"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}

@@ -1,6 +1,5 @@
 package ladysnake.blast.common.world.level.block;
 
-import com.mojang.serialization.MapCodec;
 import ladysnake.blast.common.init.BlastEntityTypes;
 import ladysnake.blast.common.world.entity.projectile.throwableitemprojectile.Bomb;
 import net.minecraft.core.BlockPos;
@@ -30,16 +29,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class GunpowderBlock extends FallingBlock implements DetonatableBlock {
-    public static final MapCodec<GunpowderBlock> CODEC = simpleCodec(GunpowderBlock::new);
-
     public GunpowderBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(BlockStateProperties.LIT, false));
-    }
-
-    @Override
-    protected MapCodec<GunpowderBlock> codec() {
-        return CODEC;
     }
 
     @Override

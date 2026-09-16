@@ -3,7 +3,7 @@
   "criteria": {
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:bonesburrier_from_tnt"
+		"recipes": "blast:bonesburrier_from_tnt"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	},

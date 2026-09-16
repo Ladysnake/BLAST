@@ -38,7 +38,7 @@ public class Bonesburrier extends Bomb {
                     FallingBlockEntity fallingBlock = FallingBlockEntity.fall(level, pos, state);
                     fallingBlock.setDeltaMovement(new Vec3(pos.getX(), pos.getY(), pos.getZ()).subtract(sourcePos).normalize());
                     fallingBlock.dropItem = false;
-                    fallingBlock.hurtMarked = true;
+                    fallingBlock.syncVelocity = true;
                     level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                     // paint
                     BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();

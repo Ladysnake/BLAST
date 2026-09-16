@@ -53,7 +53,7 @@ public class PipeBomb extends AbstractArrow implements ItemSupplier {
         fireworks.clear();
         input.read("Stack", ItemStack.CODEC).ifPresentOrElse(stack -> this.stack = stack, () -> stack = getDefaultPickupItem());
         if (stack.has(DataComponents.CHARGED_PROJECTILES)) {
-            fireworks.addAll(stack.get(DataComponents.CHARGED_PROJECTILES).itemCopies());
+            fireworks.addAll(stack.get(DataComponents.CHARGED_PROJECTILES).itemCopies().toList());
         }
     }
 
@@ -120,7 +120,7 @@ public class PipeBomb extends AbstractArrow implements ItemSupplier {
     public void setItem(ItemStack item) {
         stack = item;
         if (item.has(DataComponents.CHARGED_PROJECTILES)) {
-            fireworks.addAll(item.get(DataComponents.CHARGED_PROJECTILES).itemCopies());
+            fireworks.addAll(item.get(DataComponents.CHARGED_PROJECTILES).itemCopies().toList());
         }
     }
 

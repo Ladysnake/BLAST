@@ -44,9 +44,9 @@ public class BlastBlockEntityRenderer<T extends Bomb> extends EntityRenderer<T, 
             poseStack.scale(scale, scale, scale);
         }
 
-        poseStack.mulPose(Axis.YP.rotationDegrees(-90));
+        poseStack.rotateDegrees(Axis.YP, -90);
         poseStack.translate(-0.5F, -0.5F, 0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(90));
+        poseStack.rotateDegrees(Axis.YP, 90);
         if (!state.blockState.isEmpty()) {
             TntMinecartRenderer.submitWhiteSolidBlock(state.blockState, poseStack, submitNodeCollector, state.lightCoords, (int) fuse / 5 % 2 == 0, state.outlineColor);
         }

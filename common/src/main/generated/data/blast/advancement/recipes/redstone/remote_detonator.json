@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:remote_detonator"
+		"recipes": "blast:remote_detonator"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}

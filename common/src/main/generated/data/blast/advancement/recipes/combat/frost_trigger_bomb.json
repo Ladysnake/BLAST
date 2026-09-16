@@ -13,7 +13,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "blast:frost_trigger_bomb"
+		"recipes": "blast:frost_trigger_bomb"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}

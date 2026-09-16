@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 
 import java.util.function.Function;
 
+import static moriyashiine.strawberrylib.api.module.SLibRegistries.properties;
 import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerItem;
 
 public class BlastItems {
@@ -36,7 +37,7 @@ public class BlastItems {
     public static final Item AMETHYST_TRIGGER_BOMB = registerTriggerBomb(BlastItemIds.AMETHYST_TRIGGER_BOMB, BlastEntityTypes.AMETHYST_TRIGGER_BOMB, CreativeModeTabs.COMBAT);
     public static final Item FROST_BOMB = registerBomb(BlastItemIds.FROST_BOMB, BlastEntityTypes.FROST_BOMB, CreativeModeTabs.COMBAT);
     public static final Item FROST_TRIGGER_BOMB = registerTriggerBomb(BlastItemIds.FROST_TRIGGER_BOMB, BlastEntityTypes.FROST_TRIGGER_BOMB, CreativeModeTabs.COMBAT);
-    public static final Item PIPE_BOMB = register(BlastItemIds.PIPE_BOMB, PipeBombItem::new, new Item.Properties().stacksTo(16), CreativeModeTabs.COMBAT);
+    public static final Item PIPE_BOMB = register(BlastItemIds.PIPE_BOMB, PipeBombItem::new, properties().stacksTo(16), CreativeModeTabs.COMBAT);
 
     public static Item register(ResourceKey<Item> key, Function<Item.Properties, Item> factory, Item.Properties properties, ResourceKey<CreativeModeTab> tab) {
         Item item = registerItem(key, factory, properties);
@@ -45,11 +46,11 @@ public class BlastItems {
     }
 
     private static Item registerBomb(ResourceKey<Item> key, EntityType<Bomb> type, ResourceKey<CreativeModeTab> tab) {
-        return register(key, properties -> new BombItem(properties, type), new Item.Properties().stacksTo(16), tab);
+        return register(key, properties -> new BombItem(properties, type), properties().stacksTo(16), tab);
     }
 
     private static Item registerTriggerBomb(ResourceKey<Item> key, EntityType<Bomb> type, ResourceKey<CreativeModeTab> tab) {
-        return register(key, properties -> new TriggerBombItem(properties, type), new Item.Properties().stacksTo(16), tab);
+        return register(key, properties -> new TriggerBombItem(properties, type), properties().stacksTo(16), tab);
     }
 
     public static void init() {

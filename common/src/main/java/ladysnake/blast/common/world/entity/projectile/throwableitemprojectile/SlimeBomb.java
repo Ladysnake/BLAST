@@ -26,7 +26,7 @@ public class SlimeBomb extends Bomb {
                     dZ /= product;
                     double strength = (1 - distance) * 3;
                     entity.push(dX * strength, dY * strength, dZ * strength);
-                    entity.hurtMarked = true;
+                    entity.syncVelocity = true;
                 }
             }
         }
